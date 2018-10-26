@@ -82,6 +82,7 @@
             <mvc:exclude-mapping path="/user/login"/>
 			<mvc:exclude-mapping path="/user/valicode"/>  <!-- 验证码 -->
 			<mvc:exclude-mapping path="/user/cookies"/>  <!-- 获得cookie -->
+			
             <!-- 访问静态资源 -->
             <mvc:exclude-mapping path="/image/**" />
             <mvc:exclude-mapping path="/css/**" />

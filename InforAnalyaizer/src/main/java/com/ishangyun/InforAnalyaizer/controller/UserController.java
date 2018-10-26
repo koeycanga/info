@@ -97,7 +97,7 @@ public class UserController {
     		    session.setAttribute("user", user);
     		    if(isremberusrname.equals("true")) {  //记住用户
     		    	userService.addCookie(response,user);
-    	    	}else {
+    	    	}else {  //不记住用户
     	    		userService.delCookie(request,response);
     	    	}
     		}
@@ -108,7 +108,7 @@ public class UserController {
     @RequestMapping("/toLogin")
     public Object login() {
 
-    	return new ModelAndView("User");
+    	return new ModelAndView("user/User");
     }
     
     @RequestMapping("/valicode")

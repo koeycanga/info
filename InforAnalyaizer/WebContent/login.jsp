@@ -18,7 +18,6 @@
 				<div class="cy_CIAS_lgfm" >
 					<input type="text" class="cy_CIAS_lgvcp" v-model="checkCode" style="background-color: white" placeholder="请输入验证码">
 					<div class="cy_CIAS_lgvc"><img height="100%" v-bind:src="checkimg_src" v-on:click="flash_checkimg"/></div>
-					
 				</div>
 			<div class="cy_CIAS_lgfml"><input type="checkbox" id="cy_CIAS_lgrem" v-model="isremberusrname" hidden>
 			<label for="cy_CIAS_lgrem"></label><span>记住用户名</span></div>
@@ -45,7 +44,7 @@
 			 checkimg_src:'user/valicode'
 		 },
 		 methods:{
-			 login:function(){
+			 login:function(){             //登录操作
 				    if(this.username==''){
 				    	alert("请输入用户名");
 				    	return;
@@ -89,18 +88,16 @@
 		    			});
 				 
 			 },
-			 flash_checkimg:function(){
+			 flash_checkimg:function(){   //刷新验证码图片
 				 this.checkimg_src = 'user/valicode?date='+new Date();
 			 },
-			 ishaverember:function(){
+			 ishaverember:function(){    //处理cookie
 				 var _this = this;
 				 axios.get('user/cookies'
 		    			)
 		    			.then(function (response) {
-		    				console.log(data);
 		    				if(response.data!=''&&response.data!='{}'){
 		    					var data = JSON.parse(response.data);
-		    					
 		    					_this.username = data.username;
 		    					_this.passwd = data.userpwd;
 		    					if(data.username!=null){
