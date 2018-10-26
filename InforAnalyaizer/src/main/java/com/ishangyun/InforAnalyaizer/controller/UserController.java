@@ -108,7 +108,7 @@ public class UserController {
     @RequestMapping("/toLogin")
     public Object login() {
 
-    	return new ModelAndView("user/User");
+    	return new ModelAndView("user/test");
     }
     
     @RequestMapping("/valicode")

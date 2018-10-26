@@ -190,7 +190,7 @@ var pdv = new Vue({
 	    		
 	    		this.pageNow = 1;
 	    		this.aget;
-	    		window.location.href="https://www.baidu.com";
+	    	    //window.location.href="https://www.baidu.com";
 	    	}
 	    },
 	    computed:{

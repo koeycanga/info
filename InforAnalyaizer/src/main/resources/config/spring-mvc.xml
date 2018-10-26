@@ -46,7 +46,7 @@
     <!--配置视图解析器-->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
-        <property name="suffix" value=".jsp"/>
+        <property name="suffix" value=".html"/>
     </bean>
     <mvc:resources mapping="/lib/**" location="/lib"/>
  
@@ -82,6 +82,8 @@
             <mvc:exclude-mapping path="/user/login"/>
 			<mvc:exclude-mapping path="/user/valicode"/>  <!-- 验证码 -->
 			<mvc:exclude-mapping path="/user/cookies"/>  <!-- 获得cookie -->
+			
+			<mvc:exclude-mapping path="/koey/**"/> 
 			
             <!-- 访问静态资源 -->
             <mvc:exclude-mapping path="/image/**" />
