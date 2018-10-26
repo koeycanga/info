@@ -1,0 +1,123 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body{
+	margin: 0;
+	padding: 0;
+	
+}
+.cy_CIAS_lgbody{
+	height:852px;
+	background:url(../image/login-bg.png) no-repeat;
+}
+.cy_CIAS_lgbox{
+	width:840px;
+	height: 650px;
+	padding-top: 11%;
+	margin:0 auto;
+	display: flex;
+	z-index: 3;
+}
+.cy_CIAS_lgboxR{
+	width: 420px;
+	height: 420px;
+	background: url(../image/login-boxbg02.png) no-repeat;
+	padding-top: 108px;
+}
+
+
+.cy_CIAS_lgusn , .cy_CIAS_lgpsw , .cy_CIAS_lgvcp,.cy_CIAS_lgvc {
+	width:310px;
+	height: 40px;
+	border:1px solid #e0e0e0;
+	border-radius: 5px;
+	margin:0px 0px 20px 35px;
+	padding-left:40px;
+	outline-color: #4b90ff;
+	background-color: white;
+}
+
+
+.cy_CIAS_lgusn{
+	background: url(../image/login-user.png) no-repeat;
+	background-position: 12px 12px;
+}
+.cy_CIAS_lgpsw{
+	background: url(../image/login-psw.png) no-repeat;
+	background-position: 12px 12px;
+}
+.cy_CIAS_lgvcp{
+	width:200px;
+background: url(../image/login-vc.png) no-repeat;
+	background-position: 13px 12px;
+}
+.cy_CIAS_lgvc{
+	width:55px;
+	height: 42px;
+	border: none;
+	float: right;
+	margin:0 32px 0 12px;
+	cursor: pointer;
+	background-color:#000000;
+}
+.cy_CIAS_lgfm{
+	justify-content:space-between;
+}
+#cy_CIAS_lgrem + label{
+    background-color: white;
+    border:1px solid #d3d3d3;
+    width:16px;
+    height:16px;
+	margin-right:10px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 20px;
+}
+#cy_CIAS_lgrem:checked + label:after{
+	content:url(../image/login-checked.png);
+}
+
+.cy_CIAS_lgfml span{
+	color: #999999;
+	font-size: 14px;
+}
+.cy_CIAS_lgfml{
+	margin-left:44px;
+	margin-top:-14px;
+}
+
+input::-webkit-input-placeholder { font-size: 14px; color: #999999; }
+input:-moz-placeholder { font-size: 14px; color: #999999; }
+input::-moz-placeholder { font-size: 14px; color: #999999; }
+input:-ms-input-placeholder { font-size: 14px; color: #999999; }
+
+input{
+	color:#4D4D4D;
+	font-size: 12px;
+	cursor: text;	
+}
+.cy_CIAS_lgbtn{
+	background-color: #ffb400;
+	color: black;
+	border: 1px solid #ffb400;
+	border-radius: 5px;
+	width: 350px;
+	height: 45px;
+	margin-left: 35px;
+	outline: none;
+	font-size: 20px;
+	margin-top: 25px;
+	cursor: pointer;
+}
+.cy_CIAS_lgbtn:hover{
+	background-color: #ffc028;
+}
+
+.cy_CIAS_lgfoot{
+	height: auto;
+	padding:35px 0;
+	text-align: center;
+	font-size: 14px;
+	background: url(../image/login-foot.png) no-repeat;
+}

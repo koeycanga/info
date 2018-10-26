@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ishangyun.InforAnalyaizer.mapper.KMapper">
+    <select id="sayhello"  resultType="com.ishangyun.InforAnalyaizer.model.KBean">
+       select * from test
+    </select>
+  
+  <select id="getRowCount"  resultType="java.lang.Integer">
+       select count(*) from test
+    </select>
+  
+   <select id="getAll" parameterType="java.util.Map"  resultType="com.ishangyun.InforAnalyaizer.model.KBean">
+       select * from test limit #{param.l_pre},#{param.l_after}
+    </select>
+  
+</mapper>
