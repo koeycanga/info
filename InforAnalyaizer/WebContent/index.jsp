@@ -157,6 +157,11 @@ var vm = new Vue({
                 console.log('请求失败处理');
             });
         }
+    },
+    mounted:function(){
+    	
+    	this.search();
+    	
     }
 });
 
@@ -219,7 +224,7 @@ var pdv = new Vue({
 	    }
 });
 
-vm.search();
+//vm.search();
 
 </script>
 
