@@ -22,17 +22,17 @@
     <!--spring和mybatis整合-->
     <bean id="SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="mapperLocations" value="classpath:com/ishangyun/InforAnalyaizer/mapper/*.xml" />
+        <property name="mapperLocations" value="classpath:com/ichangyun/InforAnalyaizer/mapper/*.xml" />
     </bean>
     <!--扫描mapper接口包-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.ishangyun.InforAnalyaizer.mapper"/>
+        <property name="basePackage" value="com.ichangyun.InforAnalyaizer.mapper;com.ichangyun.InforAnalyaizer.mapper.**"/>
         <property name="sqlSessionFactoryBeanName" >
             <idref bean="SqlSessionFactory"/>
         </property>
     </bean>
     <!--service实现类扫描-->
-    <context:component-scan base-package="com.ishangyun.InforAnalyaizer.service"/>
+    <context:component-scan base-package="com.ichangyun.InforAnalyaizer.service"/>
     <!--事务管理-->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
