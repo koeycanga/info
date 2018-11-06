@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ichangyun.InforAnalyaizer.mapper.numbercontrol.NumberControlMapper">
+    <select id="getInfoByID" parameterType="com.ichangyun.InforAnalyaizer.model.numbercontroll.NumberingcontrolBean"  resultType="com.ichangyun.InforAnalyaizer.model.numbercontroll.NumberingcontrolBean">
+         select FirstCharacter,NumberOfDigits,PresentValue from m_numberingcontrol where ControlID=#{param.ControlID} for update
+    </select>
+   
+   <update id="updatePresetVal" parameterType="com.ichangyun.InforAnalyaizer.model.numbercontroll.NumberingcontrolBean">
+        update m_numberingcontrol set PresentValue=#{param.PresentValue} where ControlID=#{param.ControlID}
+   </update>
+  
+</mapper>

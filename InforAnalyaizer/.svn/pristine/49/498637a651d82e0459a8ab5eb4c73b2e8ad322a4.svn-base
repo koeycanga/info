@@ -1,0 +1,19 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body{
+	margin:0;
+	padding:0;
+}
+.cy_CIACMS_lgbody{
+	width: 1920px;
+	height: 1000px;
+	background-image:url(../image/login-bg.png);
+	background-repeat: no-repeat;
+}
+.cy_CIACMS_lgtop{
+	width: 100%;
+	height: 120px;
+	background-image: url(../image/login-top.png);
+	background-repeat: no-repeat;
+}

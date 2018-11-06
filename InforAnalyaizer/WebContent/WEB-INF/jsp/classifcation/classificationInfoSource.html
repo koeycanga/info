@@ -1,0 +1,396 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="css/cy_CIAS_style.css">
+    <!--<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>-->
+    <style>
+        .searchcss {
+            display: flex;
+            background-color: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 20px;
+        }
+
+        .searchinputcss {
+            width: 140px;
+            height: 32px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding-left: 35px;
+            background: url(image/usermana-sch.png) no-repeat 10px 10px;
+            outline: none;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .searchbutton {
+            color: white;
+            background-color: #2ea1f8;
+            width: 60px;
+            height: 35px;
+            border-radius: 5px;
+            border: 0px;
+            box-shadow: 0 2px 5px #d5d5d5;
+            font-size: 14px;
+            outline: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="cy_CMICBMS_bodybg" id="app">
+    <p>情报规划 / <span>信息源绑定</span></p>
+    <div class="cy_CMICBMS_tablebox">
+        <div class="cy_CMICBMS_box07" id="cy_CMICBMS_box07">
+            <select style="width:150px" v-model="selected">
+                <option v-for="option in options" v-bind:value="option.value">{{option.text}}</option>
+            </select>
+            <div class="cy_CMICBMS_schbox01">
+                <input type="text" placeholder="请输入关键词检索" ref="searchvalue">
+            </div>
+            <input type="button" class="cy_CMICBMS_schbtn" value="检索" v-on:click="searchbar">
+        </div>
+        <div class="cy_CMICBMS_box08" id="cy_CMICBMS_box08">
+            <input type="button" class="cy_CMICBMS_edbtn" value="编辑" v-on:click="update">
+        </div>
+        <div class="cy_CMICBMS_box08" id="table">
+            <table width="100%" border="0" class="cy_CMICBMS_accmngtb" cellspacing="0">
+                <tbody>
+                <tr>
+                    <th scope="col" width="25px"><input type="checkbox" class="cy_CMICBMS_checkbox" v-model="checked"
+                                                        @change="changeAllChecked()"></th>
+                    <th scope="col" width="15%">分类名称</th>
+                    <th scope="col" width="15%">绑定信息源</th>
+                    <th scope="col" width="35%">绑定目标网站数量</th>
+                    <th scope="col" width="auto">最近编辑时间</th>
+                    <th scope="col" width="auto">最近编辑者</th>
+                </tr>
+                <tr class="cy_CMICBMS_treven" v-for="item in checkedArr">
+                    <td><input type="checkbox" class="cy_CMICBMS_checkbox" v-model="checkedNames"
+                               v-bind:value="item.Classification_ID"></td>
+                    <td>{{item.ClassificationName}}</td>
+                    <td>{{item.IsBind}}&nbsp;</td>
+                    <td>{{item.NumBind}}&nbsp;</td>
+                    <td>{{item.UpdateDateTime}}</td>
+                    <td>{{item.UpdateUser}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <pager ref="pagecomponent"></pager>  <!-- ref 固定为 pagecomponent  -->
+    </div>
+    <!--编辑按钮弹窗-->
+    <div class="cy_hidebg" id="cy_hidebg" v-bind:style="{display: isdisplay}"></div> <!-- 遮罩层 -->
+    <div id="cy_CMICBMS_add" v-bind:style="{display: isdisplay}" style="width: 1000px">
+        <div class="cy_CMICBMS_addtop">
+            <div class="cy_CMICBMS_addtit">编辑信息源</div>
+            <div class="cy_CMICBMS_addclose" v-on:click="closepopup()">X</div>
+        </div>
+        <div>所属分类:
+            <span v-for="bread in breadlist">
+                <span>{{bread.ClassificationName}}>></span>
+            </span>
+        </div>
+        <div class="searchcss">
+            <div>
+                <input class="searchinputcss" type="text" placeholder="请输入关键词检索">
+            </div>
+            <input type="button" class="searchbutton" value="检索" v-on:click="searchbar">
+        </div>
+
+        <!--<div class="cy_CMICBMS_addtb">-->
+
+        <!--</div>-->
+    </div>
+</div>
+
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/axios.min.js"></script>
+<script>
+    var ic_pager = {
+        template: '<div class="cy_CMICBMS_umpage">' +
+            '<div class="cy_CMICBMS_umrc">显示第{{pageBean.row_show_start}}到{{pageBean.row_show_end}}条记录，总共{{pageBean.jr_rowCount}}条记录</div>' +
+            '<div class="cy_CMICBMS_umpg">' +
+            '<div>' +
+            '<ul>' +
+            '<li><a href="#" v-on:click="showFirstPage($event)"><span><<</span></a></li>' +
+            '<li><a href="#" v-on:click="showPagePre($event)"><span><</span></a></li>' +
+            '<li v-for="ys in ysdatas"><a href="#" v-on:click="showPage(ys,$event)" v-bind:class="{cy_CMICBMS_umpgfc:ys==pageBean.pageNow}" v-text="ys"></a></li>' +
+            '<li><a href="#" v-on:click="showPageNext($event)">></a></li>' +
+            '<li><a href="#" v-on:click="showLastPage($event)">>></a></li>' +
+            '</ul>' +
+            '</div>' +
+            '</div></div></div>',
+        data: function () {
+            return {
+                pageBean: {
+                    pageNow: 1,              //当前第几页
+                    pageSize: 10,            //总页数
+                    rowCount: 0,             //总条目数
+                    rowSize: [10, 20, 30, 40],              //每页显示条目数
+                    jr_rowCount: 0,        //金融计数法的总条目数
+                    row_show_start: 0,       //从第几条开始显示
+                    row_show_end: 0,         //显示到第几条
+                    rs_selected: 10,          //选中的是哪一条  每页显示条目数
+                    jump_page: 1              //跳转框的页数
+                },
+                ysdatas: [],
+                max_length: 6                //有多少个页面框框
+            }
+        },
+        methods: {
+            showPage: function (index, event) {
+                event.preventDefault();
+                if (index != '...') {
+                    this.pageBean.pageNow = index;
+                    this.pageBean.jump_page = index;
+                    this.$parent.search(this.pageBean);               //调用父组件的search函数  父组件的computed中需有同名函数
+                }
+            },
+            showFirstPage: function (event) {
+
+                if (this.pageBean.pageNow > 1) {
+                    this.showPage(1, event);
+                } else {
+                    event.preventDefault();
+                }
+            },
+            showLastPage: function (event) {
+                if (this.pageBean.pageNow < this.pageBean.pageSize) {
+                    this.showPage(this.pageBean.pageSize, event);
+                } else {
+                    event.preventDefault();
+                }
+            },
+            showPagePre: function (event) {
+                if (this.pageBean.pageNow > 1) {
+                    this.pageBean.pageNow -= 1;
+                    this.showPage(this.pageBean.pageNow, event);
+                } else {
+                    event.preventDefault();
+                }
+            },
+            showPageNext: function (event) {
+                if (this.pageBean.pageNow < this.pageBean.pageSize) {
+                    this.pageBean.pageNow += 1;
+                    this.showPage(this.pageBean.pageNow, event);
+                } else {
+                    event.preventDefault();
+                }
+            },
+            showJumpPage: function (event) {
+                if (this.pageBean.jump_page >= 1 && this.pageBean.jump_page <= this.pageBean.pageSize) {
+                    this.showPage(parseInt(this.pageBean.jump_page), event);
+                } else {
+                    event.preventDefault();
+                }
+            },
+            schange: function (event) {
+                this.pageBean.pageSize = parseInt(Math.ceil(this.pageBean.rowCount / this.pageBean.rs_selected));
+                this.showPage(1, event);
+            },
+            dealAfterSearch: function (rowCount) {
+                this.pageBean.rowCount = rowCount;
+                this.pageBean.jr_rowCount = rowCount.replace(/[0-9]+?(?=(?:([0-9]{3}))+$)/g, function (a) {
+                    return a + ','
+                });
+                this.pageBean.pageSize = parseInt(Math.ceil(this.pageBean.rowCount / this.pageBean.rs_selected));
+                this.pageBean.row_show_start = (this.pageBean.pageNow - 1) * this.pageBean.rs_selected + 1;
+                this.pageBean.row_show_end = this.pageBean.pageNow * this.pageBean.rs_selected;
+                if (this.pageBean.row_show_end > this.pageBean.rowCount) {
+                    this.pageBean.row_show_end = this.pageBean.rowCount;
+                }
+
+                this.ysdatas = [];
+                if (this.pageBean.pageSize <= this.max_length) {
+                    for (var i = 1; i <= this.pageBean.pageSize; i++) {
+                        this.ysdatas.push(i);
+                    }
+                } else if (this.pageBean.pageSize - this.pageBean.pageNow <= this.max_length - 1) {
+                    var start = this.pageBean.pageSize - this.max_length + 1;
+                    for (var i = start; i <= this.pageBean.pageSize; i++) {
+                        this.ysdatas.push(i);
+                    }
+                } else {
+                    var lg = this.pageBean.pageNow + (this.max_length - 3);
+                    for (var i = this.pageBean.pageNow; i <= lg; i++) {
+                        this.ysdatas.push(i);
+                    }
+                    this.ysdatas.push('...');
+                    this.ysdatas.push(this.pageBean.pageSize);
+                }
+            }
+
+        }
+    };
+    var app = new Vue({
+        el: "#app",
+        data: {
+            isdisplay: "none",
+            selected: 'bind',
+            options: [
+                {value: 'bind', text: '绑定信息源'},
+                {value: 'unbind', text: '不绑定信息源'},
+            ],
+            checked: false,
+            checkedNames: [],
+            checkedArr: [],
+            breadlist: [
+                {ClassificationName: '上下游企业'},
+                {ClassificationName: '上游企业'},
+                {ClassificationName: '松下'},
+            ], <!-- 面包屑 -->
+        },
+        components: {
+            'pager': ic_pager
+        },
+        computed: {
+            search: function () {
+                return function (pageBean) {
+                    var _this = this;
+                    axios.get('#', {
+                        params: {
+                            pageNow: pageBean.pageNow,
+                            rowSize: pageBean.rs_selected
+                        }
+                    })
+                        .then(function (response) {
+
+                            // var data = JSON.parse(response.data);
+
+                            var data = {//测试数据
+                                "rowCount": "3",
+                                "resdata": [
+                                    {
+                                        ClassificationName: '分类名称1',
+                                        IsBind: '',
+                                        NumBind: '',
+                                        Classification_ID: 'id1',
+                                        UpdateDateTime: '2018-09-22 13:09:15',
+                                        UpdateUser: 'admin'
+                                    },
+                                    {
+                                        ClassificationName: '分类名称2',
+                                        IsBind: '',
+                                        NumBind: '',
+                                        Classification_ID: 'id2',
+                                        UpdateDateTime: '2018-09-22 13:09:15',
+                                        UpdateUser: 'admin'
+                                    },
+                                    {
+                                        ClassificationName: '分类名称3',
+                                        IsBind: '',
+                                        NumBind: '',
+                                        Classification_ID: 'id3',
+                                        UpdateDateTime: '2018-09-22 13:09:15',
+                                        UpdateUser: 'admin'
+                                    },
+                                ]
+                            };
+                            _this.$refs.pagecomponent.dealAfterSearch(data.rowCount); //rowCount为总条目数  在ajax请求返回函数需调用该方法
+                            // _this.datas = data.resdata;
+                            _this.checkedArr = [];
+                            for (var i = 0; i < data.resdata.length; i++) {
+                                _this.checkedArr.push(data.resdata[i]);
+                            }
+                            // layer.closeAll();
+                            //......其他业务逻辑
+
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+                }
+            }
+        },
+        mounted: function () {
+            this.search(this.$refs.pagecomponent.pageBean);   //加载完成时调用search函数
+        },
+        methods: {
+            searchbar: function () {
+                var searchvalue = this.$refs.searchvalue.value;//获取输入框的value
+                var optionvalue = this.selected;//获取选择框的value
+                var _this = this;
+                if (searchvalue.split(" ").join("").length == 0) {//判空
+                    alert("请输入关键词检索");
+                } else {
+                    axios.get('#', {
+                        params: {
+                            SearchRange: optionvalue,
+                            SearchValue: searchvalue,
+                        }
+                    })
+                        .then(function (response) {
+
+                            // var data = JSON.parse(response.data);
+
+                            data = {//测试数据
+                                "rowCount": "1",
+                                "resdata": [
+                                    {
+                                        ClassificationName: '分类名称4',
+                                        IsBind: '',
+                                        NumBind: '',
+                                        Classification_ID: 'id4',
+                                        UpdateDateTime: '2018-09-22 13:09:15',
+                                        UpdateUser: 'admin'
+                                    },
+                                ]
+                            };
+                            _this.$refs.pagecomponent.dealAfterSearch(data.rowCount); //rowCount为总条目数  在ajax请求返回函数需调用该方法
+                            // _this.datas = data.resdata;
+                            _this.checkedArr = [];
+                            for (var i = 0; i < data.resdata.length; i++) {
+                                _this.checkedArr.push(data.resdata[i]);
+                            }
+                            // layer.closeAll();
+                            //......其他业务逻辑
+
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+            },//搜索
+            update: function () {//编辑
+                if (this.checkedNames.length == 1) {
+                    //todo
+                    this.popups()
+                }
+                else {
+                    alert("请选择一笔数据编辑");
+                }
+            },
+            changeAllChecked: function () {//全选反选
+                if (this.checked) {
+                    this.checkedArr.forEach((el, i) => {
+                        this.checkedNames.push(el.Classification_ID);
+                    });
+                } else {
+                    this.checkedNames = []
+                }
+            },
+            popups: function () {
+                this.isdisplay = "block"
+            },
+            closepopup: function () {
+                this.isdisplay = "none"
+            }
+        },
+        watch: {
+            "checkedNames": function () {
+                if (this.checkedNames.length == this.checkedArr.length) {
+                    this.checked = true
+                } else {
+                    this.checked = false
+                }
+            }
+        }
+    })
+</script>
+</body>
+
+</html>

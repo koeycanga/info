@@ -1,0 +1,33 @@
+package com.ichangyun.InforAnalyaizer.mapper.classification;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean;
+
+public interface ClassificationInfoMapper {
+
+	public int getClassifcInfoCount(@Param("cb") ClassificationInfoBean cb);
+
+	public List<ClassificationInfoBean> getClassifcInfo(@Param("cb") ClassificationInfoBean cb);
+
+	public int getDisplayOrder(@Param("cb") ClassificationInfoBean cb);
+
+	public int addNew(@Param("cb") ClassificationInfoBean cb);
+
+	public int exist(@Param("cb") ClassificationInfoBean cb);
+
+	public int updateData(@Param("cb") ClassificationInfoBean cb);
+
+	public int existExceptID(@Param("cb") ClassificationInfoBean cb);
+
+	public List<ClassificationInfoBean> getChildren(@Param("cb")ClassificationInfoBean cb);
+
+	public void delData(@Param("cb") ClassificationInfoBean cb);
+
+	public void updateOrder(@Param("cb") ClassificationInfoBean cb);
+
+	public List<ClassificationInfoBean> getChildernByID(@Param("cb") ClassificationInfoBean cb);
+
+}

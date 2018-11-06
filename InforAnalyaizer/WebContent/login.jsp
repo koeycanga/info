@@ -7,10 +7,9 @@
 <%@ taglib prefix="ss" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:setBundle basename="resources" var="sysInfo" />  <!-- basename: 在classes文件夹下properties文件的文件名 -->
-<fmt:message key="aa" var="aa" bundle="${sysInfo}" /> 
  <%
- ResourceBundle resource = ResourceBundle.getBundle("resources"); // 不带properties扩展名的文件名
- String aa = resource.getString("aa"); // 属性名
+ //ResourceBundle resource = ResourceBundle.getBundle("resources"); // 不带properties扩展名的文件名
+ //String aa = resource.getString("aa"); // 属性名
  
  //System.out.println("aa="+aa);
  
@@ -25,7 +24,7 @@
 
 <body>
 <div id="loginapp" class="cy_CIAS_lgbody">
-	<div id="${aa}" class="cy_CIAS_lgbox">
+	<div  class="cy_CIAS_lgbox">
 		<div class="cy_CIAS_lgboxL"><img src="image/login-boxbg01.png"></div>
 		<div class="cy_CIAS_lgboxR">
 			<input type="text" class="cy_CIAS_lgusn" v-model="username" v-validate:zip="['required']" style="background-color: white" placeholder="请输入用户名">

@@ -1,0 +1,140 @@
+package com.ichangyun.InforAnalyaizer.controller.cassification;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.ichangyun.InforAnalyaizer.model.CommBean;
+import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean;
+import com.ichangyun.InforAnalyaizer.service.classification.ClassificationInfoService;
+
+
+/**
+ * ������ϵ ��Ӧ Controller  
+ * @author koey
+ *
+ */
+
+@RestController
+@RequestMapping("/classifcationinfo")
+public class ClassificationInfoController {
+
+	@Autowired
+	private ClassificationInfoService classificationInfoService;
+	
+	
+	@RequestMapping("/index")
+	@ResponseBody
+	public Object index() {
+		
+		return new ModelAndView("classifcation/classifcationinfo");
+	}
+	
+	@RequestMapping("/search")
+	public Object search(ClassificationInfoBean cb) {
+		
+		int rowCount = classificationInfoService.getClassifcInfoCount(cb);
+		
+		String json_res = classificationInfoService.getClassifcInfo(cb);
+		
+		String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
+		
+		return res;
+	}
+	
+	@RequestMapping("/addclassifcationinfo")
+	public Object addclassifcationinfo(ClassificationInfoBean cb,HttpSession session) {
+		
+		String res = "ok";
+		
+		if(cb.getParent_Classification_ID()==null||cb.getParent_Classification_ID().equals("")) {
+			cb.setParent_Classification_ID("0000000000");
+		}
+		
+		if(classificationInfoService.exist(cb)) {
+			 res = "exist";
+		}else {
+		
+			User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+	
+			cb.setCreateUser(user.getUser_ID());
+			
+			String id = classificationInfoService.getClassificationInfoID();
+			
+			cb.setClassification_ID(id);
+	
+		    if(!classificationInfoService.AddNew(cb)) {
+		    	res = "nok";
+	         }else {
+	        	 res = classificationInfoService.getInfoByID(cb);
+	         }
+		}
+		return res;
+	}
+	
+	
+	@RequestMapping("/updateclassifcationinfo")
+	public Object updateclassifcationinfo(ClassificationInfoBean cb,HttpSession session) {
+		
+		String res = "ok";
+		
+		if(classificationInfoService.existExceptID(cb)) {
+			 res = "exist";
+		}else {
+			User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+			
+			cb.setUpdateUser(user.getUser_ID());
+			
+			if(!classificationInfoService.updateData(cb)) {
+				res = "nok";
+			}
+		}
+		
+		return res;
+	}
+	
+	@RequestMapping("/deldata")
+	public Object delData(@RequestBody Map map) {
+		String res = "ok";
+		String json = (String) map.get("json");
+		if(json==null||"".equals(json)) {
+			res = "nok";
+		}else {
+			if(!classificationInfoService.delDSata(json)) {
+				res = "nok";
+			}
+		}
+		return res;
+	}
+	
+	
+	@RequestMapping("/updateorder")
+	public void updateOrder(String cur_Classification_ID,int cur_displayOrder,String ch_Classification_ID,int ch_displayOrder) {
+		
+		
+		classificationInfoService.updateOrder(cur_Classification_ID, cur_displayOrder, ch_Classification_ID, ch_displayOrder);
+	}
+	
+	
+	@RequestMapping("/getchild")
+	public Object getchild(ClassificationInfoBean cb) {
+		
+		String json = classificationInfoService.getChildernByID(cb);
+		
+		return json;
+	}
+	
+	
+	
+	
+}

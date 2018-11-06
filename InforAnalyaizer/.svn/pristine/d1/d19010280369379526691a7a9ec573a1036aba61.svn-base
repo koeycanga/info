@@ -1,0 +1,78 @@
+@charset "UTF-8";
+.cy_hidebg {
+	  position:absolute;
+	  left:0px;top:0px;
+      background-color:#000;
+      width:100%;  /*宽度设置为100%，这样才能使隐藏背景层覆盖原页面*/
+	  height: 100%;
+      filter:alpha(opacity=60);  /*设置透明度为60%*/
+      opacity:0.6;  /*非IE浏览器下设置透明度为60%*/
+      display:block; /* http://www.jb51.net */
+      z-index:20;
+	}
+   #cy_CMICBMS_add {
+	   position:absolute;
+	   width:520px;
+	   height:520px;
+	   top:120px;
+	   left:20%;
+	   background-color:#fff;
+	   display:block;
+	   border-radius: 5px;
+	   z-index:21;}
+	
+	.cy_CMICBMS_addtop{
+		width: 100%;
+		height: 40px;
+		background-color: #337ab7;
+		display: flex;
+		color: white;
+		font-size: 16px;
+		border-radius: 3px 3px 0 0;
+	}
+	.cy_CMICBMS_addtit{
+		padding: 8px 0 8px 25px;
+	}
+	.cy_CMICBMS_addclose{
+		padding: 8px 0 8px 0px;
+		position: absolute;
+		right: 30px;
+		cursor: pointer;
+		display: block;
+	}
+	.cy_CMICBMS_addtb{
+		font-size: 14px;
+	}
+	.cy_CMICBMS_addtb div{
+		padding: 3px;
+		line-height: 40px;
+		justify-content: flex-end;
+		float: right;
+	}
+	.cy_CMICBMS_addtb span{
+		color: red;
+	}
+	.cy_CMICBMS_addinput , .cy_CMICBMS_addtb select{
+		border:1px solid #e0e0e0;
+		width: 380px;
+		font-size: 14px;
+		color: #999999;
+		padding: 8px;
+		margin-right: 20px;
+		border-radius: 5px;
+		outline:none;
+		background-color: white !important;
+	}
+	.cy_CMICBMS_addtb select{
+		appearance:none;
+		-moz-appearance:none;
+		-webkit-appearance:none;
+		select::-ms-expand { display: none; }
+		height: 25px !important;
+		margin-top: 15px;
+		width: 400px !important;
+	}
+	#cy_CMICBMS_status{
+		float: left;
+		margin:5px 0 0 60px;
+	}

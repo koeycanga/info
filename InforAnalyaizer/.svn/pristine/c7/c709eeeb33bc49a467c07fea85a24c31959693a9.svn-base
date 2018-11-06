@@ -1,0 +1,471 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<%@ taglib prefix="ss" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<fmt:setBundle basename="resources" var="sysInfo" />  <!-- basename: 在classes文件夹下properties文件的文件名 -->
+<fmt:message key="please_select_del_data" var="please_select_del_data" bundle="${sysInfo}" />
+<fmt:message key="unkonow_err" var="unkonow_err" bundle="${sysInfo}" /> 
+<fmt:message key="please_select_edit_data" var="please_select_edit_data" bundle="${sysInfo}" /> 
+<fmt:message key="edit_success" var="edit_success" bundle="${sysInfo}" /> 
+<fmt:message key="add_success" var="add_success" bundle="${sysInfo}" /> 
+
+
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" type="text/css" href="../css/cy_CIAS_style.css">
+<link rel="stylesheet" type="text/css" href="../css/cy_zg_win.css">
+ 
+</head>
+<body >
+<div id="app" class="cy_CMICBMS_bodybg" v-cloak>
+		<p>情报规划 / <span>分类体系</span></p>
+		<div class="cy_CMICBMS_tablebox">
+		<div class="cy_CMICBMS_box07">
+			<div class="cy_CMICBMS_schbox01">
+				<input type="text" v-model="search_key" placeholder="请输入关键词检索">
+			</div>
+			<input type="button" class="cy_CMICBMS_schbtn" v-on:click="btn_search()" value="检索">
+		</div>
+		<div class="cy_CMICBMS_box08">
+			<input type="button" v-on:click="NewData()" class="cy_CMICBMS_addbtn" value="新增">
+			<input type="button" v-on:click="EditData()" class="cy_CMICBMS_edbtn" value="编辑">
+			<input type="button" v-on:click="MoveUP()" v-bind:disabled="btn_wy_disabled"  class="cy_CMICBMS_mvbtn" value="上移">
+			<input type="button" v-on:click="MoveDown()" v-bind:disabled="btn_wy_disabled" class="cy_CMICBMS_mvbtn" value="下移">
+			<input type="button" v-on:click="DelData()" class="cy_CMICBMS_dltbtn" value="删除">
+		</div>
+		<div class="cy_CMICBMS_box08">
+			<table width="100%" border="0" class="cy_CMICBMS_accmngtb" 	cellspacing="0">
+			  <tbody>
+			    <tr>
+			      <th scope="col" width="25px"><input type="checkbox" v-model="checked" v-on:click="changeAllChecked()" class="cy_CMICBMS_checkbox"><label for="cy_CMICBMS_checkbox"></label></th>
+			      <th scope="col" width="15%">分类名称</th>
+			      <th scope="col" width="50%">备注</th>
+			      <th scope="col" width="20%">创建时间</th>
+			      <th scope="col" width="auto">创建人</th>
+			    </tr>
+			    <tr v-for="data in datas" class="cy_CMICBMS_treven">
+			      <td><input type="checkbox" v-bind:value="data.val.classification_ID"  v-model="checkedNames" class="cy_CMICBMS_checkbox"><label for="cy_CMICBMS_checkbox"></label></td>
+			      <td>{{data.val.classificationName}}</td>
+			      <td>{{data.val.description}}</td>
+			      <td>{{data.val.createDateTime}}</td>
+			      <td>{{data.val.createUser}}</td>
+			    </tr>
+			  </tbody>
+			</table>
+		</div>
+		
+		
+	<pager ref="pagecomponent"></pager>  <!-- ref 固定为 pagecomponent  -->
+    
+    <div v-if="showtcc"  class="cy_hidebg" id="cy_hidebg"></div> <!-- 遮罩层 -->
+    <!--新增按钮弹窗-->
+	<div v-if="showtcc" id="cy_CMICBMS_add">
+		<div class="cy_CMICBMS_addtop"><div class="cy_CMICBMS_addtit">{{tcc_title}}</div><div class="cy_CMICBMS_addclose" v-on:click="hideTcc()">X</div></div>
+		<div class="cy_CMICBMS_addtb">
+		
+			<div v-if="checkedNames.length==1&&isnew" style="width: 95%;text-align: left;">&nbsp;&nbsp;&nbsp;&nbsp;父节点：{{farther_node_name}}</div>
+			
+			<div class="cy_CMICBMS_addtbinp">
+			    <span>*</span>分类名称：<input type="text" placeholder="输入分类名称" v-on:blur="checkTypeName()" v-model="typeInfo.type_name" class="cy_CMICBMS_addinput">
+			    <div v-if="errInfo.type_name_err" class="cy_CMICBMS_errortip">请输入分类名称！</div>
+			</div>
+			<div class="cy_CMICBMS_addtbinp">&nbsp;&nbsp;备注：<input type="text" v-model="typeInfo.type_des" placeholder="输入备注" class="cy_CMICBMS_addinput"></div>
+			
+			<div class="cy_CMICBMS_addtbinp" v-if="isnew" style="align-self:flex-end;margin:40px 20px 0 0;"><input type="button" v-on:click="SaveNewData()" value="确定" class="cy_CMICBMS_schbtn"></div>
+	        <div class="cy_CMICBMS_addtbinp" v-else style="align-self:flex-end;margin:40px 20px 0 0;"><input type="button" v-on:click="UpdateData()" value="确定" class="cy_CMICBMS_schbtn"></div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/ic_components.js"></script>
+<script type="text/javascript" src="../js/comm.js"></script>
+<script>
+var ic_base_info = {
+		  please_select_del_data:'${please_select_del_data}',
+		  unkonow_err:'${unkonow_err}',
+		  please_select_edit_data:'${please_select_edit_data}',
+		  edit_success:'${edit_success}',
+		  add_success:'${add_success}'
+	};
+
+
+var app = new Vue({
+	el:"#app",
+	data:{
+		  datas:[],
+		  search_key:'',
+		  checked: false,      //复选框相关
+	      checkedNames: [],    //复选框相关
+		  checkedArr: [],      //复选框相关
+		  
+		  btn_wy_disabled:false,    //上移  下移按钮是否能点击
+		  
+		  showtcc:false,   //是否显示弹出层
+		  tcc_title : '',      //弹出层的标题
+		  isdisabled:false,
+		  isnew:true,         //是否是新增数据
+		  
+		  farther_node_name:'',    //父节点名称
+		  farther_node_id:'' ,      //父节点ID
+		  
+		  tempNode:'',
+		  
+		  typeInfo:{
+			  type_id:'',
+			  type_name:'',
+			  type_des:''
+		  },
+		  errInfo:{
+			  type_name_err:false
+		  },
+	},
+	components:{
+	     'pager':ic_pager
+	  },
+	  methods:{
+		  changeAllChecked:function(){
+			  if (!this.checked) {
+					this.checkedNames = this.checkedArr;
+				} else {
+					this.checkedNames = [];
+				}
+		  },
+		  checkTypeName:function(){
+			    if(this.typeInfo.type_name.trim()==''){
+			    	this.errInfo.type_name_err = true;
+			    }else{
+			    	this.errInfo.type_name_err = false;
+			    }
+		  },
+		  MoveUP:function(){
+			if(this.checkedNames.length==1){
+				var i_index = this.getIndex(this.checkedNames[0]);
+				if(this.datas[i_index].val.parent_Classification_ID=='0000000000'){    //根节点  涉及到翻页
+						if(i_index==0){
+							if(this.$refs.pagecomponent.pageBean.pageNow==1){
+								alert("已经处在最顶端");
+							}else{
+		
+								this.tempNode = this.datas[i_index];
+								this.btn_wy_disabled = true;
+								this.$refs.pagecomponent.pageBean.pageNow-=1;
+								this.search(this.$refs.pagecomponent.pageBean);
+							}
+							
+						}else{
+							
+							var pre_index = i_index - 1;
+							
+							this.dealchange(pre_index,i_index);
+						}
+				}else{
+			    	//非根节点
+			    	
+			    }
+			}else{
+				alert("请选择一笔数据");
+			}
+		  },
+		  MoveDown:function(){
+			  if(this.checkedNames.length==1){
+				    var i_index = this.getIndex(this.checkedNames[0]);
+				    if(this.datas[i_index].val.parent_Classification_ID=='0000000000'){    //根节点  涉及到翻页
+						if(i_index==this.datas.length-1){
+							if(this.$refs.pagecomponent.pageBean.pageNow==this.$refs.pagecomponent.pageBean.pageSize){
+								alert("已经处在最末端");
+							}else{
+								this.tempNode = this.datas[i_index];
+								this.btn_wy_disabled = true;
+								this.$refs.pagecomponent.pageBean.pageNow+=1;
+								this.search(this.$refs.pagecomponent.pageBean);
+							}
+							
+						}else{
+							var pre_index = i_index + 1;
+							
+							this.dealchange(pre_index,i_index);
+						}
+				    }else{
+				    	//非根节点
+				    	
+				    }
+				  
+			  }else{
+				  alert("请选择一笔数据");
+			  }
+		  },
+		  dealchange:function(pre_index,i_index){
+			    var pre_node = this.datas[pre_index].val ;  
+				
+				var temp_displayOrder = this.datas[pre_index].val.displayOrder;
+				
+				this.datas[pre_index].val.displayOrder = this.datas[i_index].val.displayOrder ;
+				
+				this.datas[i_index].val.displayOrder = temp_displayOrder;
+				
+				this.btn_wy_disabled = true;
+				
+				this.updateOrder(this.datas[i_index].val.classification_ID,this.datas[i_index].val.displayOrder,
+						this.datas[pre_index].val.classification_ID,this.datas[pre_index].val.displayOrder,pre_index,i_index);
+		  },
+		  updateOrder:function(cur_id,cur_order,ch_id,ch_order,ch_index,i_index){
+			    var _this = this;
+				
+				axios.get('../classifcationinfo/updateorder',{
+	    			params: {
+	    				   cur_Classification_ID:cur_id,
+	    				   cur_displayOrder:cur_order,
+	    				   ch_Classification_ID:ch_id,
+	    				   ch_displayOrder:ch_order
+	    				}
+	    			})
+	    			.then(function (response) {
+	    				if(ch_index>=0&&i_index>=0){
+		    				var temp = _this.datas[ch_index].val;
+		    				_this.datas[ch_index].val = _this.datas[i_index].val;
+		    				_this.datas[i_index].val = temp;
+	    				}
+	    				_this.btn_wy_disabled = false;
+	    			})
+	    			.catch(function (error) {
+	    			    console.log(error);
+	    			    _this.btn_wy_disabled = false;
+	    			});
+		  },
+		  getIndex:function(id){
+			  for(var i=0;i<this.datas.length;i++){
+				  if(this.datas[i].val.classification_ID==id){
+					  return i;
+				  }
+			  }
+			  return null;
+		  },
+		  btn_search:function(){
+			  this.checkedNames = [];
+			  this.$refs.pagecomponent.pageBean.pageNow = 1;
+			  this.search(this.$refs.pagecomponent.pageBean);
+		  },
+		  EditData:function(){
+			 if(this.checkedNames.length!=1){
+				  alert("请选择一笔数据编辑");
+			 }else{
+				 this.isnew = false;
+				 this.tcc_title = "编辑分类";
+				 this.farther_node_id = "";
+				 for(var i=0;i<this.datas.length;i++){
+					 if(this.datas[i].val.classification_ID==this.checkedNames[0]){
+						 this.typeInfo.type_id = this.datas[i].val.classification_ID;
+						 this.typeInfo.type_name = this.datas[i].val.classificationName;
+						 this.typeInfo.type_des = this.datas[i].val.description;
+						 break;
+					 }
+				 }
+				 this.showtcc = true;
+			 }  
+		  },
+		  DelData:function(){
+			  if(this.checkedNames.length>0){
+				  if(confirm("确定要删除这"+this.checkedNames.length+"笔数据吗?")){
+					    var json = createJSON(this.checkedNames);   //createJSON() 引自js/comm.js
+				  	    this.checkedNames = [];
+					  	var _this = this;
+						 axios.post('../classifcationinfo/deldata',
+								 {
+								 json:json
+						      })
+			    			.then(function (response) {
+			    				if(response.data=='ok'){
+			    					_this.search_after_update(_this.$refs.pagecomponent.pageBean);
+			    				}
+			    				if(response.data=='nok'){
+			    					alert("出现未知错误,请稍后重试");
+			    				}
+			    				
+			    			})
+			    			.catch(function (error) {
+			    			    console.log(error);
+			    			});
+				  }
+			  }
+		  },
+		  NewData:function(){  //打开新增数据弹出层
+			  if(this.checkedNames.length>1){
+				  alert("请选择0到1笔数据");
+			  }else{
+				  this.tcc_title = "新增分类";
+				  this.isnew = true;
+				  this.farther_node_id = this.checkedNames[0];
+				  for(var i=0;i<this.datas.length;i++){
+					  if(this.datas[i].val.classification_ID==this.checkedNames[0]){
+						  this.farther_node_name = this.datas[i].val.classificationName;
+						  break;
+					  }
+				  }
+			  	  this.showtcc = true;
+			  	  
+			  }
+		  },
+		  UpdateData:function(){  //编辑分类
+			     if(this.typeInfo.type_name.trim()==''){
+				      this.errInfo.type_name_err = true;
+				  }else{
+					    var _this = this;
+			        	axios.get('../classifcationinfo/updateclassifcationinfo',{
+			    			params: {
+			    				Classification_ID:_this.typeInfo.type_id,
+			    				ClassificationName:_this.typeInfo.type_name.trim(),
+			    				Description:_this.typeInfo.type_des.trim()
+			    				}
+			    			})
+			    			.then(function (response) {
+			    				if(response.data=="ok"){
+			    					alert("编辑成功");
+			    					_this.hideTcc();
+			    					_this.search_after_update(_this.$refs.pagecomponent.pageBean);
+			    				}
+			    				if(response.data=="exist"){
+			    					alert("该分类名称已存在");
+			    				}
+			    				if(response.data=="nok"){
+			    					alert("出现未知错误,请稍后重试");
+			    				}
+			    				
+			    			})
+			    			.catch(function (error) {
+			    			    console.log(error);
+			    			});
+				  }
+		  },
+		  SaveNewData:function(){    //添加新分类
+			  if(this.typeInfo.type_name.trim()==''){
+			      this.errInfo.type_name_err = true;
+			  }else{
+				    var _this = this;
+		        	axios.get('../classifcationinfo/addclassifcationinfo',{
+		    			params: {
+		    				ClassificationName:_this.typeInfo.type_name.trim(),
+		    				Description:_this.typeInfo.type_des.trim(),
+		    				Parent_Classification_ID:_this.farther_node_id
+		    				}
+		    			})
+		    			.then(function (response) {
+		    				if(response.data=="ok"){
+		    					alert("添加成功");
+		    					_this.hideTcc();
+		    					_this.search_after_update(_this.$refs.pagecomponent.pageBean);
+		    				}
+		    				if(response.data=="exist"){
+		    					alert("该分类名称已存在");
+		    				}
+		    				if(response.data=="nok"){
+		    					alert("出现未知错误,请稍后重试");
+		    				}
+		    				
+		    			})
+		    			.catch(function (error) {
+		    			    console.log(error);
+		    			});
+			  }
+		  },
+		  search_after_update:function(pageBean){
+			  pageBean.pageNow = 1;
+			  this.search(pageBean);
+		  },
+		  hideTcc:function(){     //关闭弹出层
+			  this.typeInfo.type_id = '';
+			  this.typeInfo.type_name = '';
+			  this.typeInfo.type_des = '';
+			  this.errInfo.type_name_err = false;
+			  this.farther_node_id = '';
+			  this.showtcc = false;
+			  
+		  },
+		  clear:function(){
+			  this.checkedNames = [];
+		  }
+	  },
+	  watch: {
+			"checkedNames": function() {
+				if (this.checkedNames.length != this.checkedArr.length||this.checkedNames.length==0) {
+					this.checked = false;
+				} else {
+					this.checked = true;
+				}
+			}
+		 },
+	  computed:{
+			search:function(){
+		        return function(pageBean){
+		        	var _this = this;
+		        	axios.get('../classifcationinfo/search',{
+		    			params: {
+		    				ClassificationName:_this.search_key.trim(),
+		    				Parent_Classification_ID:_this.farther_node_id,
+		    				pageNow:pageBean.pageNow,
+		    				rowSize:pageBean.rs_selected
+		    				}
+		    			})
+		    			.then(function (response) {
+		    				 _this.checkedNames = [];
+		    				 var data = JSON.parse(response.data);
+		    				 
+		    				 _this.datas = [];
+		    				 var temp = data.resdata;
+		    				 for(var i=0;i<temp.length;i++){
+		    					 var tn = new TreeNode(temp[i]);   //TreeNode 引自 comm.js
+		    					 _this.datas.push(tn);
+		    				 }
+		    				 _this.$refs.pagecomponent.dealAfterSearch(data.rowCount); 
+		    				 _this.checkedArr = [];
+		    				  for(var i=0;i<data.resdata.length;i++){
+		    					  _this.checkedArr.push(data.resdata[i].classification_ID);
+		    				  }
+		    				  
+		    				  if(_this.btn_wy_disabled){   //如果是位移发生的分页查询
+		    					  
+		    					  var firstNode = _this.datas[0].val;
+		    					  var lastNode = _this.datas[_this.datas.length-1].val ;
+		    					  var targetNode;
+		    					  if(_this.tempNode.val.displayOrder<lastNode.displayOrder){  //上移
+		    						  targetNode = lastNode;
+		    						  _this.datas[_this.datas.length-1] = _this.tempNode;
+		    						  _this.checkedArr[_this.checkedArr.length-1] = _this.tempNode.val.classification_ID;
+		    					  }
+		    					  if(_this.tempNode.val.displayOrder>firstNode.displayOrder){  //下移
+		    						  targetNode = firstNode;
+		    						  _this.datas[0] = _this.tempNode;
+		    						  _this.checkedArr[0] = _this.tempNode.val.classification_ID;
+		    					  }
+		    					  var temp_order = _this.tempNode.val.displayOrder ;
+	    					      _this.tempNode.val.displayOrder = targetNode.displayOrder;
+	    					      targetNode.displayOrder = temp_order;
+	    						  
+	    					      _this.updateOrder(_this.tempNode.val.classification_ID,_this.tempNode.val.displayOrder,
+	    					    		  targetNode.classification_ID,targetNode.displayOrder,-1,-1);
+	    					      
+	   
+		    					  _this.checkedNames.push(_this.tempNode.val.classification_ID);
+		    					 
+		    				  }
+		    				  
+		    			})
+		    			.catch(function (error) {
+		    			    console.log(error);
+		    			});
+					
+				}
+			}
+		  },
+		  mounted:function(){
+			  this.search(this.$refs.pagecomponent.pageBean);
+		  }
+});
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//WebContent/WEB-INF/jsp=UTF-8
+encoding//WebContent/WEB-INF/jsp/user=UTF-8
+encoding//WebContent/index.jsp=UTF-8
+encoding//src/main/java/com/ichangyun/InforAnalyaizer/controller/usermanage/RoleController.java=UTF-8

@@ -1,0 +1,35 @@
+﻿
+
+function createJSON(arr){
+	 var json = '[';
+	  for(var i=0;i<arr.length;i++){
+		  if(i==0){
+			  json+='{"id":"'+arr[i]+'"}';
+		  }else{
+			  json+=',{"id":"'+arr[i]+'"}';
+		  }
+	  }
+	  json+=']';
+	  return json;
+}
+
+
+
+function TreeNode(val,depth,children_lg){
+	
+	this.val = val;
+	this.imgsrc = "";
+	this.style = "";
+	this.ch_style = {padding: '10px 0px !important'};
+	this.is_show = true;
+	this.is_open = false;
+	this.depth = depth;
+	this.i_have_ajax = false;
+	this.children_lg = children_lg;
+	this.children = [];
+}
+
+
+
+
+

@@ -1,0 +1,28 @@
+﻿
+
+function createJSON(arr){
+	 var json = '[';
+	  for(var i=0;i<arr.length;i++){
+		  if(i==0){
+			  json+='{"id":"'+arr[i]+'"}';
+		  }else{
+			  json+=',{"id":"'+arr[i]+'"}';
+		  }
+	  }
+	  json+=']';
+	  return json;
+}
+
+
+
+function TreeNode(val,depth){
+	
+	this.val = val;
+	this.imgsrc = "";
+	this.style = "";
+	this.is_show = true;
+	this.is_open = false;
+	this.depth = depth;
+	this.children = [];
+	
+}
