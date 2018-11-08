@@ -187,10 +187,12 @@ var userVm = new Vue({
                         ustatus:user.ustatus
                     }
                 }).then(function (response) {
-                    if (response.data == "OK") {
+                    if (response.data.msg == "ok") {
                         window.hide();
                         layer.msg('修改成功');
-                    } 
+                    } else if(response.data.msg=="fault"){
+						layer.msg('修改失败');
+					}
                 })
                     .catch(function (error) {
                         console.log(error);

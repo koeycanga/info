@@ -316,12 +316,6 @@ var app = new Vue({
 	  },
 	  methods:{
 		  changeAllChecked:function(){
-			 /* if (!checked) {
-					checkedNames = checkedArr;
-				} else {
-					checkedNames = [];
-				}*/
-		
 				if(checked){
 					$("input[name='dch']").prop("checked",false);
 					checkedNames = [];

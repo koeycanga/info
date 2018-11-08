@@ -13,8 +13,8 @@ public class FilterWordsVo extends ClassificationFilterwordsWithBLOBs{
 	private String parent_Classification_ID;
 	private String parent_name;
 	private int displayOrder;
-	private int isParent;
-	private boolean is_show=false;
+	private int isParent;								//判断是否为父节点
+	private boolean is_show=false;						//此节点是否显示
 	private List<FilterWordsVo> children = new ArrayList<>();
 
 	public List<FilterWordsVo> getChildren() {

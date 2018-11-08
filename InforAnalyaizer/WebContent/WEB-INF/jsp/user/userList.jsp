@@ -100,12 +100,12 @@
 			</div>
 			<div class="cy_CMICBMS_addtb">
 				<div>
-					<span>*</span>用户角色：<select v-model="userInfoVo.urole"><option
+					<span>*</span>用户角色：<select v-model="userInfoVo.urole" ><option
 							:value="role.userRole_ID" v-for="role in roles">{{role.userRoleName}}</option></select>
 				</div>
 				<div>
 					<span>*</span>用户名：<input type="text" placeholder="输入用户名"
-						class="cy_CMICBMS_addinput" v-model="userInfoVo.uid">
+						class="cy_CMICBMS_addinput" v-model="userInfoVo.uid" :disabled="is_disabled">
 					<div class="cy_CMICBMS_errortip" v-if="userInfoVo.uid==''">请输入用户名！</div>
 				</div>
 				<div>
@@ -192,6 +192,7 @@
                 		vm2.userInfoVo={uid:'',uname:'',udep:'',utel:'',uemail:'',upwd:''};
                 		vm2.userInfoVo.unum=null;
                 		vm2.checkPwd="";
+                		vm2.is_disabled = false;
                 		var hideobj=document.getElementById("cy_hidebg");
                 	   	cy_hidebg.style.display="block";  //显示隐藏层
                 	   	document.getElementById("cy_CMICBMS_add").style.display="block";  //显示弹出层
@@ -200,12 +201,14 @@
                 updateUser:                         //修改弹出
                     function () {
                         var checkedId = [];
+                        
                         checkedId= this.checkedId;
                         if (checkedId.length!=1){
                             layer.msg('请选择单条信息');
                         }else{
                         	vm2.title="修改用户";
                         	vm2.url="updateUser";
+                        	vm2.is_disabled = true;
                         	axios.get("queryOne",{
                                 params: {
                                 	unum:checkedId[0] 
@@ -297,6 +300,7 @@
            document.getElementById("cy_hidebg").style.display="none";
            document.getElementById("cy_CMICBMS_add").style.display="none";
         }
+        
         //+++++++++++++++++++++++++++添加隐藏层++++++++++++++++++++++++
         var vm2 = new Vue({
             el: '#addform',
@@ -305,6 +309,7 @@
                 checkPwd:"",
                 roles:[],
                 title:"",
+                is_disabled:false,
                 url:""
             },
             created: function () {
@@ -313,6 +318,7 @@
             methods: {
                 submit:
                     function () {
+                		var _this = this;
                         var user = this.userInfoVo;
                 		if(user.urole==""||user.uid==""||user.uname==""||user.urole==""){
                 			layer.msg('请输入必填项');
@@ -337,11 +343,18 @@
 	                            	ustatus:user.ustatus 
 	                            }
 	                        }).then(function (response) {
-									if(response.data.msg=="ok"){
+									if(_this.title=="添加用户"&&response.data.msg=="ok"){
 										window.hide();
 										vm.btn_search();
-									}else if(response.data.msg=="用户名已存在"){
+										layer.msg('添加成功');
+									}else if(_this.title=="添加用户"&&response.data.msg=="fault"){
 										layer.msg('用户名已存在');
+									}else if(_this.title=="修改用户"&&response.data.msg=="fault"){
+										layer.msg('修改失败');
+									}else if(_this.title=="修改用户"&&response.data.msg=="ok"){
+										window.hide();
+										vm.btn_search();
+										layer.msg('修改成功');
 									}
 	                            })
 	                            .catch(function (error) {

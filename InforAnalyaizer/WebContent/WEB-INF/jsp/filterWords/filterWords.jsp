@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css"
           href="${ctx}/css/cy_CIAS_style.css">
 <link rel="stylesheet" type="text/css" href="${ctx}/layui/css/layui.css" />
-<
+
     <style>
         [v-cloak] {
             display: none;
@@ -84,68 +84,85 @@
         <pager ref="pagecomponent"></pager>
     </div>
 </div>
-
 <div id="updateform">
-    <div id="cy_CMICBMS_add">
-        <div class="cy_CMICBMS_addtop">
-            <div class="cy_CMICBMS_addtit">{{title}}</div>
-            <div class="cy_CMICBMS_addclose" onClick="hide();">X</div>
-        </div>
-        <div class="cy_CMICBMS_addtb">
-            <div id="cy_CMICBMS_status">
-                信息项区分：<input type="radio" name="RadioGroup1" value="1"
-                             id="RadioGroup1_0" v-model="fwVoForUpdate.informationtropism">区分
-                <input type="radio" name="RadioGroup1" value="0" id="RadioGroup1_1"
-                       v-model="fwVoForUpdate.informationtropism">不区分
-            </div>
-            <div>
-                全部核心词组：<input type="text" placeholder="输入词组"
-                              class="cy_CMICBMS_addinput" v-model="fwVoForUpdate.allcorephrases">
-            </div>
-            <div>
-                全部排除词组：<input type="text" placeholder="输入词组"
-                              class="cy_CMICBMS_addinput"
-                              v-model="fwVoForUpdate.allexcludephrases">
-            </div>
-            <div>
-                标题核心词组：<input type="text" placeholder="输入词组"
-                              class="cy_CMICBMS_addinput"
-                              v-model="fwVoForUpdate.titlecorephrases">
-            </div>
-            <div>
-                标题排除词组：<input type="text" placeholder="输入词组"
-                              class="cy_CMICBMS_addinput"
-                              v-model="fwVoForUpdate.titleexcludephrases">
-            </div>
-            <div>
-                摘要核心词组：<input type="text" placeholder="输入词组"
-                              class="cy_CMICBMS_addinput"
-                              v-model="fwVoForUpdate.summarycorephrases">
-            </div>
-            <div>
-                摘要排除词组：<input type="text" placeholder="输入词组"
-                              class="cy_CMICBMS_addinput"
-                              v-model="fwVoForUpdate.summaryexcludephrases">
-            </div>
-            <div>
-                正文核心词组：<input type="text" placeholder="输入词组"
-                              class="cy_CMICBMS_addinput"
-                              v-model="fwVoForUpdate.textcorephrases">
-            </div>
-            <div>
-                正文排除词组：<input type="text" placeholder="输入词组"
-                              class="cy_CMICBMS_addinput"
-                              v-model="fwVoForUpdate.textexcludephrases">
-            </div>
-
-            <div style="margin: 40px 20px 0 0;">
-                <input type="button" value="确定" class="cy_CMICBMS_schbtn"
-                       v-on:click="submit">
-            </div>
-        </div>
-
+  <div id="cy_CMICBMS_add">
+    <div class="cy_CMICBMS_addtop">
+      <div class="cy_CMICBMS_addtit">{{title}}</div>
+      <div class="cy_CMICBMS_addclose" onClick="hide();">X</div>
     </div>
+    <div class="cy_CMICBMS_addtb">
+      <div id="cy_CMICBMS_status">
+        信息项区分：<input type="radio" name="RadioGroup1" value="1"
+                     id="RadioGroup1_0" v-model="fwVoForUpdate.informationtropism">区分
+        <input type="radio" name="RadioGroup1" value="0" id="RadioGroup1_1"
+               v-model="fwVoForUpdate.informationtropism">不区分
+      </div>
+      <div class="layui-tab">
+        <ul class="layui-tab-title">
+          <li class="layui-this">全部</li>
+          <li>标题</li>
+          <li>摘要</li>
+          <li>正文</li>
+        </ul>
+        <div class="layui-tab-content" style="height: 100px;">
+          <div class="layui-tab-item layui-show">
+            <div>
+              核心词组：<input type="text" placeholder="输入词组"
+                            class="cy_CMICBMS_addinput" v-model="fwVoForUpdate.allcorephrases">
+            </div>
+            <div>
+              排除词组：<input type="text" placeholder="输入词组"
+                            class="cy_CMICBMS_addinput"
+                            v-model="fwVoForUpdate.allexcludephrases">
+            </div>
+          </div>
+          <div class="layui-tab-item">
+            <div>
+              核心词组：<input type="text" placeholder="输入词组"
+                            class="cy_CMICBMS_addinput"
+                            v-model="fwVoForUpdate.titlecorephrases">
+            </div>
+            <div>
+              排除词组：<input type="text" placeholder="输入词组"
+                            class="cy_CMICBMS_addinput"
+                            v-model="fwVoForUpdate.titleexcludephrases">
+            </div>
+          </div>
+          <div class="layui-tab-item">
+            <div>
+              核心词组：<input type="text" placeholder="输入词组"
+                            class="cy_CMICBMS_addinput"
+                            v-model="fwVoForUpdate.summarycorephrases">
+            </div>
+            <div>
+              排除词组：<input type="text" placeholder="输入词组"
+                            class="cy_CMICBMS_addinput"
+                            v-model="fwVoForUpdate.summaryexcludephrases">
+            </div>
+          </div>
+          <div class="layui-tab-item">
+            <div>
+              核心词组：<input type="text" placeholder="输入词组"
+                            class="cy_CMICBMS_addinput"
+                            v-model="fwVoForUpdate.textcorephrases">
+            </div>
+            <div>
+              排除词组：<input type="text" placeholder="输入词组"
+                            class="cy_CMICBMS_addinput"
+                            v-model="fwVoForUpdate.textexcludephrases">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin: 40px 20px 0 0;">
+        <input type="button" value="确定" class="cy_CMICBMS_schbtn"
+               v-on:click="submit">
+      </div>
+    </div>
+
+  </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="${ctx}/js/vue.min.js"></script>
 <script src="${ctx}/js/vue-resource.min.js"></script>
@@ -390,7 +407,7 @@
     var ic_tree_dv_checkbox = {
         template: '<div><div v-bind:style="t_style">' +
 
-        '<input type="checkbox"  v-bind:value="model.classificationId"  v-model="vm.checkedId" class="cy_CMICBMS_checkbox"><label for="cy_CMICBMS_checkbox"></label></div>' +
+        '<input type="checkbox"  v-if="model.isParent!=1" v-bind:value="model.classificationId"  v-model="vm.checkedId" class="cy_CMICBMS_checkbox">&nbsp;<label for="cy_CMICBMS_checkbox"></label></div>' +
         '<div v-show="model.is_show" ><ic_tree_dv_checkbox  v-for="model in model.children"  v-bind:model="model"></ic_tree_dv_checkbox></div></div>' ,
         props: ['model'],
         data: function () {
@@ -490,8 +507,9 @@
     Vue.component('ic_tree_dv_time',ic_tree_dv_time);
     Vue.component('ic_tree_dv_user',ic_tree_dv_user);
 
-    layui.use('upload', function(){
+    layui.use(['upload','element'], function(){
         var upload = layui.upload;
+        var element = layui.element;
         //执行实例
         var uploadInst = upload.render({
             elem: '#impbtn' //绑定元素

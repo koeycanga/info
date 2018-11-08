@@ -51,7 +51,7 @@ public class UserController {
     		this.userInfoService.addUser(user,u);
 		} catch (Exception e) {
 			// TODO: handle exception
-			map.put("msg", "用户名已存在");
+			map.put("msg", "fault");
 			return map;
 		}
     	map.put("msg", "ok");
@@ -64,8 +64,17 @@ public class UserController {
     @RequestMapping("/updateUser")		//更新用户信息
     public Object update(UserInfoVo vo,HttpSession session){
     	User u = (User) session.getAttribute(CommBean.SESSION_NAME);
-        this.userInfoService.updateUser(vo,u);
-        return "OK";
+
+        Map<String, String>map = new HashMap<>();
+    	try {
+    		this.userInfoService.updateUser(vo,u);
+		} catch (Exception e) {
+			// TODO: handle exception
+			map.put("msg", "fault");
+			return map;
+		}
+    	map.put("msg", "ok");
+    	return map;
     }
 
     @RequestMapping("/toUserList")      //跳转用户信息界面
