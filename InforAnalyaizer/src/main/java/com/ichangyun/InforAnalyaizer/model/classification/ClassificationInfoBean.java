@@ -20,7 +20,28 @@ public class ClassificationInfoBean extends BaseBean{
 	private String UpdateUser;
 	private String UpdateDateTime;
 	private int children_lg;
+	private String isbinding;
+	private int binding_lg;
+	private int cnt;
 	
+	public int getCnt() {
+		return cnt;
+	}
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
+	public int getBinding_lg() {
+		return binding_lg;
+	}
+	public void setBinding_lg(int binding_lg) {
+		this.binding_lg = binding_lg;
+	}
+	public String getIsbinding() {
+		return isbinding;
+	}
+	public void setIsbinding(String isbinding) {
+		this.isbinding = isbinding;
+	}
 	public int getChildren_lg() {
 		return children_lg;
 	}

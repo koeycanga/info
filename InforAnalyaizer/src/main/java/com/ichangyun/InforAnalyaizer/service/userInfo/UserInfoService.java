@@ -12,4 +12,5 @@ public interface UserInfoService {
 	Map<String, Object> queryAllUser(UserInfoVo record,int pageNow,int rowSize);
 	UserInfoVo queryUserByNum(int unum);
 	int queryCountById(String uid);
+	UserInfoVo queryById(String user_ID);
 }

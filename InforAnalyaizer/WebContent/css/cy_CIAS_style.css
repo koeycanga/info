@@ -6,6 +6,12 @@ body{
 	padding: 0;
 	font-family: '微软雅黑';
 }
+.cy_cld01{
+	padding: 10px 26px !important;
+}
+.cy_cld02{
+	padding: 10px 66px !important;
+}
 .cy_CMICBMS_top{
 	color:white;
 	background:url(../image/topbg.png);

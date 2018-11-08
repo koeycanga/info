@@ -121,4 +121,10 @@ public class RoleServiceImpl implements RoleService {
 
 	}
 
+	@Override
+	public RoleManageBean queryById(String urole) {
+		// TODO Auto-generated method stub
+		return this.roleMapper.queryById(urole);
+	}
+
 }

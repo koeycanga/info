@@ -166,5 +166,13 @@ public class UserController {
         OutputStream os = response.getOutputStream();
         ImageIO.write(image, "png", os);
     }
+    @RequestMapping("/thisUser")
+    public UserInfoVo thisUser(HttpSession session) {
+    	User u = (User)session.getAttribute(CommBean.SESSION_NAME);
+    	UserInfoVo vo = this.userInfoService.queryById(u.getUser_ID());
+    	RoleManageBean role = this.roleService.queryById(vo.getUrole());
+    	vo.setUrolename(role.getUserRoleName());
+    	return vo;
+    }
 }
 

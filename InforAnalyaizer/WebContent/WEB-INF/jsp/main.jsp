@@ -105,7 +105,7 @@ function return_tologin(){
 	                	 "children":[
 		                	    {"name":"分类体系","depth":1,"href":"../classifcationinfo/index"},   
 		                	    {"name":"过滤词管理","depth":1,"href":"../filterWords/toFilterWords"},
-		                	    {"name":"信息源绑定","depth":1,"href":""}
+		                	    {"name":"信息源绑定","depth":1,"href":"../classificationSource/index"}
 		                	    ]
 		                },
 		                {

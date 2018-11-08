@@ -41,4 +41,7 @@
            select * from m_userrole
     </select>
    
+   <select  id="queryById" resultType="com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean">
+           select * from m_userrole where UserRole_ID = #{value}
+    </select>
 </mapper>

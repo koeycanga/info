@@ -10,7 +10,14 @@ public class UserInfoVo {
 	private String uemail;
 	private String ustatus;
 	private String upwd;
+	private String urolename;
 	
+	public String getUrolename() {
+		return urolename;
+	}
+	public void setUrolename(String urolename) {
+		this.urolename = urolename;
+	}
 	public int getUnum() {
 		return unum;
 	}

@@ -26,4 +26,6 @@ public interface RoleMapper {
 	
 	List<RoleManageBean> queryAllRole();
 
+	public RoleManageBean queryById(String urole);
+
 }

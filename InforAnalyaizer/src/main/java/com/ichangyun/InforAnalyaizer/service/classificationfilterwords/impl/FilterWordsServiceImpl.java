@@ -33,10 +33,10 @@ public class FilterWordsServiceImpl implements FilterWordsService {
 		List<String> list = this.fwMapper.queryParents();
 		for (String p : list) {
 			for (FilterWordsVo fwvo : fwVos) {
-				if(fwvo.getClassificationId()==p) {
+				if(fwvo.getClassificationId().equals(p)) {
 					fwvo.setIsParent(1);
 				}else {
-					fwvo.setIsParent(0);
+					
 				}
 			}
 		}
@@ -76,7 +76,17 @@ public class FilterWordsServiceImpl implements FilterWordsService {
 	@Override
 	public List<FilterWordsVo> queryChild(String parent_Classification_ID) {
 		// TODO Auto-generated method stub
-		return this.fwMapper.queryChild(parent_Classification_ID);
+		List<FilterWordsVo> fwVos = this.fwMapper.queryChild(parent_Classification_ID);
+		List<String> list = this.fwMapper.queryParents();
+		for (String p : list) {
+			for (FilterWordsVo fwvo : fwVos) {
+				if(fwvo.getClassificationId().equals(p)) {
+					fwvo.setIsParent(1);
+				}else {
+				}
+			}
+		}
+		return fwVos;
 	}
 	
 }

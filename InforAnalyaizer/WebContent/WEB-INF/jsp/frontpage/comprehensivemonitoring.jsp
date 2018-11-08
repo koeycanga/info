@@ -21,7 +21,7 @@
 <div class="cy_CIASFE_top">
 	<div class="cy_CIASFE_logo"><img src="../image/fontend-logo.png"></div>
 	<div class="cy_CIASFE_tit">国药器械-竞争情报分析系统</div>
-	<top_menu ></top_menu> <!-- 上部菜单栏 -->
+	<ic_top_menu ></ic_top_menu> <!-- 上部菜单栏 -->
 	<ic_user_info></ic_user_info> <!-- 登录用户信息框 -->
 </div>
 
@@ -534,7 +534,7 @@
 <script>
 
 var menu_datas = JSON.parse('${front_menu}') //菜单数据来源于 classes/resources.properties
-Vue.component('top_menu',top_menu);   // top_menu 引自 js/ic_component.js
+Vue.component('ic_top_menu',ic_top_menu);   // ic_top_menu 引自 js/ic_component.js
 
 Vue.component('ic_user_info',ic_user_info);  // ic_user_info 引自 js/ic_component.js
 

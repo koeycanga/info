@@ -4,7 +4,7 @@
  */
 
 //前台页面上部菜单栏组件
-var top_menu = {   
+var ic_top_menu = {   
 		
 		template:'<div class="cy_CIASFE_nagiv">'+
 		    '<a v-bind:href="mdata.url" v-for="mdata in model"><div class="cy_CIASFE_nagivbox" v-bind:style="mdata.style">{{mdata.name}}</div></a>'+
@@ -29,13 +29,11 @@ var top_menu = {
 //前台页面上部登录用户信息框组件
 var ic_user_info = {
    	 
-    	template:'<div class="cy_CIASFE_userinfom"><div class="cy_CIASFE_user"><img src="../image/home-user.png"></div><div class="cy_CIASFE_user">{{userData.username}}<img src="../image/home-arr.png"></div>'+
-    		'<div class="cy_CIASFE_usermenu"><a href="">个人信息</a><!-- <a href="">修改密码</a> --><a href="#" v-on:click="logout()">退出</a></div></div>',
+    	template:'<div class="cy_CIASFE_userinfom"><div class="cy_CIASFE_user"><img src="../image/home-user.png"></div><div class="cy_CIASFE_user">{{userData.uname}}<img src="../image/home-arr.png"></div>'+
+    		'<div class="cy_CIASFE_usermenu"><a href="" onClick="show();">个人信息</a><!-- <a href="">修改密码</a> --><a href="#" v-on:click="logout()">退出</a></div></div>',
         data:function(){
         	return {
-        		userData:{
-        			username:''
-        		}
+        		userData:{}
         	}
         },
         methods:{
@@ -55,9 +53,9 @@ var ic_user_info = {
         },
         mounted:function(){
         	var that = this;
-   			axios.get('../front/getUser')
+   			axios.get('../user/thisUser')
     			.then(function (response) {
-						that.userData.username = response.data;
+						that.userData = response.data;
     			})
     			.catch(function (error) {
     			    console.log(error);
@@ -81,6 +79,8 @@ var ic_pager = {
 			'</ul>'+
 			'</div>'+
 			'</div></div></div>',
+			
+		 props:['model'],
 		 data:function(){
 		     return {
 				 pageBean:{
@@ -101,11 +101,17 @@ var ic_pager = {
 		 methods:{
 		     showPage:function(index,event){
 		    	 event.preventDefault();
+		    	
 		    	 if(index!='...'){
 				     this.pageBean.pageNow = index;
 					 this.pageBean.jump_page = index;
 					 //this.$parent.clear();
-					 this.$parent.search(this.pageBean);
+					 if(this.model==null){
+						 this.$parent.search(this.pageBean);
+					 }else {
+						 var f = eval("this.$parent."+this.model);
+						 new f(this.pageBean);
+					 }
 		    	 }
 			 },
 			 showFirstPage:function(event){

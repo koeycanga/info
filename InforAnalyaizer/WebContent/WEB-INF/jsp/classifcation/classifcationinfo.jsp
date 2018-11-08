@@ -260,7 +260,6 @@ var ic_tree_dv = {
 		mounted:function(){
 			if(this.model.style){
 				this.t_style = {padding: '10px '+(26+20*this.model.depth)+'px !important'} ;
-				
 			}
 		}
 };

@@ -19,4 +19,6 @@ public interface RoleService {
 	public boolean delRole(String json);
 	
 	List<RoleManageBean> queryAllRole();
+
+	public RoleManageBean queryById(String urole);
 }

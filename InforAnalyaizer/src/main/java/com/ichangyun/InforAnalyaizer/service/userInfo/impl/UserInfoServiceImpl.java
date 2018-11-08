@@ -92,5 +92,16 @@ public class UserInfoServiceImpl implements UserInfoService{
 		return i;
 	}
 
+	@Override
+	public UserInfoVo queryById(String user_ID) {
+		// TODO Auto-generated method stub
+		UserInfoKey key = new UserInfoKey();
+		key.setUserId(user_ID);
+		UserInfo info = this.userInfoMapper.selectByPrimaryKey(key);
+		UserInfoVo vo = new UserInfoVo();
+		vo.loading(info);
+		return vo;
+	}
+
 
 }

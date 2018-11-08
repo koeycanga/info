@@ -1,6 +1,8 @@
 package com.ichangyun.InforAnalyaizer.model.classificationfilterwords;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.ichangyun.InforAnalyaizer.model.BaseBean;
 
@@ -12,6 +14,24 @@ public class FilterWordsVo extends ClassificationFilterwordsWithBLOBs{
 	private String parent_name;
 	private int displayOrder;
 	private int isParent;
+	private boolean is_show=false;
+	private List<FilterWordsVo> children = new ArrayList<>();
+
+	public List<FilterWordsVo> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<FilterWordsVo> children) {
+		this.children = children;
+	}
+
+	public boolean isIs_show() {
+		return is_show;
+	}
+	public void setIs_show(boolean is_show) {
+		this.is_show = is_show;
+	}
+
 
 
 	public int getDisplayOrder() {
