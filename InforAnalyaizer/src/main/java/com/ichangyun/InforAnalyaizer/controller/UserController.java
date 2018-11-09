@@ -3,6 +3,8 @@ package com.ichangyun.InforAnalyaizer.controller;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.bind.DatatypeConverter;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +31,14 @@ import com.ichangyun.InforAnalyaizer.service.UserService;
 import com.ichangyun.InforAnalyaizer.service.userInfo.UserInfoService;
 import com.ichangyun.InforAnalyaizer.service.usermanage.RoleService;
 import com.ichangyun.InforAnalyaizer.utils.ImageUtil;
+import com.ichangyun.InforAnalyaizer.utils.PBKDF2;
  
 /**
  * created by viking on 2018/07/04
  * controller层接口类
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/yhgl/user")
 public class UserController {
     @Autowired
     private  UserService userService;
@@ -109,72 +113,7 @@ public class UserController {
     }
    
     
-    @RequestMapping("/cookies")
-    public Object cookie(HttpServletRequest request) {
-    	
-    	String str = "{";
-    	Cookie[] cookies = request.getCookies();//根据请求数据，找到cookie数组
-    	String cookie_name = "";
-        String cookie_pwd = "";
-        if (cookies!=null) {
-            for(int i=0;i<cookies.length;i++){
-            	if(cookies[i].getName().equals(CommBean.COOKIE_NAME)) {
-            		cookie_name="\"username\":"+"\""+cookies[i].getValue()+"\"";
-            	}
-            	if(cookies[i].getName().equals(CommBean.COOKIE_PWD)) {
-            		cookie_pwd = "\"userpwd\":"+"\""+cookies[i].getValue()+"\"";
-            	}
-            }
-        }
-        str+=cookie_name+","+cookie_pwd;
-        str+="}";
-        return str;
-    }
     
-    @RequestMapping("/login")
-    public Object userLogin(String username,String passwd,String checkCode,String isremberusrname,HttpServletRequest request,HttpServletResponse response,HttpSession session) {
-    	
-    	String res = "ok";
-    	
-    	String s_checkCode = (String) session.getAttribute("checkCode");
-    	
-    	if(!checkCode.toUpperCase().equals(s_checkCode.toUpperCase())) {
-    		res = "checkCode_n_ok";    //验证码不正确
-    	}else {
-    		User user = userService.isUserExist(username,passwd);
-    		if(user==null) { //用户名或密码错误
-    			res = "";
-    		}else {   //登录成功
-    		    session.setAttribute(CommBean.SESSION_NAME, user);
-    		    if(isremberusrname.equals("true")) {  //记住用户
-    		    	userService.addCookie(response,user);
-    	    	}else {  //不记住用户
-    	    		userService.delCookie(request,response);
-    	    	}
-    		}
-    	}
-    	return res;
-    }
- 
-    @RequestMapping("/toLogin")
-    public Object login() {
-
-    	return new ModelAndView("main");
-    }
-    
-    @RequestMapping("/valicode")
-    public void valicode(HttpServletResponse response,HttpSession session) throws IOException {
-    	//利用图片工具生成图片
-        //第一个参数是生成的验证码，第二个参数是生成的图片
-        Object[] objs = ImageUtil.createImage();
-        //将验证码存入Session
-        session.setAttribute("checkCode",objs[0]);
-        //将图片输出给浏览器
-        BufferedImage image = (BufferedImage) objs[1];
-        response.setContentType("image/png");
-        OutputStream os = response.getOutputStream();
-        ImageIO.write(image, "png", os);
-    }
     @RequestMapping("/thisUser")
     public UserInfoVo thisUser(HttpSession session) {
     	User u = (User)session.getAttribute(CommBean.SESSION_NAME);
@@ -182,6 +121,12 @@ public class UserController {
     	RoleManageBean role = this.roleService.queryById(vo.getUrole());
     	vo.setUrolename(role.getUserRoleName());
     	return vo;
+    }
+    @RequestMapping("/returnPwd")
+    public String returnPwd(String upwd,int unum) throws NoSuchAlgorithmException, InvalidKeySpecException{
+    	UserInfoVo vo = this.userInfoService.queryUserByNum(unum);
+    	String passwd  = PBKDF2.getPBKDF2(upwd,DatatypeConverter.printHexBinary((vo.getUid()+vo.getUname()).getBytes()));
+    	return passwd;
     }
 }
 

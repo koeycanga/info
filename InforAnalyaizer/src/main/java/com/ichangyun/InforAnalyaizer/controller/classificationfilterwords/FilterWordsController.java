@@ -18,7 +18,7 @@ import com.ichangyun.InforAnalyaizer.model.classificationfilterwords.FilterWords
 import com.ichangyun.InforAnalyaizer.service.classificationfilterwords.FilterWordsService;
 
 @Controller
-@RequestMapping("/filterWords")
+@RequestMapping("/qbgh/filterWords")
 public class FilterWordsController {
 	@Autowired
 	private FilterWordsService fwService;

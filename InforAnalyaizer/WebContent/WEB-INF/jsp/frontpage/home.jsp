@@ -3,13 +3,20 @@
 <%@ taglib prefix="ss" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:setBundle basename="resources" var="sysInfo" />
-<fmt:message key="front_menu" var="front_menu" bundle="${sysInfo}" /> 
+<fmt:message key="front_menu" var="front_menu" bundle="${sysInfo}" />
+<fmt:message key="W0003" var="W0003" bundle="${sysInfo}" />
+<fmt:message key="E0004" var="E0004" bundle="${sysInfo}" />
+<fmt:message key="E0014" var="E0014" bundle="${sysInfo}" />
+<fmt:message key="E0025" var="E0025" bundle="${sysInfo}" />   
+<fmt:message key="I0012" var="I0012" bundle="${sysInfo}" />
+<fmt:message key="I0013" var="I0013" bundle="${sysInfo}" />
 <!doctype html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>竞争情报分析系统</title>
 <link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style.css">
+
 </head>
 
 <body style="background-color: #15266b;">
@@ -144,6 +151,15 @@
 <script type="text/javascript" src="${ctx}/js/comm.js"></script>
 <script>
 
+var Info = {
+		W0003:'${W0003}',
+		E0004:'${E0004}',
+		E0014:'${E0014}',
+		E0025:'${E0025}',
+		I0012:'${I0012}',
+		I0013:'${I0013}'
+};
+
 function hide()  //去除隐藏层和弹出层
 {
    document.getElementById("cy_hidebg").style.display="none";
@@ -162,19 +178,31 @@ var userVm = new Vue({
         submit:
             function () {
                 var _this = this;
-                if(_this.uPwd!=_this.userData.upwd){
-                    layer.msg('原密码不正确');
+                var password="";
+                $.ajax({
+                    url:"../user/returnPwd",
+                    data:{"upwd":_this.uPwd,"unum":_this.userData.unum},
+                    dateType:"json",
+                    type:"post",
+                    async:false, 
+                    success:function(res){
+                    	password=res;
+                    }
+                })
+                console.log(_this.userData.upwd+":"+password)
+                if(password!=_this.userData.upwd){
+                    layer.msg(Info.E0025);
                     return false;
                 }else if(_this.changePwd!=_this.checkPwd){
-                    layer.msg('确认密码不一致');
+                    layer.msg(Info.E0004);
                     return false;
                 }else if(_this.changePwd==""){
-                    layer.msg('密码不得为空');
+                    layer.msg(Info.E0014);
                     return false;
                 }
                 _this.userData.upwd = _this.changePwd;
                 var user = this.userData;
-                axios.get("../user/updateUser", {
+                axios.get("../yhgl/user/updateUser", {
                     params: {
                         unum:user.unum,
                         uid:user.uid,
@@ -189,9 +217,9 @@ var userVm = new Vue({
                 }).then(function (response) {
                     if (response.data.msg == "ok") {
                         window.hide();
-                        layer.msg('修改成功');
+                        layer.msg(Info.I0012);
                     } else if(response.data.msg=="fault"){
-						layer.msg('修改失败');
+						layer.msg(Info.I0013);
 					}
                 })
                     .catch(function (error) {
@@ -237,7 +265,6 @@ var userVm = new Vue({
             		userVm.changePwd="";
             		userVm.checkPwd="";
             		userVm.uPwd="";
-            		console.log(this.$refs.ic_user_info.userData)
 					userVm.userData = this.$refs.ic_user_info.userData;
             		var hideobj=document.getElementById("cy_hidebg");
             	   	cy_hidebg.style.display="block";  //显示隐藏层

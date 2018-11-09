@@ -100,10 +100,10 @@
 
             <!-- 以下是排除不需要拦截的路径  -->
             <!-- 与登录相关的请求 -->
-            <mvc:exclude-mapping path="/login.jsp"/>
-            <mvc:exclude-mapping path="/user/login"/>
-			<mvc:exclude-mapping path="/user/valicode"/>  <!-- 验证码 -->
-			<mvc:exclude-mapping path="/user/cookies"/>  <!-- 获得cookie -->
+            <mvc:exclude-mapping path="/login/login"/>
+            <mvc:exclude-mapping path="/login/toLogin"/>
+			<mvc:exclude-mapping path="/login/valicode"/>  <!-- 验证码 -->
+			<mvc:exclude-mapping path="/login/cookies"/>  <!-- 获得cookie -->
 			
 			<mvc:exclude-mapping path="/koey/**"/> 
 			

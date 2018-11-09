@@ -2,17 +2,19 @@ package com.ichangyun.InforAnalyaizer.model.classificationfilterwords;
 
 import java.util.Date;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 public class ClassificationFilterwords {
     private String classificationId;
 
     private String informationtropism;
 
     private String createuser;
-
+    @JSONField(format="yyyy-MM-dd")
     private Date createdatetime;
 
     private String updateuser;
-
+    @JSONField(format="yyyy-MM-dd")
     private Date updatedatetime;
 
     public String getClassificationId() {

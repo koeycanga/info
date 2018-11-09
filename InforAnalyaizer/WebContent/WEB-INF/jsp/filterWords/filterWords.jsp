@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<fmt:setBundle basename="resources" var="sysInfo" />
+<fmt:message key="front_menu" var="front_menu" bundle="${sysInfo}" />
+<fmt:message key="E000000006" var="E000000006" bundle="${sysInfo}" />
+<fmt:message key="I0012" var="I0012" bundle="${sysInfo}" />
+<fmt:message key="I0013" var="I0013" bundle="${sysInfo}" />
+<fmt:message key="I0015" var="I0015" bundle="${sysInfo}" />   
+<fmt:message key="I0016" var="I0016" bundle="${sysInfo}" />
 
 <html xmlns:v-on="http://www.w3.org/1999/xhtml"
       xmlns:v-bind="http://www.w3.org/1999/xhtml">
@@ -106,11 +113,20 @@
         </ul>
         <div class="layui-tab-content" style="height: 100px;">
           <div class="layui-tab-item layui-show">
+<!--           <div>
+          核心词组<br><textarea rows="5" cols="25" placeholder="输入词组" class="cy_CMICBMS_addinput" v-model="fwVoForUpdate.allcorephrases">		
+			</textarea>
+			</div> -->
             <div>
               核心词组：<input type="text" placeholder="输入词组"
                             class="cy_CMICBMS_addinput" v-model="fwVoForUpdate.allcorephrases">
             </div>
+   <!--          <div>
+         排除词组<br><textarea rows="5" cols="25" placeholder="输入词组" class="cy_CMICBMS_addinput" v-model="fwVoForUpdate.allexcludephrases">		
+			</textarea>
+			</div> -->
             <div>
+            
               排除词组：<input type="text" placeholder="输入词组"
                             class="cy_CMICBMS_addinput"
                             v-model="fwVoForUpdate.allexcludephrases">
@@ -172,7 +188,13 @@
 <script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 
 <script>
-
+	var Info = {
+			E000000006:'${E000000006}',
+			I0012:'${I0012}',
+			I0013:'${I0013}',
+			I0015:'${I0015}',
+			I0016:'${I0016}'
+	};
     var vm = new Vue({
         el: '#filterWords',
         data: {
@@ -208,7 +230,7 @@
                     var checkedId = [];
                     checkedId = this.checkedId;
                     if (checkedId.length != 1) {
-                        layer.msg('请选择单条信息');
+                        layer.msg(Info.E000000006);
                     } else {
                         vm2.title = "编辑分类过滤词";
                         vm2.url = "updateFwVo";
@@ -386,9 +408,9 @@
                         if (response.data.msg == "ok") {
                             window.hide();
                             vm.btn_search();
-                            layer.msg('编辑成功');
+                            layer.msg(Info.I0012);
                         } else if (response.data.msg == "fault") {
-                            layer.msg('编辑失败');
+                            layer.msg(Info.I0013);
                         }
                     })
                         .catch(function (error) {
@@ -407,7 +429,7 @@
     var ic_tree_dv_checkbox = {
         template: '<div><div v-bind:style="t_style">' +
 
-        '<input type="checkbox"  v-if="model.isParent!=1" v-bind:value="model.classificationId"  v-model="vm.checkedId" class="cy_CMICBMS_checkbox">&nbsp;<label for="cy_CMICBMS_checkbox"></label></div>' +
+        '<input type="checkbox" :disabled="model.isParent==1" v-bind:value="model.classificationId"  v-model="vm.checkedId" class="cy_CMICBMS_checkbox">&nbsp;<label for="cy_CMICBMS_checkbox"></label></div>' +
         '<div v-show="model.is_show" ><ic_tree_dv_checkbox  v-for="model in model.children"  v-bind:model="model"></ic_tree_dv_checkbox></div></div>' ,
         props: ['model'],
         data: function () {
@@ -420,7 +442,7 @@
 
     var ic_tree_dv_name = {
         template: '<div><div v-bind:style="t_style">' +
-        '<img v-if="model.isParent==1" v-bind:src="imgsrc" v-on:click="opClose(model.classificationId)">' +
+        '<img v-if="model.isParent==1" v-bind:src="imgsrc" style="cursor:pointer" v-on:click="opClose(model.classificationId)">' +
         '{{model.classificationName}}&nbsp;</div>'+
         '<div v-show="model.is_show" ><ic_tree_dv_name  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_name></div></div>'
         ,
@@ -429,15 +451,15 @@
         data: function () {
             return {
                 t_style: {padding: '10px 0px !important'},
-                imgsrc: this.is_show?"../image/is-tbarr02.png":"../image/is-tbarr01.png",
+                imgsrc: this.is_show?"${ctx}/image/is-tbarr02.png":"${ctx}/image/is-tbarr01.png",
             }
         },
         methods: {
             opClose: function (id) {
                 if(this.model.is_show){
-                    this.imgsrc = "../image/is-tbarr01.png";
+                    this.imgsrc = "${ctx}/image/is-tbarr01.png";
                 }else{
-                    this.imgsrc = "../image/is-tbarr02.png";
+                    this.imgsrc = "${ctx}/image/is-tbarr02.png";
                 }
                 this.$parent.opClose(id);
             }
@@ -516,11 +538,11 @@
             ,url: 'upload' //上传接口
             ,done: function(res){
                 //上传完毕回调
-                layer.msg('上传成功');
+                layer.msg(Info.I0015);
             }
             ,error: function(){
                 //请求异常回调
-                layer.msg('上传失败');
+                layer.msg(Info.I0016);
             }
         });
     });

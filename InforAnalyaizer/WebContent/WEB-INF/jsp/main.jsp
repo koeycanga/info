@@ -1,16 +1,33 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
+<%@ page language="java" contentType="text/html; charset=utf-8" import="com.ichangyun.InforAnalyaizer.model.User"
     pageEncoding="utf-8"%>
+<%
+      String authority = "";
+      boolean[] user_menu = new boolean[5];
+      User user =  (User)request.getAttribute("user");
+      if(user==null){
+    	  response.sendRedirect("../error/no_authority.jsp");
+      }else{
+    	  authority = user.getAuthority();
+    	  for(int i=0;i<authority.length();i++){
+    		  user_menu[i] = (authority.charAt(i)=='1');
+    	  }
+      }
+%>
+<%@ taglib prefix="ss" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<fmt:setBundle basename="resources" var="sysInfo" />  <!-- basename: 在classes文件夹下properties文件的文件名 -->
+<fmt:message key="W0003" var="W0003" bundle="${sysInfo}" /> 
 <!doctype html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>中国医疗器械-后台管理</title>
-<link rel="stylesheet" type="text/css" href="../css/cy_CIAS_style.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style.css">
 <script>
 
 function return_tologin(){
 	
-	window.location.href = "../login.jsp";
+	window.location.href = "${ctx}/login.jsp";
 }
 
 </script>
@@ -23,12 +40,12 @@ function return_tologin(){
 <div class="cy_CMICBMS_top">
 	<div class="cy_CMICBMS_logo">
 			<div class="cy_CMICBMS_box01"></div>
-		<div class="cy_CMICBMS_box02"><img src="../image/logo.png"></div>
+		<div class="cy_CMICBMS_box02"><img src="${ctx}/image/logo.png"></div>
 	<div class="cy_CMICBMS_box03">中国医疗器械有限公司</div>
 
 </div>
 	<div class="cy_CMICBMS_manag">
-	<div class="cy_CMICBMS_box05"><a href="#" v-on:click="logout()">退出登录<img src="../image/exit.png"></a></div>
+	<div class="cy_CMICBMS_box05"><a href="#" v-on:click="logout()">退出登录<img src="${ctx}/image/exit.png"></a></div>
 	<div class="cy_CMICBMS_box04"><a href="">跳转到前台{{menu_data[0].name}}</a></div>
 
 	</div>
@@ -45,7 +62,7 @@ function return_tologin(){
 
 <div class="cy_CMICBMS_body">
 
-	<iframe src="../user/toUserList" name="mainiframe" frameborder="0" iFrameHeight()>
+	<iframe id="mainiframe" src="" name="mainiframe" frameborder="0" iFrameHeight()>
 		
 	</iframe>
 
@@ -61,6 +78,10 @@ function return_tologin(){
 <script type="text/javascript" src="${ctx}/js/comm.js"></script>
 
 <script>
+ 
+   var Info = {
+		   W0003:'${W0003}'
+   };
  
    var ic_menu = {
 		  
@@ -92,45 +113,56 @@ function return_tologin(){
    var app = new Vue({
 	   el:'#app',
 	   data:{
-		   adata:'dasdasdas',
-		   menu_data :[{
-		                "name":"用户管理","imgsrc":"../image/useric.png","depth":0,   //一级菜单depth为0
+		   adata:'dasdasdas',   
+		   menu_data :[
+			          <% if(user_menu[0]){ %> 
+			          {
+		                "name":"用户管理","imgsrc":"${ctx}/image/useric.png","depth":0,   //一级菜单depth为0
 		                "children":[
-		                	    {"name":"账号管理","depth":1,"href":"../user/toUserList"},    //二级菜单depth为1  二级菜单有href属性
-		                	    {"name":"角色管理","depth":1,"href":"../role/index"}
+		                	    {"name":"账号管理","depth":1,"href":"${ctx}/yhgl/user/toUserList"},    //二级菜单depth为1  二级菜单有href属性
+		                	    {"name":"角色管理","depth":1,"href":"${ctx}/yhgl/role/index"}
 		                	    ]
 		                },
+		              <% } %>
+		              <% if(user_menu[1]){ %> 
 		                {
-	                	 "name":"情报规划","imgsrc":"../image/ingpl.png","depth":0, 
+	                	 "name":"情报规划","imgsrc":"${ctx}/image/ingpl.png","depth":0, 
 	                	 "children":[
-		                	    {"name":"分类体系","depth":1,"href":"../classifcationinfo/index"},   
-		                	    {"name":"过滤词管理","depth":1,"href":"../filterWords/toFilterWords"},
-		                	    {"name":"信息源绑定","depth":1,"href":"../classificationSource/index"}
+		                	    {"name":"分类体系","depth":1,"href":"${ctx}/qbgh/classifcationinfo/index"},   
+		                	    {"name":"过滤词管理","depth":1,"href":"${ctx}/qbgh/filterWords/toFilterWords"},
+		                	    {"name":"信息源绑定","depth":1,"href":"${ctx}/qbgh/classificationSource/index"}
 		                	    ]
 		                },
+		                <% } %>
+		                <% if(user_menu[2]){ %> 
 		                {
-		                	 "name":"情报采集","imgsrc":"../image/intgt.png","depth":0,
+		                	 "name":"情报采集","imgsrc":"${ctx}/image/intgt.png","depth":0,
 		                	 "children":[]
 		                },
+		                <% } %>
+		                <% if(user_menu[3]){ %> 
 		                {
-		                	 "name":"情报加工","imgsrc":"../image/ingpro.png","depth":0,
+		                	 "name":"情报加工","imgsrc":"${ctx}/image/ingpro.png","depth":0,
 		                	 "children":[]
 		                },
+		                <% } %>
+		                <% if(user_menu[4]){ %> 
 		                {
-		                	 "name":"信息管理","imgsrc":"../image/imfmn.png","depth":0,
+		                	 "name":"信息管理","imgsrc":"${ctx}/image/imfmn.png","depth":0,
 		                	 "children":[]
-		                }
+		                },
+		                <% } %>
 		              ]
 	   },
 	   methods:{
 		   
 		   logout:function(){
-			   layer.confirm("确定要退出吗?", {
+			   layer.confirm(Info.W0003, {
 		            btn : [ '确定', '取消' ]//按钮
 		        }, function(index) {
-		        	axios.get('../front/logout')
+		        	axios.get('${ctx}/front/logout')
 		    			.then(function (response) {
-		    				window.location.href = "../login.jsp";
+		    				window.location.href = "${ctx}/login.jsp";
 		    			})
 		    			.catch(function (error) {
 		    			    console.log(error);
@@ -140,7 +172,7 @@ function return_tologin(){
 		   
 	   },mounted:function(){
 		   $(".cy_CMICBMS_fstmenu")[0].click();
-		  
+	       $("#mainiframe").attr("src",$($(".cy_CMICBMS_sndmenu")[0]).children().eq(0).attr("href"));
 	   }
    });
  

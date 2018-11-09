@@ -9,4 +9,5 @@ public class CommBean {
 	public static final int COOKIE_TIME = 3600*24;
 	
 	public static final String SESSION_NAME = "ichangyun_user";
+	
 }

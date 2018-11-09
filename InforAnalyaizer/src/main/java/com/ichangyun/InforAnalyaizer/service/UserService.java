@@ -22,7 +22,7 @@ public interface UserService {
 
      User isUserExist(String username, String passwd);
 
-	void addCookie(HttpServletResponse response, User user);
+	void addCookie(HttpServletResponse response, User user,String passwd);
 
 	void delCookie(HttpServletRequest request, HttpServletResponse response);
 }

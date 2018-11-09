@@ -3,18 +3,26 @@
 <%@ taglib prefix="ss" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:setBundle basename="resources" var="sysInfo" />  <!-- basename: 在classes文件夹下properties文件的文件名 -->
-<fmt:message key="please_select_del_data" var="please_select_del_data" bundle="${sysInfo}" />
-<fmt:message key="unkonow_err" var="unkonow_err" bundle="${sysInfo}" /> 
-<fmt:message key="please_select_edit_data" var="please_select_edit_data" bundle="${sysInfo}" /> 
-<fmt:message key="edit_success" var="edit_success" bundle="${sysInfo}" /> 
-<fmt:message key="add_success" var="add_success" bundle="${sysInfo}" /> 
+<fmt:message key="I0003" var="I0003" bundle="${sysInfo}" /> 
+<fmt:message key="I0004" var="I0004" bundle="${sysInfo}" /> 
+<fmt:message key="W0002" var="W0002" bundle="${sysInfo}" /> 
+<fmt:message key="E0006" var="E0006" bundle="${sysInfo}" /> 
+<fmt:message key="E0016" var="E0016" bundle="${sysInfo}" /> 
+<fmt:message key="E0017" var="E0017" bundle="${sysInfo}" /> 
+<fmt:message key="I0004" var="I0004" bundle="${sysInfo}" /> 
+<fmt:message key="E0018" var="E0018" bundle="${sysInfo}" /> 
+<fmt:message key="E0019" var="E0019" bundle="${sysInfo}" />
+<fmt:message key="E0022" var="E0022" bundle="${sysInfo}" />
+<fmt:message key="I0007" var="I0007" bundle="${sysInfo}" /> 
+<fmt:message key="I0008" var="I0008" bundle="${sysInfo}" /> 
+<fmt:message key="I0011" var="I0011" bundle="${sysInfo}" /> 
 <!doctype html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title></title>
-<link rel="stylesheet" type="text/css" href="../css/cy_CIAS_style.css">
-<link rel="stylesheet" type="text/css" href="../css/cy_zg_win.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/css/cy_zg_win.css">
 </head>
 <body >
 <div id="app" class="cy_CMICBMS_bodybg" v-cloak>
@@ -54,7 +62,7 @@
 	<div class="cy_CMICBMS_addtb">
 		<div>
 		  <span>*</span>角色名称：<input type="text" v-on:blur="checkRoleName()" v-model="roleInfo.role_name" placeholder="角色名称" class="cy_CMICBMS_addinput">
-		  <div v-if="errInfo.role_name_err" class="cy_CMICBMS_errortip">请输入角色名称！</div>
+		  <div v-if="errInfo.role_name_err" class="cy_CMICBMS_errortip">${E0016}</div>
 		</div>
 		<div style="float:left;padding:22px !important">
 		<span>*</span>权限设置：<div>
@@ -67,7 +75,7 @@
 		</div>
 		<div>
 		    <span>*</span>角色描述：<input type="text" v-on:blur="checkRoleDes()" v-model="roleInfo.role_des" placeholder="输入角色描述" class="cy_CMICBMS_addinput">
-		    <div v-if="errInfo.role_des_err" class="cy_CMICBMS_errortip">请输入角色描述！</div>
+		    <div v-if="errInfo.role_des_err" class="cy_CMICBMS_errortip">${E0017}</div>
 		 </div>
 		<div style="margin:40px 20px 0 0;">
 		    <input type="button" v-if="isnew" v-on:click="AddNewRole()" value="确定" class="cy_CMICBMS_schbtn">
@@ -84,14 +92,20 @@
 <script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script type="text/javascript" src="${ctx}/js/comm.js"></script>
 <script>
- 
-var ic_base_info = {
-	  please_select_del_data:'${please_select_del_data}',
-	  unkonow_err:'${unkonow_err}',
-	  please_select_edit_data:'${please_select_edit_data}',
-	  edit_success:'${edit_success}',
-	  add_success:'${add_success}'
+  
+var Info = {
+		I0003:'${I0003}',
+		I0004:'${I0004}',
+		W0002:'${W0002}',
+		E0006:'${E0006}',
+		E0018:'${E0018}',
+		E0019:'${E0019}',
+		E0022:'${E0022}',
+		I0007:'${I0007}',
+		I0008:'${I0008}',
+		I0011:'${I0011}'
 };
+
  
   var app = new Vue({
 	  
@@ -143,15 +157,15 @@ var ic_base_info = {
 		  },
 		  NewRole:function(){
 			  this.isnew = true;
-			  this.tcc_title = "新增角色";
+			  this.tcc_title = Info.I0003;
 			  this.showtcc = {display:'block'};
 		  },
 		  DelRole:function(){
 			  if(this.checkedNames.length==0){
-				  layer.msg(ic_base_info.please_select_del_data);
+				  layer.msg(Info.E0019);
 			  }else{
 				  var _this = this;
-				  layer.confirm("确定要删除这"+this.checkedNames.length+"笔数据吗?", {
+				  layer.confirm(Info.W0002, {
 			            btn : [ '确定', '取消' ]//按钮
 			        }, function(index) {
 			            layer.close(index);
@@ -166,7 +180,7 @@ var ic_base_info = {
 			    					_this.search_after_update(_this.$refs.pagecomponent.pageBean);
 			    				}
 			    				if(response.data=='nok'){
-			    					layer.msg(ic_base_info.unkonow_err);
+			    					layer.msg(Info.E0022);
 			    				}
 			    			})
 			    			.catch(function (error) {
@@ -178,11 +192,11 @@ var ic_base_info = {
 		  },
 		  EditRole:function(){
 			  if(this.checkedNames.length!=1){
-				  layer.msg(ic_base_info.please_select_edit_data);
+				  layer.msg(Info.E0006);
 			  }else{
 				  this.isnew = false;
 				  this.isdisabled = true;
-			  	  this.tcc_title = "编辑角色";
+			  	  this.tcc_title = Info.I0004;
 			  	  this.showtcc = {display:'block'};
 			  	  for(var i=0;i<this.datas.length;i++){
 			  		  if(this.checkedNames[0]==this.datas[i].userRole_ID){
@@ -236,12 +250,12 @@ var ic_base_info = {
 		    			})
 		    			.then(function (response) {
 		    				if(response.data=='ok'){
-		    					layer.msg(ic_base_info.edit_success);
+		    					layer.msg(Info.I0007);
 		    					_this.hideTcc();
 		    					_this.search(_this.$refs.pagecomponent.pageBean);
 		    				}
 		    				if(response.data=='nok'){
-		    					layer.msg(ic_base_info.unkonow_err);
+		    					layer.msg(Info.E0022);
 		    				}
 		    				
 		    			})
@@ -277,15 +291,15 @@ var ic_base_info = {
 		    			})
 		    			.then(function (response) {
 		    				if(response.data=='ok'){
-		    					layer.msg(ic_base_info.add_success);
+		    					layer.msg(Info.I0008);
 		    					_this.hideTcc();
 		    					_this.search_after_update(_this.$refs.pagecomponent.pageBean);
 		    				}
 		    				if(response.data=='exist'){
-		    					layer.msg("角色名称已经存在");
+		    					layer.msg(Info.E0018);
 		    				}
 		    				if(response.data=='nok'){
-		    					layer.msg(ic_base_info.unkonow_err);
+		    					layer.msg(Info.E0022);
 		    				}
 		    				
 		    			})
@@ -351,7 +365,7 @@ var ic_base_info = {
 		        return function(pageBean){
 		        	var _this = this;
 		        	this.checkedNames = [];
-		        	layer.msg('加载中', {
+		        	layer.msg(Info.I0011, {
 		        		  icon: 16
 		        		  ,shade: 0.01
 		        		});

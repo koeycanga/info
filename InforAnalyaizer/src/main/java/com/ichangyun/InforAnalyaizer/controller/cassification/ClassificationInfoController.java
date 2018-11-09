@@ -26,7 +26,7 @@ import com.ichangyun.InforAnalyaizer.service.classification.ClassificationInfoSe
  */
 
 @RestController
-@RequestMapping("/classifcationinfo")
+@RequestMapping("/qbgh/classifcationinfo")
 public class ClassificationInfoController {
 
 	@Autowired

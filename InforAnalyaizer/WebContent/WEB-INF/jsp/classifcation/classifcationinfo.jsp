@@ -3,11 +3,20 @@
 <%@ taglib prefix="ss" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:setBundle basename="resources" var="sysInfo" />  <!-- basename: 在classes文件夹下properties文件的文件名 -->
-<fmt:message key="please_select_del_data" var="please_select_del_data" bundle="${sysInfo}" />
-<fmt:message key="unkonow_err" var="unkonow_err" bundle="${sysInfo}" /> 
-<fmt:message key="please_select_edit_data" var="please_select_edit_data" bundle="${sysInfo}" /> 
-<fmt:message key="edit_success" var="edit_success" bundle="${sysInfo}" /> 
-<fmt:message key="add_success" var="add_success" bundle="${sysInfo}" /> 
+<fmt:message key="I0005" var="I0005" bundle="${sysInfo}" />
+<fmt:message key="I0006" var="I0006" bundle="${sysInfo}" />
+<fmt:message key="I0007" var="I0007" bundle="${sysInfo}" />
+<fmt:message key="I0008" var="I0008" bundle="${sysInfo}" />
+<fmt:message key="I0009" var="I0009" bundle="${sysInfo}" />
+<fmt:message key="I0010" var="I0010" bundle="${sysInfo}" />
+<fmt:message key="I0011" var="I0011" bundle="${sysInfo}" />
+<fmt:message key="E0006" var="E0006" bundle="${sysInfo}" />
+<fmt:message key="E0019" var="E0019" bundle="${sysInfo}" />
+<fmt:message key="E0020" var="E0020" bundle="${sysInfo}" />
+<fmt:message key="E0021" var="E0021" bundle="${sysInfo}" />
+<fmt:message key="E0022" var="E0022" bundle="${sysInfo}" />
+<fmt:message key="E0023" var="E0023" bundle="${sysInfo}" />
+<fmt:message key="W0002" var="W0002" bundle="${sysInfo}" />
 
 
 <!doctype html>
@@ -15,8 +24,8 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
-<link rel="stylesheet" type="text/css" href="../css/cy_CIAS_style.css">
-<link rel="stylesheet" type="text/css" href="../css/cy_zg_win.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/css/cy_zg_win.css">
  
 </head>
 <body >
@@ -100,16 +109,24 @@
 
 <script>
 
-var ic_base_info = {
-		  please_select_del_data:'${please_select_del_data}',
-		  unkonow_err:'${unkonow_err}',
-		  please_select_edit_data:'${please_select_edit_data}',
-		  edit_success:'${edit_success}',
-		  add_success:'${add_success}'
+var Info = {
+		I0005:'${I0005}',
+		E0006:'${E0006}',
+		I0006:'${I0006}',
+		I0007:'${I0007}',
+		I0009:'${I0009}',
+		I0010:'${I0010}',
+		W0002:'${W0002}',
+		E0019:'${E0019}',
+		E0020:'${E0020}',
+		E0021:'${E0021}',
+		E0022:'${E0022}',
+		E0023:'${E0023}',
+		I0008:'${I0008}',
+		I0011:'${I0011}'
 	};
 
 function TreeNode(val,depth,children_lg){
-	
 	this.val = val;
 	this.is_show = true;
 	this.is_open = false;
@@ -117,7 +134,7 @@ function TreeNode(val,depth,children_lg){
 	this.i_have_ajax = false;
 	this.children_lg = children_lg;
 	if(children_lg>0){
-		this.imgsrc = "../image/is-tbarr01.png";
+		this.imgsrc = "${ctx}/image/is-tbarr01.png";
 	}else{
 		this.imgsrc = "";
 	}
@@ -340,7 +357,7 @@ var app = new Vue({
 				if(click_node.val.parent_Classification_ID=='0000000000'){    //根节点  涉及到翻页
 						if(i_index==0){
 							if(this.$refs.pagecomponent.pageBean.pageNow==1){
-								layer.msg("已经处在最顶端");
+								layer.msg(Info.I0005);
 							}else{
 								this.tempNode = this.datas[i_index];
 								this.btn_wy_disabled = true;
@@ -354,7 +371,7 @@ var app = new Vue({
 				}else{
 			    	//非根节点
 					if(i_index==0){
-						layer.msg("已经处在最顶端");
+						layer.msg(Info.I0005);
 					}else{ 
 						var parentNode = this.getClickNode(click_node.val.parent_Classification_ID,this.datas)[1];
 						this.dealchange(i_index - 1,i_index,parentNode.children);
@@ -362,7 +379,7 @@ var app = new Vue({
 					}
 			    }
 			}else{
-				layer.msg("请选择单条信息");
+				layer.msg(Info.E0006);
 			}
 		  },
 		  MoveDown:function(){  //下移
@@ -373,7 +390,7 @@ var app = new Vue({
 				    if(click_node.val.parent_Classification_ID=='0000000000'){    //根节点  涉及到翻页
 						if(i_index==this.datas.length-1){
 							if(this.$refs.pagecomponent.pageBean.pageNow==this.$refs.pagecomponent.pageBean.pageSize){
-								layer.msg("已经处在最末端");
+								layer.msg(Info.I0006);
 							}else{
 								this.tempNode = this.datas[i_index];
 								this.btn_wy_disabled = true;
@@ -389,7 +406,7 @@ var app = new Vue({
 				 
 				    	var parent_node = this.getClickNode(click_node.val.parent_Classification_ID,this.datas)[1];
 						if(i_index==parent_node.children.length-1){
-							layer.msg("已经处在最末端");
+							layer.msg(Info.I0006);
 						}else{ 
 						
 							this.dealchange(i_index+1,i_index,parent_node.children);
@@ -399,7 +416,7 @@ var app = new Vue({
 				    }
 				  
 			  }else{
-				  layer.msg("请选择单条信息");
+				  layer.msg(Info.E0006);
 			  }
 		  },
 		  dealchange:function(pre_index,i_index,target_arr){
@@ -452,10 +469,10 @@ var app = new Vue({
 		  },
 		  EditData:function(){
 			 if(checkedNames.length!=1){
-				 layer.msg("请选择单条信息编辑");
+				 layer.msg(Info.E0006);
 			 }else{
 				 this.isnew = false;
-				 this.tcc_title = "编辑分类";
+				 this.tcc_title = Info.I0010;
 				 this.farther_node_id = "";
 				 var click_node = this.getClickNode(checkedNames[0],this.datas)[1];
 				 this.typeInfo.type_id = click_node.val.classification_ID;
@@ -467,7 +484,7 @@ var app = new Vue({
 		  DelData:function(){
 			  if(checkedNames.length>0){
 				  var _this = this;
-				  layer.confirm("确定要删除这"+checkedNames.length+"笔数据吗?", {
+				  layer.confirm(Info.W0002, {
 			            btn : [ '确定', '取消' ]//按钮
 			        }, function(index) {
 			            layer.close(index);
@@ -523,9 +540,6 @@ var app = new Vue({
 			    					}
 			    					layer.close(l_index);
 			    				}
-			    				if(response.data=='nok'){
-			    					layer.msg("出现未知错误,请稍后重试");
-			    				}
 			    				
 			    			})
 			    			.catch(function (error) {
@@ -534,7 +548,7 @@ var app = new Vue({
 			        }); 
 				 
 			  }else{
-				  layer.msg("请选择要删除的数据");
+				  layer.msg(Info.E0019);
 			  }
 		  },
 		  getRootNodeByid:function(cnode,arr){
@@ -584,9 +598,9 @@ var app = new Vue({
 		  },
 		  NewData:function(){  //打开新增数据弹出层
 			  if(checkedNames.length>1){
-				  layer.msg("请选择0到1笔数据");
+				  layer.msg(Info.E0020);
 			  }else{
-				  this.tcc_title = "新增分类";
+				  this.tcc_title = Info.I0009;
 				  this.isnew = true;
 				  if(checkedNames.length==1){
 				  	 this.farther_node_id = checkedNames[0];
@@ -617,17 +631,17 @@ var app = new Vue({
 			    			})
 			    			.then(function (response) {
 			    				if(response.data=="ok"){
-			    					layer.msg("编辑成功");
+			    					layer.msg(Info.I0007);
 			    					click_node.val.classificationName = _this.typeInfo.type_name.trim();
 			    					click_node.val.description = _this.typeInfo.type_des.trim();
 			    					_this.updateJsonData(root_node);
 			    					_this.hideTcc();
 			    				}
 			    				if(response.data=="exist"){
-			    					layer.msg("该分类名称已存在");
+			    					layer.msg(Info.E0021);
 			    				}
 			    				if(response.data=="nok"){
-			    					layer.msg("出现未知错误,请稍后重试");
+			    					layer.msg(Info.E0022);
 			    				}
 			    				
 			    			})
@@ -650,11 +664,11 @@ var app = new Vue({
 		    			})
 		    			.then(function (response) {
 		    				if(response.data=="exist"){
-		    					layer.msg("该分类名称已存在");
+		    					layer.msg(Info.E0023);
 		    				}else if(response.data=="nok"){
-		    					layer.msg("出现未知错误,请稍后重试");
+		    					layer.msg(Info.E0022);
 		    				}else{
-		    					layer.msg("添加成功");
+		    					layer.msg(Info.I0008);
 		    					if(_this.farther_node_id==''){
 		    						_this.search_after_update(_this.$refs.pagecomponent.pageBean);
 		    					}else{
@@ -678,7 +692,7 @@ var app = new Vue({
 		    				    				
 		    				    				click_node.is_open = true;
 		    				    				  
-		    							        click_node.imgsrc = "../image/is-tbarr02.png";
+		    							        click_node.imgsrc = "${ctx}/image/is-tbarr02.png";
 		    						      
 		    							        _this.dealDigui(click_node,true);
 
@@ -693,7 +707,7 @@ var app = new Vue({
 			    						var tn = new TreeNode(json,click_node.depth+1,json.children_lg);
 			    						click_node.children.unshift(tn);
 			    						click_node.children_lg = click_node.children.length;
-			    						click_node.imgsrc = "../image/is-tbarr02.png";
+			    						click_node.imgsrc = "${ctx}/image/is-tbarr02.png";
 			    						click_node.is_open = true;
 			    						_this.dealDigui(click_node,true);
 			    						_this.updateJsonData(root_node);
@@ -775,7 +789,7 @@ var app = new Vue({
 			  
 				        click_node.is_open = true;
 			  
-				        click_node.imgsrc = "../image/is-tbarr02.png";
+				        click_node.imgsrc = "${ctx}/image/is-tbarr02.png";
 			      
 				        this.dealDigui(click_node,true);
 				        
@@ -789,7 +803,7 @@ var app = new Vue({
 			  
 				  click_node.is_open = false;
 				  
-				  click_node.imgsrc = "../image/is-tbarr01.png";
+				  click_node.imgsrc = "${ctx}/image/is-tbarr01.png";
 				  
 				  this.dealDigui(click_node,false);
 				  
@@ -822,7 +836,7 @@ var app = new Vue({
 		        return function(pageBean){
 		        	 checked = false;
 					  $("#thch").prop("checked",false);
-			        	var l_index = layer.msg('加载中', {
+			        	var l_index = layer.msg(Info.I0011, {
 			        		  icon: 16
 			        		  ,shade: 0.01
 			        		});

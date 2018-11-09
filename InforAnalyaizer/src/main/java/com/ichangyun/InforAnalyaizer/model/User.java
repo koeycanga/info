@@ -14,8 +14,71 @@ public class User {
     private String Name;
     
     private String Password;
+    private String Department;
+    private String Telephone;
+    private String EMail;
+    private String UserRole_ID;
+    private String UpdateDateTime;
+    private String UserRoleName;
+    private String Authority;
     
-    public String getPassword() {
+    public String getDepartment() {
+		return Department;
+	}
+
+	public void setDepartment(String department) {
+		Department = department;
+	}
+
+	public String getTelephone() {
+		return Telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		Telephone = telephone;
+	}
+
+	public String getEMail() {
+		return EMail;
+	}
+
+	public void setEMail(String eMail) {
+		EMail = eMail;
+	}
+
+	public String getUserRole_ID() {
+		return UserRole_ID;
+	}
+
+	public void setUserRole_ID(String userRole_ID) {
+		UserRole_ID = userRole_ID;
+	}
+
+	public String getUpdateDateTime() {
+		return UpdateDateTime;
+	}
+
+	public void setUpdateDateTime(String updateDateTime) {
+		UpdateDateTime = updateDateTime;
+	}
+
+	public String getUserRoleName() {
+		return UserRoleName;
+	}
+
+	public void setUserRoleName(String userRoleName) {
+		UserRoleName = userRoleName;
+	}
+
+	public String getAuthority() {
+		return Authority;
+	}
+
+	public void setAuthority(String authority) {
+		Authority = authority;
+	}
+
+	public String getPassword() {
 		return Password;
 	}
 

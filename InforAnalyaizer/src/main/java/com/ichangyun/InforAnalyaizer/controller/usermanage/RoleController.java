@@ -28,7 +28,7 @@ import com.ichangyun.InforAnalyaizer.service.usermanage.RoleService;
 
 
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/yhgl/role")
 public class RoleController {
 	
 	@Autowired

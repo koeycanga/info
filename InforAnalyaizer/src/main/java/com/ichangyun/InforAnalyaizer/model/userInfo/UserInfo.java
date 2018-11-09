@@ -2,6 +2,10 @@ package com.ichangyun.InforAnalyaizer.model.userInfo;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 public class UserInfo extends UserInfoKey {
     private String password;
 
@@ -18,11 +22,11 @@ public class UserInfo extends UserInfoKey {
     private String status;
 
     private String createuser;
-
+    @JSONField(format="yyyy-MM-dd")
     private Date createdatetime;
 
     private String updateuser;
-
+    @JSONField(format="yyyy-MM-dd")
     private Date updatedatetime;
 
     public String getPassword() {

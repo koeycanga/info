@@ -28,7 +28,6 @@ var ic_top_menu = {
 
 //前台页面上部登录用户信息框组件
 var ic_user_info = {
-	   	 
     	template:'<div class="cy_CIASFE_userinfom"><div class="cy_CIASFE_user"><img src="../image/home-user.png"></div><div class="cy_CIASFE_user">{{userData.uname}}<img src="../image/home-arr.png"></div>'+
     		'<div class="cy_CIASFE_usermenu"><a v-on:click="$parent.updateUser">个人信息</a><!-- <a href="">修改密码</a> --><a href="#" v-on:click="logout()">退出</a></div></div>',
         data:function(){
@@ -38,7 +37,7 @@ var ic_user_info = {
         },
         methods:{
         	logout:function(){
-        		layer.confirm("确定要退出吗?", {
+        		layer.confirm(Info.W0003, {
 		            btn : [ '确定', '取消' ]//按钮
 		        }, function(index) {
 		        	axios.get('../front/logout')
@@ -53,7 +52,7 @@ var ic_user_info = {
         },
         mounted:function(){
         	var that = this;
-   			axios.get('../user/thisUser')
+   			axios.get('../yhgl/user/thisUser')
     			.then(function (response) {
 						that.userData = response.data;
     			})
@@ -70,7 +69,7 @@ var ic_pager = {
 			'<div class="cy_CMICBMS_umrc">显示第{{pageBean.row_show_start}}到{{pageBean.row_show_end}}条记录，总共{{pageBean.jr_rowCount}}条记录</div>'+
 			'<div class="cy_CMICBMS_umpg">'+
 			'<div>'+
-			'<ul>'+
+			'<ul v-if="ysdatas.length>1">'+
 			'<li><a href="#" v-on:click="showFirstPage($event)"><span><<</span></a></li>'+
 			'<li><a href="#" v-on:click="showPagePre($event)"><span><</span></a></li>'+
 			'<li v-for="ys in ysdatas"><a href="#" v-on:click="showPage(ys,$event)" v-bind:class="{cy_CMICBMS_umpgfc:ys==pageBean.pageNow}" v-text="ys"></a></li>'+
@@ -199,7 +198,7 @@ var ic_l_pager = {
 		
 		template:'	<div class="cy_CMICBMS_infedpg"><div class="cy_CMICBMS_infedrc">共{{pageBean.jr_rowCount}}条记录</div>'+
 					'<div>'+
-					'<ul>'+
+					'<ul v-if="ysdatas.length>1">'+
 					'<li><a href="#" v-on:click="showFirstPage($event)"><span><<</span></a></li>'+
 					'<li><a href="#" v-on:click="showPagePre($event)"><span><</span></a></li>'+
 					'<li v-for="ys in ysdatas"><a href="#" v-on:click="showPage(ys,$event)" v-bind:class="{cy_CMICBMS_umpgfc:ys==pageBean.pageNow}" v-text="ys"></a></li>'+

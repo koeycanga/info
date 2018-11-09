@@ -1,5 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<fmt:setBundle basename="resources" var="sysInfo" />
+<fmt:message key="front_menu" var="front_menu" bundle="${sysInfo}" />
+<fmt:message key="E000000006" var="E000000006" bundle="${sysInfo}" />
+<fmt:message key="E0019" var="E0019" bundle="${sysInfo}" />
+<fmt:message key="W000000002" var="W000000002" bundle="${sysInfo}" />
+<fmt:message key="I0014" var="I0014" bundle="${sysInfo}" />   
+<fmt:message key="E0026" var="E0026" bundle="${sysInfo}" />
+<fmt:message key="E000000004" var="E000000004" bundle="${sysInfo}" />
+<fmt:message key="I000000008" var="I000000008" bundle="${sysInfo}" />
+<fmt:message key="E0027" var="E0027" bundle="${sysInfo}" />
+<fmt:message key="I0013" var="I0013" bundle="${sysInfo}" />
+<fmt:message key="I0012" var="I0012" bundle="${sysInfo}" />
+
 <html xmlns:v-on="http://www.w3.org/1999/xhtml"
 	xmlns:v-bind="http://www.w3.org/1999/xhtml">
 
@@ -151,6 +164,18 @@
 	<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 	
 	<script>
+	var Info = {
+			E000000006:'${E000000006}',
+			E0019:'${E0019}',
+			W000000002:'${W000000002}',
+			I0014:'${I0014}',
+			E0026:'${E0026}',
+			E000000004:'${E000000004}',
+			I000000008:'${I000000008}',
+			E0027:'${E0027}',
+			I0013:'${I0013}',
+			I0012:'${I0012}'
+	};
         var vm = new Vue({
             el: '#userInfo',
             data: {
@@ -201,10 +226,10 @@
                 updateUser:                         //修改弹出
                     function () {
                         var checkedId = [];
-                        
+                        vm2.userInfoVo.upwd="";
                         checkedId= this.checkedId;
                         if (checkedId.length!=1){
-                            layer.msg('请选择单条信息');
+                            layer.msg(Info.E000000006);
                         }else{
                         	vm2.title="修改用户";
                         	vm2.url="updateUser";
@@ -215,7 +240,6 @@
                                 }
                             }).then(function (res) {
     							vm2.userInfoVo=res.data;
-    							
                                 })
                                 .catch(function (error) {
                                     console.log(error);
@@ -230,9 +254,9 @@
                     function () {
                 		var _this = this;
                         if(this.checkedId==null){
-                            layer.msg('请选择信息');
+                            layer.msg(Info.E0019);
                         }else{
-                            var deleteLayer =layer.confirm('确定要删除吗？', {
+                            var deleteLayer =layer.confirm(Info.W000000002, {
                                 btn: ['确定', '取消'] //按钮
                             }, function () {
                                 var url = "delete";
@@ -248,7 +272,7 @@
                                     type:"post",
                                     traditional:true,
                                     success:function(){
-                                        layer.msg('删除成功', {icon: 1});
+                                        layer.msg(Info.I0014, {icon: 1});
                                         _this.btn_search()
                                     }
                                 })
@@ -321,10 +345,10 @@
                 		var _this = this;
                         var user = this.userInfoVo;
                 		if(user.urole==""||user.uid==""||user.uname==""||user.urole==""){
-                			layer.msg('请输入必填项');
+                			layer.msg(Info.E0026);
                 			return false;
                 		}else if(this.checkPwd!=user.upwd){
-                			layer.msg('确认密码不一致');
+                			layer.msg(Info.E000000004);
                 			return false;
                 		}
 						
@@ -346,15 +370,15 @@
 									if(_this.title=="添加用户"&&response.data.msg=="ok"){
 										window.hide();
 										vm.btn_search();
-										layer.msg('添加成功');
+										layer.msg(Info.I000000008);
 									}else if(_this.title=="添加用户"&&response.data.msg=="fault"){
-										layer.msg('用户名已存在');
+										layer.msg(Info.E0027);
 									}else if(_this.title=="修改用户"&&response.data.msg=="fault"){
-										layer.msg('修改失败');
+										layer.msg(Info.I0013);
 									}else if(_this.title=="修改用户"&&response.data.msg=="ok"){
 										window.hide();
 										vm.btn_search();
-										layer.msg('修改成功');
+										layer.msg(Info.I0012);
 									}
 	                            })
 	                            .catch(function (error) {

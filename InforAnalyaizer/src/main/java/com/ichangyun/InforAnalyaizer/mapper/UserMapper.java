@@ -17,4 +17,6 @@ public interface UserMapper {
 	void update(@Param("param") Map param);
 
 	User isUserExist(@Param("param")Map param);
+
+	String getName(@Param("param")Map param);
 }

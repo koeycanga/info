@@ -21,7 +21,16 @@
     </update>
     
     <select id="isUserExist" parameterType="java.util.Map" resultType="com.ichangyun.InforAnalyaizer.model.User">
-      	select User_ID,Name,Password from m_userinfo where User_ID=#{param.username} and Password=#{param.passwd}
+      	SELECT m1.User_ID,m1.Password,m1.Name,
+			m1.Department,m1.Telephone,m1.EMail,m1.UserRole_ID,
+			m1.UpdateDateTime,
+			      m2.UserRoleName,m2.Authority
+			 FROM m_userinfo m1,m_userrole m2
+			where m1.UserRole_ID=m2.UserRole_ID and m1.User_ID=#{param.username} and m1.Password=#{param.passwd}
+    </select>
+    
+    <select id="getName" parameterType="java.util.Map" resultType="java.lang.String">
+         select Name from m_userinfo where User_ID=#{param.username}
     </select>
     
 </mapper>
