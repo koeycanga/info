@@ -5,9 +5,10 @@
       boolean[] user_menu = new boolean[5];
       User user =  (User)request.getAttribute("user");
       if(user==null){
-    	  response.sendRedirect("../error/no_authority.jsp");
+    	  response.sendRedirect("../error/session_out.jsp");
       }else{
     	  authority = user.getAuthority();
+    	  if(authority==null){authority="00000";}
     	  for(int i=0;i<authority.length();i++){
     		  user_menu[i] = (authority.charAt(i)=='1');
     	  }

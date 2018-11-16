@@ -30,7 +30,7 @@
 </head>
 <body >
 <div id="app" class="cy_CMICBMS_bodybg" v-cloak>
-		<p>情报规划 / <span>分类体系</span></p>
+		<p>情报规划 > <span>分类体系</span></p>
 		<div class="cy_CMICBMS_tablebox">
 		<div class="cy_CMICBMS_box07">
 			<div class="cy_CMICBMS_schbox01">
@@ -50,8 +50,8 @@
 			  <tbody>
 			    <tr>
 			      <th scope="col" width="25px"><input type="checkbox" name="dch" id="thch" v-model="checked" v-on:click="changeAllChecked()" class="cy_CMICBMS_checkbox"><label for="cy_CMICBMS_checkbox"></label></th>
-			      <th scope="col" width="15%">分类名称</th>
-			      <th scope="col" width="50%">备注</th>
+			      <th scope="col" width="25%">分类名称</th>
+			      <th scope="col" width="40%">备注</th>
 			      <th scope="col" width="20%">创建时间</th>
 			      <th scope="col" width="auto">创建人</th>
 			    </tr>
@@ -260,7 +260,7 @@ var ic_tree_dv = {
 		template: '<div >'+
 		           '<div v-show="model.is_show" v-bind:style="t_style">'+
 		           '<img v-if="model.imgsrc" v-bind:src="model.imgsrc" v-on:click="opClose(model.id)" style="cursor:pointer">'+
-		           '{{model.name}}&nbsp;</div>'+
+		           '<span v-if="model.style"></span>{{model.name}}&nbsp;</div>'+
 		          '<ic_tree_dv  v-for="(model,index) in model.children" v-bind:key="index" v-bind:model="model"></ic_tree_dv>'+
 		          '</div>',
 		props: ['model'],
@@ -276,7 +276,7 @@ var ic_tree_dv = {
 		},
 		mounted:function(){
 			if(this.model.style){
-				this.t_style = {padding: '10px '+(26+20*this.model.depth)+'px !important'} ;
+				this.t_style = {padding: '10px '+(26+50*this.model.depth)+'px !important'} ;
 			}
 		}
 };
@@ -483,6 +483,7 @@ var app = new Vue({
 		  },
 		  DelData:function(){
 			  if(checkedNames.length>0){
+				  
 				  var _this = this;
 				  layer.confirm(Info.W0002, {
 			            btn : [ '确定', '取消' ]//按钮

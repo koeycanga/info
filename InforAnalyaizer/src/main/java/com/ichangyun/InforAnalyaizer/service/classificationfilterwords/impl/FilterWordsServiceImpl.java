@@ -74,7 +74,7 @@ public class FilterWordsServiceImpl implements FilterWordsService {
 	}
 
 	@Override
-	public List<FilterWordsVo> queryChild(String parent_Classification_ID) {
+	public List<FilterWordsVo> queryChild(String parent_Classification_ID) {		//通过节点id查询当前节点的子节点
 		// TODO Auto-generated method stub
 		List<FilterWordsVo> fwVos = this.fwMapper.queryChild(parent_Classification_ID);
 		List<String> list = this.fwMapper.queryParents();
@@ -82,8 +82,7 @@ public class FilterWordsServiceImpl implements FilterWordsService {
 			for (FilterWordsVo fwvo : fwVos) {
 				if(fwvo.getClassificationId().equals(p)) {
 					fwvo.setIsParent(1);
-				}else {
-				}
+				}	
 			}
 		}
 		return fwVos;

@@ -21,7 +21,6 @@
 
 <body style="background-color: #15266b;">
 <div id="app" v-cloak>
-<div class="cy_hidebg" id="cy_hidebg"></div>
 <div class="cy_CIASFE_top">
 	<div class="cy_CIASFE_logo"><img src="../image/fontend-logo.png"></div>
 	<div class="cy_CIASFE_tit">国药器械-竞争情报分析系统</div>
@@ -81,15 +80,9 @@
 	</div>
 	<div class="cy_CIASFE_homebox02">
 		<div class="cy_CIASFE_homeboxtit">热词云</div>
-		<div style="margin: 60px 0 0 40px;">
-		    <table style="border:1;width:100%;height:100%;align:center;">
-		       <Tr>
-		          <Td align="center"  id="wcdv1" style="width:354px;height:250px;"><td>
-		          <Td align="center" id="wcdv2" style="width:354px;height:250px;"><td>
-		       </Tr>
-		    </table>
+		<div style="text-align: center;">
+		    <div align="center" id="wcdv1"  style="width:92%;height: 280px;margin:30px 0 0 30px;"></div>
 		</div>
-		
 	</div>
 	
 <!--负面信息-->
@@ -104,41 +97,7 @@
 <a href="">使用手册</a>&nbsp;&nbsp;&nbsp;&nbsp;联系我们（电话：1648726161  邮箱：sales@ichangyun.com）    Copyright&copy;2018-2021 &nbsp;&nbsp;&nbsp;&nbsp;湖北畅云时讯软件技术有限公司版权所有
 </div>
 </div>
-<!-- =======================修改个人信息========================= -->
-<div id="userform">
-    <div id="cy_CMICBMS_add">
-        <div class="cy_CMICBMS_addtop">
-            <div class="cy_CMICBMS_addtit">个人信息</div>
-            <div class="cy_CMICBMS_addclose" onClick="hide();">X</div>
-        </div>
-        <div class="cy_CMICBMS_addtb">
-            <div class="cy_CMICBMS_addinput">用户角色：{{userData.urolename}}</div><br>
-            <div class="cy_CMICBMS_addinput">用户名：{{userData.uid}}</div><br>
-            <div class="cy_CMICBMS_addinput">姓名：{{userData.uname}}</div><br>
-            <div>
-                旧密码：<input type="text" placeholder="输入原密码"
-                              class="cy_CMICBMS_addinput" v-model="uPwd">
-            </div>
-            <div>
-                <span>*</span>设置密码：<input type="password" placeholder="设置密码"
-                                          class="cy_CMICBMS_addinput" v-model="changePwd">
-            </div>
-            <div>
-                <span>*</span>确认密码：<input type="password" placeholder="确认密码"
-                                          class="cy_CMICBMS_addinput" v-model="checkPwd">
-            </div>
-            <div class="cy_CMICBMS_addinput">所属部门：{{userData.udep}}</div><br>
-            <div class="cy_CMICBMS_addinput">手机号码：{{userData.utel}}</div><br>
-            <div class="cy_CMICBMS_addinput">邮箱地址：{{userData.uemail}}</div><br>
 
-            <div style="margin: 40px 20px 0 0;">
-                <input type="button" value="确定" class="cy_CMICBMS_schbtn"
-                       v-on:click="submit">
-            </div>
-        </div>
-
-    </div>
-</div>
 </body>
 <script type="text/javascript" src="${ctx}/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="${ctx}/layer/layer.js"></script>
@@ -160,75 +119,6 @@ var Info = {
 		I0013:'${I0013}'
 };
 
-function hide()  //去除隐藏层和弹出层
-{
-   document.getElementById("cy_hidebg").style.display="none";
-   document.getElementById("cy_CMICBMS_add").style.display="none";
-}
-var userVm = new Vue({
-    el: '#userform',
-    data: {
-        userData: {},
-        changePwd:"",
-        checkPwd:"",
-        uPwd:""
-    },
-
-    methods: {
-        submit:
-            function () {
-                var _this = this;
-                var password="";
-                $.ajax({
-                    url:"../user/returnPwd",
-                    data:{"upwd":_this.uPwd,"unum":_this.userData.unum},
-                    dateType:"json",
-                    type:"post",
-                    async:false, 
-                    success:function(res){
-                    	password=res;
-                    }
-                })
-                console.log(_this.userData.upwd+":"+password)
-                if(password!=_this.userData.upwd){
-                    layer.msg(Info.E0025);
-                    return false;
-                }else if(_this.changePwd!=_this.checkPwd){
-                    layer.msg(Info.E0004);
-                    return false;
-                }else if(_this.changePwd==""){
-                    layer.msg(Info.E0014);
-                    return false;
-                }
-                _this.userData.upwd = _this.changePwd;
-                var user = this.userData;
-                axios.get("../yhgl/user/updateUser", {
-                    params: {
-                        unum:user.unum,
-                        uid:user.uid,
-                        uname:user.uname,
-                        udep:user.udep,
-                        utel:user.utel,
-                        uemail:user.uemail,
-                        upwd:user.upwd,
-                        urole:user.urole,
-                        ustatus:user.ustatus
-                    }
-                }).then(function (response) {
-                    if (response.data.msg == "ok") {
-                        window.hide();
-                        layer.msg(Info.I0012);
-                    } else if(response.data.msg=="fault"){
-						layer.msg(Info.I0013);
-					}
-                })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            }
-    }
-});
-    
     var menu_datas = JSON.parse('${front_menu}');  //菜单数据来源于 classes/resources.properties
     
     Vue.component('ic_top_menu',ic_top_menu);   // ic_top_menu 引自 js/ic_component.js
@@ -290,85 +180,198 @@ var userVm = new Vue({
     	    	{"name":"华帝“退全款”处处设限，消费者感觉被“套路”7","href":"#"},
     	    	{"name":"华帝“退全款”处处设限，消费者感觉被“套路”8","href":"#"}
     	    ];
+    	    
+    	    
+    	    axios.get('../front/getHotWord'/*,{
+    			params: {
+    				search_key:_this.search_key.trim(),
+    				montime:_this.montime,
+    				infsour:_this.infsour
+    				}
+    			}*/)
+    			.then(function (response) {
+    		
+    				
+    				var data = JSON.parse(response.data);
+    				
+    			
+    				
+    			})
+    			.catch(function (error) {
+    			    console.log(error);
+    			});
     	}
     });
     
 
 	  
-	  var chart1 = echarts.init(document.getElementById('wcdv1'));
-	  var chart2 = echarts.init(document.getElementById('wcdv2'));
-	    
-	    var option = {
-	            tooltip: {},
-	            series: [ {
-	                type: 'wordCloud',
-	                gridSize: 15,
-	                sizeRange: [25, 40],
-	                rotationRange: [-90, 90],
-	                shape: 'ellipse',
-	                drawOutOfBound: true,
-	                textStyle: {
-	                	 normal: {
-	                         fontFamily: '宋体',
-	                         fontSize:10,
-	                         color: function () {
-	                             var colors = ['#fda67e', '#81cacc', '#cca8ba', "#88cc81", "#82a0c5", '#fddb7e', '#735ba1', '#bda29a', '#6e7074', '#546570', '#c4ccd3'];
-	                             return colors[parseInt(Math.random() * 10)];
-	                         }
-	                     },
-	                    emphasis: {
-	                        shadowBlur: 10,
-	                        shadowColor: '#333'
-	                    }
-	                },
-	                data: [
-	                    {
-	                        name: '长江',
-	                        value: 10000
-	                    },
-	                    {
-	                        name: '跨越式',
-	                        value: 6181
-	                    },
-	                    {
-	                        name: '企业',
-	                        value: 4386
-	                    },
-	                    {
-	                        name: '公司',
-	                        value: 4055
-	                    },
-	                    {
-	                        name: '市场',
-	                        value: 2467
-	                    },
-	                    {
-	                        name: '亚洲',
-	                        value: 2244
-	                    },
-	                    {
-	                        name: '中国',
-	                        value: 1898
-	                    },
-	                    {
-	                        name: '长城',
-	                        value: 1484
-	                    },
-	                    {
-	                        name: '星球',
-	                        value: 1112
-	                    },
-	                    {
-	                        name: '美好山河',
-	                        value: 965
-	                    }
-	                ]
-	            } ]
-	        };
+    var chart1 = echarts.init(document.getElementById('wcdv1'));
+    
+    var option = {
+            tooltip: {},
+            series: [ {
+                type: 'wordCloud',
+                gridSize: 18,
+                sizeRange: [25, 40],
+                rotationRange: [-90, 90],
+                shape: 'ellipse',
+                drawOutOfBound: true,
+                textStyle: {
+                	 normal: {
+                         fontFamily: '宋体',
+                         fontSize:10,
+                         color: function () {
+                             var colors = ['#fda67e', '#81cacc', '#cca8ba', "#88cc81", "#82a0c5", '#fddb7e', '#735ba1', '#bda29a', '#6e7074', '#546570', '#c4ccd3'];
+                             return colors[parseInt(Math.random() * 10)];
+                         }
+                     },
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowColor: '#333'
+                    }
+                },
+                data: [
+                    {
+                        name: '长江',
+                        value: 10000
+                    },
+                    {
+                        name: '跨越式',
+                        value: 6181
+                    },
+                    {
+                        name: '企业',
+                        value: 4386
+                    },
+                    {
+                        name: '公司',
+                        value: 4055
+                    },
+                    {
+                        name: '市场',
+                        value: 2467
+                    },
+                    {
+                        name: '亚洲',
+                        value: 2244
+                    },
+                    {
+                        name: '中国',
+                        value: 1898
+                    },
+                    {
+                        name: '长城',
+                        value: 1484
+                    },
+                    {
+                        name: '星球',
+                        value: 1112
+                    },
+                    {
+                        name: '美好山河',
+                        value: 965
+                    },
+					{
 
-	        chart1.setOption(option);
-	       
-	        chart2.setOption(option);
+					name: "长江",
+
+					value: "99"
+
+				}, {
+
+					name: "企业",
+
+					value: "92"
+
+				}, {
+
+					name: "公司",
+
+					value: "88"
+
+				}, {
+
+					name: "中国",
+
+					value: "80"
+
+				}, {
+
+					name: "大海",
+
+					value: "78"
+
+				}, {
+
+					name: "交通运输",
+
+					value: "74"
+
+				}, {
+
+					name: "城市交通",
+
+					value: "69"
+
+				}, {
+
+					name: "环境保护",
+
+					value: "66"
+
+				}, {
+
+					name: "房地产管理",
+
+					value: "61"
+
+				}, {
+
+					name: "城乡建设",
+
+					value: "52"
+
+				}, {
+
+					name: "社会保障与福利",
+
+					value: "45"
+
+				}, {
+
+					name: "社会保障",
+
+					value: "31"
+
+				}, {
+
+					name: "文体与教育管理",
+
+					value: "29"
+
+				}, {
+
+					name: "公共安全",
+
+					value: "23"
+
+				}
+                ]
+            } ]
+        };
+
+
+     /* option.series[0].data = [
+    	  {
+                name: '长江',
+                value: 10000
+            },
+            {
+                name: '跨越式',
+                value: 6181
+            }];*/
+    
+        chart1.setOption(option);
 	  
   
     

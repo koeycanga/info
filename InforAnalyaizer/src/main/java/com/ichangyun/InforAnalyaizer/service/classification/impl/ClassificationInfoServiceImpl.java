@@ -1,17 +1,19 @@
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ *  竞争情报系统
+ */
 package com.ichangyun.InforAnalyaizer.service.classification.impl;
 
-import java.util.ArrayList;
+
 import java.util.List;
-
 import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ichangyun.InforAnalyaizer.mapper.classification.ClassificationInfoMapper;
@@ -19,16 +21,18 @@ import com.ichangyun.InforAnalyaizer.mapper.numbercontrol.NumberControlMapper;
 import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean;
 import com.ichangyun.InforAnalyaizer.model.numbercontroll.NumberingcontrolBean;
 import com.ichangyun.InforAnalyaizer.service.classification.ClassificationInfoService;
+import com.ichangyun.InforAnalyaizer.service.numberingcontrol.NumberingcontrolService;
 
 @Service
 public class ClassificationInfoServiceImpl implements ClassificationInfoService {
 
-	
+
+    //分类体系Mapper
 	@Autowired
 	private ClassificationInfoMapper classificationInfoMapper;
 
 	@Autowired
-	private NumberControlMapper numberControlMapper;
+	private NumberingcontrolService numberingcontrolService;
 	
 	@Resource(name = "transactionManager")
     private PlatformTransactionManager platformTransactionManager;
@@ -54,39 +58,14 @@ public class ClassificationInfoServiceImpl implements ClassificationInfoService 
 	@Override
 	public String getClassificationInfoID() {
 		
-		//鍏抽棴鑷姩鎻愪氦
-        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        TransactionStatus status = platformTransactionManager.getTransaction(def);
+		return numberingcontrolService.getNextCFID("NC00000004");
 		
-        NumberingcontrolBean nb = new NumberingcontrolBean();
-        nb.setControlID("NC00000004");
-        NumberingcontrolBean id_nb =  numberControlMapper.getInfoByID(nb);
-        
-        String first_char = id_nb.getFirstCharacter();
-        int ws = id_nb.getNumberOfDigits();
-        int presetval = id_nb.getPresentValue()+1;
-        
-        int p_lg = String.valueOf(presetval).length();
-        
-        StringBuilder sb = new StringBuilder(first_char); 
-        for(int i=0;i<ws-1-p_lg;i++) {
-        	sb.append("0");
-        }
-        sb.append(presetval);
-        
-        nb.setPresentValue(presetval);
-        numberControlMapper.updatePresetVal(nb);
-        
-        platformTransactionManager.commit(status);  //鎻愪氦浜嬪姟
-        
-		return sb.toString();
 	}
 
 	@Override
 	public boolean AddNew(ClassificationInfoBean cb) {
        try {
-    	 //鍏抽棴鑷姩鎻愪氦
+    	   //关闭Spring事务自动提交
 	       DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 	       def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 	       TransactionStatus status = platformTransactionManager.getTransaction(def);
@@ -97,7 +76,7 @@ public class ClassificationInfoServiceImpl implements ClassificationInfoService 
 	       
 	       int res = classificationInfoMapper.addNew(cb);
 	       
-	       platformTransactionManager.commit(status);  //鎻愪氦浜嬪姟
+	       platformTransactionManager.commit(status);  //提交事务
 	       
 	       if(res==1) {
 	    	   return true;

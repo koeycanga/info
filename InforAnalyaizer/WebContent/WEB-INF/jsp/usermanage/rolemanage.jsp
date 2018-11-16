@@ -12,6 +12,7 @@
 <fmt:message key="I0004" var="I0004" bundle="${sysInfo}" /> 
 <fmt:message key="E0018" var="E0018" bundle="${sysInfo}" /> 
 <fmt:message key="E0019" var="E0019" bundle="${sysInfo}" />
+<fmt:message key="E0028" var="E0028" bundle="${sysInfo}" />
 <fmt:message key="E0022" var="E0022" bundle="${sysInfo}" />
 <fmt:message key="I0007" var="I0007" bundle="${sysInfo}" /> 
 <fmt:message key="I0008" var="I0008" bundle="${sysInfo}" /> 
@@ -26,7 +27,7 @@
 </head>
 <body >
 <div id="app" class="cy_CMICBMS_bodybg" v-cloak>
-		<p>用户管理 / <span>角色管理</span></p>
+		<p>用户管理 >  <span>角色管理</span></p>
 		<div class="cy_CMICBMS_tablebox">
 		<div class="cy_CMICBMS_box08">
 			<input type="button" v-on:click="NewRole()" class="cy_CMICBMS_addbtn" value="新增">
@@ -37,19 +38,19 @@
 <table width="100%" border="0" class="cy_CMICBMS_chrtmngtb" cellspacing="0">
   <tbody>
     <tr>
-      <th scope="col"><input type="checkbox" v-model="checked" v-on:click="changeAllChecked()"></th>
-      <th scope="col">用户名称</th>
-      <th scope="col">角色描述</th>
-      <th scope="col">最后编辑时间</th>
-      <th scope="col" style="text-align: center">状态</th>
+      <th scope="col" width="25px"><input type="checkbox" v-model="checked" v-on:click="changeAllChecked()"></th>
+      <th scope="col" >用户名称</th>
+      <th scope="col" >角色描述</th>
+      <th scope="col" >最后编辑时间</th>
+      <th scope="col" >状态</th>
     </tr>
     <tr class="cy_CMICBMS_treven" v-for="data in datas">
-      <td ><input type="checkbox" v-bind:value="data.userRole_ID"  v-model="checkedNames"></td>
-      <td>{{data.userRoleName}}</td>
-      <td>{{data.description}}</td>
-      <td>{{data.updateDateTime}}</td>
-      <td style="text-align: center" v-if="data.status=='0'">暂未使用</td>
-      <td style="text-align: center" v-if="data.status=='1'"><span>使用中</span></td>
+      <td width="25px"><input type="checkbox" v-bind:value="data.userRole_ID"  v-model="checkedNames"></td>
+      <td >{{data.userRoleName}}</td>
+      <td >{{data.description}}</td>
+      <td >{{data.updateDateTime}}</td>
+      <td  v-if="data.status=='0'">暂未使用</td>
+      <td  v-if="data.status=='1'"><span>使用中</span></td>
     </tr>
   </tbody>
 </table>
@@ -64,20 +65,24 @@
 		  <span>*</span>角色名称：<input type="text" v-on:blur="checkRoleName()" v-model="roleInfo.role_name" placeholder="角色名称" class="cy_CMICBMS_addinput">
 		  <div v-if="errInfo.role_name_err" class="cy_CMICBMS_errortip">${E0016}</div>
 		</div>
-		<div style="float:left;padding:22px !important">
-		<span>*</span>权限设置：<div>
-		  <input type="checkbox" id="yhgl" name="Authority" value="1">用户管理&nbsp;<br/>
-		  <input type="checkbox" id="qbgh" name="Authority" value="1">情报规划&nbsp;<br/>
-		  <input type="checkbox" id="qbcj" name="Authority" value="1">情报采集&nbsp;<br/>
-		  <input type="checkbox" id="qbjg" name="Authority" value="1">情报加工&nbsp;<br/>
-		  <input type="checkbox" id="xxgl" name="Authority" value="1">信息管理
+		<div style="float:left;padding:21px !important">
+		  <div style="float:left;">
+		  <span>*</span>权限设置：
+		  <input v-on:click="checkqx()" type="checkbox" id="yhgl" name="Authority" value="1">用户管理&nbsp;<br/>
+		  <input v-on:click="checkqx()" style="margin:0px 0px 0 84px;" type="checkbox" id="qbgh" name="Authority" value="1"> 情报规划&nbsp;<br/>
+		  <input v-on:click="checkqx()" style="margin:0px 0px 0 84px;" type="checkbox" id="qbcj" name="Authority" value="1"> 情报采集&nbsp;<br/>
+		  <input v-on:click="checkqx()" style="margin:0px 0px 0 84px;" type="checkbox" id="qbjg" name="Authority" value="1"> 情报加工&nbsp;<br/>
+		  <input v-on:click="checkqx()" style="margin:0px 0px 0 84px;" type="checkbox" id="xxgl" name="Authority" value="1"> 信息管理
+		  </div>
+		  <div style="width:470px;height:100px;margin:0px 0 0 0px;vertical-align: text-top;">
+		       <div style="height:100px;float: left;">角色描述:</div>
+		       <div style="width:390px;height:100px;float: left;">
+		           <textarea v-model="roleInfo.role_des" style="width:100%;height:100%;resize:none;background-color: white !important;"></textarea>
+		      </div>
+		  </div>
 		</div>
 		</div>
-		<div>
-		    <span>*</span>角色描述：<input type="text" v-on:blur="checkRoleDes()" v-model="roleInfo.role_des" placeholder="输入角色描述" class="cy_CMICBMS_addinput">
-		    <div v-if="errInfo.role_des_err" class="cy_CMICBMS_errortip">${E0017}</div>
-		 </div>
-		<div style="margin:40px 20px 0 0;">
+		<div style="margin:250px 0 0 400px;">
 		    <input type="button" v-if="isnew" v-on:click="AddNewRole()" value="确定" class="cy_CMICBMS_schbtn">
 		    <input type="button" v-else v-on:click="UpdateRole()" value="确定" class="cy_CMICBMS_schbtn">
 		 </div>
@@ -101,6 +106,7 @@ var Info = {
 		E0018:'${E0018}',
 		E0019:'${E0019}',
 		E0022:'${E0022}',
+		E0028:'${E0028}',
 		I0007:'${I0007}',
 		I0008:'${I0008}',
 		I0011:'${I0011}'
@@ -126,8 +132,8 @@ var Info = {
 		 },
 		 errInfo:{
 			 role_id_err:false,
-			 role_name_err:false,
-			 role_des_err:false
+			 role_name_err:false
+			// role_des_err:false
 		 }
 	  },
 	  components:{
@@ -148,46 +154,68 @@ var Info = {
 				  this.errInfo.role_name_err = false;
 			  }
 		  },
-		  checkRoleDes:function(){
+		 /* checkRoleDes:function(){
 			  if(this.roleInfo.role_des.trim()==''){
 				  this.errInfo.role_des_err = true;
 			  }else{
 				  this.errInfo.role_des_err = false;
 			  }
-		  },
+		  },*/
 		  NewRole:function(){
 			  this.isnew = true;
 			  this.tcc_title = Info.I0003;
 			  this.showtcc = {display:'block'};
 		  },
+		  getTargetDataById:function(id){
+			  for(var i=0;i<this.datas.length;i++){
+				  if(id==this.datas[i].userRole_ID){
+					  return this.datas[i];
+				  }
+			  }
+		  },
 		  DelRole:function(){
 			  if(this.checkedNames.length==0){
 				  layer.msg(Info.E0019);
 			  }else{
-				  var _this = this;
-				  layer.confirm(Info.W0002, {
-			            btn : [ '确定', '取消' ]//按钮
-			        }, function(index) {
-			            layer.close(index);
-			            var json = createJSON(_this.checkedNames);   //createJSON() 引自js/comm.js
-			            _this.checkedNames = [];
-						 axios.post('../role/delrole',
-								 {
-								 json:json
-						      })
-			    			.then(function (response) {
-			    				if(response.data=='ok'){
-			    					_this.search_after_update(_this.$refs.pagecomponent.pageBean);
-			    				}
-			    				if(response.data=='nok'){
-			    					layer.msg(Info.E0022);
-			    				}
-			    			})
-			    			.catch(function (error) {
-			    			    console.log(error);
-			    			});
-			        }); 
-				  
+				  var iscontinue = true;
+				  for(var i=0;i<this.checkedNames.length;i++){
+					   var data = this.getTargetDataById(this.checkedNames[i]);
+					   if(data.status=='1'){
+						   layer.msg(Info.E0028);
+						   iscontinue = false;
+						   break;
+					   }
+				  }
+				  if(iscontinue){
+					  var _this = this;
+					  layer.confirm(Info.W0002, {
+				            btn : [ '确定', '取消' ]//按钮
+				        }, function(index) {
+				            layer.close(index);
+				            var json = createJSON(_this.checkedNames);   //createJSON() 引自js/comm.js
+				            _this.checkedNames = [];
+							 axios.post('../role/delrole',
+									 {
+									 json:json
+							      })
+				    			.then(function (response) {
+				    				if(response.data=='ok'){
+				    					if(_this.checkedNames.length==_this.checkedArr.length){
+				    					     if(_this.$refs.pagecomponent.pageBean.pageNow!=1){
+				    					    	 _this.$refs.pagecomponent.pageBean.pageNow-=1;
+				    					     }
+				    					}
+				    					_this.search(_this.$refs.pagecomponent.pageBean);
+				    				}
+				    				if(response.data=='nok'){
+				    					layer.msg(Info.E0022);
+				    				}
+				    			})
+				    			.catch(function (error) {
+				    			    console.log(error);
+				    			});
+				        }); 
+				  }
 			  }
 		  },
 		  EditRole:function(){
@@ -212,8 +240,8 @@ var Info = {
 					  	  break;
 			  		  }
 			  	  }
-			  }
-			  
+			  	// this.roleInfo.role_des = this.getDescription();
+			  }  
 		  },
 		  hideTcc:function(){     //关闭弹出层
 			  this.roleInfo.role_id='';
@@ -221,11 +249,54 @@ var Info = {
 			  this.roleInfo.role_des='';
 			  this.errInfo.role_id_err = false;
 			  this.errInfo.role_name_err = false;
-			  this.errInfo.role_des_err = false;
+			  //this.errInfo.role_des_err = false;
 			  this.isdisabled = false;
 			  $("[name='Authority']").prop("checked",false);
 			  this.showtcc = {display:'none'};
 			  
+		  },
+		  checkqx:function(){
+			 // this.roleInfo.role_des = this.getDescription();
+		  },
+		  getDescription:function(){
+			var res = "";
+			if($("[name='Authority']").eq(0).is(":checked")){
+			     if(res==""){
+			    	 res += "用户管理";
+			     }else{
+			    	 res +="+用户管理";
+			     }
+			} 
+			if($("[name='Authority']").eq(1).is(":checked")){
+			     if(res==""){
+			    	 res += "情报规划";
+			     }else{
+			    	 res +="+情报规划";
+			     }
+			} 
+			if($("[name='Authority']").eq(2).is(":checked")){
+			     if(res==""){
+			    	 res += "情报采集";
+			     }else{
+			    	 res +="+情报采集 ";
+			     }
+			} 
+			
+			if($("[name='Authority']").eq(3).is(":checked")){
+			     if(res==""){
+			    	 res += "情报加工";
+			     }else{
+			    	 res +="+情报加工";
+			     }
+			} 
+			if($("[name='Authority']").eq(4).is(":checked")){
+			     if(res==""){
+			    	 res += "信息管理";
+			     }else{
+			    	 res +="+信息管理";
+			     }
+			} 
+			return res;
 		  },
 		  UpdateRole:function(){
 			  var b = true;
@@ -233,18 +304,17 @@ var Info = {
 					 this.errInfo.role_name_err = true;
 					 b = false;
 			  }
-			  if(this.roleInfo.role_des.trim()==''){
-					 this.errInfo.role_des_err = true;
-					 b = false;
-			  }
 			  if(b){
 				 var auth = this.getAuth();
 			     var _this = this;
+			     if(this.roleInfo.role_des.trim()==''){
+			    	 this.roleInfo.role_des = this.getDescription();
+			     }
 				 axios.get('../role/updaterole',{
 		    			params: {
 		    				UserRole_ID:this.roleInfo.role_id.trim(),
 		    				UserRoleName:this.roleInfo.role_name.trim(),
-		    				Description:this.roleInfo.role_des.trim(),
+		    				Description:this.roleInfo.role_des.trim(),//this.getDescription(),
 		    				Authority:auth
 		    			   }
 		    			})
@@ -266,21 +336,16 @@ var Info = {
 		  },
 		  AddNewRole:function(){
 			 var b = true;
-			 /*if(this.roleInfo.role_id.trim()==''){
-				 this.errInfo.role_id_err = true;
-				 b = false;
-			 }*/
 			 if(this.roleInfo.role_name.trim()==''){
 				 this.errInfo.role_name_err = true;
-				 b = false;
-			 }
-			 if(this.roleInfo.role_des.trim()==''){
-				 this.errInfo.role_des_err = true;
 				 b = false;
 			 }
 			 if(b){
 				 var auth = this.getAuth();
 				 var _this = this;
+				 if(this.roleInfo.role_des.trim()==''){
+			    	 this.roleInfo.role_des = this.getDescription();
+			     }
 				 axios.get('../role/addnewrole',{
 		    			params: {
 		    				//UserRole_ID:this.roleInfo.role_id.trim(),

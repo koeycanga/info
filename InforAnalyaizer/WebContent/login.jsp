@@ -24,7 +24,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>前端与后台登陆页</title>
+<title>竞争情报分析系统</title>
 <link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style.css">
 </head>
 
@@ -127,7 +127,7 @@
 				 
 			 },
 			 flash_checkimg:function(){   //刷新验证码图片
-				 this.checkimg_src = '${ctx}/login/valicode?date='+new Date();
+				 this.checkimg_src = '${ctx}/login/valicode?date='+new Date().getTime();
 			 },
 			 ishaverember:function(){    //处理cookie
 				 var _this = this;

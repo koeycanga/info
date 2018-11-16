@@ -15,10 +15,11 @@
     <result column="CreateDateTime" property="createdatetime" jdbcType="TIMESTAMP" />
     <result column="UpdateUser" property="updateuser" jdbcType="VARCHAR" />
     <result column="UpdateDateTime" property="updatedatetime" jdbcType="TIMESTAMP" />
+    <result column="SuperUserFlag" property="superuserflag" jdbcType="CHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     User_ID, UserNo, Password, Name, Department, Telephone, EMail, UserRole_ID, Status, 
-    CreateUser, CreateDateTime, UpdateUser, UpdateDateTime
+    CreateUser, CreateDateTime, UpdateUser, UpdateDateTime, SuperUserFlag
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoKey" >
     select 
@@ -34,8 +35,7 @@
     </where>
 
   </select>
-  
-  
+    
   <delete id="deleteByPrimaryKey" parameterType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoKey" >
     delete from m_userinfo
     <where>
@@ -47,18 +47,38 @@
 	      </if>
     </where>
   </delete>
+  
   <insert id="insert" parameterType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfo" >
     insert into m_userinfo (User_ID, Password, 
       Name, Department, Telephone, 
       EMail, UserRole_ID, Status, 
       CreateUser, CreateDateTime, UpdateUser, 
       UpdateDateTime)
-    values (#{userId,jdbcType=CHAR}, #{password,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{userroleId,jdbcType=CHAR}, #{status,jdbcType=CHAR}, 
-      #{createuser,jdbcType=VARCHAR}, #{createdatetime,jdbcType=TIMESTAMP}, #{updateuser,jdbcType=VARCHAR}, 
-      #{updatedatetime,jdbcType=TIMESTAMP})
+    values (#{userId}, #{password}, 
+      #{name}, #{department}, #{telephone}, 
+      #{email}, #{userroleId}, #{status}, 
+      #{createuser}, NOW(), #{updateuser}, 
+      NOW())
   </insert>
+  
+  <update id="updateRoleStatus" parameterType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfo">
+       update m_userrole set Status='1' where UserRole_ID=#{userroleId}
+  </update>
+  
+  <update id="updateRoleStatusToZero">
+       UPDATE m_userrole
+			SET STATUS = '0'
+			where UserRole_ID NOT IN (
+					SELECT
+						m2.UserRole_ID
+					FROM
+						m_userinfo m1,
+						m_userrole m2
+					WHERE
+						m1.UserRole_ID = m2.UserRole_ID
+				)
+  </update>
+  
   <insert id="insertSelective" parameterType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfo" >
     insert into m_userinfo
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -144,6 +164,7 @@
       </if>
     </trim>
   </insert>
+  
   <update id="updateByPrimaryKeySelective" parameterType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfo" >
     update m_userinfo
     <set >
@@ -184,6 +205,7 @@
     where User_ID = #{userId,jdbcType=CHAR}
       and UserNo = #{userno,jdbcType=INTEGER}
   </update>
+  
   <update id="updateByPrimaryKey" parameterType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfo" >
     update m_userinfo
     set Password = #{password,jdbcType=VARCHAR},
@@ -200,6 +222,7 @@
     where User_ID = #{userId,jdbcType=CHAR}
       and UserNo = #{userno,jdbcType=INTEGER}
   </update>
+  
   <select id="queryAllUser" resultMap="BaseResultMap" parameterType="hashmap">
     select 
     <include refid="Base_Column_List" />
@@ -226,6 +249,7 @@
     </where>
 	      limit #{l_pre},#{rowSize}
   </select> 
+  
   <select id="queryCount" resultType="int" parameterType="hashmap">
   select count(1) from m_userinfo
       <where>

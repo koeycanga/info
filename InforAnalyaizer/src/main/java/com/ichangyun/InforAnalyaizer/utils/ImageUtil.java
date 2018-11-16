@@ -1,3 +1,8 @@
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ *  竞争情报系统
+ */
 package com.ichangyun.InforAnalyaizer.utils;
 
 import java.awt.Color;
@@ -10,6 +15,11 @@ import java.io.OutputStream;
 import java.util.Random;
 import javax.imageio.ImageIO;
 
+/**
+ * 生成验证码图片的工具类
+ * @author renhao
+ *
+ */
 public final class ImageUtil {
     
     // 验证码字符集
@@ -84,12 +94,12 @@ public final class ImageUtil {
         return color;
     }
     
-    public static void main(String[] args) throws IOException {
+  /*  public static void main(String[] args) throws IOException {
         Object[] objs = createImage();
         BufferedImage image = (BufferedImage) objs[1];
         OutputStream os = new FileOutputStream("d:/1.png");
         ImageIO.write(image, "png", os);
         os.close();
-    }
+    }*/
 
 }

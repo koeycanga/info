@@ -4,7 +4,11 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * 将对象转为map的工具类
+ * @author Administrator
+ *
+ */
 
 public class Obj2Map {
 	public static Map<String, Object> object2Map(Object obj) {

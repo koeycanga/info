@@ -4,6 +4,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:setBundle basename="resources" var="sysInfo" />
 <fmt:message key="front_menu" var="front_menu" bundle="${sysInfo}" /> 
+<fmt:message key="W0003" var="W0003" bundle="${sysInfo}" />
+<fmt:message key="E0004" var="E0004" bundle="${sysInfo}" />
+<fmt:message key="E0014" var="E0014" bundle="${sysInfo}" />
+<fmt:message key="E0025" var="E0025" bundle="${sysInfo}" />   
+<fmt:message key="I0012" var="I0012" bundle="${sysInfo}" />
+<fmt:message key="I0013" var="I0013" bundle="${sysInfo}" />
 <!doctype html>
 <html>
 <head>
@@ -532,6 +538,16 @@
 <script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script type="text/javascript" src="${ctx}/js/comm.js"></script>
 <script>
+
+var Info = {
+		  W0003:'${W0003}',
+		  E0004:'${E0004}',
+		  E0014:'${E0014}',
+		  E0025:'${E0025}',
+		  I0012:'${I0012}',
+		  I0013:'${I0013}'
+	};
+
 
 var menu_datas = JSON.parse('${front_menu}') //菜单数据来源于 classes/resources.properties
 Vue.component('ic_top_menu',ic_top_menu);   // ic_top_menu 引自 js/ic_component.js

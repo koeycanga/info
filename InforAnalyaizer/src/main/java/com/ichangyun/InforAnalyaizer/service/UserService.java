@@ -1,7 +1,9 @@
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ * 竞争情报分析系统
+ */
 package com.ichangyun.InforAnalyaizer.service;
-
-
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,20 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import com.ichangyun.InforAnalyaizer.model.User;
 
 /**
- * 业务层接口
+ * UserService 业务层接口
+ * @author renhao
+ * @date 2018/11/09
  */
 public interface UserService {
-     List<User> getUser(int id);
- 
-     void insertUser(int id, String name, int age, String sex);
- 
-     List<User> selectAll();
- 
-     Object update();
 
-     User isUserExist(String username, String passwd);
+    User isUserExist(String username, String passwd);
 
-	void addCookie(HttpServletResponse response, User user,String passwd);
+    void addCookie(HttpServletResponse response, User user,String passwd);
 
-	void delCookie(HttpServletRequest request, HttpServletResponse response);
+    void delCookie(HttpServletRequest request, HttpServletResponse response);
 }

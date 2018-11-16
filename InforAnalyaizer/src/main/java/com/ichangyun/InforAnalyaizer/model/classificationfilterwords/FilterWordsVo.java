@@ -9,10 +9,10 @@ import com.ichangyun.InforAnalyaizer.model.BaseBean;
 public class FilterWordsVo extends ClassificationFilterwordsWithBLOBs{
 
 
-	private String classificationName;
-	private String parent_Classification_ID;
-	private String parent_name;
-	private int displayOrder;
+	private String classificationName;					//节点名称
+	private String parent_Classification_ID;			//父节点id
+	private String parent_name;							//父节点名称
+	private int displayOrder;							//表示顺
 	private int isParent;								//判断是否为父节点
 	private boolean is_show=false;						//此节点是否显示
 	private List<FilterWordsVo> children = new ArrayList<>();

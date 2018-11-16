@@ -1,6 +1,0 @@
-#\u5F00\u53D1\u73AF\u5883
-jdbc.driver=com.mysql.jdbc.Driver
-jdbc.url=jdbc:mysql://localhost:6666/inforAnalyaizer_test
-jdbc.user=root
-jdbc.password=admin
-aa=dasdasd

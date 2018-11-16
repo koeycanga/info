@@ -1,3 +1,8 @@
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ *  竞争情报分析系统
+ */
 package com.ichangyun.InforAnalyaizer.mapper.usermanage;
 
 import java.util.List;
@@ -5,27 +10,75 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.ichangyun.InforAnalyaizer.model.KBean;
 import com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean;
 
+/**
+ * RoleMapper：角色管理mapper
+ *
+ * @author renhao
+ * @Date:2018-11-9
+ */
 public interface RoleMapper {
 
-	public List<KBean> sayhello();
+    /**
+     * 获得角色总数目
+     * @return
+     * Date:2018-11-9
+     */
+    public int getRoleCount();
 
-	public int getRoleCount();
+    /**
+     * 根据条件查询角色信息
+     * @param map
+     * @return
+     * Date:2018-11-9
+     */
+    public List<RoleManageBean> getRole(@Param("param")Map map);
 
-	public List<RoleManageBean> getRole(@Param("param")Map map);
+    /**
+     * 根据角色ID获得角色数目
+     * @param map
+     * @return
+     * Date:2018-11-9
+     */
+    public int getRoleCountByID(@Param("param")Map map);
 
-	public int getRoleCountByID(@Param("param")Map map);
+    /**
+     * 新增角色
+     * @param map
+     * @return
+     * @Date:2018-11-9
+     */
+    public int AddNewRole(@Param("param")Map map);
 
-	public int AddNewRole(@Param("param")Map map);
+    /**
+     * 更新角色信息
+     * @param ub
+     * @return
+     * @Date:2018-11-9
+     */
+    public int updateRole(RoleManageBean ub);
 
-	public int updateRole(RoleManageBean ub);
+    /**
+     * 删除角色信息
+     * @param list  要删除的角色ID列表
+     * @return
+     * Date:2018-11-9
+     */
+    public int delRole(List<RoleManageBean> list);
 
-	public int delRole(List<RoleManageBean> list);
-	
-	List<RoleManageBean> queryAllRole();
+    /**
+     * 查询所有角色
+     * @return 所有角色信息
+     * Date:2018-11-9
+     */
+    public List<RoleManageBean> queryAllRole();
 
-	public RoleManageBean queryById(String urole);
+    /**
+     * 根据ID查询角色信息
+     * @param urole 要查询的角色ID
+     * @return 查询到的角色信息
+     */
+    public RoleManageBean queryById(String urole);
 
 }

@@ -1,27 +1,87 @@
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ *  竞争情报系统
+ */
 package com.ichangyun.InforAnalyaizer.model.classification;
 
 import com.ichangyun.InforAnalyaizer.model.BaseBean;
 
 /**
- * 
+ * 分类体系数据ｂｅａｎ
  * 对应数据表 M_ClassificationInfo
  *
  */
 public class ClassificationInfoBean extends BaseBean{
 
+	/**
+	 * 分类体系ＩＤ
+	 */
 	private String Classification_ID;
+	
+	/**
+	 * 分类体系名称
+	 */
 	private String ClassificationName;
+	
+	/**
+	 * 分类体系父节点ＩＤ
+	 */
 	private String Parent_Classification_ID;
+	
+	/**
+	 * 分类体系排位顺序
+	 */
 	private int DisplayOrder;
+	
+	/**
+	 * 分类体系描述
+	 */
 	private String Description;
+	
+	/**
+	 * 分类体系验证标识位
+	 */
 	private String ValidFlag;
+	
+	/**
+	 * 创建者
+	 */
 	private String CreateUser;
+	
+	/**
+	 * 创建时间
+	 */
 	private String CreateDateTime;
+	
+	/**
+	 * 修改者
+	 */
 	private String UpdateUser;
+	
+	/**
+	 * 修改时间
+	 */
 	private String UpdateDateTime;
+	
+	/**
+	 * 分类体系子节点总数
+	 */
 	private int children_lg;
+	
+	/**
+	 * 分类体系是否已绑定网站
+	 */
 	private String isbinding;
+	
+	/**
+	 * 分类体系绑定网站数量
+	 */
 	private int binding_lg;
+	
+	/**
+	 * 查询数量标识位
+	 */
 	private int cnt;
 	
 	public int getCnt() {

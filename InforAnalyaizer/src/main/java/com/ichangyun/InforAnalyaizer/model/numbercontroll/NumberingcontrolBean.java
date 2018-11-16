@@ -1,17 +1,42 @@
+/**
+ * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * <p>
+ *  ¾ºÕùÇé±¨ÏµÍ³
+ */
 package com.ichangyun.InforAnalyaizer.model.numbercontroll;
 
 
 /**
- * 
- *  å¯¹åº”æ•°æ®è¡¨ m_numberingcontrol çš„Bean
- *
+ *   ²É·¬±íÊµÌåÀà
+ *   ¶ÔÓ¦Êı¾İ±ím_numberingcontrolµÄÊµÌåÀà
+ *   @author renhao
+ *   Date:2018-11-9
  */
 public class NumberingcontrolBean {
 
+	/**
+	 * ²É·¬ID
+	 */
 	private String ControlID;
+	
+	/**
+	 * ²É·¬Ãû³Æ
+	 */
 	private String ControlName;
+	
+	/**
+	 * ²É·¬Î»Ê××ÖÄ¸
+	 */
 	private String FirstCharacter;
+	
+	/**
+	 * ²É·¬×ÜÎ»Êı
+	 */
 	private int NumberOfDigits;
+	
+	/**
+	 * ²É·¬µ±Ç°ÊıÖµ
+	 */
 	private int PresentValue;
 	
 	public String getControlID() {
