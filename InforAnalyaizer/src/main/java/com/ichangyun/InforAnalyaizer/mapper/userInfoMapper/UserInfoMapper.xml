@@ -215,7 +215,7 @@
       EMail = #{email,jdbcType=VARCHAR},
       UserRole_ID = #{userroleId,jdbcType=CHAR},
       Status = #{status,jdbcType=CHAR},
-      CreateUser = #{createuser,jdbcType=VARCHAR},
+      CreateUser = #{createuser},
       CreateDateTime = #{createdatetime,jdbcType=TIMESTAMP},
       UpdateUser = #{updateuser,jdbcType=VARCHAR},
       UpdateDateTime = #{updatedatetime,jdbcType=TIMESTAMP}
@@ -226,7 +226,7 @@
   <select id="queryAllUser" resultMap="BaseResultMap" parameterType="hashmap">
     select 
     <include refid="Base_Column_List" />
-    from m_userinfo
+    from m_userinfo 
     <where>
 	    <if test="name != null" >
 	        and Name like concat("%",#{name},"%")

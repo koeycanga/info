@@ -5,7 +5,8 @@
 <fmt:setBundle basename="resources" var="sysInfo" />  <!-- basename: 在classes文件夹下properties文件的文件名 -->
 <fmt:message key="I0003" var="I0003" bundle="${sysInfo}" /> 
 <fmt:message key="I0004" var="I0004" bundle="${sysInfo}" /> 
-<fmt:message key="W0002" var="W0002" bundle="${sysInfo}" /> 
+<fmt:message key="W0002" var="W0002" bundle="${sysInfo}" />
+<fmt:message key="W0004" var="W0004" bundle="${sysInfo}" /> 
 <fmt:message key="E0006" var="E0006" bundle="${sysInfo}" /> 
 <fmt:message key="E0016" var="E0016" bundle="${sysInfo}" /> 
 <fmt:message key="E0017" var="E0017" bundle="${sysInfo}" /> 
@@ -16,7 +17,8 @@
 <fmt:message key="E0022" var="E0022" bundle="${sysInfo}" />
 <fmt:message key="I0007" var="I0007" bundle="${sysInfo}" /> 
 <fmt:message key="I0008" var="I0008" bundle="${sysInfo}" /> 
-<fmt:message key="I0011" var="I0011" bundle="${sysInfo}" /> 
+<fmt:message key="I0011" var="I0011" bundle="${sysInfo}" />
+<fmt:message key="I0014" var="I0014" bundle="${sysInfo}" />
 <!doctype html>
 <html>
 <head>
@@ -102,6 +104,7 @@ var Info = {
 		I0003:'${I0003}',
 		I0004:'${I0004}',
 		W0002:'${W0002}',
+		W0004:'${W0004}',
 		E0006:'${E0006}',
 		E0018:'${E0018}',
 		E0019:'${E0019}',
@@ -109,7 +112,8 @@ var Info = {
 		E0028:'${E0028}',
 		I0007:'${I0007}',
 		I0008:'${I0008}',
-		I0011:'${I0011}'
+		I0011:'${I0011}',
+		I0014:'${I0014}'
 };
 
  
@@ -128,7 +132,8 @@ var Info = {
 		 roleInfo:{
 			 role_id:'',          
 			 role_name:'',
-			 role_des:''
+			 role_des:'',
+		     UpdateDateTime:''
 		 },
 		 errInfo:{
 			 role_id_err:false,
@@ -154,13 +159,6 @@ var Info = {
 				  this.errInfo.role_name_err = false;
 			  }
 		  },
-		 /* checkRoleDes:function(){
-			  if(this.roleInfo.role_des.trim()==''){
-				  this.errInfo.role_des_err = true;
-			  }else{
-				  this.errInfo.role_des_err = false;
-			  }
-		  },*/
 		  NewRole:function(){
 			  this.isnew = true;
 			  this.tcc_title = Info.I0003;
@@ -205,7 +203,8 @@ var Info = {
 				    					    	 _this.$refs.pagecomponent.pageBean.pageNow-=1;
 				    					     }
 				    					}
-				    					_this.search(_this.$refs.pagecomponent.pageBean);
+				    					layer.msg(Info.I0014);
+				    					_this.search(_this.$refs.pagecomponent.pageBean,false);
 				    				}
 				    				if(response.data=='nok'){
 				    					layer.msg(Info.E0022);
@@ -231,6 +230,7 @@ var Info = {
 					  	  this.roleInfo.role_id = this.checkedNames[0];
 					  	  this.roleInfo.role_name = this.datas[i].userRoleName;
 					      this.roleInfo.role_des = this.datas[i].description;
+					      this.roleInfo.UpdateDateTime = this.datas[i].updateDateTime;
 					      var auth = this.datas[i].authority;
 					      if(auth.charAt(0)=='1'){$("#yhgl").prop("checked",true);}
 					      if(auth.charAt(1)=='1'){$("#qbgh").prop("checked",true);}
@@ -312,20 +312,24 @@ var Info = {
 			     }
 				 axios.get('../role/updaterole',{
 		    			params: {
-		    				UserRole_ID:this.roleInfo.role_id.trim(),
-		    				UserRoleName:this.roleInfo.role_name.trim(),
-		    				Description:this.roleInfo.role_des.trim(),//this.getDescription(),
-		    				Authority:auth
+		    				UserRole_ID:_this.roleInfo.role_id.trim(),
+		    				UserRoleName:_this.roleInfo.role_name.trim(),
+		    				Description:_this.roleInfo.role_des.trim(),//this.getDescription(),
+		    				Authority:auth,
+		    				UpdateDateTime:this.roleInfo.UpdateDateTime
 		    			   }
 		    			})
 		    			.then(function (response) {
 		    				if(response.data=='ok'){
 		    					layer.msg(Info.I0007);
 		    					_this.hideTcc();
-		    					_this.search(_this.$refs.pagecomponent.pageBean);
+		    					_this.search(_this.$refs.pagecomponent.pageBean,false);
 		    				}
 		    				if(response.data=='nok'){
 		    					layer.msg(Info.E0022);
+		    				}
+		    				if(response.data=='already update'){
+		    					layer.msg(Info.W0004);
 		    				}
 		    				
 		    			})
@@ -358,7 +362,7 @@ var Info = {
 		    				if(response.data=='ok'){
 		    					layer.msg(Info.I0008);
 		    					_this.hideTcc();
-		    					_this.search_after_update(_this.$refs.pagecomponent.pageBean);
+		    					_this.search_after_update(_this.$refs.pagecomponent.pageBean,false);
 		    				}
 		    				if(response.data=='exist'){
 		    					layer.msg(Info.E0018);
@@ -411,9 +415,9 @@ var Info = {
 					this.checkedNames = [];
 				}
 		  },
-		  search_after_update:function(pageBean){
+		  search_after_update:function(pageBean,b){
 			  pageBean.pageNow = 1;
-			  this.search(pageBean);
+			  this.search(pageBean,b);
 		  }
 	  },
 	  watch: {
@@ -427,13 +431,15 @@ var Info = {
 	 },
 	  computed:{
 			search:function(){
-		        return function(pageBean){
+		        return function(pageBean,ismsg){
 		        	var _this = this;
 		        	this.checkedNames = [];
-		        	layer.msg(Info.I0011, {
-		        		  icon: 16
-		        		  ,shade: 0.01
-		        		});
+		        	if(ismsg){
+			        	layer.msg(Info.I0011, {
+			        		  icon: 16
+			        		  ,shade: 0.01
+			        		});
+		        	}
 		    		axios.get('../role/search',{
 		    			params: {
 		    				pageNow:pageBean.pageNow,
@@ -441,7 +447,6 @@ var Info = {
 		    				}
 		    			})
 		    			.then(function (response) {
-		    				//console.log(response.data);
 		    				 var data = JSON.parse(response.data);
 		    				
 		    				_this.$refs.pagecomponent.dealAfterSearch(data.rowCount); 
@@ -451,7 +456,9 @@ var Info = {
 		    				  for(var i=0;i<data.resdata.length;i++){
 		    					  _this.checkedArr.push(data.resdata[i].userRole_ID);
 		    				  }
-		    				  layer.closeAll();
+		    				  if(ismsg){
+		    				  	 layer.closeAll();
+		    				  }
 		    			})
 		    			.catch(function (error) {
 		    			    console.log(error);

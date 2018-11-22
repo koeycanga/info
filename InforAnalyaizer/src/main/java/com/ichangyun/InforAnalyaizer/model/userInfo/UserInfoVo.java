@@ -4,6 +4,11 @@
  * 竞争情报分析系统
  */
 package com.ichangyun.InforAnalyaizer.model.userInfo;
+
+import java.util.Date;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * UserInfoVo：账号详细画面的项目定义
  *
@@ -22,6 +27,16 @@ public class UserInfoVo {
     private String upwd;        // 密码
     private String urolename;   // 角色名
     private String usuperuserflag; // 超级管理员区分（0：非超级管理员，1：超级管理员）
+
+    @JSONField(format="yyyy-MM-dd hh:mm:ss")
+    private Date uupdatedatetime;   // 更新日时
+
+    public Date getUupdatedatetime() {
+        return uupdatedatetime;
+    }
+    public void setUupdatedatetime(Date updatedatetime) {
+        this.uupdatedatetime = updatedatetime;
+    }
 
     public String getUsuperuserflag() {
         return usuperuserflag;

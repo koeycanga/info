@@ -6,7 +6,12 @@
 package com.ichangyun.InforAnalyaizer.service.classification.impl;
 
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +27,7 @@ import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean
 import com.ichangyun.InforAnalyaizer.model.numbercontroll.NumberingcontrolBean;
 import com.ichangyun.InforAnalyaizer.service.classification.ClassificationInfoService;
 import com.ichangyun.InforAnalyaizer.service.numberingcontrol.NumberingcontrolService;
+import com.ichangyun.InforAnalyaizer.utils.DateUtils;
 
 @Service
 public class ClassificationInfoServiceImpl implements ClassificationInfoService {
@@ -64,11 +70,12 @@ public class ClassificationInfoServiceImpl implements ClassificationInfoService 
 
 	@Override
 	public boolean AddNew(ClassificationInfoBean cb) {
+		TransactionStatus status = null;
        try {
     	   //关闭Spring事务自动提交
 	       DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 	       def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-	       TransactionStatus status = platformTransactionManager.getTransaction(def);
+	       status = platformTransactionManager.getTransaction(def);
 	       
 	       int display_order = classificationInfoMapper.getDisplayOrder(cb);
 	       
@@ -84,6 +91,7 @@ public class ClassificationInfoServiceImpl implements ClassificationInfoService 
        
 	       return false;
        }catch(Exception e) {
+    	   if(status!=null) {platformTransactionManager.rollback(status);}
     	   e.printStackTrace();
     	   return false;
        }
@@ -183,6 +191,98 @@ public class ClassificationInfoServiceImpl implements ClassificationInfoService 
 		ClassificationInfoBean acb = classificationInfoMapper.getInfoByID(cb);
 		JSONObject jobj = (JSONObject) JSONObject.toJSON(acb);
 		return jobj.toJSONString();
+	}
+
+	@Override
+	public String getAllClassification() {
+		
+		String yesterday = DateUtils.format(DateUtils.addDateDays(new Date(), -1), DateUtils.DATE_PATTERN);
+		
+		String today = DateUtils.format(new Date(), DateUtils.DATE_PATTERN);
+		
+		List<ClassificationInfoBean> list = classificationInfoMapper.getAllClassification(yesterday,today);
+		
+		List<ClassificationInfoBean> rlist = new ArrayList<ClassificationInfoBean>();
+		
+		Map<String,ClassificationInfoBean> map = new HashMap<String,ClassificationInfoBean>();
+		
+		for(int i=list.size()-1;i>=0;i--) {  //去掉重复的根节点
+			ClassificationInfoBean cb = list.get(i);
+			if(cb.getParent_Classification_ID().equals("0000000000")) { 
+				if(map.get(cb.getClassification_ID())==null) {
+					if(cb.getChildren_lg()>0&&isHaveChildren(cb,list)) {
+						cb.setYesterday_cnt(0);
+						cb.setToday_cnt(0);
+					}
+					map.put(cb.getClassification_ID(),cb);
+				}else {
+					list.remove(i);
+				}
+			}else {
+				if(cb.getChildren_lg()>0) {
+					if(isHaveChildren(cb,list)) {
+ 						 cb.setCnt(0);
+					}
+				}
+			}
+		}
+		
+		for(ClassificationInfoBean cb : list) {
+			rlist.add(cb);
+			if(!cb.getParent_Classification_ID().equals("0000000000")) {  //不是根节点
+				dealCntCB(cb,list,yesterday,today);
+			}
+		}
+		
+		JSONArray listArray=(JSONArray) JSONArray.toJSON(rlist);
+				
+		return listArray.toJSONString();
+	}
+
+	private boolean isHaveChildren(ClassificationInfoBean cb, List<ClassificationInfoBean> list) {
+		for(ClassificationInfoBean acb:list) {
+			 if(acb.getParent_Classification_ID().equals(cb.getClassification_ID())) {
+				 return true;
+			 }
+		}
+		return false;
+	}
+
+	private void dealCntCB(ClassificationInfoBean cb, List<ClassificationInfoBean> list, String yesterday,String today) {
+		
+		if(cb.getReleasetime()!=null&&!cb.getReleasetime().equals("")&&cb.getCnt()>0) {
+			
+			ClassificationInfoBean root = getRootNode(cb,list);
+            
+			if(cb.getReleasetime().equals(yesterday)) {
+				root.setYesterday_cnt(root.getYesterday_cnt()+cb.getCnt());
+			}
+			
+			if(cb.getReleasetime().equals(today)) {
+				root.setToday_cnt(root.getToday_cnt()+cb.getCnt());
+			}
+		}
+		
+	}
+
+	/**
+	 * 获得一个
+	 * @param cb
+	 * @param list
+	 * @return
+	 */
+	private ClassificationInfoBean getRootNode(ClassificationInfoBean cb, List<ClassificationInfoBean> list) {
+		for(ClassificationInfoBean acb : list) {
+			if(acb.getClassification_ID().equals(cb.getParent_Classification_ID())) {
+				if(acb.getParent_Classification_ID().equals("0000000000")) {
+					return acb;
+				}else {
+					return getRootNode(acb,list);
+				}
+				
+			}
+		}
+		return null;
 	}
 	
 }

@@ -6,6 +6,8 @@
 package com.ichangyun.InforAnalyaizer.controller.usermanage;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ichangyun.InforAnalyaizer.model.CommBean;
 import com.ichangyun.InforAnalyaizer.model.User;
 import com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean;
+import com.ichangyun.InforAnalyaizer.service.common.service.DBUpdateCheckService;
 import com.ichangyun.InforAnalyaizer.service.usermanage.RoleService;
 
 /**
@@ -37,6 +40,8 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private DBUpdateCheckService dbUpdateCheckService;
 
     /**
      * 进入角色管理页面
@@ -113,9 +118,15 @@ public class RoleController {
         }else {
             User user = (User) session.getAttribute(CommBean.SESSION_NAME);
             ub.setUpdateUser(user.getUser_ID());
-            if(!roleService.updateRole(ub)) {
-                res = "nok";
-            }
+            List<String> paramList = new ArrayList<String>();
+        	paramList.add(ub.getUserRole_ID());
+        	if(!dbUpdateCheckService.DBUpdateCheck("2", paramList, ub.getUpdateDateTime())) {
+        		res = "already update";
+        	}else {
+	            if(!roleService.updateRole(ub)) {
+	                res = "nok";
+	            }
+        	}
         }
         return res;
     }

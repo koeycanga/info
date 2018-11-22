@@ -8,6 +8,7 @@ package com.ichangyun.InforAnalyaizer.controller.front;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ichangyun.InforAnalyaizer.model.CommBean;
 import com.ichangyun.InforAnalyaizer.model.User;
 import com.ichangyun.InforAnalyaizer.model.front.HotWordBean;
+import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
 import com.ichangyun.InforAnalyaizer.service.front.HomeService;
 import com.ichangyun.InforAnalyaizer.service.userInfo.UserInfoService;
 
@@ -46,6 +48,34 @@ public class HomeController {
 		return new ModelAndView("frontpage/home");
 	}
 	
+	/**
+	 * 进入到热词云详情页面
+	 * @return
+	 */
+	@RequestMapping("/tohotword")
+	public Object tohotword(String word,HttpServletRequest request) {
+		
+		request.setAttribute("table_title", "热词云");
+		
+		request.setAttribute("word",word);
+		
+		return new ModelAndView("frontpage/worddetail");
+	}
+	
+	
+	@RequestMapping("/getHomeDatas")
+	public Object getHomeDatas() {
+	    
+		String newest_datas = homeService.getNewestDatas();
+		
+		String warn_datas = homeService.getWarnDatas();
+		
+		String negative_datas = homeService.getNegativeDatas();
+		
+		String res = "{\"newest_datas\":"+newest_datas+",\"warn_datas\":"+warn_datas+",\"negative_datas\":"+negative_datas+"}";
+		
+		return res;
+	}
 	
 	@RequestMapping("/getHotWord")
 	public Object getHotWord() {
@@ -53,6 +83,27 @@ public class HomeController {
 		String json_hotword = homeService.getHotWord();
 		
 		return json_hotword;
+	}
+	
+	
+	@RequestMapping("/searchbyhotword")
+	public Object searchByHotWord(HotWordBean hb) {
+		
+		int rowCount = homeService.getArticleCountByHotWord(hb);
+		
+		String json_res = homeService.getArticleByHotWord(hb);
+		
+		String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
+
+	    return res;
+		
+	}
+	
+	@RequestMapping("/getSimContent")
+	public Object getSimContent(ArticleInfoBean ab) {
+		String json = homeService.getSimContent(ab);
+	    
+		return json;
 	}
 	
 	

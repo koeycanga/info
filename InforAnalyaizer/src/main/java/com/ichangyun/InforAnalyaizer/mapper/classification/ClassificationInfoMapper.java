@@ -111,4 +111,12 @@ public interface ClassificationInfoMapper {
 	 */
 	public ClassificationInfoBean getInfoByID(@Param("cb") ClassificationInfoBean cb);
 
+	/**
+	 * 获得所有处在根节点的分类体系
+	 * @param today 
+	 * @param yesterday 
+	 * @return
+	 */
+	public List<ClassificationInfoBean> getAllClassification(@Param("yesterday")String yesterday, @Param("today")String today);
+
 }

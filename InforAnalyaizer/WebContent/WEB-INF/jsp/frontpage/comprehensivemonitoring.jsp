@@ -4,18 +4,25 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:setBundle basename="resources" var="sysInfo" />
 <fmt:message key="front_menu" var="front_menu" bundle="${sysInfo}" /> 
+<fmt:message key="W0002" var="W0002" bundle="${sysInfo}" />
 <fmt:message key="W0003" var="W0003" bundle="${sysInfo}" />
 <fmt:message key="E0004" var="E0004" bundle="${sysInfo}" />
 <fmt:message key="E0014" var="E0014" bundle="${sysInfo}" />
-<fmt:message key="E0025" var="E0025" bundle="${sysInfo}" />   
+<fmt:message key="E0025" var="E0025" bundle="${sysInfo}" />  
+<fmt:message key="I0011" var="I0011" bundle="${sysInfo}" /> 
 <fmt:message key="I0012" var="I0012" bundle="${sysInfo}" />
 <fmt:message key="I0013" var="I0013" bundle="${sysInfo}" />
+<fmt:message key="I0019" var="I0019" bundle="${sysInfo}" />
+<fmt:message key="I0023" var="I0023" bundle="${sysInfo}" />
+<fmt:message key="E0019" var="E0019" bundle="${sysInfo}" />
+<fmt:message key="E0022" var="E0022" bundle="${sysInfo}" />
+<fmt:message key="E0033" var="E0033" bundle="${sysInfo}" />
 <!doctype html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>竞争情报分析系统</title>
-<link rel="stylesheet" type="text/css" href="../css/cy_CIAS_style.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style.css">
 </head>
 
 <body style="background-color: #f2f3f8;">
@@ -25,7 +32,7 @@
 
 <!--头部-->
 <div class="cy_CIASFE_top">
-	<div class="cy_CIASFE_logo"><img src="../image/fontend-logo.png"></div>
+	<div class="cy_CIASFE_logo"><img src="${ctx}/image/fontend-logo.png"></div>
 	<div class="cy_CIASFE_tit">国药器械-竞争情报分析系统</div>
 	<ic_top_menu ></ic_top_menu> <!-- 上部菜单栏 -->
 	<ic_user_info></ic_user_info> <!-- 登录用户信息框 -->
@@ -33,120 +40,100 @@
 
 <!--二级导航-->
 <div class="cy_CIASFE_2ndmenu">
-	<div class="cy_CIASFE_2ndmenutabchk">综合监测</div>
-	<div class="cy_CIASFE_2ndmenutab">公司舆情<img src="../image/fontend-newtip.png"></div>
-	<div class="cy_CIASFE_2ndmenutab">高管舆情<img src="../image/fontend-newtip.png"></div>
-	<div class="cy_CIASFE_2ndmenutab">市场动向<img src="../image/fontend-newtip.png"></div>
-	<div class="cy_CIASFE_2ndmenutab">国家政策<img src="../image/fontend-newtip.png"></div>
-	<div class="cy_CIASFE_2ndmenutab">竞争对手<img src="../image/fontend-newtip.png"></div>
-	<div class="cy_CIASFE_2ndmenutab">产品技术<img src="../image/fontend-newtip.png"></div>
-	<div class="cy_CIASFE_2ndmenutab">上下游企业<img src="../image/fontend-newtip.png"></div>
-	<div class="cy_CIASFE_2ndmenutab" style="border: solid 1px #e0e0e0">国家政策<img src="../image/fontend-newtip.png"></div>
+	<div v-bind:class="fl_index==-1?'cy_CIASFE_2ndmenutabchk':'cy_CIASFE_2ndmenutab'" v-on:click="dealtopmenu(-1)">综合监测</div>
+	<div v-for="(fdata,findex) in fl_datas" v-on:click="dealtopmenu(findex)"
+	 v-bind:class="fl_index==findex?'cy_CIASFE_2ndmenutabchk':'cy_CIASFE_2ndmenutab'" 
+	 v-bind:style="findex==fl_datas.length-1?'border: solid 1px #e0e0e0':''" >{{fdata.classificationName}}
+	 <img v-if="fdata.today_cnt>0&&!fdata.isclick" src="${ctx}/image/fontend-newtip.png">
+	</div>
+
 </div>
 
 <!--左侧数据-->
 <div class="cy_CIAFE_main">
 	<div class="cy_CIASFE_intmonbody">
-	<div class="cy_CIASFE_intmonbodyleft">
-		<table cellspacing="0">
+	
+	
+	<div class="cy_CIASFE_intmonbodyleft" >
+		<table cellspacing="0" v-if="fl_index==-1">
 			<tbody>
-    <tr>
-      <th width="30%">名称</th>
-      <th width="30%">今天总数</th>
-      <th width="40%">昨天总数</th>
-    </tr>
-    <tr>
-      <td>监测总数</td>
-      <td class="cy_CIASFE_intmonjr">8063</td>
-      <td class="cy_CIASFE_intmonzr">8063</td>
-    </tr>
-    <tr>
-      <td>公司舆情</td>
-      <td class="cy_CIASFE_intmonjr">0</td>
-      <td class="cy_CIASFE_intmonzr">103</td>
-    </tr>
-    <tr>
-      <td>高管舆情</td>
-      <td class="cy_CIASFE_intmonjr">203</td>
-      <td class="cy_CIASFE_intmonzr">203</td>
-    </tr>
-    <tr>
-      <td>市场动向</td>
-      <td class="cy_CIASFE_intmonjr">303</td>
-      <td class="cy_CIASFE_intmonzr">303</td>
-    </tr>
-    <tr>
-      <td>国家政策</td>
-      <td class="cy_CIASFE_intmonjr">103</td>
-      <td class="cy_CIASFE_intmonzr">103</td>
-    </tr>
-    <tr>
-      <td>竞争对手</td>
-      <td class="cy_CIASFE_intmonjr">203</td>
-      <td class="cy_CIASFE_intmonzr">203</td>
-    </tr>
-    <tr>
-      <td>产品技术</td>
-      <td class="cy_CIASFE_intmonjr">303</td>
-      <td class="cy_CIASFE_intmonzr">303</td>
-    </tr>
-    <tr>
-      <td>上下游企业</td>
-      <td class="cy_CIASFE_intmonjr">103</td>
-      <td class="cy_CIASFE_intmonzr">103</td>
-    </tr>
-    <tr>
-      <td>国家政策</td>
-      <td class="cy_CIASFE_intmonjr">203</td>
-      <td class="cy_CIASFE_intmonzr">203</td>
-    </tr>
+			    <tr>
+			      <th width="30%">名称</th>
+			      <th width="35%" align="center">今天总数</th>
+			      <th width="35%" align="center">昨天总数</th>
+			    </tr>
+			    <tr>
+			      <td>监测总数</td>
+			      <td class="cy_CIASFE_intmonjr" align="center">{{total_today}}</td>
+			      <td class="cy_CIASFE_intmonzr" align="center">{{total_yesterday}}</td>
+			    </tr>
+			    <tr v-for="data in fl_datas">
+			      <td>{{data.classificationName}}</td>
+			      <td class="cy_CIASFE_intmonjr" align="center">{{data.today_cnt}}</td>
+			      <td class="cy_CIASFE_intmonzr" align="center">{{data.yesterday_cnt}}</td>
+			    </tr>
 			</tbody>
 		</table>
+		
+		<div class="cy_CIASFE_colletree" v-else>
+			<div class="cy_CIASFE_newfolder"></div>
+	
+	        <ul v-for="model in tree_datas">
+				<ic_comprehensive_tree v-bind:model="model"></ic_comprehensive_tree>	
+			</ul>
+			
+		</div>
+		
 	</div>	
+	
+	
+	
+	
 	<div class="cy_CIASFE_intmonbodyright">
 	
 <!--条件筛选-->
 		<div class="cy_CIASFE_condition">
 		  <div class="cy_CIASFE_search">
 				<select><option>全文匹配</option></select>
-				<div class="cy_CMICBMS_schbox01"><input type="text" placeholder="请输入…" style="cursor: text"></div>
-				<input type="button" class="cy_CMICBMS_schbtn" value="检索">
+				<div class="cy_CMICBMS_schbox01"><input type="text" v-model="search_key" placeholder="请输入…" style="cursor: text"></div>
+				<input type="button" v-on:click="btn_search()" class="cy_CMICBMS_schbtn" value="检索">
 			</div>
-			<div class="cy_CIASFE_conbox01">监测时间：<input type="radio" name="montime" value="单选" id="montime_0" style="display: none;" checked><label for="montime_0">今天</label>
-				<input type="radio" name="montime" value="单选" id="montime_1" style="display: none;"><label for="montime_1">24小时</label>
-           		<input type="radio" name="montime" value="单选" id="montime_2" style="display: none;"><label for="montime_2">2天</label>
-           		<input type="radio" name="montime" value="单选" id="montime_3" style="display: none;"><label for="montime_3">3天</label>
-           		<input type="radio" name="montime" value="单选" id="montime_4" style="display: none;"><label for="montime_4">7天</label>
-           		<input type="radio" name="montime" value="单选" id="montime_5" style="display: none;"><label for="montime_5">10天</label>
-           		<input type="radio" name="montime" value="单选" id="montime_6" style="display: none;"><label for="montime_6">自定义</label><input type="date" class="cy_CIASFE_timetb">—<input type="date" class="cy_CIASFE_timetb"><input type="button" class="cy_CMICBMS_schbtn" value="确认">
+			<div class="cy_CIASFE_conbox01">监测时间：
+			    <input type="radio" name="montime" value="0"  v-model="montime" id="montime_0" style="display: none;" checked><label for="montime_0">今天</label>
+				<input type="radio" name="montime" value="-1" v-model="montime" id="montime_1" style="display: none;"><label for="montime_1">24小时</label>
+           		<input type="radio" name="montime" value="-2" v-model="montime" id="montime_2" style="display: none;"><label for="montime_2">2天</label>
+           		<input type="radio" name="montime" value="-3" v-model="montime" id="montime_3" style="display: none;"><label for="montime_3">3天</label>
+           		<input type="radio" name="montime" value="-7" v-model="montime" id="montime_4" style="display: none;"><label for="montime_4">7天</label>
+           		<input type="radio" name="montime" value="-10" v-model="montime" id="montime_5" style="display: none;"><label for="montime_5">10天</label>
+           		<input type="radio" name="montime" value="10" v-model="montime" id="montime_6" style="display: none;"><label for="montime_6">自定义</label><input type="date" class="cy_CIASFE_timetb">—<input type="date" class="cy_CIASFE_timetb"><input type="button" class="cy_CMICBMS_schbtn" v-on:click="btn_search()" value="确认">
             </div>
 		  <div class="cy_CIASFE_conbox02">
 				<div class="cy_CIASFE_conbox03">
 				情感分析：
-					<input type="radio" name="emoana" value="单选" id="emoana_0" style="display: none;" checked><label for="emoana_0">全部</label>
-					<input type="radio" name="emoana" value="单选" id="emoana_1" style="display: none;"><label for="emoana_1">正面</label>
-					<input type="radio" name="emoana" value="单选" id="emoana_2" style="display: none;"><label for="emoana_2">中性</label>
-					<input type="radio" name="emoana" value="单选" id="emoana_3" style="display: none;"><label for="emoana_3">负面</label>
+					<input type="radio" name="emoana" v-model="emoana" value="-1" id="emoana_0" style="display: none;" checked><label for="emoana_0">全部</label>
+					<input type="radio" name="emoana" v-model="emoana" value="0" id="emoana_1" style="display: none;"><label for="emoana_1">正面</label>
+					<input type="radio" name="emoana" v-model="emoana" value="1" id="emoana_2" style="display: none;"><label for="emoana_2">中性</label>
+					<input type="radio" name="emoana" v-model="emoana" value="2" id="emoana_3" style="display: none;"><label for="emoana_3">负面</label>
 				</div>
 				<div class="cy_CIASFE_conbox03">相似文章：
-					<input type="radio" name="simart" value="单选" id="simart_0" style="display: none;" checked><label for="simart_0">合并</label>
-					<input type="radio" name="simart" value="单选" id="simart_1" style="display: none;"><label for="simart_1">不合并</label>
+					<input type="radio" name="simart" value="0" v-model="simart" id="simart_0" style="display: none;" checked><label for="simart_0">合并</label>
+					<input type="radio" name="simart" value="1" v-model="simart" id="simart_1" style="display: none;"><label for="simart_1">不合并</label>
 				</div>
 			</div>
 		  <div class="cy_CIASFE_conbox02">
 				<div class="cy_CIASFE_conbox03">排序方式：
-					<input type="radio" name="sort" value="单选" id="sort_0" style="display: none;" checked><label for="sort_0">时间降序</label>
-					<input type="radio" name="sort" value="单选" id="sort_1" style="display: none;"><label for="sort_1">时间升序</label>
-					<input type="radio" name="sort" value="单选" id="sort_2" style="display: none;"><label for="sort_2">权重降序</label>
-					<input type="radio" name="sort" value="单选" id="sort_3" style="display: none;"><label for="sort_3">热度排序</label>
+					<input type="radio" name="sort" v-model="sort" value="0" id="sort_0" style="display: none;" checked><label for="sort_0">时间降序</label>
+					<input type="radio" name="sort" v-model="sort" value="1" id="sort_1" style="display: none;"><label for="sort_1">时间升序</label>
+					<input type="radio" name="sort" v-model="sort" value="2" id="sort_2" style="display: none;"><label for="sort_2">权重降序</label>
+					<input type="radio" name="sort" v-model="sort" value="3" id="sort_3" style="display: none;"><label for="sort_3">热度排序</label>
 				</div>
 				<div class="cy_CIASFE_conbox03">信息来源：
-					<input type="radio" name="infsour" value="单选" id="infsour_0" style="display: none;" checked><label for="infsour_0">全部</label>
-					<input type="radio" name="infsour" value="单选" id="infsour_1" style="display: none;"><label for="infsour_1">新闻</label>
-					<input type="radio" name="infsour" value="单选" id="infsour_2" style="display: none;"><label for="infsour_2">微博</label>
-					<input type="radio" name="infsour" value="单选" id="infsour_3" style="display: none;"><label for="infsour_3">微信</label>
-					<input type="radio" name="infsour" value="单选" id="infsour_4" style="display: none;"><label for="infsour_4">论坛</label>
-					<input type="radio" name="infsour" value="单选" id="infsour_5" style="display: none;"><label for="infsour_5">博客</label>
+					<input type="radio" name="infsour" v-model="infsour" value="-1" id="infsour_0" style="display: none;" checked><label for="infsour_0">全部</label>
+					<input type="radio" name="infsour" v-model="infsour" value="0" id="infsour_1" style="display: none;"><label for="infsour_1">新闻</label>
+					<input type="radio" name="infsour" v-model="infsour" value="1" id="infsour_2" style="display: none;"><label for="infsour_2">微博</label>
+					<input type="radio" name="infsour" v-model="infsour" value="2" id="infsour_3" style="display: none;"><label for="infsour_3">微信</label>
+					<input type="radio" name="infsour" v-model="infsour" value="3" id="infsour_4" style="display: none;"><label for="infsour_4">论坛</label>
+					<input type="radio" name="infsour" v-model="infsour" value="4" id="infsour_5" style="display: none;"><label for="infsour_5">博客</label>
 				</div>
 			</div>
 	  </div>
@@ -154,375 +141,60 @@
 <!--	内容-->
 	<!--	空数据-->
 		<div class="cy_CIASFE_ctnodata">
-			<img src="../image/fontend-nodata.png">
+			<img src="${ctx}/image/fontend-nodata.png">
 		</div>
 	<!--	详细-->
 		<div class="cy_CIASFE_content">
 			<div class="cy_CIASFE_contentbox01">
-				<label><input type="checkbox" class="cy_CIASFE_contentall">全选</label>
+				<label><input type="checkbox" v-model="checked" v-on:click="changeAllChecked()" class="cy_CIASFE_contentall">全选</label>
 				
-				<input type="button" value="删除" class="cy_CIASFE_contentbtn01">
-				<input type="button" value="预警" class="cy_CIASFE_contentbtn01">
-			</div>
-		</div>
-		<div class="cy_CIASFE_prompt">
-			您有<span>177</span>条新信息，点击查看
-		</div>
-		<div class="cy_CIASFE_contmain">
-		<div class="cy_CIASFE_contpaste" style="border-top: 0px;">
-			<div class="cy_CIASFE_contpastetit">
-				<label><input type="checkbox">
-				<b>进店想退世界杯套餐？华帝员工：老板跑了在讨薪</b></label>
-				<div class="cy_CIASFE_contpassta01">负</div>
-				<div class="cy_CIASFE_contpassta01">已预警</div>
-				<div class="cy_CIASFE_contpascol">
-					<div class="cy_CIASFE_colle">
-						<div class="cy_CIASFE_collebox">
-							<div>我的收藏</div>
-							<a href="">产品</a>
-							<a href="">开发</a>
-							<a href="">测试</a>
-						</div>
-					</div>
-					<div class="cy_CIASFE_share"></div>
-					<div class="cy_CIASFE_dele"></div>
-				</div>
-				
-			</div>
-			<div class="cy_CIASFE_contpastecon">
-				京津代理商不明原因失联，并申请法院查封冻结其库存商品，北京多家电器商场销售员证实已“停摆”20多天，顾客付款后没货，退款也无门，200多名华帝员工被欠薪。
-			</div>
-			<div class="cy_CIASFE_contpastfoot"><div class="cy_CIASFE_simart">相似文章：10条
-				<div class="cy_CIASFE_simartbox">
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a>
-				</div></div>
-			<a href="">2018-09-27 18:09 中财网</a>
-			</div>
-		</div>
-		<div class="cy_CIASFE_contpaste">
-			<div class="cy_CIASFE_contpastetit">
-				<label><input type="checkbox">
-				<b>进店想退世界杯套餐？华帝员工：老板跑了在讨薪</b></label>
-				<div class="cy_CIASFE_contpassta02">中</div>
-				<div class="cy_CIASFE_contpascol">
-					<div class="cy_CIASFE_colle">
-						<div class="cy_CIASFE_collebox">
-							<div>我的收藏</div>
-							<a href="">产品</a>
-							<a href="">开发</a>
-							<a href="">测试</a>
-						</div>
-					</div>
-					<div class="cy_CIASFE_share"></div>
-					<div class="cy_CIASFE_dele"></div>
-				</div>
-			</div>
-			<div class="cy_CIASFE_contpastecon">
-				京津代理商不明原因失联，并申请法院查封冻结其库存商品，北京多家电器商场销售员证实已“停摆”20多天，顾客付款后没货，退款也无门，200多名华帝员工被欠薪。
-			</div>
-			<div class="cy_CIASFE_contpastfoot"><div class="cy_CIASFE_simart">相似文章：10条
-				<div class="cy_CIASFE_simartbox">
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a>
-				</div></div>
-			<a href="">2018-09-27 18:09 中财网</a>
-			</div>
-		</div>
-		<div class="cy_CIASFE_contpaste">
-			<div class="cy_CIASFE_contpastetit">
-				<label><input type="checkbox">
-				<b>进店想退世界杯套餐？华帝员工：老板跑了在讨薪</b></label>
-				<div class="cy_CIASFE_contpassta03">正</div>
-				<div class="cy_CIASFE_contpascol">
-					<div class="cy_CIASFE_colle">
-						<div class="cy_CIASFE_collebox">
-							<div>我的收藏</div>
-							<a href="">产品</a>
-							<a href="">开发</a>
-							<a href="">测试</a>
-						</div>
-					</div>
-					<div class="cy_CIASFE_share"></div>
-					<div class="cy_CIASFE_dele"></div>
-				</div>
-			</div>
-			<div class="cy_CIASFE_contpastecon">
-				京津代理商不明原因失联，并申请法院查封冻结其库存商品，北京多家电器商场销售员证实已“停摆”20多天，顾客付款后没货，退款也无门，200多名华帝员工被欠薪。
-			</div>
-			<div class="cy_CIASFE_contpastfoot"><div class="cy_CIASFE_simart">相似文章：10条
-				<div class="cy_CIASFE_simartbox">
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a>
-				</div></div>
-			<a href="">2018-09-27 18:09 中财网</a>
-			</div>
-		</div>
-		<div class="cy_CIASFE_contpaste">
-			<div class="cy_CIASFE_contpastetit">
-				<label><input type="checkbox">
-				<b>进店想退世界杯套餐？华帝员工：老板跑了在讨薪</b></label>
-				<div class="cy_CIASFE_contpassta01">负</div>
-				<div class="cy_CIASFE_contpassta01">已预警</div>
-				<div class="cy_CIASFE_contpascol">
-					<div class="cy_CIASFE_colle">
-						<div class="cy_CIASFE_collebox">
-							<div>我的收藏</div>
-							<a href="">产品</a>
-							<a href="">开发</a>
-							<a href="">测试</a>
-						</div>
-					</div>
-					<div class="cy_CIASFE_share"></div>
-					<div class="cy_CIASFE_dele"></div>
-				</div>
-			</div>
-			<div class="cy_CIASFE_contpastecon">
-				京津代理商不明原因失联，并申请法院查封冻结其库存商品，北京多家电器商场销售员证实已“停摆”20多天，顾客付款后没货，退款也无门，200多名华帝员工被欠薪。
-			</div>
-			<div class="cy_CIASFE_contpastfoot"><div class="cy_CIASFE_simart">相似文章：10条
-				<div class="cy_CIASFE_simartbox">
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a>
-				</div></div>
-			<a href="">2018-09-27 18:09 中财网</a>
-			</div>
-		</div>
-		<div class="cy_CIASFE_contpaste">
-			<div class="cy_CIASFE_contpastetit">
-				<label><input type="checkbox">
-				<b>进店想退世界杯套餐？华帝员工：老板跑了在讨薪</b></label>
-				<div class="cy_CIASFE_contpassta02">中</div>
-				<div class="cy_CIASFE_contpascol">
-					<div class="cy_CIASFE_colle">
-						<div class="cy_CIASFE_collebox">
-							<div>我的收藏</div>
-							<a href="">产品</a>
-							<a href="">开发</a>
-							<a href="">测试</a>
-						</div>
-					</div>
-					<div class="cy_CIASFE_share"></div>
-					<div class="cy_CIASFE_dele"></div>
-				</div>
-			</div>
-			<div class="cy_CIASFE_contpastecon">
-				京津代理商不明原因失联，并申请法院查封冻结其库存商品，北京多家电器商场销售员证实已“停摆”20多天，顾客付款后没货，退款也无门，200多名华帝员工被欠薪。
-			</div>
-			<div class="cy_CIASFE_contpastfoot"><div class="cy_CIASFE_simart">相似文章：10条
-				<div class="cy_CIASFE_simartbox">
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a>
-				</div></div>
-			<a href="">2018-09-27 18:09 中财网</a>
-			</div>
-		</div>
-		<div class="cy_CIASFE_contpaste">
-			<div class="cy_CIASFE_contpastetit">
-				<label><input type="checkbox">
-				<b>进店想退世界杯套餐？华帝员工：老板跑了在讨薪</b></label>
-				<div class="cy_CIASFE_contpassta01">负</div>
-				<div class="cy_CIASFE_contpassta01">已预警</div>
-				<div class="cy_CIASFE_contpascol">
-					<div class="cy_CIASFE_colle">
-						<div class="cy_CIASFE_collebox">
-							<div>我的收藏</div>
-							<a href="">产品</a>
-							<a href="">开发</a>
-							<a href="">测试</a>
-						</div>
-					</div>
-					<div class="cy_CIASFE_share"></div>
-					<div class="cy_CIASFE_dele"></div>
-				</div>
-			</div>
-			<div class="cy_CIASFE_contpastecon">
-				京津代理商不明原因失联，并申请法院查封冻结其库存商品，北京多家电器商场销售员证实已“停摆”20多天，顾客付款后没货，退款也无门，200多名华帝员工被欠薪。
-			</div>
-			<div class="cy_CIASFE_contpastfoot"><div class="cy_CIASFE_simart">相似文章：10条
-				<div class="cy_CIASFE_simartbox">
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a>
-				</div></div>
-			<a href="">2018-09-27 18:09 中财网</a>
-			</div>
-		</div>
-		<div class="cy_CIASFE_contpaste">
-			<div class="cy_CIASFE_contpastetit">
-				<label><input type="checkbox">
-				<b>进店想退世界杯套餐？华帝员工：老板跑了在讨薪</b></label>
-				<div class="cy_CIASFE_contpassta03">正</div>
-				<div class="cy_CIASFE_contpascol">
-					<div class="cy_CIASFE_colle">
-						<div class="cy_CIASFE_collebox">
-							<div>我的收藏</div>
-							<a href="">产品</a>
-							<a href="">开发</a>
-							<a href="">测试</a>
-						</div>
-					</div>
-					<div class="cy_CIASFE_share"></div>
-					<div class="cy_CIASFE_dele"></div>
-				</div>
-			</div>
-			<div class="cy_CIASFE_contpastecon">
-				京津代理商不明原因失联，并申请法院查封冻结其库存商品，北京多家电器商场销售员证实已“停摆”20多天，顾客付款后没货，退款也无门，200多名华帝员工被欠薪。
-			</div>
-			<div class="cy_CIASFE_contpastfoot"><div class="cy_CIASFE_simart">相似文章：10条
-				<div class="cy_CIASFE_simartbox">
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a>
-				</div></div>
-			<a href="">2018-09-27 18:09 中财网</a>
-			</div>
-		</div>
-		<div class="cy_CIASFE_contpaste">
-			<div class="cy_CIASFE_contpastetit">
-				<label><input type="checkbox">
-				<b>进店想退世界杯套餐？华帝员工：老板跑了在讨薪</b></label>
-				<div class="cy_CIASFE_contpassta01">负</div>
-				<div class="cy_CIASFE_contpassta01">已预警</div>
-				<div class="cy_CIASFE_contpascol">
-					<div class="cy_CIASFE_colle">
-						<div class="cy_CIASFE_collebox">
-							<div>我的收藏</div>
-							<a href="">产品</a>
-							<a href="">开发</a>
-							<a href="">测试</a>
-						</div>
-					</div>
-					<div class="cy_CIASFE_share"></div>
-					<div class="cy_CIASFE_dele"></div>
-				</div>
-			</div>
-			<div class="cy_CIASFE_contpastecon">
-				京津代理商不明原因失联，并申请法院查封冻结其库存商品，北京多家电器商场销售员证实已“停摆”20多天，顾客付款后没货，退款也无门，200多名华帝员工被欠薪。
-			</div>
-			<div class="cy_CIASFE_contpastfoot"><div class="cy_CIASFE_simart">相似文章：10条
-				<div class="cy_CIASFE_simartbox">
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a>
-				</div></div>
-			<a href="">2018-09-27 18:09 中财网</a>
-			</div>
-		</div>
-		<div class="cy_CIASFE_contpaste">
-			<div class="cy_CIASFE_contpastetit">
-				<label><input type="checkbox">
-				<b>进店想退世界杯套餐？华帝员工：老板跑了在讨薪</b></label>
-				<div class="cy_CIASFE_contpassta02">中</div>
-				<div class="cy_CIASFE_contpascol">
-					<div class="cy_CIASFE_colle">
-						<div class="cy_CIASFE_collebox">
-							<div>我的收藏</div>
-							<a href="">产品</a>
-							<a href="">开发</a>
-							<a href="">测试</a>
-						</div>
-					</div>
-					<div class="cy_CIASFE_share"></div>
-					<div class="cy_CIASFE_dele"></div>
-				</div>
-			</div>
-			<div class="cy_CIASFE_contpastecon">
-				京津代理商不明原因失联，并申请法院查封冻结其库存商品，北京多家电器商场销售员证实已“停摆”20多天，顾客付款后没货，退款也无门，200多名华帝员工被欠薪。
-			</div>
-			<div class="cy_CIASFE_contpastfoot"><div class="cy_CIASFE_simart">相似文章：10条
-				<div class="cy_CIASFE_simartbox">
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a>
-				</div></div>
-			<a href="">2018-09-27 18:09 中财网</a>
-			</div>
-		</div>
-		<div class="cy_CIASFE_contpaste">
-			<div class="cy_CIASFE_contpastetit">
-				<label><input type="checkbox">
-				<b>进店想退世界杯套餐？华帝员工：老板跑了在讨薪</b></label>
-				<div class="cy_CIASFE_contpassta03">正</div>
-				<div class="cy_CIASFE_contpascol">
-					<div class="cy_CIASFE_colle">
-						<div class="cy_CIASFE_collebox">
-							<div>我的收藏</div>
-							<a href="">产品</a>
-							<a href="">开发</a>
-							<a href="">测试</a>
-						</div>
-					</div>
-					<div class="cy_CIASFE_share"></div>
-					<div class="cy_CIASFE_dele"></div>
-				</div>
-			</div>
-			<div class="cy_CIASFE_contpastecon">
-				京津代理商不明原因失联，并申请法院查封冻结其库存商品，北京多家电器商场销售员证实已“停摆”20多天，顾客付款后没货，退款也无门，200多名华帝员工被欠薪。
-			</div>
-			<div class="cy_CIASFE_contpastfoot"><div class="cy_CIASFE_simart">相似文章：10条
-				<div class="cy_CIASFE_simartbox">
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a><br>
-					<a href="">进店想退世界杯套餐？华帝员工：老板跑了在讨薪</a>
-				</div></div>
-			<a href="">2018-09-27 18:09 中财网</a>
-			</div>
-		</div>
-		<div ></div>
-<!--		分页-->
-		<div class="cy_CIASFE_ctpage">
-			
-			<div class="cy_CIASFE_ctpg"><div class="cy_CIASFE_ctpg01">共100条</div>
-				<div class="cy_CIASFE_ctpg02"><ul><li class="cy_CIASFE_ctpgsp">上一页</li><li class="cy_CIASFE_ctpgfc"><a >1</a></li><li><a href="">2</a></li><li><a href="">3</a></li><li><a href="">4</a></li><li><a href="">5</a></li><li><a href="">6</a></li><li class="cy_CIASFE_ctpgsp">…</li><li><a href="">100</a></li><li style="border-right: 1px solid #e0e0e0"><a href="">下一页</a></li></ul></div>
-				<div class="cy_CIASFE_ctpg03">到第<input type="text" class="cy_CIASFE_pgbox">页<input type="button" value="确定" class="cy_CIASFE_pgbtn"></div>
+				<input type="button" value="删除" v-on:click="delarticle()" class="cy_CIASFE_contentbtn01">
+				<input type="button" value="预警" v-on:click="toyj()" class="cy_CIASFE_contentbtn01">
 			</div>
 		</div>
 		
-
+		<div v-if="lastest_news>0" v-on:click="searchNew()" class="cy_CIASFE_prompt">
+			您有<span>{{lastest_news}}</span>条新信息，点击查看
 		</div>
-
+		
+		<div class="cy_CIASFE_contmain">
+		
+		<div v-for="(data,index) in datas" class="cy_CIASFE_contpaste" style="border-top: 0px;">
+			<div class="cy_CIASFE_contpastetit">
+				<label><input type="checkbox" v-bind:value="data.article_ID"  v-model="checkedNames">
+				<b style="cursor:pointer;">{{data.articleTitle}}</b></label>
+				<div v-if="data.emotionDivision=='0'" class="cy_CIASFE_contpassta03">正</div>
+				<div v-if="data.emotionDivision=='1'" class="cy_CIASFE_contpassta02">中</div>
+				<div v-if="data.emotionDivision=='2'" class="cy_CIASFE_contpassta01">负</div>
+				<div v-if="data.earlyWarningState=='1'" class="cy_CIASFE_contpassta01">已预警</div>
+				<div class="cy_CIASFE_contpascol">
+					<ic_collectiont v-bind:aid="data.article_ID" v-bind:collcnt="data.collcnt"></ic_collectiont>
+					<div class="cy_CIASFE_share" v-bind:data-clipboard-text="data.articleURL" v-bind:id="'sharedv'+index" v-on:click="share(index)"></div>
+					<div v-on:click="del_a_article(data.article_ID)" class="cy_CIASFE_dele"></div>
+				</div>
+				
+			</div>
+			<div class="cy_CIASFE_contpastecon" style="cursor:pointer;">
+				<a style="text-decoration: none;color: #000;" v-bind:href="'../detailspage/toDetailsPage?from=comprehensivemonitoring&article_id='+data.article_ID">{{data.articleAbstract}}</a>
+			</div>
+			
+			<div class="cy_CIASFE_contpastfoot">
+			    <div v-on:mouseover="simcontent(index)" class="cy_CIASFE_simart">相似文章：{{data.sim_cnt}}条
+				<div  class="cy_CIASFE_simartbox">
+					<div v-for=" sdata in sim_datas[index]" ><a v-bind:href="'../detailspage/toDetailsPage?from=comprehensivemonitoring&article_id='+sdata.article_ID" target="_blank" >{{sdata.articleTitle}}</a></div>
+				</div>
+				</div>
+			<a target="_blank" v-bind:href="data.articleURL">{{data.releasetime}} {{data.websiteName}}</a>
+			
+			</div>
+			
+		</div>
+			
+		<div ></div>
+<!--		分页-->
+		<pager ref="pagecomponent"></pager>  <!-- ref 固定为 pagecomponent  -->
+		
+		</div>
 	</div>
 </div>	
 
@@ -535,6 +207,7 @@
 <script type="text/javascript" src="${ctx}/js/vue.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/axios.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/polyfill.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/clipboard.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script type="text/javascript" src="${ctx}/js/comm.js"></script>
 <script>
@@ -544,19 +217,466 @@ var Info = {
 		  E0004:'${E0004}',
 		  E0014:'${E0014}',
 		  E0025:'${E0025}',
+		  I0011:'${I0011}',
 		  I0012:'${I0012}',
-		  I0013:'${I0013}'
+		  I0013:'${I0013}',
+	      I0019:'${I0019}',
+	      I0023:'${I0023}',
+	      W0002:'${W0002}',
+	      E0019:'${E0019}',
+	      E0022:'${E0022}',
+	      E0033:'${E0033}'
 	};
 
+
+function TreeNode(val,depth,children_lg){
+	this.val = val;
+	this.is_show = true;
+	this.is_open = true;
+	this.depth = depth;
+	this.children_lg = children_lg;
+	if(children_lg>0){
+		this.imgsrc = "../image/colle-folder.png";
+	}else{
+		this.imgsrc = "../image/colle-file.png";
+	}
+	this.children = [];
+}
+
+var ic_comprehensive_tree = {
+		
+		template:'<div>'+
+			'<li v-show="model.is_show" v-bind:class="model.children_lg>0?\'cy_CIASFE_comdettree2ed\':\'cy_CIASFE_comdettreefile\'" v-bind:style="style">'+
+					'<a v-on:click="search_fl(model.val.classification_ID)" href="#"><img v-on:click="opClose(model.val.classification_ID)" v-if="model.children_lg>0" v-bind:src="model.is_open?\'../image/colle-arrow02.png\':\'../image/colle-arrow01.png\'">'+
+					'<img v-bind:src="model.children_lg>0?\'../image/colle-folder.png\':\'../image/colle-file.png\'">{{model.val.classificationName}}</a></li>'+
+	        '<ul><ic_comprehensive_tree v-for="model in model.children" v-bind:model="model"></ic_comprehensive_tree></ul>'+
+	        '</div>',
+		props:['model'],
+		data:function(){
+			return {
+				style:{}
+			}
+		},
+		methods:{
+			opClose:function(id){
+				this.$parent.opClose(id);
+			},
+			search_fl:function(id){
+				this.$parent.search_fl(id);
+			}
+		},
+		mounted:function(){	
+			this.style = {"padding-left":(20+30*(this.model.depth))+"px"};
+		}
+}
 
 var menu_datas = JSON.parse('${front_menu}') //菜单数据来源于 classes/resources.properties
 Vue.component('ic_top_menu',ic_top_menu);   // ic_top_menu 引自 js/ic_component.js
 
 Vue.component('ic_user_info',ic_user_info);  // ic_user_info 引自 js/ic_component.js
 
+Vue.component('ic_collectiont',ic_collectiont); // ic_collectiont 引自 js/ic_component.js
+
+Vue.component('ic_comprehensive_tree',ic_comprehensive_tree);
+
+var m_Map = new Map();
 
 var app = new Vue({
-     el:"#app"	
+     el:"#app"	,
+     data:{
+    	 checked: false,      //复选框相关
+         checkedNames: [],    //复选框相关
+   	     checkedArr: [],      //复选框相关
+   	     datas:[],
+   	     fl_datas:[],     //分类体系根节点
+   	     fl_all_datas:[],     //分类体系全部
+   	     tree_datas:[],      //树形结构
+   	     fl_index:-1,      //当前选中分类体系的标识位数
+	     sim_datas:[],   //相似文章
+	     search_key:'',
+		 montime:'0',  //监测时间
+		 emoana:'-1',  //情感分析
+		 simart:'0',    //相似文章是否合并
+		 sort:'0',     //排序方式
+		 infsour:'-1',  //信息来源
+		 lastest_news:0,     //有多少条新消息
+		 showzhjc:true,      //是否显示综合监测面板
+		 total_yesterday:0,  //昨日监测总数
+		 total_today:0,       //今日监测总数
+		 Classification_ID:'' //分类体系ID
+     },
+     components:{
+		     'pager':ic_front_pager  //ic_front_pager 引自 js/ic_components.js
+     },
+     methods:{
+    	 updateCollent:function(aid){
+		   	 for(var i=0;i<this.datas.length;i++){
+		   		 if(this.datas[i].article_ID==aid){
+		   			this.datas[i].collcnt = 1;
+		   			 break;
+		   		 }
+		   	 }
+		 },
+    	 opClose:function(id){
+    		 var clicknode = this.getClickNode(id,this.tree_datas);
+    		 if(clicknode.is_open){  //关闭
+    			 
+    			 clicknode.is_open = false;
+    			 
+    			 this.dealDigui(clicknode,false);
+    			 
+    		 }else{  //打开
+    			 clicknode.is_open = true;
+    			 this.dealDigui(clicknode,true);
+    		 }
+    	 },
+    	 dealDigui:function(node,b){
+    		 if(b){
+    			 for(var i=0;i<node.children.length;i++){
+    				 node.children[i].is_show = true;
+    				 if(node.children[i].children.length>0&&node.children[i].is_open){
+    					 this.dealDigui(node.children[i],true);
+    				 }
+    			 }
+    		 }else{
+    			 for(var i=0;i<node.children.length;i++){
+    				 node.children[i].is_show = false;
+    				 this.dealDigui(node.children[i],false);
+    			 }
+    		 }
+    	 },
+    	 getClickNode:function(id,arr){
+    		 var node = null;
+    		 for(var i=0;i<arr.length;i++){
+    			 if(arr[i].val.classification_ID==id){
+    				 node = arr[i];
+    				 break;
+    			 }else{
+    				 node = this.getClickNode(id,arr[i].children);
+    				 if(node!=null){
+    					 return node;
+    				 }
+    			 }
+    		 }
+    		 return node;
+    	 },
+    	 dealtopmenu:function(index){   //处理顶部的分类体系菜单栏
+    		 this.fl_index = index;
+    		 m_Map.clear();
+    		 if(index!=-1){
+    			var tdata = this.fl_datas[index];
+    			tdata.isclick = true;
+    			var node = new TreeNode(tdata,0,tdata.children_lg);
+    			this.tree_datas = [];
+    			this.tree_datas.push(node);
+    			this.addnode2tree(node);
+    			this.search_fl(tdata.classification_ID);
+    		 }else{
+    			 this.Classification_ID = "";
+    			 this.search_fl("");
+    		 }
+    	 },
+    	 addnode2tree:function(node){
+    		 if(node.children_lg>0){
+	    		 for(var i=0;i<this.fl_all_datas.length;i++){
+	 				if(this.fl_all_datas[i].parent_Classification_ID==node.val.classification_ID){
+	 					var cnode = new TreeNode(this.fl_all_datas[i],node.depth+1,this.fl_all_datas[i].children_lg);
+	 					if(m_Map.get(cnode.val.classification_ID)==null){
+	 						m_Map.set(cnode.val.classification_ID,cnode);
+	 						node.children.push(cnode);
+	 						this.addnode2tree(cnode);
+	 					}
+	 				}
+	 			 }
+    		 }
+    	 },
+    	 toDetailsPage:function(article_id){  //进入到详情页
+    		 window.location.href = "../detailspage/toDetailsPage?from=comprehensivemonitoring&article_id="+article_id;
+    	 },
+    	 toyj:function(){
+    		 if(this.checkedNames.length==0){
+				  layer.msg(Info.E0033);
+			  }else{
+				  var _this = this;
+				  var json = createJSON(this.checkedNames);
+				  axios.post('../comprehensivemonitoring/toyj',
+		   			    {
+				 			 json:json
+		   				}
+		   			)
+		   			.then(function (response) {
+		   				 if(response.data=="ok"){
+		   					_this.search(_this.$refs.pagecomponent.pageBean);
+		   				 }
+		   				 if(response.data=="nok"){
+		   					layer.msg(Info.E0022);
+		   				 }
+		   			})
+		   			.catch(function (error) {
+		   				layer.msg(Info.E0022);
+		   			});
+			  }
+    	 },
+    	 del_a_article:function(article_ID){
+			  var _this = this;
+			  var arr = [];
+			  arr.push(article_ID);
+			  layer.confirm(Info.W0002, {
+		            btn : [ '确定', '取消' ]//按钮
+		        }, function(index) {
+		            layer.close(index);
+		            var json = createJSON(arr);   //createJSON() 引自js/comm.js
+		            
+					 axios.post('../comprehensivemonitoring/delarticle',
+							 {
+							 json:json
+					      })
+		    			.then(function (response) {
+		    				if(response.data=='ok'){
+		    					if(_this.checkedArr.length==1){
+		    						if(_this.$refs.pagecomponent.pageBean.pageNow>1){
+		    							_this.$refs.pagecomponent.pageBean.pageNow-=1;
+		    							_this.$refs.pagecomponent.pageBean.jump_page = _this.$refs.pagecomponent.pageBean.pageNow;
+		    						}
+		    					}
+		    					_this.checkedNames = [];
+		    					_this.search(_this.$refs.pagecomponent.pageBean);
+		    				}
+		    				if(response.data=='nok'){
+		    					layer.msg(Info.E0022);
+		    				}
+		    			})
+		    			.catch(function (error) {
+		    			    console.log(error);
+		    			});
+		        }); 
+		  },
+    	 delarticle:function(){
+			  if(this.checkedNames.length==0){
+				  layer.msg(Info.E0019);
+			  }else{
+				  var _this = this;
+				  layer.confirm(Info.W0002, {
+			            btn : [ '确定', '取消' ]//按钮
+			        }, function(index) {
+			            layer.close(index);
+			            var json = createJSON(_this.checkedNames);   //createJSON() 引自js/comm.js
+			           
+						 axios.post('../comprehensivemonitoring/delarticle',
+								 {
+								 json:json
+						      })
+			    			.then(function (response) {
+			    				if(response.data=='ok'){
+			    					if(_this.checkedNames.length==_this.checkedArr.length){
+			    						if(_this.$refs.pagecomponent.pageBean.pageNow>1){
+			    							_this.$refs.pagecomponent.pageBean.pageNow-=1;
+			    							_this.$refs.pagecomponent.pageBean.jump_page = _this.$refs.pagecomponent.pageBean.pageNow;
+			    						}
+			    					}
+			    					_this.checkedNames = [];
+			    					_this.search(_this.$refs.pagecomponent.pageBean);
+			    				}
+			    				if(response.data=='nok'){
+			    					layer.msg(Info.E0022);
+			    				}
+			    			})
+			    			.catch(function (error) {
+			    			    console.log(error);
+			    			});
+			        }); 
+			  }
+		  },
+    	 simcontent:function(index){        //获得相似文章
+ 			if(this.datas[index].sim_cnt>0&&this.sim_datas[index].length==0){
+ 				var amontime = this.montime;
+   			    if(this.montime=='10'){
+   				    amontime = $("#fromdate").val()+"-"+$("#todate").val();
+	        	 }
+ 				var _this = this;
+ 				axios.get('../comprehensivemonitoring/getSimContent',{
+ 	    			params: {
+ 	    				   Article_ID:_this.datas[index].article_ID,
+ 	    				   montime:amontime
+ 	    				}
+ 	    			})
+ 	    			.then(function (response) {
+ 	    				var data = JSON.parse(response.data);
+ 	    				for(var i=0;i<data.length;i++){
+ 	    					_this.sim_datas[index].push(data[i]);
+ 	    				}
+ 	    			
+ 	    			})
+ 	    			.catch(function (error) {
+ 	    			    console.log(error);
+ 	    			});
+ 			 }
+ 			
+ 		 },
+ 		 changeAllChecked:function(){
+ 			  if (!this.checked) {
+ 					this.checkedNames = this.checkedArr;
+ 				} else {
+ 					this.checkedNames = [];
+ 				}
+ 		  },
+    	 btn_search:function(){
+			  this.$refs.pagecomponent.pageBean.pageNow = 1;
+			  this.search(this.$refs.pagecomponent.pageBean);
+		  },
+		  search_fl:function(id){  //根据分类体系查询
+			  this.Classification_ID = id;
+			  this.sort = '0';
+			  this.search_key = '';
+			  this.montime = '0';
+			  this.emoana = '-1';
+			  this.simart = '0';
+			  this.infsour = '-1';
+			  this.$refs.pagecomponent.pageBean.pageNow = 1;
+			  this.search(this.$refs.pagecomponent.pageBean);
+		  },
+		  share:function(index){
+			 var id = "sharedv"+index;
+			 var clipboard = new Clipboard('#'+id);
+	         clipboard.on('success', function(e) {
+		           layer.msg(Info.I0019);
+	          });
+			
+		 },
+		 getlastestNews:function(){
+				
+	        	var _this = this;
+	    		axios.get('../comprehensivemonitoring/getlastestNews',{
+	    			params: {
+		    				search_key:_this.search_key.trim(),
+		    				Classification_ID:_this.Classification_ID,
+		    				emoana:_this.emoana,
+		    				simart:_this.simart,
+		    				sort:_this.sort,
+		    				infsour:_this.infsour
+	    				}
+	    			})
+	    			.then(function (response) {
+	    				_this.lastest_news = response.data;
+	    			})
+	    			.catch(function (error) {
+	    			    console.log(error);
+	    			});
+	    		setTimeout(_this.getlastestNews,60000);
+		  },
+		 searchNew:function(){
+			  this.sort = '0';
+			  this.search_key = '';
+			  this.montime = '0';
+			  this.emoana = '-1';
+			  this.simart = '0';
+			  this.infsour = '-1';
+			  this.sim_datas = [];
+			  this.$refs.pagecomponent.pageBean.pageNow = 1;
+			  this.search(this.$refs.pagecomponent.pageBean);
+		  },
+		  getFenTixi:function(){   //获得所有的分类体系根节点
+			  
+			  var _this = this;
+			  axios.get('../comprehensivemonitoring/getAllClassification')
+	    			.then(function (response) {
+	    				
+                         _this.fl_all_datas = JSON.parse(response.data);	
+                        
+                         _this.fl_datas = [];
+                         
+                         for(var i=0;i<_this.fl_all_datas.length;i++){
+                        	 if(_this.fl_all_datas[i].parent_Classification_ID=='0000000000'){
+                        	 	_this.fl_datas.push(_this.fl_all_datas[i]);
+                        	 }
+                         }
+                          
+                         for(var i=0;i<_this.fl_datas.length;i++){
+                        	 _this.total_yesterday += _this.fl_datas[i].yesterday_cnt;
+                        	 _this.total_today += _this.fl_datas[i].today_cnt;
+                         }
+                         
+                         
+                         
+	    			})
+	    			.catch(function (error) {
+	    			    console.log(error);
+	    			});
+			  
+		  }
+     },
+     watch: {
+ 		"checkedNames": function() {
+ 			if (this.checkedNames.length != this.checkedArr.length||this.checkedNames.length==0) {
+ 				this.checked = false;
+ 			} else {
+ 				this.checked = true;
+ 			}
+ 		}
+ 	 },
+     computed:{
+    	 search:function(){
+    		 return function(pageBean){
+    			 var amontime = this.montime;
+    			 if(this.montime=='10'){
+    				 amontime = $("#fromdate").val()+"-"+$("#todate").val();
+ 	        	 }
+    			 
+    			 var _this = this;
+    			 
+    			 layer.msg(Info.I0011, {
+	        		  icon: 16
+	        		  ,shade: 0.01
+	        		});
+	    		axios.get('../comprehensivemonitoring/search',{
+	    			params: {
+	    				search_key:_this.search_key.trim(),
+	    				Classification_ID:_this.Classification_ID,
+	    				montime:amontime,
+	    				emoana:_this.emoana,
+	    				simart:_this.simart,
+	    				sort:_this.sort,
+	    				infsour:_this.infsour,
+	    				pageNow:pageBean.pageNow,
+	    				rowSize:pageBean.rs_selected,
+	    				}
+	    			})
+	    			.then(function (response) {
+	    				
+	    				var data = JSON.parse(response.data);
+	    	
+	    				_this.checkedArr = [];
+	    				
+	    				_this.checkedNames = [];
+	    				
+	    				_this.$refs.pagecomponent.dealAfterSearch(data.rowCount); 
+	    				
+	    				_this.datas = data.resdata;
+	    				
+	    				_this.sim_datas = [];
+	    				
+	    				for(var i=0;i<_this.datas.length;i++){
+	    					_this.checkedArr.push(_this.datas[i].article_ID);
+	    					_this.sim_datas.push([]);
+	    				}
+	    			
+	    				_this.lastest_news = 0;
+	    				
+	    				_this.checked = false;
+	    				
+	    				layer.closeAll();
+	    			})
+	    			.catch(function (error) {
+	    			    console.log(error);
+	    			});
+    		 }
+    	 }
+     },
+     mounted:function(){
+    	 this.search(this.$refs.pagecomponent.pageBean);
+    	 this.getFenTixi();
+    	 setTimeout(this.getlastestNews,60000);
+     }
  });
 </script>
 </html>

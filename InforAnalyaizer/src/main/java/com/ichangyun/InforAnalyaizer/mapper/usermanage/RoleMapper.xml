@@ -6,7 +6,7 @@
 <mapper namespace="com.ichangyun.InforAnalyaizer.mapper.usermanage.RoleMapper">
 
     <select id="getRoleCountByID" parameterType="java.util.Map"  resultType="java.lang.Integer">
-           select count(*) from m_userrole where UserRoleName=#{param.roleID}
+           select count(1) from m_userrole where UserRoleName=#{param.roleID}
     </select>
     
     <insert id="AddNewRole" parameterType="java.util.Map" >
@@ -20,7 +20,7 @@
     </update>
     
     <select id="getRoleCount" resultType="java.lang.Integer">
-           select count(*) from m_userrole
+           select count(1) from m_userrole
     </select>
   
     <select  id="getRole" parameterType="java.util.Map" resultType="com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean">
@@ -42,6 +42,6 @@
     </select>
    
    <select  id="queryById" resultType="com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean">
-           select * from m_userrole where UserRole_ID = #{value}
+           select DATE_FORMAT(UpdateDateTime,'%Y-%m-%d %H:%i:%s') UpdateDateTime from m_userrole where UserRole_ID = #{value}
     </select>
 </mapper>

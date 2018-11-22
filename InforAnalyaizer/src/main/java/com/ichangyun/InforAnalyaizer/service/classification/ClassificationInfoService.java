@@ -107,4 +107,11 @@ public interface ClassificationInfoService {
 	 */
 	public String getInfoByID(ClassificationInfoBean cb);
 
+
+	/**
+	 * 获得所有处于根节点的分类体系
+	 * @return
+	 */
+	public String getAllClassification();
+
 }

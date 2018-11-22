@@ -63,7 +63,7 @@ function return_tologin(){
 
 <div class="cy_CMICBMS_body">
 
-	<iframe id="mainiframe" src="" name="mainiframe" frameborder="0" iFrameHeight()>
+	<iframe id="mainiframe" src="" name="mainiframe" frameborder="0" iFrameHeight() width="100%">
 		
 	</iframe>
 

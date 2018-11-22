@@ -66,7 +66,7 @@ public class UserInfoServiceImpl implements UserInfoService{
                 vo.getUrole(),   // 用户角色ID
                 vo.getUstatus(), // 状态
                 u.getUser_ID(),  // 作成者：用户情报的用户名
-                null,            // 更新者：null
+                u.getUser_ID(),  // 更新者：用户情报的用户名
                 vo.getUid(),     // 用户名
                 vo.getUnum());   // 用户No
         // 密码加密

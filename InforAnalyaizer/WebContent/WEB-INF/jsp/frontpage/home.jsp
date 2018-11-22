@@ -51,14 +51,10 @@
 		<div class="cy_CIASFE_newsbox04">
 			<div class="cy_CIASFE_newsbox01"><img src="../image/home-news.png"></div>
 			<div class="cy_CIASFE_newsbox02">
-				<div v-for="ndata in newest_datas" class="cy_CIASFE_newsbox03"><a v-bind:href="ndata.href">{{ndata.name}}</a></div>
+				<div v-for="ndata in newest_datas" class="cy_CIASFE_newsbox03"><a v-bind:href="'../detailspage/toDetailsPage?from=front&article_id='+ndata.article_ID">{{ndata.articleTitle}}</a></div>
 				
-				<!-- <div class="cy_CIASFE_newsbox03"><a href="">华帝“退全款”处处设限，消费者感觉被“套路”</a></div>
-				<div class="cy_CIASFE_newsbox03"><a href="">上半年查处虚假互联网广告案增六成，恒大地产等...</a></div>
-				<div class="cy_CIASFE_newsbox03"><a href="">中国太保跃升至《财富》世界500强第220</a></div>
-				<div class="cy_CIASFE_newsbox03"><a href="">华帝“退全款”处处设限，消费者感觉被“套路”</a></div>
-				<div class="cy_CIASFE_newsbox03"><a href="">上半年查处虚假互联网广告案增六成，恒大地产等...</a></div>  -->
-		</div></div>
+		</div>
+		</div>
 	</div>
 	
 <!--预警信息-->
@@ -66,7 +62,7 @@
 		<div class="cy_CIASFE_homeboxtit">预警信息TOP10</div>
 			<div class="cy_CIASFE_wrninfbox01">
 		
-			      <div v-for="(wdata,index) in warn_datas" class="cy_CIASFE_wrninfbox02"><span v-bind:class="index<=2?'cy_CIASFE_span01':'cy_CIASFE_span02'">{{index+1}}</span><a href="">{{wdata.name}}</a></div>
+			      <div v-for="(wdata,index) in warn_datas" class="cy_CIASFE_wrninfbox02"><span v-bind:class="index<=2?'cy_CIASFE_span01':'cy_CIASFE_span02'">{{index+1}}</span><a v-bind:href="'../detailspage/toDetailsPage?from=front&article_id='+wdata.article_ID">{{wdata.articleTitle}}</a></div>
 			
 			</div>
 		</div>
@@ -81,7 +77,7 @@
 	<div class="cy_CIASFE_homebox02">
 		<div class="cy_CIASFE_homeboxtit">热词云</div>
 		<div style="text-align: center;">
-		    <div align="center" id="wcdv1"  style="width:92%;height: 280px;margin:30px 0 0 30px;"></div>
+		    <div  align="center" id="wcdv1"  style="width:92%;height: 280px;margin:30px 0 0 30px;"></div>
 		</div>
 	</div>
 	
@@ -89,7 +85,7 @@
 	<div class="cy_CIASFE_homebox03">
 		<div class="cy_CIASFE_homeboxtit">负面信息TOP10</div>
 			<div class="cy_CIASFE_ngtinfbox01">
-				<div v-for="(ndata,index) in negative_datas" class="cy_CIASFE_wrninfbox02"><span v-bind:class="index<=2?'cy_CIASFE_span03':'cy_CIASFE_span02'">{{index+1}}</span><a href="">{{ndata.name}}</a></div>
+				<div v-for="(ndata,index) in negative_datas" class="cy_CIASFE_wrninfbox02"><span v-bind:class="index<=2?'cy_CIASFE_span03':'cy_CIASFE_span02'">{{index+1}}</span><a v-bind:href="'../detailspage/toDetailsPage?from=front&article_id='+ndata.article_ID">{{ndata.articleTitle}}</a></div>
 			</div>
 	</div>
 </div>
@@ -150,27 +146,60 @@ var Info = {
     		userData:{}			//用户信息
     	},
     	methods:{
-            updateUser:
-                function () {
-            		userVm.changePwd="";
-            		userVm.checkPwd="";
-            		userVm.uPwd="";
-					userVm.userData = this.$refs.ic_user_info.userData;
-            		var hideobj=document.getElementById("cy_hidebg");
-            	   	cy_hidebg.style.display="block";  //显示隐藏层
-            	   	document.getElementById("cy_CMICBMS_add").style.display="block";  //显示弹出层
-                }
+    	    getHotWord:function(){
+    	    	 axios.get('../front/getHotWord')
+     			.then(function (response) {
+
+     				var data = JSON.parse(response.data);
+     				var str = '[';
+     				for(var i=0;i<data.length;i++){
+     					if(i==0){
+     						str+='{"name":"'+data[i].hotWord+'","value":"10"}';
+     					}else{
+     						str+=',{"name":"'+data[i].hotWord+'","value":"10"}';
+     					}
+     				}
+     				str+=']';
+     				option.series[0].data = JSON.parse(str);
+     				chart1.setOption(option);
+     			
+     				
+     			})
+     			.catch(function (error) {
+     			    console.log(error);
+     			});
+    	    },
+    	    getHomeDatas:function(){
+    	    	 var _this = this;
+    	    	 axios.get('../front/getHomeDatas')
+	      			.then(function (response) {
+	      				var data = JSON.parse(response.data);
+	      				
+	      				_this.newest_datas = data.newest_datas;
+	                    
+	      				_this.warn_datas = data.warn_datas;
+	      				
+	      				_this.negative_datas = data.negative_datas;
+	      				
+	      			})
+	      			.catch(function (error) {
+	      			    console.log(error);
+	      			});
+    	    }
     	},
     	mounted:function(){
 
-   			this.newest_datas = [{"name":"华帝“退全款”处处设限，消费者感觉被“套路”","href":"#"},{"name":"2条信息","href":"#"},{"name":"3条信息","href":"#"},{"name":"4条信息","href":"#"},{"name":"5条信息","href":"#"}];
+    		this.getHomeDatas();
     	
-    	    this.warn_datas = [{"name":"中国太保跃升至《财富》世界500强第220","href":"#"},{"name":"中国石化加油站扫码引发爆炸致4死？回应：","href":"#"},
+    		
+   			//this.newest_datas = [{"name":"华帝“退全款”处处设限，消费者感觉被“套路”","href":"#"},{"name":"2条信息","href":"#"},{"name":"3条信息","href":"#"},{"name":"4条信息","href":"#"},{"name":"5条信息","href":"#"}];
+    	
+    	    /*this.warn_datas = [{"name":"中国太保跃升至《财富》世界500强第220","href":"#"},{"name":"中国石化加油站扫码引发爆炸致4死？回应：","href":"#"},
 			    	    	{"name":"上海地铁迎来第5000辆列车","href":"#"},{"name":"成渝间开行“深夜动车”方便两地市民高铁出行","href":"#"},
-			    	    	{"name":"日本新潜艇号称“领先中国十五年” 到底什么水平","href":"#"},{"name":"每人2亿韩元韩国法院就世越号遇难者家属索赔案...","href":"#"}];
+			    	    	{"name":"日本新潜艇号称“领先中国十五年” 到底什么水平","href":"#"},{"name":"每人2亿韩元韩国法院就世越号遇难者家属索赔案...","href":"#"}];*/
     	    
     	    
-    	    this.negative_datas = [
+    	  /*  this.negative_datas = [
     	    	{"name":"华帝“退全款”处处设限，消费者感觉被“套路”1","href":"#"},
     	    	{"name":"华帝“退全款”处处设限，消费者感觉被“套路”2","href":"#"},
     	    	{"name":"华帝“退全款”处处设限，消费者感觉被“套路”3","href":"#"},
@@ -179,27 +208,10 @@ var Info = {
     	    	{"name":"华帝“退全款”处处设限，消费者感觉被“套路”6","href":"#"},
     	    	{"name":"华帝“退全款”处处设限，消费者感觉被“套路”7","href":"#"},
     	    	{"name":"华帝“退全款”处处设限，消费者感觉被“套路”8","href":"#"}
-    	    ];
+    	    ];*/
     	    
     	    
-    	    axios.get('../front/getHotWord'/*,{
-    			params: {
-    				search_key:_this.search_key.trim(),
-    				montime:_this.montime,
-    				infsour:_this.infsour
-    				}
-    			}*/)
-    			.then(function (response) {
-    		
-    				
-    				var data = JSON.parse(response.data);
-    				
-    			
-    				
-    			})
-    			.catch(function (error) {
-    			    console.log(error);
-    			});
+    	   this.getHotWord();
     	}
     });
     
@@ -230,133 +242,7 @@ var Info = {
                         shadowColor: '#333'
                     }
                 },
-                data: [
-                    {
-                        name: '长江',
-                        value: 10000
-                    },
-                    {
-                        name: '跨越式',
-                        value: 6181
-                    },
-                    {
-                        name: '企业',
-                        value: 4386
-                    },
-                    {
-                        name: '公司',
-                        value: 4055
-                    },
-                    {
-                        name: '市场',
-                        value: 2467
-                    },
-                    {
-                        name: '亚洲',
-                        value: 2244
-                    },
-                    {
-                        name: '中国',
-                        value: 1898
-                    },
-                    {
-                        name: '长城',
-                        value: 1484
-                    },
-                    {
-                        name: '星球',
-                        value: 1112
-                    },
-                    {
-                        name: '美好山河',
-                        value: 965
-                    },
-					{
-
-					name: "长江",
-
-					value: "99"
-
-				}, {
-
-					name: "企业",
-
-					value: "92"
-
-				}, {
-
-					name: "公司",
-
-					value: "88"
-
-				}, {
-
-					name: "中国",
-
-					value: "80"
-
-				}, {
-
-					name: "大海",
-
-					value: "78"
-
-				}, {
-
-					name: "交通运输",
-
-					value: "74"
-
-				}, {
-
-					name: "城市交通",
-
-					value: "69"
-
-				}, {
-
-					name: "环境保护",
-
-					value: "66"
-
-				}, {
-
-					name: "房地产管理",
-
-					value: "61"
-
-				}, {
-
-					name: "城乡建设",
-
-					value: "52"
-
-				}, {
-
-					name: "社会保障与福利",
-
-					value: "45"
-
-				}, {
-
-					name: "社会保障",
-
-					value: "31"
-
-				}, {
-
-					name: "文体与教育管理",
-
-					value: "29"
-
-				}, {
-
-					name: "公共安全",
-
-					value: "23"
-
-				}
-                ]
+                data: []
             } ]
         };
 
@@ -373,7 +259,13 @@ var Info = {
     
         chart1.setOption(option);
 	  
-  
+        chart1.on('click', function(param) {
+           // console.log(param.data.name);//重要的参数都在这里！
+            
+            var hotword = param.data.name ;
+            
+            window.location.href = "../front/tohotword?word="+hotword;
+        });
     
 </script>
 </html>

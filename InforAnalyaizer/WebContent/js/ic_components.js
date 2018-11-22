@@ -4,6 +4,89 @@
  */
 
 
+//我的收藏用到的节点类
+function CTreeNode(val,depth){   
+	this.val = val;
+	this.depth = depth;
+}
+
+
+//我的收藏组件
+var ic_collectiont = {
+		template:'<div class="cy_CIASFE_colle" v-bind:style="collcnt>0?\'background: url(../image/fontend-colle02.png) no-repeat\':\'\'">'+
+					'<div class="cy_CIASFE_collebox">'+
+						'<div>我的收藏</div>'+
+						 '<a v-for="data in c_datas" v-on:click="conllect(data.val.collectionType_ID,data.val.children_lg,$event)" href="#">{{data.val.collectionTypeName}}</a>'+
+					'</div>'+
+				'</div>',
+	    props:['aid','collcnt'],
+		data:function(){
+			return {
+				c_datas:[],     //我的收藏
+			}
+		},
+		methods:{
+			 addCnodeChildren:function(ctnode,data){
+				  for(var i=0;i<data.length;i++){
+					  if(ctnode.val.collectionType_ID==data[i].parent_CollectionType_ID){
+						  var acnode = new CTreeNode(data[i],ctnode.depth+1);
+						  this.c_datas.push(acnode);
+						  if(data[i].children_lg>0){
+							  this.addCnodeChildren(acnode,data);
+						  }
+					  }
+				  }
+			  },
+			conllect:function(id,children_lg,event){
+				event.preventDefault();
+				if(children_lg==0){
+					var _this = this;
+					axios.get('../thematicmonitoring/conllect',{
+		    			params: {
+		    				  Article_ID:_this.aid,
+		    				  CollectionType_ID:id
+		    				}
+		    			})
+		    			.then(function (response) {
+		    				if(response.data=="ok"){
+		    					_this.$parent.updateCollent(_this.aid);
+		    					layer.msg(Info.I0023);
+		    				}else{
+		    					layer.msg(Info.E0022);
+		    				}
+		    				
+		    			})
+		    			.catch(function (error) {
+		    				console.log(error);
+		    				layer.msg(Info.E0022);
+		    			});
+					
+				}
+			}
+		},
+		mounted:function(){
+			 var _this = this;
+			  axios.get('../thematicmonitoring/getCollectionType')
+	  			.then(function (response) {
+	  				var data = JSON.parse(response.data);
+	  				for(var i=0;i<data.length;i++){
+	  					if(data[i].parent_CollectionType_ID==''||data[i].parent_CollectionType_ID=='0'){  //根节点
+	  						var ctnode = new CTreeNode(data[i],0);
+	  						_this.c_datas.push(ctnode);
+	  						if(data[i].children_lg>0){
+	  							_this.addCnodeChildren(ctnode,data);
+	  						}
+	  					}
+	  				}
+	  			})
+	  			.catch(function (error) {
+	  			    console.log(error);
+	  			});
+			  
+		}
+};
+
+
 //监测方案组件用到的节点类
 function JCNode(i){
 	this.val = "监测词组合"+intToChinese(i);   //intToChinese 引自js/comm.js
@@ -305,6 +388,12 @@ var ic_top_menu = {
 					this.model[i].style = {background: 'url(../image/home-menubg.png)'};
 					break;
 				}
+				if(typeof menu_url_data!="undefined"){
+					if(menu_url_data!=null&&this.model[i].url.replace('..','').indexOf(menu_url_data)>0){
+						this.model[i].style = {background: 'url(../image/home-menubg.png)'};
+						break;
+					}
+				}
 			}
 		}
 };
@@ -359,8 +448,8 @@ var ic_user_info = {  //$parent.updateUser
         },
         methods:{
         	updateUser:function(){
-        		var cy_hidebg_temple=document.getElementById("cy_hidebg_temple");
-        		cy_hidebg_temple.style.display="block";  //显示隐藏层
+        		console.log(document.getElementById("cy_hidebg_temple").style);
+        		document.getElementById("cy_hidebg_temple").style.display="block";  //显示隐藏层
         	   	document.getElementById("cy_CMICBMS_add").style.display="block";  //显示弹出层
         	},
         	logout:function(){

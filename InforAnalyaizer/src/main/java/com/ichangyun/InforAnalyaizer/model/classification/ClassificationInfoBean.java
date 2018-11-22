@@ -80,9 +80,59 @@ public class ClassificationInfoBean extends BaseBean{
 	private int binding_lg;
 	
 	/**
+	 * 文章体系对应文章发布时间
+	 */
+	private String Releasetime;
+	
+	/**
 	 * 查询数量标识位
 	 */
 	private int cnt;
+	
+	/**
+	 * 昨天统计总数量
+	 */
+	private int yesterday_cnt;
+	
+	
+	/**
+	 * 今天统计总数量
+	 */
+	private int today_cnt;
+	
+	/**
+	 * 前端是否点击
+	 */
+	private boolean isclick;
+	
+	public ClassificationInfoBean() {
+		this.isclick = false;
+	}
+	
+	public boolean isIsclick() {
+		return isclick;
+	}
+	public void setIsclick(boolean isclick) {
+		this.isclick = isclick;
+	}
+	public int getYesterday_cnt() {
+		return yesterday_cnt;
+	}
+	public void setYesterday_cnt(int yesterday_cnt) {
+		this.yesterday_cnt = yesterday_cnt;
+	}
+	public int getToday_cnt() {
+		return today_cnt;
+	}
+	public void setToday_cnt(int today_cnt) {
+		this.today_cnt = today_cnt;
+	}
+	public String getReleasetime() {
+		return Releasetime;
+	}
+	public void setReleasetime(String releasetime) {
+		Releasetime = releasetime;
+	}
 	
 	public int getCnt() {
 		return cnt;

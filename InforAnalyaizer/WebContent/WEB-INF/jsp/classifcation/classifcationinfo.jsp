@@ -17,7 +17,7 @@
 <fmt:message key="E0022" var="E0022" bundle="${sysInfo}" />
 <fmt:message key="E0023" var="E0023" bundle="${sysInfo}" />
 <fmt:message key="W0002" var="W0002" bundle="${sysInfo}" />
-
+<fmt:message key="W0004" var="W0004" bundle="${sysInfo}" />
 
 <!doctype html>
 <html>
@@ -123,7 +123,8 @@ var Info = {
 		E0022:'${E0022}',
 		E0023:'${E0023}',
 		I0008:'${I0008}',
-		I0011:'${I0011}'
+		I0011:'${I0011}',
+		W0004:'${W0004}'
 	};
 
 function TreeNode(val,depth,children_lg){
@@ -322,7 +323,8 @@ var app = new Vue({
 		  typeInfo:{
 			  type_id:'',
 			  type_name:'',
-			  type_des:''
+			  type_des:'',
+			  UpdateDateTime:''
 		  },
 		  errInfo:{
 			  type_name_err:false
@@ -478,6 +480,7 @@ var app = new Vue({
 				 this.typeInfo.type_id = click_node.val.classification_ID;
 				 this.typeInfo.type_name = click_node.val.classificationName;
 				 this.typeInfo.type_des = click_node.val.description;
+				 this.typeInfo.UpdateDateTime = click_node.val.updateDateTime;
 				 this.showtcc = {display:'block'};
 			 }  
 		  },
@@ -627,7 +630,8 @@ var app = new Vue({
 			    			params: {
 			    				Classification_ID:_this.typeInfo.type_id,
 			    				ClassificationName:_this.typeInfo.type_name.trim(),
-			    				Description:_this.typeInfo.type_des.trim()
+			    				Description:_this.typeInfo.type_des.trim(),
+			    				UpdateDateTime:click_node.val.updateDateTime
 			    				}
 			    			})
 			    			.then(function (response) {
@@ -643,6 +647,9 @@ var app = new Vue({
 			    				}
 			    				if(response.data=="nok"){
 			    					layer.msg(Info.E0022);
+			    				}
+			    				if(response.data=="already update"){
+			    					layer.msg(Info.W0004);
 			    				}
 			    				
 			    			})
