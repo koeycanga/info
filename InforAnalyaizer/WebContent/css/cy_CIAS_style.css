@@ -418,6 +418,7 @@ body{
 		color: white;
 		font-size: 16px;
 		border-radius: 3px 3px 0 0;
+		
 	}
 	.cy_CMICBMS_addtit{
 		padding: 8px 0 8px 25px;
@@ -432,6 +433,8 @@ body{
 .cy_CMICBMS_addtb{
 	font-size: 14px;
 	margin-top: 10px;
+
+
 }
 .cy_CMICBMS_addtbinp{
 		padding: 3px;
@@ -461,6 +464,10 @@ body{
 		height: 25px !important;
 		width: 400px !important;
 	}
+.cy_CMICBMS_addwords{
+	position: relative;
+	top:30px;
+}
 #cy_CMICBMS_status{
 	float: left;
 	margin:15px 0 0 55px;
@@ -2568,32 +2575,52 @@ input{
 	font-size: 14px;
 	padding: 0;
 	align-items: center;
+	list-style: none;
 }
+.cy_CIASFE_colletreefold{
+	margin-left: 22px;
+	list-style: none;
+}
+.cy_CIASFE_colletreefold:hover{
+	background-color: #2ea1f8;
+	color: white;
+}
+/*
+.cy_CIASFE_colletreefold ul{
+	padding-left: 10px;
+}
+*/
+
 .cy_CIASFE_colletree a{
 	display: block;
 	color: #333333;
 	text-decoration: none;
-	padding:3px 0;
+	padding: 3px 0;
 }
-.cy_CIASFE_colletree1st , .cy_CIASFE_colletree2ed , .cy_CIASFE_colletree3rd , .cy_CIASFE_colletree4th{
-/*	list-style-image: url(../image/colle-arrow02.png);*/
-	list-style: none;
+.cy_CIASFE_colletreefile a:hover{
+	background:url(../image/colle-filebg.png) no-repeat;
+	color: #333333;
 }
-.cy_CIASFE_colletreefile{
-	list-style-image: url(../image/colle-none.png);
-}
-.cy_CIASFE_colletree1st a:hover , .cy_CIASFE_colletree2ed a:hover , .cy_CIASFE_colletree3rd a:hover , .cy_CIASFE_colletree4th a:hover{
-	background: #2ea1f8;
-	color: white;
-}
-.cy_CIASFE_colletree1st{
-	padding-left: 7px;
-}
-.cy_CIASFE_colletree2ed{
-	margin-left: 30px;
+.cy_CIASFE_colletreefile a:hover .cy_CIASFE_treefileed img{
+	opacity: 1;
 }
 .cy_CIASFE_treefoldered{
-	
+	width: auto;
+	float: right;
+	padding-right: 10px;
+}
+.cy_CIASFE_treefileed{
+	width: 40px;
+	float: left;
+	padding-right: 10px;
+	display: flex;
+}
+.cy_CIASFE_treefileed img{
+	opacity: 0
+}
+.cy_CIASFE_comdettreefile{
+	list-style: none;
+	padding-left: 75px;
 }
 
 .cy_CIASFE_colletree{

@@ -8,8 +8,8 @@
     	  response.sendRedirect("../error/session_out.jsp");
       }else{
     	  authority = user.getAuthority();
-    	  if(authority==null){authority="00000";}
-    	  for(int i=0;i<authority.length();i++){
+    	  if(authority==null){authority="0000000000000";}
+    	  for(int i=0;i<user_menu.length;i++){
     		  user_menu[i] = (authority.charAt(i)=='1');
     	  }
       }
@@ -23,11 +23,12 @@
 <head>
 <meta charset="UTF-8">
 <title>中国医疗器械-后台管理</title>
-<link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style.css">
+<!-- <link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style.css">  -->
+
+<link id="lnk" rel="stylesheet" type="text/css" href="">
 <script>
 
 function return_tologin(){
-	
 	window.location.href = "${ctx}/login.jsp";
 }
 
@@ -35,7 +36,7 @@ function return_tologin(){
 </head>
 
 <body style="background-color: #e4e5ea">
-<div id="app">
+<div id="app" style="overflow:hidden;">
 
 <!-----头部----->
 <div class="cy_CMICBMS_top">
@@ -57,15 +58,17 @@ function return_tologin(){
         
 		<ic_menu v-for="data in menu_data" v-bind:model="data"></ic_menu>  <!-- 左侧菜单栏 -->
      </div>
-</div>
+
 
 <!--右侧表格部分-->
 
-<div class="cy_CMICBMS_body">
+<div class="cy_CMICBMS_body" style="overflow:hidden;">
 
-	<iframe id="mainiframe" src="" name="mainiframe" frameborder="0" iFrameHeight() width="100%">
+	<iframe id="mainiframe" src="" name="mainiframe" frameborder="0"  width="100%">
 		
 	</iframe>
+
+</div>
 
 </div>
 <!--<footer class="cy_CMICBMS_foot">Copyright &copy; 2018-2021 湖北畅云时讯软件技术有限公司版权所有</footer>-->
@@ -80,10 +83,12 @@ function return_tologin(){
 
 <script>
  
+   AdaptationResolution('${ctx}'); //分辨率适配
+ 
    var Info = {
 		   W0003:'${W0003}'
    };
- 
+   //菜单组件
    var ic_menu = {
 		  
 		   template:'<div>'+
@@ -100,9 +105,7 @@ function return_tologin(){
 			},
 			methods:{
 				toggle:function(event){
-					
 					this.isopen = !this.isopen ;
-					
 				}
 			}
    };
@@ -171,13 +174,13 @@ function return_tologin(){
 		        }); 
 		   }
 		   
-	   },mounted:function(){
+	   },
+	   mounted:function(){
 		   $(".cy_CMICBMS_fstmenu")[0].click();
 	       $("#mainiframe").attr("src",$($(".cy_CMICBMS_sndmenu")[0]).children().eq(0).attr("href"));
 	   }
    });
- 
-      
+  
 </script>
 
 </body>

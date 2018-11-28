@@ -7,7 +7,6 @@ package com.ichangyun.InforAnalyaizer.service.userInfo.impl;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,6 @@ import com.ichangyun.InforAnalyaizer.model.User;
 import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfo;
 import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoKey;
 import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoVo;
-import com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean;
 import com.ichangyun.InforAnalyaizer.service.userInfo.UserInfoService;
 import com.ichangyun.InforAnalyaizer.utils.Obj2Map;
 import com.ichangyun.InforAnalyaizer.utils.PBKDF2;
@@ -52,10 +50,11 @@ public class UserInfoServiceImpl implements UserInfoService{
      * addUser：新增用户
      * @param vo 账号详细画面的项目
      * @param u
+     * @throws InvalidKeySpecException 
+     * @throws NoSuchAlgorithmException 
      */
     @Override
-    public void addUser(UserInfoVo vo, User u)
-            throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public String addUser(UserInfoVo vo, User u) throws NoSuchAlgorithmException, InvalidKeySpecException{
         /* UserInfo作成  */
         UserInfo info = new UserInfo(
                 vo.getUpwd(),    // 密码
@@ -74,10 +73,18 @@ public class UserInfoServiceImpl implements UserInfoService{
                 info.getPassword(),
                 DatatypeConverter.printHexBinary(info.getUserId().getBytes()));
         info.setPassword(passwd);
+        String msg = "ok";
         // 用户情报登陆
-        this.userInfoMapper.insert(info);
+        try {
+            this.userInfoMapper.insert(info);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			msg = "fault";
+		}
         // 更新用户的状态为1（使用中）
         this.userInfoMapper.updateRoleStatus(info);
+        return msg;
     }
 
     /**
@@ -86,8 +93,8 @@ public class UserInfoServiceImpl implements UserInfoService{
      * @param u
      */
     @Override
-    public void updateUser(UserInfoVo vo,User u)
-            throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public String updateUser(UserInfoVo vo,User u)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {	
         /* UserInfo作成  */
         UserInfo info = new UserInfo(
                 vo.getUpwd(),    // 密码
@@ -101,18 +108,29 @@ public class UserInfoServiceImpl implements UserInfoService{
                 u.getUser_ID(),  // 更新者：用户情报的用户名
                 vo.getUid(),     // 用户名
                 vo.getUnum());   // 用户No
-        // 密码加密
-        String passwd  = PBKDF2.getPBKDF2(
-                info.getPassword(),
-                DatatypeConverter.printHexBinary(info.getUserId().getBytes()));
-        // 设置密码
-        info.setPassword(passwd);
+        // 如果修改了将密码加密
+        if (!info.getPassword().equals("")) {
+        	String passwd  = PBKDF2.getPBKDF2(
+        			info.getPassword(),
+        			DatatypeConverter.printHexBinary(info.getUserId().getBytes()));		
+        	info.setPassword(passwd);
+		}else {
+			info.setPassword(null);
+		}
+
         // 更新用户情报
-        this.userInfoMapper.updateByPrimaryKey(info);
+        String msg = "ok";
+        try {
+        	this.userInfoMapper.updateByPrimaryKeySelective(info);			
+        	this.userInfoMapper.updateRoleStatus(info);
+        	this.userInfoMapper.updateRoleStatusToZero();
+		} catch (Exception e) {
+			// TODO: handle exception
+			msg = "fault";
+		}
         // 更新用户角色情报的状态为1（使用中）    TODO
-        this.userInfoMapper.updateRoleStatus(info);
         // 更新用户角色情报的状态为0（暂未使用）  TODO
-        this.userInfoMapper.updateRoleStatusToZero();
+        return msg;
     }
 
     /**
@@ -154,12 +172,19 @@ public class UserInfoServiceImpl implements UserInfoService{
      * @param vo
      */
     @Override
-    public void deleteUser(UserInfoVo vo) {
-        log.info("deleteUser-" + "用户名[" + vo.getUid() +"]用户No[" + vo.getUnum() + "]");
-        // 用户名和用户No设置
-        UserInfoKey key = new UserInfoKey(vo.getUid(), vo.getUnum());
-        // 用户情报删除
-        this.userInfoMapper.deleteByPrimaryKey(key);
+    public void deleteUser(Integer[] ids) {
+    	StringBuilder id = new StringBuilder();
+    	for (int i = 0; i < ids.length; i++) {
+			if(i<ids.length-1) {
+				id.append(ids[i]+",");
+			}else {
+				id.append(ids[i]);
+			}
+		}
+        this.userInfoMapper.deleteUser(id.toString());
+        
+     // 更新用户角色情报的状态为0（暂未使用）
+     	this.updateRoleStatus();
     }
 
     /**
@@ -170,43 +195,16 @@ public class UserInfoServiceImpl implements UserInfoService{
      */
     @Override
     public Map<String, Object> queryAllUser(UserInfoVo vo, int pageNow, int rowSize) {
-        /* UserInfo作成  */
-        UserInfo info = new UserInfo(
-                vo.getUpwd(),    // 密码
-                vo.getUname(),   // 姓名
-                vo.getUdep(),    // 所属部门
-                vo.getUtel(),    // 电话
-                vo.getUemail(),  // 邮箱
-                vo.getUrole(),   // 用户角色ID
-                vo.getUstatus(), // 状态
-                null,            // 作成者：null
-                null,            // 更新者：null
-                vo.getUid(),     // 用户名
-                vo.getUnum());   // 用户No
 
-        Map<String, Object> key = new HashMap<>();
-        key = Obj2Map.object2Map(info);
+        Map<String, Object> key = Obj2Map.object2Map(vo);   
         int l_pre = (pageNow-1)*rowSize;
         // 查询条件的map参数
         key.put("l_pre", l_pre);
         key.put("rowSize", rowSize);
 
         // 取得用户信息
-        List<UserInfo> infos = this.userInfoMapper.queryAllUser(key);
-        List<UserInfoVo> vos = new ArrayList<>();
-        // 取得用户角色信息
-        List<RoleManageBean> roles = this.roleMapper.queryAllRole();
-        for (UserInfo userInfo : infos) {
-            UserInfoVo userVo = new UserInfoVo();
-            userVo.loading(userInfo);
-            for (RoleManageBean r : roles) {
-                if(r.getUserRole_ID().equals(userVo.getUrole())) {
-                    // 设置用户的角色名称
-                    userVo.setUrolename(r.getUserRoleName());
-                }
-            }
-            vos.add(userVo);
-        }
+        List<UserInfoVo> vos = this.userInfoMapper.queryAllUser(key);
+
         Map<String, Object> res = new HashMap<>();
         // 取得用户信息的件数
         int count = this.userInfoMapper.queryCount(key);
@@ -258,7 +256,7 @@ public class UserInfoServiceImpl implements UserInfoService{
     }
 
     /**
-     * updateRoleStatus：将用户角色情报的状态设为0
+     * updateRoleStatus：将无人使用的用户角色情报的状态设为0
      * @param user_ID 用户名
      */
     @Override

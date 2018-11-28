@@ -14,6 +14,6 @@ public interface FilterWordsService {
 	//更新节点过滤词信息
 	String updateFwVo(FilterWordsVo vo, User u);
 	//查新当前节点的子节点
-	List<FilterWordsVo> queryChild(String parent_Classification_ID);
+	List<FilterWordsVo> queryChild(FilterWordsVo vo);
 
 }

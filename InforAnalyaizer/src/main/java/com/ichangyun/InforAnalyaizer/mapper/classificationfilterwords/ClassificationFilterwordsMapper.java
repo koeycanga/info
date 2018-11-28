@@ -13,17 +13,10 @@ public interface ClassificationFilterwordsMapper {
 
 	int deleteByPrimaryKey(String classificationId);		//通过id删除节点的过滤词信息
 
-    int insert(ClassificationFilterwordsWithBLOBs record);  //添加节点过滤词信息
 
     int insertSelective(ClassificationFilterwordsWithBLOBs record);//按条件添加节点过滤词信息
 
     ClassificationFilterwordsWithBLOBs selectByPrimaryKey(String classificationId);//查询节点信息过滤词信息
-
-    int updateByPrimaryKeySelective(ClassificationFilterwordsWithBLOBs record);//按条件编辑节点信息过滤词信息
-
-    int updateByPrimaryKeyWithBLOBs(ClassificationFilterwordsWithBLOBs record);//编辑节点信息过滤词信息
-
-    int updateByPrimaryKey(ClassificationFilterwords record);				//编辑过滤词信息
     
     List<FilterWordsVo> selectByFwVo(Map<String, Object> vo);//条件查询所有节点过滤词信息
 
@@ -33,5 +26,5 @@ public interface ClassificationFilterwordsMapper {
 
 	void updateFwVo(FilterWordsVo vo);					//编辑节点过滤词信息
 
-	List<FilterWordsVo> queryChild(String parent_Classification_ID);//查询当前节点的子节点
+	List<FilterWordsVo> queryChild(FilterWordsVo vo);//查询当前节点的子节点
 }

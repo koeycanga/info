@@ -66,7 +66,7 @@ public class RoleServiceImpl implements RoleService {
         map.put("roleName", roleName);
         map.put("roleDes", roleDes);
         map.put("createrID", createrID);
-        map.put("Authority", Authority);
+        map.put("Authority", Authority+"00000");
         int res = roleMapper.AddNewRole(map);
         if(res==1) {
             return true;

@@ -18,7 +18,7 @@ public class ServletContextLoadListener implements ServletContextListener {
 		// 得到ServletContext
 		ServletContext context = contextEvent.getServletContext();
 		context.setAttribute("ctx", context.getContextPath());
-		System.out.println("-------------------" + context.getAttribute("ctx"));
+		//System.out.println("-------------------" + context.getAttribute("ctx"));
 	}
 
 }

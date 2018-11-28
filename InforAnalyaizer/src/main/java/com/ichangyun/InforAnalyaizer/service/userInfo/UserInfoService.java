@@ -20,11 +20,11 @@ import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoVo;
  */
 public interface UserInfoService {
     // 添加用户
-    void addUser(UserInfoVo record, User createUser) throws NoSuchAlgorithmException, InvalidKeySpecException;
+    String addUser(UserInfoVo record, User createUser)throws NoSuchAlgorithmException, InvalidKeySpecException;
     // 编辑用户
-    void updateUser(UserInfoVo record, User updateUser) throws NoSuchAlgorithmException, InvalidKeySpecException;
+    String updateUser(UserInfoVo record, User updateUser) throws NoSuchAlgorithmException, InvalidKeySpecException;
     // 删除用户
-    void deleteUser(UserInfoVo record);
+    void deleteUser(Integer[] checkedId);
     // 查询所有用户
     Map<String, Object> queryAllUser(UserInfoVo record, int pageNow, int rowSize);
     // 根据用户num查询用户

@@ -8,6 +8,7 @@ package com.ichangyun.InforAnalyaizer.model.userInfo;
 import java.util.Date;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.ichangyun.InforAnalyaizer.utils.DateUtils;
 
 /**
  * UserInfoVo：账号详细画面的项目定义
@@ -28,13 +29,12 @@ public class UserInfoVo {
     private String urolename;   // 角色名
     private String usuperuserflag; // 超级管理员区分（0：非超级管理员，1：超级管理员）
 
-    @JSONField(format="yyyy-MM-dd hh:mm:ss")
-    private Date uupdatedatetime;   // 更新日时
-
-    public Date getUupdatedatetime() {
+    private String uupdatedatetime;   // 更新日时
+    
+    public String getUupdatedatetime() {
         return uupdatedatetime;
     }
-    public void setUupdatedatetime(Date updatedatetime) {
+    public void setUupdatedatetime(String updatedatetime) {
         this.uupdatedatetime = updatedatetime;
     }
 
@@ -154,5 +154,7 @@ public class UserInfoVo {
         this.ustatus = info.getStatus();
         this.upwd = info.getPassword();
         this.usuperuserflag = info.getSuperuserflag();
+        this.uupdatedatetime = DateUtils.format(info.getUpdatedatetime(), DateUtils.DATE_TIME_PATTERN);
+
     }
 }

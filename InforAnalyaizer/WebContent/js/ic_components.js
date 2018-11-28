@@ -4,8 +4,20 @@
  */
 
 
+/**
+ *
+ * 组件用到的信息提示Info  在引入组件时需在页面引入相关信息
+ * 
+ic_collectiont   I0023   E0022
+
+ic_jcfa          I0017  I0018  E0029  I0012  E0030  E0022  I0008  E0030  I0014
+
+ic_user_info    E0004  E0014  I0012  E0025  I0013
+ */
+
+
 //我的收藏用到的节点类
-function CTreeNode(val,depth){   
+function CTreeNode(val,depth){
 	this.val = val;
 	this.depth = depth;
 }
@@ -16,73 +28,46 @@ var ic_collectiont = {
 		template:'<div class="cy_CIASFE_colle" v-bind:style="collcnt>0?\'background: url(../image/fontend-colle02.png) no-repeat\':\'\'">'+
 					'<div class="cy_CIASFE_collebox">'+
 						'<div>我的收藏</div>'+
-						 '<a v-for="data in c_datas" v-on:click="conllect(data.val.collectionType_ID,data.val.children_lg,$event)" href="#">{{data.val.collectionTypeName}}</a>'+
+						 '<a v-for="data in collect_datas" v-on:click="conllect(data.val.collectionType_ID,$event)" href="#" style="text-align: left">'+
+                         '<span v-for="n in data.depth+1">&emsp;</span>{{data.val.collectionTypeName}}</a>'+
 					'</div>'+
 				'</div>',
-	    props:['aid','collcnt'],
+	    props:['aid','collcnt','collect_datas'],
 		data:function(){
 			return {
-				c_datas:[],     //我的收藏
+				//c_datas:[],     //我的收藏
 			}
 		},
 		methods:{
-			 addCnodeChildren:function(ctnode,data){
-				  for(var i=0;i<data.length;i++){
-					  if(ctnode.val.collectionType_ID==data[i].parent_CollectionType_ID){
-						  var acnode = new CTreeNode(data[i],ctnode.depth+1);
-						  this.c_datas.push(acnode);
-						  if(data[i].children_lg>0){
-							  this.addCnodeChildren(acnode,data);
-						  }
-					  }
-				  }
-			  },
-			conllect:function(id,children_lg,event){
+
+			conllect:function(id,event){
 				event.preventDefault();
-				if(children_lg==0){
-					var _this = this;
-					axios.get('../thematicmonitoring/conllect',{
-		    			params: {
-		    				  Article_ID:_this.aid,
-		    				  CollectionType_ID:id
-		    				}
-		    			})
-		    			.then(function (response) {
-		    				if(response.data=="ok"){
-		    					_this.$parent.updateCollent(_this.aid);
-		    					layer.msg(Info.I0023);
-		    				}else{
-		    					layer.msg(Info.E0022);
-		    				}
-		    				
-		    			})
-		    			.catch(function (error) {
-		    				console.log(error);
-		    				layer.msg(Info.E0022);
-		    			});
-					
+				
+				if(this.collcnt!=0){
+					layer.msg("该文章已经被收藏,详情请到我的收藏模块查看");
+					return;
 				}
+				var _this = this;
+				axios.get('../thematicmonitoring/conllect',{
+	    			params: {
+	    				  Article_ID:_this.aid,
+	    				  CollectionType_ID:id
+	    				}
+	    			})
+	    			.then(function (response) {
+	    				if(response.data=="ok"){
+	    					_this.$parent.updateCollent(_this.aid);
+	    					layer.msg(Info.I0023);
+	    				}else{
+	    					layer.msg(Info.E0022);
+	    				}
+
+	    			})
+	    			.catch(function (error) {
+	    				console.log(error);
+	    				layer.msg(Info.E0022);
+	    			});
 			}
-		},
-		mounted:function(){
-			 var _this = this;
-			  axios.get('../thematicmonitoring/getCollectionType')
-	  			.then(function (response) {
-	  				var data = JSON.parse(response.data);
-	  				for(var i=0;i<data.length;i++){
-	  					if(data[i].parent_CollectionType_ID==''||data[i].parent_CollectionType_ID=='0'){  //根节点
-	  						var ctnode = new CTreeNode(data[i],0);
-	  						_this.c_datas.push(ctnode);
-	  						if(data[i].children_lg>0){
-	  							_this.addCnodeChildren(ctnode,data);
-	  						}
-	  					}
-	  				}
-	  			})
-	  			.catch(function (error) {
-	  			    console.log(error);
-	  			});
-			  
 		}
 };
 
@@ -96,7 +81,7 @@ function JCNode(i){
 
 //监控方案组件
 var ic_jcfa  = {
-		
+
 		template:'<div>'+
 	'<div class="cy_CIASFE_intmonbodyleft">'+
 		'<div class="cy_CIASFE_monpltop">监测方案<a href="#"><img src="../image/monplan-plus.png" v-on:click="NewJCFA()"></a></div>'+
@@ -155,7 +140,7 @@ var ic_jcfa  = {
 			 this.fa_datas.push(jcnode);
 			 $("#newfadv").css("display","block");
 		     $("#cy_hidebg").css("display","block");
-		     
+
 		},
 		editFa:function(index){
 			 this.title = Info.I0018;
@@ -169,7 +154,7 @@ var ic_jcfa  = {
 				      }
 			     })
     			.then(function (response) {
-    				 
+
     				 var data = JSON.parse(response.data);
 
     				 for(var i=0;i<data.length;i++){
@@ -189,14 +174,14 @@ var ic_jcfa  = {
     					_this.fa_datas.push(jcnode);
                         _this.planinfo_removeWord = data[i].removeWord;
     				 }
-    				
+
     				 $("#newfadv").css("display","block");
     			     $("#cy_hidebg").css("display","block");
     			})
     			.catch(function (error) {
     			    console.log(error);
     			});
-	
+
 		},
 		UpdateFA:function(){
 			if(this.planinfo_name.trim()==''){
@@ -270,7 +255,7 @@ var ic_jcfa  = {
 	   				  }
 	   			})
 	   			.catch(function (error) {
-	   			   
+
 	   			});
 		},
 		delFA:function(planid){
@@ -295,7 +280,7 @@ var ic_jcfa  = {
 		    			.catch(function (error) {
 		    			    console.log(error);
 		    			});
-		        }); 
+		        });
 		},
 		getJCCJson:function(){
 			var str = '[';
@@ -325,7 +310,7 @@ var ic_jcfa  = {
 			        title:'添加关联词',
 			        skin:'layui-layer-rim',
 			        area:['200px', 'auto'],
-			        
+
 			        content: ' <div class="row" style="width: 180px;  margin-left:7px; margin-top:10px;">'
 			            +'<div class="col-sm-12">'
 			            +'<input id="firstpwd" type="text" class="form-control" placeholder="请输入关联词 ">'
@@ -345,7 +330,7 @@ var ic_jcfa  = {
 			        btn2:function (index,layero) {
 			        	 layer.close(index);
 			        }
-			 
+
 			    });
 		},
 		getAllFA:function(){
@@ -365,13 +350,13 @@ var ic_jcfa  = {
 	},
 	mounted:function(){
 		this.getAllFA();
-		
+
 	}
 };
 
 //前台页面上部菜单栏组件
-var ic_top_menu = {   
-		
+var ic_top_menu = {
+
 		template:'<div class="cy_CIASFE_nagiv">'+
 		    '<a v-bind:href="mdata.url" v-for="mdata in model"><div class="cy_CIASFE_nagivbox" v-bind:style="mdata.style">{{mdata.name}}</div></a>'+
 			'</div>',
@@ -463,7 +448,7 @@ var ic_user_info = {  //$parent.updateUser
 		    			.catch(function (error) {
 		    			    console.log(error);
 		    			});
-		        }); 
+		        });
         	},
         	hide:function(){
         		this.changePwd = '';
@@ -539,7 +524,7 @@ var ic_front_pager = {
 				'<div class="cy_CIASFE_ctpg03">到第<input type="text" v-model="pageBean.jump_page" class="cy_CIASFE_pgbox">页<input v-on:click="showJumpPage($event)" type="button" value="确定" class="cy_CIASFE_pgbtn"></div>'+
 			'</div>'+
 		'</div>',
-			
+
 		 props:['model'],
 		 data:function(){
 		     return {
@@ -561,7 +546,7 @@ var ic_front_pager = {
 		 methods:{
 		     showPage:function(index,event){
 		    	 event.preventDefault();
-		    	
+
 		    	 if(index!='...'){
 				     this.pageBean.pageNow = index;
 					 this.pageBean.jump_page = index;
@@ -575,7 +560,7 @@ var ic_front_pager = {
 		    	 }
 			 },
 			 showFirstPage:function(event){
-				
+
 			      if(this.pageBean.pageNow>1){
 				     this.showPage(1,event);
 				  }else{
@@ -629,7 +614,7 @@ var ic_front_pager = {
  				if(this.pageBean.row_show_end>this.pageBean.rowCount){
  					this.pageBean.row_show_end = this.pageBean.rowCount;
  				}
- 				
+
  				this.ysdatas = [];
 				if(this.pageBean.pageSize<=this.max_length){
 					for(var i=1;i<=this.pageBean.pageSize;i++){
@@ -641,7 +626,7 @@ var ic_front_pager = {
 						this.ysdatas.push(i);
 					}
 				}else{
-					var lg = this.pageBean.pageNow + (this.max_length-3); 
+					var lg = this.pageBean.pageNow + (this.max_length-3);
 					for(var i=this.pageBean.pageNow;i<=lg;i++){
 						this.ysdatas.push(i);
 					}
@@ -649,7 +634,7 @@ var ic_front_pager = {
 					this.ysdatas.push(this.pageBean.pageSize);
 				}
 			 }
-			 
+
 		 }
   };
 
@@ -670,7 +655,7 @@ var ic_pager = {
 			'</ul>'+
 			'</div>'+
 			'</div></div></div>',
-			
+
 		 props:['model'],
 		 data:function(){
 		     return {
@@ -692,7 +677,7 @@ var ic_pager = {
 		 methods:{
 		     showPage:function(index,event){
 		    	 event.preventDefault();
-		    	
+
 		    	 if(index!='...'){
 				     this.pageBean.pageNow = index;
 					 this.pageBean.jump_page = index;
@@ -706,7 +691,7 @@ var ic_pager = {
 		    	 }
 			 },
 			 showFirstPage:function(event){
-				
+
 			      if(this.pageBean.pageNow>1){
 				     this.showPage(1,event);
 				  }else{
@@ -760,7 +745,7 @@ var ic_pager = {
  				if(this.pageBean.row_show_end>this.pageBean.rowCount){
  					this.pageBean.row_show_end = this.pageBean.rowCount;
  				}
- 				
+
  				this.ysdatas = [];
 				if(this.pageBean.pageSize<=this.max_length){
 					for(var i=1;i<=this.pageBean.pageSize;i++){
@@ -772,7 +757,7 @@ var ic_pager = {
 						this.ysdatas.push(i);
 					}
 				}else{
-					var lg = this.pageBean.pageNow + (this.max_length-3); 
+					var lg = this.pageBean.pageNow + (this.max_length-3);
 					for(var i=this.pageBean.pageNow;i<=lg;i++){
 						this.ysdatas.push(i);
 					}
@@ -780,14 +765,14 @@ var ic_pager = {
 					this.ysdatas.push(this.pageBean.pageSize);
 				}
 			 }
-			 
+
 		 }
   };
 
 
 
 var ic_l_pager = {
-		
+
 		template:'	<div class="cy_CMICBMS_infedpg"><div v-if="pageBean.pageSize>=1" class="cy_CMICBMS_infedrc">共{{pageBean.jr_rowCount}}条记录</div>'+
 					'<div>'+
 					'<ul v-if="pageBean.pageSize>=1">'+
@@ -797,7 +782,7 @@ var ic_l_pager = {
 					'<li><a href="#" v-on:click="showPageNext($event)">></a></li>'+
 					'<li><a href="#" v-on:click="showLastPage($event)">>></a></li></ul>'+
 					'</div></div>',
-	
+
 	 props:['model'],
 	 data:function(){
 	     return {
@@ -819,7 +804,7 @@ var ic_l_pager = {
 	 methods:{
 	     showPage:function(index,event){
 	    	 event.preventDefault();
-	    	
+
 	    	 if(index!='...'){
 			     this.pageBean.pageNow = index;
 				 this.pageBean.jump_page = index;
@@ -836,7 +821,7 @@ var ic_l_pager = {
 	    	 }
 		 },
 		 showFirstPage:function(event){
-			
+
 		      if(this.pageBean.pageNow>1){
 			     this.showPage(1,event);
 			  }else{
@@ -890,7 +875,7 @@ var ic_l_pager = {
 				if(this.pageBean.row_show_end>this.pageBean.rowCount){
 					this.pageBean.row_show_end = this.pageBean.rowCount;
 				}
-				
+
 				this.ysdatas = [];
 			if(this.pageBean.pageSize<=this.max_length){
 				for(var i=1;i<=this.pageBean.pageSize;i++){
@@ -902,7 +887,7 @@ var ic_l_pager = {
 					this.ysdatas.push(i);
 				}
 			}else{
-				var lg = this.pageBean.pageNow + (this.max_length-3); 
+				var lg = this.pageBean.pageNow + (this.max_length-3);
 				for(var i=this.pageBean.pageNow;i<=lg;i++){
 					this.ysdatas.push(i);
 				}
@@ -910,7 +895,7 @@ var ic_l_pager = {
 				this.ysdatas.push(this.pageBean.pageSize);
 			}
 		 }
-		 
+
 	 }
-		
+
 };

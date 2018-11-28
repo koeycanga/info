@@ -70,7 +70,11 @@ public class ComprehensivemonitoringController {
 		return res;
 	}
 	
-	
+	/**
+	 * и╬ЁЩндуб
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping("/delarticle")
 	public Object delarticle(@RequestBody Map map) {
 		String res = "ok";

@@ -12,11 +12,11 @@ public class ClassificationFilterwords {
     private String createuser;
     @JSONField(format="yyyy-MM-dd")
     private Date createdatetime;
-
+    
     private String updateuser;
-    @JSONField(format="yyyy-MM-dd")
-    private Date updatedatetime;
-
+    private String updatedatetime;
+    
+    
     public String getClassificationId() {
         return classificationId;
     }
@@ -57,16 +57,16 @@ public class ClassificationFilterwords {
         this.updateuser = updateuser == null ? null : updateuser.trim();
     }
 
-    public Date getUpdatedatetime() {
+    public String getUpdatedatetime() {
         return updatedatetime;
     }
 
-    public void setUpdatedatetime(Date updatedatetime) {
+    public void setUpdatedatetime(String updatedatetime) {
         this.updatedatetime = updatedatetime;
     }
 
 	public ClassificationFilterwords(String classificationId, String informationtropism, String createuser,
-			Date createdatetime, String updateuser, Date updatedatetime) {
+			Date createdatetime, String updateuser, String updatedatetime) {
 
 		this.classificationId = classificationId;
 		this.informationtropism = informationtropism;

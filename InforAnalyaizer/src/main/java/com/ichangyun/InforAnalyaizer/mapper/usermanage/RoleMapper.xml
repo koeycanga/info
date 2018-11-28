@@ -10,9 +10,8 @@
     </select>
     
     <insert id="AddNewRole" parameterType="java.util.Map" >
-    			insert into m_userrole (UserRole_ID,UserRoleName,Description,CreateUser,CreateDateTime,Status,Authority,UpdateUser,UpdateDateTime)
-
-				values (null,#{param.roleName},#{param.roleDes},#{param.createrID},NOW(),'0',#{param.Authority},#{param.createrID},NOW())
+  			insert into m_userrole (UserRole_ID,UserRoleName,Description,CreateUser,CreateDateTime,Status,Authority,UpdateUser,UpdateDateTime)
+		values (null,#{param.roleName},#{param.roleDes},#{param.createrID},NOW(),'0',#{param.Authority},#{param.createrID},NOW())
     </insert>
     
     <update id="updateRole" parameterType="com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean">
@@ -38,10 +37,10 @@
 		</foreach>
 	</delete>
    <select  id="queryAllRole" resultType="com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean">
-           select * from m_userrole
+         select * from m_userrole
     </select>
    
    <select  id="queryById" resultType="com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean">
-           select DATE_FORMAT(UpdateDateTime,'%Y-%m-%d %H:%i:%s') UpdateDateTime from m_userrole where UserRole_ID = #{value}
+         select DATE_FORMAT(UpdateDateTime,'%Y-%m-%d %H:%i:%s') UpdateDateTime from m_userrole where UserRole_ID = #{value}
     </select>
 </mapper>

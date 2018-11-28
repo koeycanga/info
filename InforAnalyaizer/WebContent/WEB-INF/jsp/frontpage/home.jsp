@@ -15,8 +15,9 @@
 <head>
 <meta charset="UTF-8">
 <title>竞争情报分析系统</title>
-<link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style.css">
-
+<!--  <link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style.css"> -->
+<link rel ="stylesheet" type ="text/css" href ="${ctx}/css/cy_CIAS_style-1920_1080.css" media ="screen and (min-width: 1441px) and (max-width:1922px)" >
+<link rel ="stylesheet" type ="text/css" href ="${ctx}/css/cy_CIAS_style-1440_900.css" media ="screen and (min-width: 1367px) and (max-width:1440px)">
 </head>
 
 <body style="background-color: #15266b;">

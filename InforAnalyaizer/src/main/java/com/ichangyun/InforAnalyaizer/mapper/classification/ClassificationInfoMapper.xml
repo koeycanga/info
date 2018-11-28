@@ -6,24 +6,24 @@
 <mapper namespace="com.ichangyun.InforAnalyaizer.mapper.classification.ClassificationInfoMapper">
     <select id="getClassifcInfoCount" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean"  resultType="java.lang.Integer">
          select count(1) from m_classificationinfo where 1=1 
+         <if test="cb.ClassificationName== null or cb.ClassificationName==''">
+             and Parent_Classification_ID='0000000000'
+         </if>
           <if test="cb.ClassificationName!= null and cb.ClassificationName!=''">
-			     and ClassificationName like CONCAT('%',#{cb.ClassificationName},'%')
-		  </if>
-		  <if test="cb.ClassificationName==null or cb.ClassificationName==''">
-		        and Parent_Classification_ID='0000000000'
+			    and Classification_ID in (select left(nodePath,10) from m_classificationinfo where ClassificationName like CONCAT('%',#{cb.ClassificationName},'%'))<!-- like CONCAT('%',#{cb.ClassificationName},'%') -->
 		  </if>
     </select>
     
     <select id="getClassifcInfo" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean"  resultType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
          select Classification_ID,ClassificationName,Parent_Classification_ID,DisplayOrder,Description,CreateUser,
-			DATE_FORMAT(CreateDateTime,'%Y-%m-%d') CreateDateTime,UpdateUser,DATE_FORMAT(UpdateDateTime,'%Y-%m-%d %H:%i:%s') UpdateDateTime,
+			DATE_FORMAT(CreateDateTime,'%Y-%m-%d %H:%m:%s') CreateDateTime,UpdateUser,DATE_FORMAT(UpdateDateTime,'%Y-%m-%d %H:%i:%s') UpdateDateTime,
 			 (select count(Classification_ID) from m_classificationinfo b where b.Parent_Classification_ID=a.Classification_ID) children_lg
 			 from m_classificationinfo a where 1=1 
+			  <if test="cb.ClassificationName== null or cb.ClassificationName==''">
+	             and Parent_Classification_ID='0000000000'
+	         </if>
 			 <if test="cb.ClassificationName!= null and cb.ClassificationName!=''">
-			     and a.ClassificationName like CONCAT('%',#{cb.ClassificationName},'%')
-			  </if>
-			  <if test="cb.ClassificationName==null or cb.ClassificationName==''">
-			        and a.Parent_Classification_ID='0000000000'
+			     and Classification_ID in (select left(nodePath,10) from m_classificationinfo where ClassificationName like CONCAT('%',#{cb.ClassificationName},'%')) <!-- like CONCAT('%',#{cb.ClassificationName},'%') -->
 			  </if>
 			  order by a.DisplayOrder desc
 			  limit #{cb.l_pre},#{cb.rowSize}
@@ -32,7 +32,7 @@
   
   <select id="getChildernByID" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean"  resultType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
        select Classification_ID,ClassificationName,Parent_Classification_ID,DisplayOrder,Description,CreateUser,
-			DATE_FORMAT(CreateDateTime,'%Y-%m-%d') CreateDateTime,UpdateUser,DATE_FORMAT(UpdateDateTime,'%Y-%m-%d %H:%i:%s') UpdateDateTime,
+			DATE_FORMAT(CreateDateTime,'%Y-%m-%d %H:%m:%s') CreateDateTime,UpdateUser,DATE_FORMAT(UpdateDateTime,'%Y-%m-%d %H:%i:%s') UpdateDateTime,
 			 (select count(Classification_ID) from m_classificationinfo b where b.Parent_Classification_ID=a.Classification_ID) children_lg
 			 from m_classificationinfo a where a.Parent_Classification_ID=#{cb.Classification_ID}  order by a.DisplayOrder desc
   </select>
@@ -65,8 +65,8 @@
   </select>
   
   <insert id="addNew" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
-    insert into m_classificationinfo(Classification_ID,ClassificationName,Parent_Classification_ID,DisplayOrder,Description ,CreateUser,CreateDateTime)
-      values(#{cb.Classification_ID},#{cb.ClassificationName},#{cb.Parent_Classification_ID},#{cb.DisplayOrder},#{cb.Description} ,#{cb.CreateUser},NOW())
+    insert into m_classificationinfo(Classification_ID,ClassificationName,Parent_Classification_ID,DisplayOrder,Description ,CreateUser,CreateDateTime,UpdateUser,UpdateDateTime,nodePath)
+      values(#{cb.Classification_ID},#{cb.ClassificationName},#{cb.Parent_Classification_ID},#{cb.DisplayOrder},#{cb.Description} ,#{cb.CreateUser},NOW(),#{cb.CreateUser},NOW(),#{cb.nodePath})
   </insert>
   
   <update id="updateData" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
@@ -80,6 +80,13 @@
   
   <delete id="delData" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
         delete from m_classificationinfo where Classification_ID=#{cb.Classification_ID}
+  </delete>
+  
+  <delete id="delDataByFunction" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
+       delete from m_classificationinfo where locate(
+			   Classification_ID,
+			  (select DISTINCT getChildList_classificationinfo(#{cb.Classification_ID}) from m_classificationinfo)
+			)>0
   </delete>
   
   <update id="updateOrder">

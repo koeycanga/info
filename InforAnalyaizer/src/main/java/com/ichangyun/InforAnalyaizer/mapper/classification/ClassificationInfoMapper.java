@@ -119,4 +119,14 @@ public interface ClassificationInfoMapper {
 	 */
 	public List<ClassificationInfoBean> getAllClassification(@Param("yesterday")String yesterday, @Param("today")String today);
 
+	/**
+	 * 使用mysql的function删除数据
+	 * @param cb
+	 */
+	public void delDataByFunction(@Param("cb")ClassificationInfoBean cb);
+
+	//public int getClassifcInfoCountWithName(ClassificationInfoBean cb);
+
+	//public List<ClassificationInfoBean> getClassifcInfoWithName(ClassificationInfoBean cb);
+
 }

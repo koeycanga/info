@@ -5,24 +5,18 @@
  */
 package com.ichangyun.InforAnalyaizer.controller.front;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.ichangyun.InforAnalyaizer.model.CommBean;
 import com.ichangyun.InforAnalyaizer.model.User;
 import com.ichangyun.InforAnalyaizer.model.front.HotWordBean;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
 import com.ichangyun.InforAnalyaizer.service.front.HomeService;
-import com.ichangyun.InforAnalyaizer.service.userInfo.UserInfoService;
 
 /**
  * 首页的控制器
@@ -62,7 +56,10 @@ public class HomeController {
 		return new ModelAndView("frontpage/worddetail");
 	}
 	
-	
+	/**
+	 * 获得首页最新消息  预警信息  负面信息的JSON字面量
+	 * @return
+	 */
 	@RequestMapping("/getHomeDatas")
 	public Object getHomeDatas() {
 	    
@@ -77,6 +74,11 @@ public class HomeController {
 		return res;
 	}
 	
+	
+	/**
+	 * 获得热词云信息
+	 * @return
+	 */
 	@RequestMapping("/getHotWord")
 	public Object getHotWord() {
 		
@@ -86,6 +88,11 @@ public class HomeController {
 	}
 	
 	
+	/**
+	 * 根据热词获得属于该热词的文章信息集合
+	 * @param hb
+	 * @return
+	 */
 	@RequestMapping("/searchbyhotword")
 	public Object searchByHotWord(HotWordBean hb) {
 		

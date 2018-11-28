@@ -29,6 +29,13 @@ public class ClassificationInfoBean extends BaseBean{
 	 */
 	private String Parent_Classification_ID;
 	
+	
+	/**
+	 * 分类体系节点路径
+	 */
+	private String nodePath;
+	
+	
 	/**
 	 * 分类体系排位顺序
 	 */
@@ -107,6 +114,14 @@ public class ClassificationInfoBean extends BaseBean{
 	
 	public ClassificationInfoBean() {
 		this.isclick = false;
+	}
+	
+	public String getNodePath() {
+		return nodePath;
+	}
+
+	public void setNodePath(String nodePath) {
+		this.nodePath = nodePath;
 	}
 	
 	public boolean isIsclick() {

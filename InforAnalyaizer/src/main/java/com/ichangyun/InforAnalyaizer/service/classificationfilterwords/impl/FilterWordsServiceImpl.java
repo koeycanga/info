@@ -1,6 +1,5 @@
 package com.ichangyun.InforAnalyaizer.service.classificationfilterwords.impl;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,11 +53,7 @@ public class FilterWordsServiceImpl implements FilterWordsService {
 	@Override
 	public String updateFwVo(FilterWordsVo vo, User u) {
 		// TODO Auto-generated method stub
-		Date t = new Date();
-		Date time= new java.sql.Date(t.getTime());
-		Map<String, Object> key= new HashMap<>();
 		ClassificationFilterwordsWithBLOBs bs = this.fwMapper.selectByPrimaryKey(vo.getClassificationId());
-		vo.setUpdatedatetime(time);
 		vo.setUpdateuser(u.getUser_ID());
 		try {
 			if(null!=bs) {
@@ -74,9 +69,9 @@ public class FilterWordsServiceImpl implements FilterWordsService {
 	}
 
 	@Override
-	public List<FilterWordsVo> queryChild(String parent_Classification_ID) {		//通过节点id查询当前节点的子节点
+	public List<FilterWordsVo> queryChild(FilterWordsVo vo) {		//通过节点id查询当前节点的子节点
 		// TODO Auto-generated method stub
-		List<FilterWordsVo> fwVos = this.fwMapper.queryChild(parent_Classification_ID);
+		List<FilterWordsVo> fwVos = this.fwMapper.queryChild(vo);
 		List<String> list = this.fwMapper.queryParents();
 		for (String p : list) {
 			for (FilterWordsVo fwvo : fwVos) {

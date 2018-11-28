@@ -10,22 +10,16 @@ import java.util.Map;
 
 import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfo;
 import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoKey;
+import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoVo;
 
 /**
  * UserInfoMapper:角色管理Mapper
  *
- * @author lan
+ * @author ichangyun
  * @Date:2018-11-9
  */
 public interface UserInfoMapper {
 
-    /**
-     * deleteByPrimaryKey：通过主键删除用户情报
-     *
-     * @param key UserInfoKey
-     * @return
-     */
-    public int deleteByPrimaryKey(UserInfoKey key);
 
     /**
      * insert：登陆用户情报
@@ -73,7 +67,7 @@ public interface UserInfoMapper {
      * @param key
      * @return
      */
-    public List<UserInfo> queryAllUser(Map<String, Object> key);
+    public List<UserInfoVo> queryAllUser(Map<String, Object> key);
 
     /**
      * queryCount：取得符合条件的用户情报的件数
@@ -106,4 +100,6 @@ public interface UserInfoMapper {
      * @return
      */
     void updateRoleStatusToZero();
+
+	public void deleteUser(String string);
 }

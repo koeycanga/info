@@ -66,34 +66,7 @@
 		where Classification_ID =
 		#{classificationId,jdbcType=CHAR}
 	</delete>
-	<insert id="insert"
-		parameterType="com.ichangyun.InforAnalyaizer.model.classificationfilterwords.ClassificationFilterwordsWithBLOBs">
-		insert into m_classificationfilterwords
-		(Classification_ID,
-		InformationTropism, CreateUser,
-		CreateDateTime,
-		UpdateUser, UpdateDateTime,
-		AllCorePhrases, AllExcludePhrases,
-		TitleCorePhrases, TitleExcludePhrases,
-		SummaryCorePhrases,
-		SummaryExcludePhrases,
-		TextCorePhrases, TextExcludePhrases
-		)
-		values
-		(#{classificationId,jdbcType=CHAR},
-		#{informationtropism,jdbcType=CHAR}, #{createuser,jdbcType=VARCHAR},
-		#{createdatetime,jdbcType=TIMESTAMP}, #{updateuser,jdbcType=VARCHAR},
-		#{updatedatetime,jdbcType=TIMESTAMP},
-		#{allcorephrases,jdbcType=LONGVARCHAR},
-		#{allexcludephrases,jdbcType=LONGVARCHAR},
-		#{titlecorephrases,jdbcType=LONGVARCHAR},
-		#{titleexcludephrases,jdbcType=LONGVARCHAR},
-		#{summarycorephrases,jdbcType=LONGVARCHAR},
-		#{summaryexcludephrases,jdbcType=LONGVARCHAR},
-		#{textcorephrases,jdbcType=LONGVARCHAR},
-		#{textexcludephrases,jdbcType=LONGVARCHAR}
-		)
-	</insert>
+
 	<insert id="insertSelective"
 		parameterType="com.ichangyun.InforAnalyaizer.model.classificationfilterwords.ClassificationFilterwordsWithBLOBs">
 		insert into m_classificationfilterwords
@@ -112,9 +85,6 @@
 			</if>
 			<if test="updateuser != null">
 				UpdateUser,
-			</if>
-			<if test="updatedatetime != null">
-				UpdateDateTime,
 			</if>
 			<if test="allcorephrases != null">
 				AllCorePhrases,
@@ -157,9 +127,6 @@
 			<if test="updateuser != null">
 				#{updateuser,jdbcType=VARCHAR},
 			</if>
-			<if test="updatedatetime != null">
-				#{updatedatetime,jdbcType=TIMESTAMP},
-			</if>
 			<if test="allcorephrases != null">
 				#{allcorephrases,jdbcType=LONGVARCHAR},
 			</if>
@@ -186,107 +153,7 @@
 			</if>
 		</trim>
 	</insert>
-	<update id="updateByPrimaryKeySelective"
-		parameterType="com.ichangyun.InforAnalyaizer.model.classificationfilterwords.ClassificationFilterwordsWithBLOBs">
-		update m_classificationfilterwords
-		<set>
-			<if test="informationtropism != null">
-				InformationTropism = #{informationtropism,jdbcType=CHAR},
-			</if>
-			<if test="createuser != null">
-				CreateUser = #{createuser,jdbcType=VARCHAR},
-			</if>
-			<if test="createdatetime != null">
-				CreateDateTime = #{createdatetime,jdbcType=TIMESTAMP},
-			</if>
-			<if test="updateuser != null">
-				UpdateUser = #{updateuser,jdbcType=VARCHAR},
-			</if>
-			<if test="updatedatetime != null">
-				UpdateDateTime = #{updatedatetime,jdbcType=TIMESTAMP},
-			</if>
-			<if test="allcorephrases != null">
-				AllCorePhrases = #{allcorephrases,jdbcType=LONGVARCHAR},
-			</if>
-			<if test="allexcludephrases != null">
-				AllExcludePhrases =
-				#{allexcludephrases,jdbcType=LONGVARCHAR},
-			</if>
-			<if test="titlecorephrases != null">
-				TitleCorePhrases =
-				#{titlecorephrases,jdbcType=LONGVARCHAR},
-			</if>
-			<if test="titleexcludephrases != null">
-				TitleExcludePhrases =
-				#{titleexcludephrases,jdbcType=LONGVARCHAR},
-			</if>
-			<if test="summarycorephrases != null">
-				SummaryCorePhrases =
-				#{summarycorephrases,jdbcType=LONGVARCHAR},
-			</if>
-			<if test="summaryexcludephrases != null">
-				SummaryExcludePhrases =
-				#{summaryexcludephrases,jdbcType=LONGVARCHAR},
-			</if>
-			<if test="textcorephrases != null">
-				TextCorePhrases =
-				#{textcorephrases,jdbcType=LONGVARCHAR},
-			</if>
-			<if test="textexcludephrases != null">
-				TextExcludePhrases =
-				#{textexcludephrases,jdbcType=LONGVARCHAR},
-			</if>
-		</set>
-		where Classification_ID = #{classificationId,jdbcType=CHAR}
-	</update>
-	<update id="updateByPrimaryKeyWithBLOBs"
-		parameterType="com.ichangyun.InforAnalyaizer.model.classificationfilterwords.ClassificationFilterwordsWithBLOBs">
-		update m_classificationfilterwords
-		set InformationTropism
-		= #{informationtropism,jdbcType=CHAR},
-		CreateUser =
-		#{createuser,jdbcType=VARCHAR},
-		CreateDateTime =
-		#{createdatetime,jdbcType=TIMESTAMP},
-		UpdateUser =
-		#{updateuser,jdbcType=VARCHAR},
-		UpdateDateTime =
-		#{updatedatetime,jdbcType=TIMESTAMP},
-		AllCorePhrases =
-		#{allcorephrases,jdbcType=LONGVARCHAR},
-		AllExcludePhrases =
-		#{allexcludephrases,jdbcType=LONGVARCHAR},
-		TitleCorePhrases =
-		#{titlecorephrases,jdbcType=LONGVARCHAR},
-		TitleExcludePhrases =
-		#{titleexcludephrases,jdbcType=LONGVARCHAR},
-		SummaryCorePhrases =
-		#{summarycorephrases,jdbcType=LONGVARCHAR},
-		SummaryExcludePhrases =
-		#{summaryexcludephrases,jdbcType=LONGVARCHAR},
-		TextCorePhrases =
-		#{textcorephrases,jdbcType=LONGVARCHAR},
-		TextExcludePhrases =
-		#{textexcludephrases,jdbcType=LONGVARCHAR}
-		where Classification_ID =
-		#{classificationId,jdbcType=CHAR}
-	</update>
-	<update id="updateByPrimaryKey"
-		parameterType="com.ichangyun.InforAnalyaizer.model.classificationfilterwords.ClassificationFilterwords">
-		update m_classificationfilterwords
-		set InformationTropism
-		= #{informationtropism,jdbcType=CHAR},
-		CreateUser =
-		#{createuser,jdbcType=VARCHAR},
-		CreateDateTime =
-		#{createdatetime,jdbcType=TIMESTAMP},
-		UpdateUser =
-		#{updateuser,jdbcType=VARCHAR},
-		UpdateDateTime =
-		#{updatedatetime,jdbcType=TIMESTAMP}
-		where Classification_ID =
-		#{classificationId,jdbcType=CHAR}
-	</update>
+	
 	<select id="selectByFwVo"
 		resultType="com.ichangyun.InforAnalyaizer.model.classificationfilterwords.FilterWordsVo"
 		parameterType="hashmap">
@@ -302,15 +169,14 @@
 		textexcludephrases,a.CreateUser
 		createuser,a.CreateDateTime createdatetime,
 		a.UpdateUser
-		updateuser,a.UpdateDateTime updatedatetime FROM
+		updateuser,DATE_FORMAT(a.UpdateDateTime,'%Y-%m-%d %H:%i:%s') updatedatetime FROM
 		m_classificationfilterwords a right
 		JOIN m_classificationinfo b on
 		a.Classification_ID=b.Classification_ID
 		<where>
 			b.Parent_Classification_ID = "0000000000"
-			<if test="classificationName != null">
-				and b.ClassificationName LIKE
-				CONCAT("%",#{classificationName},"%")
+			<if test="classificationName != null and classificationName != ''" >
+				and b.Classification_ID in (select left(nodePath,10) from m_classificationinfo c where ClassificationName like CONCAT('%',#{classificationName},'%'))
 			</if>
 		</where>
 		order by displayOrder DESC limit #{l_pre},#{rowSize} 
@@ -321,9 +187,8 @@
 		select count(1) from m_classificationinfo
 		<where>
 		Parent_Classification_ID = "0000000000"
-			<if test="classificationName != null">
-				and ClassificationName LIKE
-				CONCAT("%",#{classificationName},"%")
+			<if test="classificationName != null and classificationName != ''" >
+				and Classification_ID in (select left(nodePath,10) from m_classificationinfo c where ClassificationName like CONCAT('%',#{classificationName},'%'))
 			</if>
 		</where>
 	</select>
@@ -341,7 +206,7 @@
 		a.SummaryExcludePhrases summaryexcludephrases,a.TextCorePhrases
 		textcorephrases,a.TextExcludePhrases textexcludephrases,a.CreateUser
 		createuser,a.CreateDateTime createdatetime, a.UpdateUser
-		updateuser,a.UpdateDateTime updatedatetime FROM m_classificationinfo b
+		updateuser,DATE_FORMAT(a.UpdateDateTime,'%Y-%m-%d %H:%i:%s') updatedatetime  FROM m_classificationinfo b
 		LEFT JOIN m_classificationfilterwords a on
 		a.Classification_ID=b.Classification_ID WHERE b.Classification_ID
 		=#{value}
@@ -355,17 +220,8 @@
 			<if test="informationtropism != null">
 				InformationTropism = #{informationtropism,jdbcType=CHAR},
 			</if>
-			<if test="createuser != null">
-				CreateUser = #{createuser,jdbcType=VARCHAR},
-			</if>
-			<if test="createdatetime != null">
-				CreateDateTime = #{createdatetime,jdbcType=TIMESTAMP},
-			</if>
 			<if test="updateuser != null">
 				UpdateUser = #{updateuser,jdbcType=VARCHAR},
-			</if>
-			<if test="updatedatetime != null">
-				UpdateDateTime = #{updatedatetime,jdbcType=TIMESTAMP},
 			</if>
 			<if test="allcorephrases != null">
 				AllCorePhrases = #{allcorephrases,jdbcType=LONGVARCHAR},
@@ -410,7 +266,7 @@
 		group by Parent_Classification_ID
 	</select>
 	
-	<select id="queryChild" parameterType="String" resultType="com.ichangyun.InforAnalyaizer.model.classificationfilterwords.FilterWordsVo">
+	<select id="queryChild" parameterType="com.ichangyun.InforAnalyaizer.model.classificationfilterwords.FilterWordsVo" resultType="com.ichangyun.InforAnalyaizer.model.classificationfilterwords.FilterWordsVo">
 		select b.Classification_ID classificationId,b.ClassificationName
 		classificationName,b.Parent_Classification_ID
 		parent_Classification_ID,b.DisplayOrder displayOrder,a.InformationTropism informationtropism,
@@ -423,12 +279,15 @@
 		textexcludephrases,a.CreateUser
 		createuser,a.CreateDateTime createdatetime,
 		a.UpdateUser
-		updateuser,a.UpdateDateTime updatedatetime FROM
+		updateuser,DATE_FORMAT(a.UpdateDateTime,'%Y-%m-%d %H:%i:%s') updatedatetime FROM
 		m_classificationfilterwords a right
 		JOIN m_classificationinfo b on
 		a.Classification_ID=b.Classification_ID
 		<where>
-			b.Parent_Classification_ID = #{value}
+				b.Parent_Classification_ID = #{parent_Classification_ID}
+			<if test="classificationName != null and classificationName != ''">
+				and b.ClassificationName like CONCAT('%',#{classificationName},'%')
+			</if>
 		</where>
 		order by displayOrder DESC
 	</select>

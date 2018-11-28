@@ -3,13 +3,13 @@
 <%@ taglib prefix="ss" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:setBundle basename="resources" var="sysInfo" />
-<fmt:message key="front_menu" var="front_menu" bundle="${sysInfo}" /> 
+<fmt:message key="front_menu" var="front_menu" bundle="${sysInfo}" />
 <fmt:message key="W0002" var="W0002" bundle="${sysInfo}" />
 <fmt:message key="W0003" var="W0003" bundle="${sysInfo}" />
 <fmt:message key="E0004" var="E0004" bundle="${sysInfo}" />
 <fmt:message key="E0014" var="E0014" bundle="${sysInfo}" />
-<fmt:message key="E0025" var="E0025" bundle="${sysInfo}" />  
-<fmt:message key="I0011" var="I0011" bundle="${sysInfo}" /> 
+<fmt:message key="E0025" var="E0025" bundle="${sysInfo}" />
+<fmt:message key="I0011" var="I0011" bundle="${sysInfo}" />
 <fmt:message key="I0012" var="I0012" bundle="${sysInfo}" />
 <fmt:message key="I0013" var="I0013" bundle="${sysInfo}" />
 <fmt:message key="I0019" var="I0019" bundle="${sysInfo}" />
@@ -42,7 +42,7 @@
 <div class="cy_CIASFE_2ndmenu">
 	<div v-bind:class="fl_index==-1?'cy_CIASFE_2ndmenutabchk':'cy_CIASFE_2ndmenutab'" v-on:click="dealtopmenu(-1)">综合监测</div>
 	<div v-for="(fdata,findex) in fl_datas" v-on:click="dealtopmenu(findex)"
-	 v-bind:class="fl_index==findex?'cy_CIASFE_2ndmenutabchk':'cy_CIASFE_2ndmenutab'" 
+	 v-bind:class="fl_index==findex?'cy_CIASFE_2ndmenutabchk':'cy_CIASFE_2ndmenutab'"
 	 v-bind:style="findex==fl_datas.length-1?'border: solid 1px #e0e0e0':''" >{{fdata.classificationName}}
 	 <img v-if="fdata.today_cnt>0&&!fdata.isclick" src="${ctx}/image/fontend-newtip.png">
 	</div>
@@ -52,8 +52,8 @@
 <!--左侧数据-->
 <div class="cy_CIAFE_main">
 	<div class="cy_CIASFE_intmonbody">
-	
-	
+
+
 	<div class="cy_CIASFE_intmonbodyleft" >
 		<table cellspacing="0" v-if="fl_index==-1">
 			<tbody>
@@ -74,70 +74,69 @@
 			    </tr>
 			</tbody>
 		</table>
-		
+
 		<div class="cy_CIASFE_colletree" v-else>
 			<div class="cy_CIASFE_newfolder"></div>
-	
+
 	        <ul v-for="model in tree_datas">
-				<ic_comprehensive_tree v-bind:model="model"></ic_comprehensive_tree>	
+				<ic_comprehensive_tree v-bind:model="model"></ic_comprehensive_tree>
 			</ul>
-			
+
 		</div>
-		
-	</div>	
-	
-	
-	
-	
+
+	</div>
+
 	<div class="cy_CIASFE_intmonbodyright">
-	
+
 <!--条件筛选-->
 		<div class="cy_CIASFE_condition">
 		  <div class="cy_CIASFE_search">
-				<select><option>全文匹配</option></select>
+				<select v-model="selected">
+                    <option v-for="opt in options" v-bind:value="opt.searchtype">{{opt.value}}</option>
+				</select>
 				<div class="cy_CMICBMS_schbox01"><input type="text" v-model="search_key" placeholder="请输入…" style="cursor: text"></div>
 				<input type="button" v-on:click="btn_search()" class="cy_CMICBMS_schbtn" value="检索">
 			</div>
-			<div class="cy_CIASFE_conbox01">监测时间：
-			    <input type="radio" name="montime" value="0"  v-model="montime" id="montime_0" style="display: none;" checked><label for="montime_0">今天</label>
-				<input type="radio" name="montime" value="-1" v-model="montime" id="montime_1" style="display: none;"><label for="montime_1">24小时</label>
-           		<input type="radio" name="montime" value="-2" v-model="montime" id="montime_2" style="display: none;"><label for="montime_2">2天</label>
-           		<input type="radio" name="montime" value="-3" v-model="montime" id="montime_3" style="display: none;"><label for="montime_3">3天</label>
-           		<input type="radio" name="montime" value="-7" v-model="montime" id="montime_4" style="display: none;"><label for="montime_4">7天</label>
-           		<input type="radio" name="montime" value="-10" v-model="montime" id="montime_5" style="display: none;"><label for="montime_5">10天</label>
-           		<input type="radio" name="montime" value="10" v-model="montime" id="montime_6" style="display: none;"><label for="montime_6">自定义</label><input type="date" class="cy_CIASFE_timetb">—<input type="date" class="cy_CIASFE_timetb"><input type="button" class="cy_CMICBMS_schbtn" v-on:click="btn_search()" value="确认">
+			<div  class="cy_CIASFE_conbox01">监测时间：
+			    <input type="radio" name="montime" v-on:change="dealchange()" value="0"  v-model="montime" id="montime_0" style="display: none;" checked><label for="montime_0">今天</label>
+				<input type="radio" name="montime" v-on:change="dealchange()" value="-1" v-model="montime" id="montime_1" style="display: none;"><label for="montime_1">24小时</label>
+           		<input type="radio" name="montime" v-on:change="dealchange()" value="-2" v-model="montime" id="montime_2" style="display: none;"><label for="montime_2">2天</label>
+           		<input type="radio" name="montime" v-on:change="dealchange()" value="-3" v-model="montime" id="montime_3" style="display: none;"><label for="montime_3">3天</label>
+           		<input type="radio" name="montime" v-on:change="dealchange()" value="-7" v-model="montime" id="montime_4" style="display: none;"><label for="montime_4">7天</label>
+           		<input type="radio" name="montime" v-on:change="dealchange()" value="-10" v-model="montime" id="montime_5" style="display: none;"><label for="montime_5">10天</label>
+           		<input type="radio" name="montime" v-on:change="dealchange()" value="10" v-model="montime" id="montime_6" style="display: none;"><label for="montime_6">自定义</label><input type="date" class="cy_CIASFE_timetb">—<input type="date" class="cy_CIASFE_timetb"><input type="button" class="cy_CMICBMS_schbtn" v-on:click="btn_search()" value="确认">
             </div>
 		  <div class="cy_CIASFE_conbox02">
 				<div class="cy_CIASFE_conbox03">
 				情感分析：
-					<input type="radio" name="emoana" v-model="emoana" value="-1" id="emoana_0" style="display: none;" checked><label for="emoana_0">全部</label>
-					<input type="radio" name="emoana" v-model="emoana" value="0" id="emoana_1" style="display: none;"><label for="emoana_1">正面</label>
-					<input type="radio" name="emoana" v-model="emoana" value="1" id="emoana_2" style="display: none;"><label for="emoana_2">中性</label>
-					<input type="radio" name="emoana" v-model="emoana" value="2" id="emoana_3" style="display: none;"><label for="emoana_3">负面</label>
+					<input type="radio" name="emoana" v-on:change="dealchange()" v-model="emoana" value="-1" id="emoana_0" style="display: none;" checked><label for="emoana_0">全部</label>
+					<input type="radio" name="emoana" v-on:change="dealchange()" v-model="emoana" value="0" id="emoana_1" style="display: none;"><label for="emoana_1">正面</label>
+					<input type="radio" name="emoana" v-on:change="dealchange()" v-model="emoana" value="1" id="emoana_2" style="display: none;"><label for="emoana_2">中性</label>
+					<input type="radio" name="emoana" v-on:change="dealchange()" v-model="emoana" value="2" id="emoana_3" style="display: none;"><label for="emoana_3">负面</label>
 				</div>
 				<div class="cy_CIASFE_conbox03">相似文章：
-					<input type="radio" name="simart" value="0" v-model="simart" id="simart_0" style="display: none;" checked><label for="simart_0">合并</label>
-					<input type="radio" name="simart" value="1" v-model="simart" id="simart_1" style="display: none;"><label for="simart_1">不合并</label>
+					<input type="radio" name="simart" value="0" v-on:change="dealchange()" v-model="simart" id="simart_0" style="display: none;" checked><label for="simart_0">合并</label>
+					<input type="radio" name="simart" value="1" v-on:change="dealchange()" v-model="simart" id="simart_1" style="display: none;"><label for="simart_1">不合并</label>
 				</div>
 			</div>
 		  <div class="cy_CIASFE_conbox02">
 				<div class="cy_CIASFE_conbox03">排序方式：
-					<input type="radio" name="sort" v-model="sort" value="0" id="sort_0" style="display: none;" checked><label for="sort_0">时间降序</label>
-					<input type="radio" name="sort" v-model="sort" value="1" id="sort_1" style="display: none;"><label for="sort_1">时间升序</label>
-					<input type="radio" name="sort" v-model="sort" value="2" id="sort_2" style="display: none;"><label for="sort_2">权重降序</label>
-					<input type="radio" name="sort" v-model="sort" value="3" id="sort_3" style="display: none;"><label for="sort_3">热度排序</label>
+					<input type="radio" name="sort" v-model="sort" v-on:change="dealchange()" value="0" id="sort_0" style="display: none;" checked><label for="sort_0">时间降序</label>
+					<input type="radio" name="sort" v-model="sort" v-on:change="dealchange()" value="1" id="sort_1" style="display: none;"><label for="sort_1">时间升序</label>
+					<input type="radio" name="sort" v-model="sort" v-on:change="dealchange()" value="2" id="sort_2" style="display: none;"><label for="sort_2">权重降序</label>
+					<input type="radio" name="sort" v-model="sort" v-on:change="dealchange()" value="3" id="sort_3" style="display: none;"><label for="sort_3">热度排序</label>
 				</div>
 				<div class="cy_CIASFE_conbox03">信息来源：
-					<input type="radio" name="infsour" v-model="infsour" value="-1" id="infsour_0" style="display: none;" checked><label for="infsour_0">全部</label>
-					<input type="radio" name="infsour" v-model="infsour" value="0" id="infsour_1" style="display: none;"><label for="infsour_1">新闻</label>
-					<input type="radio" name="infsour" v-model="infsour" value="1" id="infsour_2" style="display: none;"><label for="infsour_2">微博</label>
-					<input type="radio" name="infsour" v-model="infsour" value="2" id="infsour_3" style="display: none;"><label for="infsour_3">微信</label>
-					<input type="radio" name="infsour" v-model="infsour" value="3" id="infsour_4" style="display: none;"><label for="infsour_4">论坛</label>
-					<input type="radio" name="infsour" v-model="infsour" value="4" id="infsour_5" style="display: none;"><label for="infsour_5">博客</label>
+					<input type="radio" name="infsour" v-on:change="dealchange()" v-model="infsour" value="-1" id="infsour_0" style="display: none;" checked><label for="infsour_0">全部</label>
+					<input type="radio" name="infsour" v-on:change="dealchange()" v-model="infsour" value="0" id="infsour_1" style="display: none;"><label for="infsour_1">新闻</label>
+					<input type="radio" name="infsour" v-on:change="dealchange()" v-model="infsour" value="1" id="infsour_2" style="display: none;"><label for="infsour_2">微博</label>
+					<input type="radio" name="infsour" v-on:change="dealchange()" v-model="infsour" value="2" id="infsour_3" style="display: none;"><label for="infsour_3">微信</label>
+					<input type="radio" name="infsour" v-on:change="dealchange()" v-model="infsour" value="3" id="infsour_4" style="display: none;"><label for="infsour_4">论坛</label>
+					<input type="radio" name="infsour" v-on:change="dealchange()" v-model="infsour" value="4" id="infsour_5" style="display: none;"><label for="infsour_5">博客</label>
 				</div>
 			</div>
 	  </div>
-	  
+
 <!--	内容-->
 	<!--	空数据-->
 		<div class="cy_CIASFE_ctnodata">
@@ -147,18 +146,18 @@
 		<div class="cy_CIASFE_content">
 			<div class="cy_CIASFE_contentbox01">
 				<label><input type="checkbox" v-model="checked" v-on:click="changeAllChecked()" class="cy_CIASFE_contentall">全选</label>
-				
+
 				<input type="button" value="删除" v-on:click="delarticle()" class="cy_CIASFE_contentbtn01">
 				<input type="button" value="预警" v-on:click="toyj()" class="cy_CIASFE_contentbtn01">
 			</div>
 		</div>
-		
+
 		<div v-if="lastest_news>0" v-on:click="searchNew()" class="cy_CIASFE_prompt">
 			您有<span>{{lastest_news}}</span>条新信息，点击查看
 		</div>
-		
+
 		<div class="cy_CIASFE_contmain">
-		
+
 		<div v-for="(data,index) in datas" class="cy_CIASFE_contpaste" style="border-top: 0px;">
 			<div class="cy_CIASFE_contpastetit">
 				<label><input type="checkbox" v-bind:value="data.article_ID"  v-model="checkedNames">
@@ -168,16 +167,16 @@
 				<div v-if="data.emotionDivision=='2'" class="cy_CIASFE_contpassta01">负</div>
 				<div v-if="data.earlyWarningState=='1'" class="cy_CIASFE_contpassta01">已预警</div>
 				<div class="cy_CIASFE_contpascol">
-					<ic_collectiont v-bind:aid="data.article_ID" v-bind:collcnt="data.collcnt"></ic_collectiont>
+					<ic_collectiont v-bind:aid="data.article_ID" v-bind:collcnt="data.collcnt" v-bind:collect_datas="collect_datas"></ic_collectiont>
 					<div class="cy_CIASFE_share" v-bind:data-clipboard-text="data.articleURL" v-bind:id="'sharedv'+index" v-on:click="share(index)"></div>
 					<div v-on:click="del_a_article(data.article_ID)" class="cy_CIASFE_dele"></div>
 				</div>
-				
+
 			</div>
 			<div class="cy_CIASFE_contpastecon" style="cursor:pointer;">
 				<a style="text-decoration: none;color: #000;" v-bind:href="'../detailspage/toDetailsPage?from=comprehensivemonitoring&article_id='+data.article_ID">{{data.articleAbstract}}</a>
 			</div>
-			
+
 			<div class="cy_CIASFE_contpastfoot">
 			    <div v-on:mouseover="simcontent(index)" class="cy_CIASFE_simart">相似文章：{{data.sim_cnt}}条
 				<div  class="cy_CIASFE_simartbox">
@@ -185,18 +184,18 @@
 				</div>
 				</div>
 			<a target="_blank" v-bind:href="data.articleURL">{{data.releasetime}} {{data.websiteName}}</a>
-			
+
 			</div>
-			
+
 		</div>
-			
+
 		<div ></div>
 <!--		分页-->
 		<pager ref="pagecomponent"></pager>  <!-- ref 固定为 pagecomponent  -->
-		
+
 		</div>
 	</div>
-</div>	
+</div>
 
 </div>
 <div class="cy_CIASFE_footer02"><a href="">使用手册</a>&nbsp;&nbsp;&nbsp;&nbsp;联系我们（电话：1648726161  邮箱：sales@ichangyun.com）    Copyright&copy;2018-2021 &nbsp;&nbsp;&nbsp;&nbsp;湖北畅云时讯软件技术有限公司版权所有</div>
@@ -240,15 +239,18 @@ function TreeNode(val,depth,children_lg){
 	}else{
 		this.imgsrc = "../image/colle-file.png";
 	}
+	this.style = {};//{"background-color":"#2ea1f8"}
 	this.children = [];
 }
 
+var m_isop_click = false;
+
 var ic_comprehensive_tree = {
-		
+
 		template:'<div>'+
 			'<li v-show="model.is_show" v-bind:class="model.children_lg>0?\'cy_CIASFE_comdettree2ed\':\'cy_CIASFE_comdettreefile\'" v-bind:style="style">'+
 					'<a v-on:click="search_fl(model.val.classification_ID)" href="#"><img v-on:click="opClose(model.val.classification_ID)" v-if="model.children_lg>0" v-bind:src="model.is_open?\'../image/colle-arrow02.png\':\'../image/colle-arrow01.png\'">'+
-					'<img v-bind:src="model.children_lg>0?\'../image/colle-folder.png\':\'../image/colle-file.png\'">{{model.val.classificationName}}</a></li>'+
+					'<img v-bind:src="model.children_lg>0?\'../image/colle-folder.png\':\'../image/colle-file.png\'"><span v-bind:id="\'ic_tree_span\'+model.val.classification_ID" name="ic_tree_span">{{model.val.classificationName}}</span></a></li>'+
 	        '<ul><ic_comprehensive_tree v-for="model in model.children" v-bind:model="model"></ic_comprehensive_tree></ul>'+
 	        '</div>',
 		props:['model'],
@@ -259,18 +261,26 @@ var ic_comprehensive_tree = {
 		},
 		methods:{
 			opClose:function(id){
+				m_isop_click = true;
 				this.$parent.opClose(id);
 			},
 			search_fl:function(id){
-				this.$parent.search_fl(id);
+				if(!m_isop_click){
+					this.$parent.search_fl(id);
+				}
+				m_isop_click = false;
 			}
 		},
-		mounted:function(){	
+		mounted:function(){
 			this.style = {"padding-left":(20+30*(this.model.depth))+"px"};
+
 		}
 }
 
 var menu_datas = JSON.parse('${front_menu}') //菜单数据来源于 classes/resources.properties
+
+var collect_datas = [];  //我的收藏模块对应的数据集合
+
 Vue.component('ic_top_menu',ic_top_menu);   // ic_top_menu 引自 js/ic_component.js
 
 Vue.component('ic_user_info',ic_user_info);  // ic_user_info 引自 js/ic_component.js
@@ -303,12 +313,22 @@ var app = new Vue({
 		 showzhjc:true,      //是否显示综合监测面板
 		 total_yesterday:0,  //昨日监测总数
 		 total_today:0,       //今日监测总数
-		 Classification_ID:'' //分类体系ID
+		 Classification_ID:'', //分类体系ID
+         selected: 'all', //搜索类型,默认'all' 全文检索
+         options: [
+             { searchtype: 'all', value: '全文匹配' },
+             { searchtype: 'title', value: '标题匹配' },
+             { searchtype: 'text', value: '正文匹配' }
+         ]
      },
      components:{
 		     'pager':ic_front_pager  //ic_front_pager 引自 js/ic_components.js
      },
      methods:{
+    	 dealchange:function(){
+    		 this.$refs.pagecomponent.pageBean.pageNow = 1;
+    		 this.search(this.$refs.pagecomponent.pageBean);
+    	 },
     	 updateCollent:function(aid){
 		   	 for(var i=0;i<this.datas.length;i++){
 		   		 if(this.datas[i].article_ID==aid){
@@ -320,11 +340,11 @@ var app = new Vue({
     	 opClose:function(id){
     		 var clicknode = this.getClickNode(id,this.tree_datas);
     		 if(clicknode.is_open){  //关闭
-    			 
+
     			 clicknode.is_open = false;
-    			 
+
     			 this.dealDigui(clicknode,false);
-    			 
+
     		 }else{  //打开
     			 clicknode.is_open = true;
     			 this.dealDigui(clicknode,true);
@@ -371,6 +391,9 @@ var app = new Vue({
     			this.tree_datas.push(node);
     			this.addnode2tree(node);
     			this.search_fl(tdata.classification_ID);
+    			setTimeout(function(){
+    				 $("span[name='ic_tree_span']").eq(0).css("background-color","#2ea1f8");
+    			},50);
     		 }else{
     			 this.Classification_ID = "";
     			 this.search_fl("");
@@ -426,7 +449,7 @@ var app = new Vue({
 		        }, function(index) {
 		            layer.close(index);
 		            var json = createJSON(arr);   //createJSON() 引自js/comm.js
-		            
+
 					 axios.post('../comprehensivemonitoring/delarticle',
 							 {
 							 json:json
@@ -449,7 +472,7 @@ var app = new Vue({
 		    			.catch(function (error) {
 		    			    console.log(error);
 		    			});
-		        }); 
+		        });
 		  },
     	 delarticle:function(){
 			  if(this.checkedNames.length==0){
@@ -461,7 +484,7 @@ var app = new Vue({
 			        }, function(index) {
 			            layer.close(index);
 			            var json = createJSON(_this.checkedNames);   //createJSON() 引自js/comm.js
-			           
+
 						 axios.post('../comprehensivemonitoring/delarticle',
 								 {
 								 json:json
@@ -484,7 +507,7 @@ var app = new Vue({
 			    			.catch(function (error) {
 			    			    console.log(error);
 			    			});
-			        }); 
+			        });
 			  }
 		  },
     	 simcontent:function(index){        //获得相似文章
@@ -505,13 +528,13 @@ var app = new Vue({
  	    				for(var i=0;i<data.length;i++){
  	    					_this.sim_datas[index].push(data[i]);
  	    				}
- 	    			
+
  	    			})
  	    			.catch(function (error) {
  	    			    console.log(error);
  	    			});
  			 }
- 			
+
  		 },
  		 changeAllChecked:function(){
  			  if (!this.checked) {
@@ -534,6 +557,8 @@ var app = new Vue({
 			  this.infsour = '-1';
 			  this.$refs.pagecomponent.pageBean.pageNow = 1;
 			  this.search(this.$refs.pagecomponent.pageBean);
+			  $("span[name='ic_tree_span']").css("background-color","");
+              $("#ic_tree_span"+id).css("background-color","#2ea1f8");
 		  },
 		  share:function(index){
 			 var id = "sharedv"+index;
@@ -541,10 +566,10 @@ var app = new Vue({
 	         clipboard.on('success', function(e) {
 		           layer.msg(Info.I0019);
 	          });
-			
+
 		 },
 		 getlastestNews:function(){
-				
+
 	        	var _this = this;
 	    		axios.get('../comprehensivemonitoring/getlastestNews',{
 	    			params: {
@@ -576,33 +601,57 @@ var app = new Vue({
 			  this.search(this.$refs.pagecomponent.pageBean);
 		  },
 		  getFenTixi:function(){   //获得所有的分类体系根节点
-			  
+
 			  var _this = this;
 			  axios.get('../comprehensivemonitoring/getAllClassification')
 	    			.then(function (response) {
-	    				
-                         _this.fl_all_datas = JSON.parse(response.data);	
-                        
+
+                         _this.fl_all_datas = JSON.parse(response.data);
+
                          _this.fl_datas = [];
-                         
+
                          for(var i=0;i<_this.fl_all_datas.length;i++){
                         	 if(_this.fl_all_datas[i].parent_Classification_ID=='0000000000'){
                         	 	_this.fl_datas.push(_this.fl_all_datas[i]);
                         	 }
                          }
-                          
+
                          for(var i=0;i<_this.fl_datas.length;i++){
                         	 _this.total_yesterday += _this.fl_datas[i].yesterday_cnt;
                         	 _this.total_today += _this.fl_datas[i].today_cnt;
                          }
-                         
-                         
-                         
+
 	    			})
 	    			.catch(function (error) {
 	    			    console.log(error);
 	    			});
-			  
+
+		  },
+		  addCnodeChildren:function(ctnode,data){
+			  for(var i=0;i<data.length;i++){
+				  if(ctnode.val.collectionType_ID==data[i].parent_CollectionType_ID){
+					  var acnode = new CTreeNode(data[i],ctnode.depth+1);
+					  collect_datas.push(acnode);
+					  this.addCnodeChildren(acnode,data);
+				  }
+			  }
+		  },
+		  getCollect:function(){
+			  var _this = this;
+			  axios.get('../thematicmonitoring/getCollectionType')
+	  			.then(function (response) {
+	  				var data = JSON.parse(response.data);
+	  				for(var i=0;i<data.length;i++){
+	  					if(data[i].parent_CollectionType_ID==''||data[i].parent_CollectionType_ID=='0'){  //根节点
+	  						var ctnode = new CTreeNode(data[i],0);
+	  						collect_datas.push(ctnode);
+	  					    _this.addCnodeChildren(ctnode,data);
+	  					}
+	  				}
+	  			})
+	  			.catch(function (error) {
+	  			    console.log(error);
+	  			});
 		  }
      },
      watch: {
@@ -623,7 +672,7 @@ var app = new Vue({
  	        	 }
     			 
     			 var _this = this;
-    			 
+
     			 layer.msg(Info.I0011, {
 	        		  icon: 16
 	        		  ,shade: 0.01
@@ -639,31 +688,32 @@ var app = new Vue({
 	    				infsour:_this.infsour,
 	    				pageNow:pageBean.pageNow,
 	    				rowSize:pageBean.rs_selected,
+                        search_type:_this.selected,
 	    				}
 	    			})
 	    			.then(function (response) {
-	    				
+
 	    				var data = JSON.parse(response.data);
-	    	
+
 	    				_this.checkedArr = [];
-	    				
+
 	    				_this.checkedNames = [];
-	    				
-	    				_this.$refs.pagecomponent.dealAfterSearch(data.rowCount); 
-	    				
+
+	    				_this.$refs.pagecomponent.dealAfterSearch(data.rowCount);
+
 	    				_this.datas = data.resdata;
-	    				
+
 	    				_this.sim_datas = [];
-	    				
+
 	    				for(var i=0;i<_this.datas.length;i++){
 	    					_this.checkedArr.push(_this.datas[i].article_ID);
 	    					_this.sim_datas.push([]);
 	    				}
-	    			
+
 	    				_this.lastest_news = 0;
-	    				
+
 	    				_this.checked = false;
-	    				
+
 	    				layer.closeAll();
 	    			})
 	    			.catch(function (error) {
@@ -675,6 +725,7 @@ var app = new Vue({
      mounted:function(){
     	 this.search(this.$refs.pagecomponent.pageBean);
     	 this.getFenTixi();
+    	 this.getCollect();
     	 setTimeout(this.getlastestNews,60000);
      }
  });

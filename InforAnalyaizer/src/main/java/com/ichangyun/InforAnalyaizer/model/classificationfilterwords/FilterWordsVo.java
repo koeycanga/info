@@ -76,7 +76,7 @@ public class FilterWordsVo extends ClassificationFilterwordsWithBLOBs{
 	}
 
 	public FilterWordsVo(String classificationId, String informationtropism, String createuser, Date createdatetime,
-			String updateuser, Date updatedatetime, String allcorephrases, String allexcludephrases,
+			String updateuser, String updatedatetime, String allcorephrases, String allexcludephrases,
 			String titlecorephrases, String titleexcludephrases, String summarycorephrases,
 			String summaryexcludephrases, String textcorephrases, String textexcludephrases, BaseBean bb,
 			String classificationName,String parent_Classification_ID,String parent_name,int displayOrder) {

@@ -45,16 +45,15 @@ public class ClassificationInfoServiceImpl implements ClassificationInfoService 
 	
 	@Override
 	public int getClassifcInfoCount(ClassificationInfoBean cb) {
-		
 		return classificationInfoMapper.getClassifcInfoCount(cb);
 	}
 
 	@Override
 	public String getClassifcInfo(ClassificationInfoBean cb) {
-		
+		List<ClassificationInfoBean> list = null;
 		cb.setL_pre((cb.getPageNow()-1)*cb.getRowSize());
 		
-		List<ClassificationInfoBean> list = classificationInfoMapper.getClassifcInfo(cb);
+	    list = classificationInfoMapper.getClassifcInfo(cb);
 		
 		JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
 		
@@ -70,6 +69,11 @@ public class ClassificationInfoServiceImpl implements ClassificationInfoService 
 
 	@Override
 	public boolean AddNew(ClassificationInfoBean cb) {
+		
+		String id = this.getClassificationInfoID();
+		
+		cb.setClassification_ID(id);
+		
 		TransactionStatus status = null;
        try {
     	   //关闭Spring事务自动提交
@@ -80,6 +84,8 @@ public class ClassificationInfoServiceImpl implements ClassificationInfoService 
 	       int display_order = classificationInfoMapper.getDisplayOrder(cb);
 	       
 	       cb.setDisplayOrder(display_order);
+	   
+	       cb.setNodePath(cb.getNodePath()+cb.getClassification_ID());
 	       
 	       int res = classificationInfoMapper.addNew(cb);
 	       
@@ -140,7 +146,8 @@ public class ClassificationInfoServiceImpl implements ClassificationInfoService 
 			JSONObject jo = (JSONObject) parseArray.get(i);
 			ClassificationInfoBean cb = new ClassificationInfoBean();
 			cb.setClassification_ID(jo.getString("id"));
-			delData(cb);
+			classificationInfoMapper.delDataByFunction(cb);
+			//delData(cb);
 		}
 		
 		return true;

@@ -3,21 +3,21 @@ package com.ichangyun.InforAnalyaizer.model.classificationfilterwords;
 import java.util.Date;
 
 public class ClassificationFilterwordsWithBLOBs extends ClassificationFilterwords {
-    private String allcorephrases;
+    private String allcorephrases = "";
 
-    private String allexcludephrases;
+    private String allexcludephrases = "";
 
-    private String titlecorephrases;
+    private String titlecorephrases = "";
 
-    private String titleexcludephrases;
+    private String titleexcludephrases = "";
 
-    private String summarycorephrases;
+    private String summarycorephrases = "";
 
-    private String summaryexcludephrases;
+    private String summaryexcludephrases = "";
 
-    private String textcorephrases;
+    private String textcorephrases = "";
 
-    private String textexcludephrases;
+    private String textexcludephrases = "";
 
     public String getAllcorephrases() {
         return allcorephrases;
@@ -84,7 +84,7 @@ public class ClassificationFilterwordsWithBLOBs extends ClassificationFilterword
     }
 
 	public ClassificationFilterwordsWithBLOBs(String classificationId, String informationtropism, String createuser,
-			Date createdatetime, String updateuser, Date updatedatetime, String allcorephrases,
+			Date createdatetime, String updateuser, String updatedatetime, String allcorephrases,
 			String allexcludephrases, String titlecorephrases, String titleexcludephrases, String summarycorephrases,
 			String summaryexcludephrases, String textcorephrases, String textexcludephrases) {
 		super(classificationId, informationtropism, createuser, createdatetime, updateuser, updatedatetime);

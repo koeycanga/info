@@ -26,27 +26,17 @@
     <include refid="Base_Column_List" />
     from m_userinfo
     <where>
-	    <if test="userno != null" >
+    	<if test="userno != null" >
 	        and UserNo = #{userno}
 	      </if>
 	      <if test="userId != null" >
-	        and User_ID like concat("%",#{userId},"%")
+	        and User_ID = #{userId}
 	      </if>
     </where>
 
   </select>
     
-  <delete id="deleteByPrimaryKey" parameterType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoKey" >
-    delete from m_userinfo
-    <where>
-	    <if test="userno != null" >
-	        and UserNo = #{userno}
-	      </if>
-	      <if test="userId != null" >
-	        and User_ID like concat("%",#{userId},"%")
-	      </if>
-    </where>
-  </delete>
+
   
   <insert id="insert" parameterType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfo" >
     insert into m_userinfo (User_ID, Password, 
@@ -223,28 +213,17 @@
       and UserNo = #{userno,jdbcType=INTEGER}
   </update>
   
-  <select id="queryAllUser" resultMap="BaseResultMap" parameterType="hashmap">
+  <select id="queryAllUser" resultType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoVo" parameterType="hashmap">
     select 
-    <include refid="Base_Column_List" />
-    from m_userinfo 
+    a.User_ID uid,a.UserNo unum, a.Password upwd,a.Name uname,a.Department udep,a.Telephone utel,a.EMail uemail,a.UserRole_ID urole,a.Status ustatus, 
+    DATE_FORMAT(a.UpdateDateTime,'%Y-%m-%d %H:%i:%s') uupdatedatetime,a.SuperUserFlag usuperuserflag,b.UserRoleName urolename
+    from m_userinfo a inner join m_userrole b on a.UserRole_ID = b.UserRole_ID
     <where>
-	    <if test="name != null" >
-	        and Name like concat("%",#{name},"%")
+	      <if test="ustatus != null and ustatus!=2" >
+	        and a.Status = #{ustatus}
 	      </if>
-	      <if test="department != null" >
-	        and Department like concat("%",#{department},"%")
-	      </if>
-	      <if test="telephone != null" >
-	        and Telephone like concat("%",#{telephone},"%")
-	      </if>
-	      <if test="email != null" >
-	        and EMail like concat("%",#{email},"%")
-	      </if>
-	      <if test="status != null and status!=2" >
-	        and Status = #{status}
-	      </if>
-	      <if test="userId != null" >
-	        and User_ID like concat("%",#{userId},"%")
+	      <if test="uid != null" >
+	        and a.User_ID like concat("%",#{uid},"%")
 	      </if>
     </where>
 	      limit #{l_pre},#{rowSize}
@@ -277,4 +256,9 @@
      <select id="queryCountById" resultType="int">
   		select count(1) from m_userinfo where User_ID = #{value}
    </select>
+   
+     <delete id="deleteUser" parameterType="String" >
+    delete from m_userinfo
+	where UserNo in (${value})
+  </delete>
 </mapper>

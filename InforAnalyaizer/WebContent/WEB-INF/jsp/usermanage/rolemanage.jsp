@@ -3,6 +3,7 @@
 <%@ taglib prefix="ss" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:setBundle basename="resources" var="sysInfo" />  <!-- basename: 在classes文件夹下properties文件的文件名 -->
+<fmt:message key="I0002" var="I0002" bundle="${sysInfo}" />
 <fmt:message key="I0003" var="I0003" bundle="${sysInfo}" /> 
 <fmt:message key="I0004" var="I0004" bundle="${sysInfo}" /> 
 <fmt:message key="W0002" var="W0002" bundle="${sysInfo}" />
@@ -24,7 +25,9 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
-<link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style.css">
+ 
+<link rel="stylesheet" type="text/css" href="${ctx}/layui/css/layui.css" />
+<link id="lnk" rel="stylesheet" type="text/css" href="">
 <link rel="stylesheet" type="text/css" href="${ctx}/css/cy_zg_win.css">
 </head>
 <body >
@@ -64,7 +67,7 @@
 	<div class="cy_CMICBMS_addtop"><div class="cy_CMICBMS_addtit">{{tcc_title}}</div><div class="cy_CMICBMS_addclose" v-on:click="hideTcc()">X</div></div>
 	<div class="cy_CMICBMS_addtb">
 		<div>
-		  <span>*</span>角色名称：<input type="text" v-on:blur="checkRoleName()" v-model="roleInfo.role_name" placeholder="角色名称" class="cy_CMICBMS_addinput">
+		  <span>*</span>角色名称：<input type="text" maxlength="20" v-on:blur="checkRoleName()" v-model="roleInfo.role_name" placeholder="角色名称" class="cy_CMICBMS_addinput">
 		  <div v-if="errInfo.role_name_err" class="cy_CMICBMS_errortip">${E0016}</div>
 		</div>
 		<div style="float:left;padding:21px !important">
@@ -79,7 +82,7 @@
 		  <div style="width:470px;height:100px;margin:0px 0 0 0px;vertical-align: text-top;">
 		       <div style="height:100px;float: left;">角色描述:</div>
 		       <div style="width:390px;height:100px;float: left;">
-		           <textarea v-model="roleInfo.role_des" style="width:100%;height:100%;resize:none;background-color: white !important;"></textarea>
+		           <textarea v-model="roleInfo.role_des" maxlength="50" style="width:100%;height:100%;resize:none;background-color: white !important;"></textarea>
 		      </div>
 		  </div>
 		</div>
@@ -99,8 +102,12 @@
 <script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script type="text/javascript" src="${ctx}/js/comm.js"></script>
 <script>
-  
-var Info = {
+
+AdaptationResolution('${ctx}'); //分辨率适配
+
+//提示信息，详见clasees/resources.properties
+var Info = { 
+		I0002:'${I0002}',
 		I0003:'${I0003}',
 		I0004:'${I0004}',
 		W0002:'${W0002}',
@@ -127,58 +134,58 @@ var Info = {
 		  checkedArr: [],      //复选框相关
 		  showtcc:{display:'none'},   //是否显示弹出层
 		  tcc_title : '',      //弹出层的标题
-		 isdisabled:false,
-		 isnew:true,
-		 roleInfo:{
+		 isdisabled:false,     //
+		 isnew:true,           //是弹出新增还是修改界面   true为新增   false为修改
+		 roleInfo:{            //绑定新增/修改界面的一些信息
 			 role_id:'',          
 			 role_name:'',
 			 role_des:'',
 		     UpdateDateTime:''
 		 },
-		 errInfo:{
+		 errInfo:{                  //是否显示错误提示信息
 			 role_id_err:false,
 			 role_name_err:false
 			// role_des_err:false
 		 }
 	  },
 	  components:{
-		     'pager':ic_pager
+		     'pager':ic_pager    //分页组件  引自js/ic_components.js
 		  },
 	  methods:{
-		  checkRoleID:function(){
+		  /*checkRoleID:function(){            //检查角色ID是否填写
 			  if(this.roleInfo.role_id.trim()==''){
 				  this.errInfo.role_id_err = true;
 			  }else{
 				  this.errInfo.role_id_err = false;
 			  }
-		  },
-		  checkRoleName:function(){
+		  },*/
+		  checkRoleName:function(){  //检查角色名是否填写
 			  if(this.roleInfo.role_name.trim()==''){
 				  this.errInfo.role_name_err = true;
 			  }else{
 				  this.errInfo.role_name_err = false;
 			  }
 		  },
-		  NewRole:function(){
+		  NewRole:function(){ //弹出新增界面
 			  this.isnew = true;
 			  this.tcc_title = Info.I0003;
 			  this.showtcc = {display:'block'};
 		  },
-		  getTargetDataById:function(id){
+		  getTargetDataById:function(id){  //根据角色ID获得对应的角色信息
 			  for(var i=0;i<this.datas.length;i++){
 				  if(id==this.datas[i].userRole_ID){
 					  return this.datas[i];
 				  }
 			  }
 		  },
-		  DelRole:function(){
-			  if(this.checkedNames.length==0){
+		  DelRole:function(){  //删除角色
+			  if(this.checkedNames.length==0){  //如果用户没有选择任何数据则弹出错误信息
 				  layer.msg(Info.E0019);
 			  }else{
 				  var iscontinue = true;
-				  for(var i=0;i<this.checkedNames.length;i++){
+				  for(var i=0;i<this.checkedNames.length;i++){    //判断用户选择的数据   如果有还在使用中的角色则不能删除
 					   var data = this.getTargetDataById(this.checkedNames[i]);
-					   if(data.status=='1'){
+					   if(data.status=='1'){ //如果角色还在使用中
 						   layer.msg(Info.E0028);
 						   iscontinue = false;
 						   break;
@@ -217,7 +224,7 @@ var Info = {
 				  }
 			  }
 		  },
-		  EditRole:function(){
+		  EditRole:function(){  //弹出修改角色界面
 			  if(this.checkedNames.length!=1){
 				  layer.msg(Info.E0006);
 			  }else{
@@ -255,10 +262,7 @@ var Info = {
 			  this.showtcc = {display:'none'};
 			  
 		  },
-		  checkqx:function(){
-			 // this.roleInfo.role_des = this.getDescription();
-		  },
-		  getDescription:function(){
+		  getDescription:function(){  //根据角色的权限生成角色描述
 			var res = "";
 			if($("[name='Authority']").eq(0).is(":checked")){
 			     if(res==""){
@@ -298,7 +302,7 @@ var Info = {
 			} 
 			return res;
 		  },
-		  UpdateRole:function(){
+		  UpdateRole:function(){ //修改角色信息
 			  var b = true;
 			  if(this.roleInfo.role_name.trim()==''){
 					 this.errInfo.role_name_err = true;
@@ -334,6 +338,7 @@ var Info = {
 		    				
 		    			})
 		    			.catch(function (error) {
+		    				layer.msg(Info.E0022);
 		    			    console.log(error);
 		    			});
 			  }
@@ -370,15 +375,13 @@ var Info = {
 		    				if(response.data=='nok'){
 		    					layer.msg(Info.E0022);
 		    				}
-		    				
 		    			})
 		    			.catch(function (error) {
 		    			    console.log(error);
 		    			});
-				 
 			 }			  
 		  },
-		  getAuth:function(){
+		  getAuth:function(){  //生成用户权限
 			 var res = "";
 			 if($("#yhgl").is(':checked')){
 				 res+='1';
@@ -408,20 +411,20 @@ var Info = {
 			 
 			 return res;
 		  },
-		  changeAllChecked:function(){
+		  changeAllChecked:function(){ //全选or反选
 			  if (!this.checked) {
 					this.checkedNames = this.checkedArr;
 				} else {
 					this.checkedNames = [];
 				}
 		  },
-		  search_after_update:function(pageBean,b){
+		  search_after_update:function(pageBean,b){   //在新增or修改数据后查询
 			  pageBean.pageNow = 1;
 			  this.search(pageBean,b);
 		  }
 	  },
 	  watch: {
-		"checkedNames": function() {
+		"checkedNames": function() {   //观察checkedNames的状态变化
 			if (this.checkedNames.length != this.checkedArr.length||this.checkedNames.length==0) {
 				this.checked = false;
 			} else {
@@ -430,7 +433,7 @@ var Info = {
 		}
 	 },
 	  computed:{
-			search:function(){
+			search:function(){  //查询数据
 		        return function(pageBean,ismsg){
 		        	var _this = this;
 		        	this.checkedNames = [];
@@ -467,7 +470,7 @@ var Info = {
 				}
 			}
 		  },
-		  mounted:function(){
+		  mounted:function(){  //Vue加载完成后执行
 			  
 			  this.search(this.$refs.pagecomponent.pageBean);
 			  
