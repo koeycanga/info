@@ -1,0 +1,111 @@
+package com.ichangyun.InforAnalyaizer.model.classification;
+
+import com.ichangyun.InforAnalyaizer.model.BaseBean;
+
+/**
+ * 
+ * 对应数据表 M_ClassificationInfo
+ *
+ */
+public class ClassificationInfoBean extends BaseBean{
+
+	private String Classification_ID;
+	private String ClassificationName;
+	private String Parent_Classification_ID;
+	private int DisplayOrder;
+	private String Description;
+	private String ValidFlag;
+	private String CreateUser;
+	private String CreateDateTime;
+	private String UpdateUser;
+	private String UpdateDateTime;
+	private int children_lg;
+	private String isbinding;
+	private int binding_lg;
+	private int cnt;
+	
+	public int getCnt() {
+		return cnt;
+	}
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
+	public int getBinding_lg() {
+		return binding_lg;
+	}
+	public void setBinding_lg(int binding_lg) {
+		this.binding_lg = binding_lg;
+	}
+	public String getIsbinding() {
+		return isbinding;
+	}
+	public void setIsbinding(String isbinding) {
+		this.isbinding = isbinding;
+	}
+	public int getChildren_lg() {
+		return children_lg;
+	}
+	public void setChildren_lg(int children_lg) {
+		this.children_lg = children_lg;
+	}
+	public String getClassification_ID() {
+		return Classification_ID;
+	}
+	public void setClassification_ID(String classification_ID) {
+		Classification_ID = classification_ID;
+	}
+	public String getClassificationName() {
+		return ClassificationName;
+	}
+	public void setClassificationName(String classificationName) {
+		ClassificationName = classificationName;
+	}
+	public String getParent_Classification_ID() {
+		return Parent_Classification_ID;
+	}
+	public void setParent_Classification_ID(String parent_Classification_ID) {
+		Parent_Classification_ID = parent_Classification_ID;
+	}
+	public int getDisplayOrder() {
+		return DisplayOrder;
+	}
+	public void setDisplayOrder(int displayOrder) {
+		DisplayOrder = displayOrder;
+	}
+	public String getDescription() {
+		return Description;
+	}
+	public void setDescription(String description) {
+		Description = description;
+	}
+	public String getValidFlag() {
+		return ValidFlag;
+	}
+	public void setValidFlag(String validFlag) {
+		ValidFlag = validFlag;
+	}
+	public String getCreateUser() {
+		return CreateUser;
+	}
+	public void setCreateUser(String createUser) {
+		CreateUser = createUser;
+	}
+	public String getCreateDateTime() {
+		return CreateDateTime;
+	}
+	public void setCreateDateTime(String createDateTime) {
+		CreateDateTime = createDateTime;
+	}
+	public String getUpdateUser() {
+		return UpdateUser;
+	}
+	public void setUpdateUser(String updateUser) {
+		UpdateUser = updateUser;
+	}
+	public String getUpdateDateTime() {
+		return UpdateDateTime;
+	}
+	public void setUpdateDateTime(String updateDateTime) {
+		UpdateDateTime = updateDateTime;
+	}
+}

@@ -1,0 +1,38 @@
+package com.ichangyun.InforAnalyaizer.mapper.comprehensivemonitoring;
+
+import java.util.List;
+
+import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
+
+/**
+ * 综合监测对应mapper
+ * @author renhao
+ * 2018-11-19 10:18
+ */
+public interface ComprehensivemonitoringMapper {
+
+	/**
+	 * 查询综合监测文章总数量
+	 * @param ab
+	 * @return
+	 */
+	public int getArticleRowCount(ArticleInfoBean ab);
+
+	
+	
+	/**
+	 * 查询综合监测页面所需文章数据
+	 * @param ab
+	 * @return
+	 */
+	public List<ArticleInfoBean> getArticle(ArticleInfoBean ab);
+
+
+
+	/**
+	 * 删除文章
+	 * @param list
+	 */
+	public void delarticle(List<String> list);
+
+}

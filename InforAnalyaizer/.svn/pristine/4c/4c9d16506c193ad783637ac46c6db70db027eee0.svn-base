@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ichangyun.InforAnalyaizer.mapper.classification.ClassificationInfoMapper">
+    <select id="getClassifcInfoCount" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean"  resultType="java.lang.Integer">
+         select count(1) from m_classificationinfo where 1=1 
+         <if test="cb.ClassificationName== null or cb.ClassificationName==''">
+             and Parent_Classification_ID='0000000000'
+         </if>
+          <if test="cb.ClassificationName!= null and cb.ClassificationName!=''">
+			    and Classification_ID in (select left(nodePath,10) from m_classificationinfo where ClassificationName like CONCAT('%',#{cb.ClassificationName},'%'))<!-- like CONCAT('%',#{cb.ClassificationName},'%') -->
+		  </if>
+    </select>
+    
+    <select id="getClassifcInfo" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean"  resultType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
+         select Classification_ID,ClassificationName,Parent_Classification_ID,DisplayOrder,Description,CreateUser,
+			DATE_FORMAT(CreateDateTime,'%Y-%m-%d') CreateDateTime,UpdateUser,DATE_FORMAT(UpdateDateTime,'%Y-%m-%d %H:%i:%s') UpdateDateTime,
+			 (select count(Classification_ID) from m_classificationinfo b where b.Parent_Classification_ID=a.Classification_ID) children_lg
+			 from m_classificationinfo a where 1=1 
+			  <if test="cb.ClassificationName== null or cb.ClassificationName==''">
+	             and Parent_Classification_ID='0000000000'
+	         </if>
+			 <if test="cb.ClassificationName!= null and cb.ClassificationName!=''">
+			     and Classification_ID in (select left(nodePath,10) from m_classificationinfo where ClassificationName like CONCAT('%',#{cb.ClassificationName},'%')) <!-- like CONCAT('%',#{cb.ClassificationName},'%') -->
+			  </if>
+			  order by a.DisplayOrder desc
+			  limit #{cb.l_pre},#{cb.rowSize}
+    </select>
+  
+  
+  <select id="getChildernByID" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean"  resultType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
+       select Classification_ID,ClassificationName,Parent_Classification_ID,DisplayOrder,Description,CreateUser,
+			DATE_FORMAT(CreateDateTime,'%Y-%m-%d') CreateDateTime,UpdateUser,DATE_FORMAT(UpdateDateTime,'%Y-%m-%d %H:%i:%s') UpdateDateTime,
+			 (select count(Classification_ID) from m_classificationinfo b where b.Parent_Classification_ID=a.Classification_ID) children_lg
+			 from m_classificationinfo a where a.Parent_Classification_ID=#{cb.Classification_ID}  order by a.DisplayOrder desc
+  </select>
+  
+  <select id="exist" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean"  resultType="java.lang.Integer">
+       select count(1) from m_classificationinfo where ClassificationName=#{cb.ClassificationName}
+  </select>
+  
+  <select id="existExceptID" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean"  resultType="java.lang.Integer">
+       select count(1) from m_classificationinfo where ClassificationName=#{cb.ClassificationName} and Classification_ID!=#{cb.Classification_ID} 
+  </select>
+  
+   <select id="getDisplayOrder" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean"  resultType="java.lang.Integer">
+        select 
+		  case when max(DisplayOrder) is null then 0
+		else max(DisplayOrder)+1
+		  end  DisplayOrder
+		from m_classificationinfo where Parent_Classification_ID=#{cb.Parent_Classification_ID} for update
+   </select>
+  
+  <select id="getChildren" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean"  resultType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
+      select Classification_ID from m_classificationinfo where Parent_Classification_ID=#{cb.Classification_ID}
+  </select>
+  
+  <select id="getInfoByID" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean"  resultType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
+       select Classification_ID,ClassificationName,Parent_Classification_ID,DisplayOrder,Description,CreateUser,
+			DATE_FORMAT(CreateDateTime,'%Y-%m-%d') CreateDateTime,UpdateUser,DATE_FORMAT(UpdateDateTime,'%Y-%m-%d %H:%i:%s') UpdateDateTime,
+			 (select count(Classification_ID) from m_classificationinfo b where b.Parent_Classification_ID=a.Classification_ID) children_lg
+			 from m_classificationinfo a where a.Classification_ID=#{cb.Classification_ID}  
+  </select>
+  
+  <insert id="addNew" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
+    insert into m_classificationinfo(Classification_ID,ClassificationName,Parent_Classification_ID,DisplayOrder,Description ,CreateUser,CreateDateTime,UpdateUser,UpdateDateTime,nodePath)
+      values(#{cb.Classification_ID},#{cb.ClassificationName},#{cb.Parent_Classification_ID},#{cb.DisplayOrder},#{cb.Description} ,#{cb.CreateUser},NOW(),#{cb.CreateUser},NOW(),#{cb.nodePath})
+  </insert>
+  
+  <update id="updateData" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
+      
+      update m_classificationinfo set ClassificationName=#{cb.ClassificationName}, Description=#{cb.Description},
+      UpdateUser=#{cb.UpdateUser},UpdateDateTime=NOW(),CreateDateTime=CreateDateTime
+       where Classification_ID=#{cb.Classification_ID}
+    
+  </update>
+  
+  
+  <delete id="delData" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
+        delete from m_classificationinfo where Classification_ID=#{cb.Classification_ID}
+  </delete>
+  
+  <delete id="delDataByFunction" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
+       delete from m_classificationinfo where locate(
+			   Classification_ID,
+			  (select DISTINCT getChildList_classificationinfo(#{cb.Classification_ID}) from m_classificationinfo)
+			)>0
+  </delete>
+  
+  <update id="updateOrder">
+        update m_classificationinfo set DisplayOrder=#{cb.DisplayOrder} where Classification_ID=#{cb.Classification_ID} 
+  </update>
+  
+  <select id="getAllClassification" resultType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
+     
+     	SELECT
+			a.Classification_ID,
+			a.Parent_Classification_ID,
+			a.ClassificationName,
+			a.DisplayOrder,
+		  DATE_FORMAT(b.Releasetime,'%Y-%m-%d') Releasetime,
+		  count(b.Classification_ID) cnt,
+		  (select count(1) from m_classificationinfo c where a.Classification_ID=c.Parent_Classification_ID) children_lg
+		FROM
+			m_classificationinfo a
+		LEFT JOIN a_articlebasicinfo b on locate(a.Classification_ID,b.Classification_ID)>0
+		where DATE_FORMAT(b.Releasetime,'%Y-%m-%d')>=#{yesterday} and DATE_FORMAT(b.Releasetime,'%Y-%m-%d')<![CDATA[<=]]>#{today} or b.Releasetime is null
+		group by a.Classification_ID ,DATE_FORMAT(b.Releasetime,'%Y-%m-%d')
+		ORDER BY a.DisplayOrder DESC
+     
+  </select>
+  
+</mapper>

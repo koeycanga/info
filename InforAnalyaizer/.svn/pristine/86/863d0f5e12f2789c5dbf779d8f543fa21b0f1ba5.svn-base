@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ichangyun.InforAnalyaizer.mapper.userInfoMapper.UserInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfo" >
+    <id column="User_ID" property="userId" jdbcType="CHAR" />
+    <id column="UserNo" property="userno" jdbcType="INTEGER" />
+    <result column="Password" property="password" jdbcType="VARCHAR" />
+    <result column="Name" property="name" jdbcType="VARCHAR" />
+    <result column="Department" property="department" jdbcType="VARCHAR" />
+    <result column="Telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="EMail" property="email" jdbcType="VARCHAR" />
+    <result column="UserRole_ID" property="userroleId" jdbcType="CHAR" />
+    <result column="Status" property="status" jdbcType="CHAR" />
+    <result column="CreateUser" property="createuser" jdbcType="VARCHAR" />
+    <result column="CreateDateTime" property="createdatetime" jdbcType="TIMESTAMP" />
+    <result column="UpdateUser" property="updateuser" jdbcType="VARCHAR" />
+    <result column="UpdateDateTime" property="updatedatetime" jdbcType="TIMESTAMP" />
+    <result column="SuperUserFlag" property="superuserflag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    User_ID, UserNo, Password, Name, Department, Telephone, EMail, UserRole_ID, Status, 
+    CreateUser, CreateDateTime, UpdateUser, UpdateDateTime, SuperUserFlag
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from m_userinfo
+    <where>
+    	<if test="userno != null" >
+	        and UserNo = #{userno}
+	      </if>
+	      <if test="userId != null" >
+	        and User_ID = #{userId}
+	      </if>
+    </where>
+
+  </select>
+    
+
+  
+  <insert id="insert" parameterType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfo" >
+    insert into m_userinfo (User_ID, Password, 
+      Name, Department, Telephone, 
+      EMail, UserRole_ID, Status, 
+      CreateUser, CreateDateTime, UpdateUser, 
+      UpdateDateTime)
+    values (#{userId}, #{password}, 
+      #{name}, #{department}, #{telephone}, 
+      #{email}, #{userroleId}, #{status}, 
+      #{createuser}, NOW(), #{updateuser}, 
+      NOW())
+  </insert>
+  
+  <update id="updateRoleStatus" parameterType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfo">
+       update m_userrole set Status='1' where UserRole_ID=#{userroleId}
+  </update>
+  
+  <update id="updateRoleStatusToZero">
+       UPDATE m_userrole
+			SET STATUS = '0'
+			where UserRole_ID NOT IN (
+					SELECT
+						m2.UserRole_ID
+					FROM
+						m_userinfo m1,
+						m_userrole m2
+					WHERE
+						m1.UserRole_ID = m2.UserRole_ID
+				)
+  </update>
+  
+  <insert id="insertSelective" parameterType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfo" >
+    insert into m_userinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        User_ID,
+      </if>
+      <if test="userno != 0" >
+        UserNo,
+      </if>
+      <if test="password != null" >
+        Password,
+      </if>
+      <if test="name != null" >
+        Name,
+      </if>
+      <if test="department != null" >
+        Department,
+      </if>
+      <if test="telephone != null" >
+        Telephone,
+      </if>
+      <if test="email != null" >
+        EMail,
+      </if>
+      <if test="userroleId != null" >
+        UserRole_ID,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="createuser != null" >
+        CreateUser,
+      </if>
+      <if test="createdatetime != null" >
+        CreateDateTime,
+      </if>
+      <if test="updateuser != null" >
+        UpdateUser,
+      </if>
+      <if test="updatedatetime != null" >
+        UpdateDateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=CHAR},
+      </if>
+      <if test="userno != 0" >
+        #{userno,jdbcType=INTEGER},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="userroleId != null" >
+        #{userroleId,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="createuser != null" >
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdatetime != null" >
+        #{createdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateuser != null" >
+        #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedatetime != null" >
+        #{updatedatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfo" >
+    update m_userinfo
+    <set >
+      <if test="password != null" >
+        Password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        Name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        Department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        Telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        EMail = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="userroleId != null" >
+        UserRole_ID = #{userroleId,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="createuser != null" >
+        CreateUser = #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdatetime != null" >
+        CreateDateTime = #{createdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateuser != null" >
+        UpdateUser = #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedatetime != null" >
+        UpdateDateTime = #{updatedatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where User_ID = #{userId,jdbcType=CHAR}
+      and UserNo = #{userno,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfo" >
+    update m_userinfo
+    set Password = #{password,jdbcType=VARCHAR},
+      Name = #{name,jdbcType=VARCHAR},
+      Department = #{department,jdbcType=VARCHAR},
+      Telephone = #{telephone,jdbcType=VARCHAR},
+      EMail = #{email,jdbcType=VARCHAR},
+      UserRole_ID = #{userroleId,jdbcType=CHAR},
+      Status = #{status,jdbcType=CHAR},
+      CreateUser = #{createuser},
+      CreateDateTime = #{createdatetime,jdbcType=TIMESTAMP},
+      UpdateUser = #{updateuser,jdbcType=VARCHAR},
+      UpdateDateTime = #{updatedatetime,jdbcType=TIMESTAMP}
+    where User_ID = #{userId,jdbcType=CHAR}
+      and UserNo = #{userno,jdbcType=INTEGER}
+  </update>
+  
+  <select id="queryAllUser" resultType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoVo" parameterType="hashmap">
+    select 
+    a.User_ID uid,a.UserNo unum, a.Password upwd,a.Name uname,a.Department udep,a.Telephone utel,a.EMail uemail,a.UserRole_ID urole,a.Status ustatus, 
+    DATE_FORMAT(a.UpdateDateTime,'%Y-%m-%d %H:%i:%s') uupdatedatetime,a.SuperUserFlag usuperuserflag,b.UserRoleName urolename
+    from m_userinfo a inner join m_userrole b on a.UserRole_ID = b.UserRole_ID
+    <where>
+	      <if test="ustatus != null and ustatus!=2" >
+	        and a.Status = #{ustatus}
+	      </if>
+	      <if test="uid != null" >
+	        and a.User_ID like concat("%",#{uid},"%")
+	      </if>
+    </where>
+	      limit #{l_pre},#{rowSize}
+  </select> 
+  
+  <select id="queryCount" resultType="int" parameterType="hashmap">
+  select count(1) from m_userinfo
+      <where>
+	    <if test="name != null" >
+	        and Name like concat("%",#{name},"%")
+	      </if>
+	      <if test="department != null" >
+	        and Department like concat("%",#{department},"%")
+	      </if>
+	      <if test="telephone != null" >
+	        and Telephone like concat("%",#{telephone},"%")
+	      </if>
+	      <if test="email != null" >
+	        and EMail like concat("%",#{email},"%")
+	      </if>
+	      <if test="status != null and status!=2" >
+	        and Status = #{status}
+	      </if>
+	      <if test="userId != null" >
+	        and User_ID like concat("%",#{userId},"%")
+	      </if>
+    </where>
+   </select>
+   
+     <select id="queryCountById" resultType="int">
+  		select count(1) from m_userinfo where User_ID = #{value}
+   </select>
+   
+     <delete id="deleteUser" parameterType="String" >
+    delete from m_userinfo
+	where UserNo in (${value})
+  </delete>
+</mapper>

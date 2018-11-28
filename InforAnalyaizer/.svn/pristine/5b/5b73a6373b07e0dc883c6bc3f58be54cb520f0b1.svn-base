@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.ichangyun.InforAnalyaizer.mapper.notice.NoticeMapper">
+	<resultMap id="BaseResultMap"
+		type="com.ichangyun.InforAnalyaizer.model.notice.Notice">
+		<id column="NoticeID" property="noticeid" jdbcType="VARCHAR" />
+		<result column="Title" property="title" jdbcType="VARCHAR" />
+		<result column="NoticeType" property="noticetype"
+			jdbcType="CHAR" />
+		<result column="MonitorDateStart" property="monitordatestart"
+			jdbcType="CHAR" />
+		<result column="MonitorDateEnd" property="monitordateend"
+			jdbcType="CHAR" />
+		<result column="MonitorTimeStart" property="monitortimestart"
+			jdbcType="CHAR" />
+		<result column="MonitorTimeEnd" property="monitortimeend"
+			jdbcType="CHAR" />
+		<result column="SendDate" property="senddate" jdbcType="CHAR" />
+		<result column="SendTime" property="sendtime" jdbcType="CHAR" />
+		<result column="EMail" property="email" jdbcType="VARCHAR" />
+		<result column="ValidFlag" property="validflag" jdbcType="CHAR" />
+		<result column="CreateUser" property="createuser"
+			jdbcType="VARCHAR" />
+		<result column="CreateDateTime" property="createdatetime"
+			jdbcType="TIMESTAMP" />
+		<result column="UpdateUser" property="updateuser"
+			jdbcType="VARCHAR" />
+		<result column="UpdateDateTime" property="updatedatetime"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		NoticeID, Title, NoticeType, MonitorDateStart, MonitorDateEnd,
+		MonitorTimeStart,
+		MonitorTimeEnd, SendDate, SendTime, EMail, ValidFlag, CreateUser, CreateDateTime,
+		UpdateUser, UpdateDateTime
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from m_notice
+		where NoticeID = #{noticeid,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from m_notice
+		where NoticeID = #{noticeid,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert"
+		parameterType="com.ichangyun.InforAnalyaizer.model.notice.Notice">
+		insert into m_notice (NoticeID, Title, NoticeType,
+		MonitorDateStart, MonitorDateEnd, MonitorTimeStart,
+		MonitorTimeEnd, SendDate, SendTime,
+		EMail, ValidFlag, CreateUser,
+		CreateDateTime, UpdateUser, UpdateDateTime
+		)
+		values (#{noticeid,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+		#{noticetype,jdbcType=CHAR},
+		#{monitordatestart,jdbcType=CHAR}, #{monitordateend,jdbcType=CHAR}, #{monitortimestart,jdbcType=CHAR},
+		#{monitortimeend,jdbcType=CHAR}, #{senddate,jdbcType=CHAR},
+		#{sendtime,jdbcType=CHAR},
+		#{email,jdbcType=VARCHAR}, #{validflag,jdbcType=CHAR}, #{createuser,jdbcType=VARCHAR},
+		#{createdatetime,jdbcType=TIMESTAMP}, #{updateuser,jdbcType=VARCHAR},
+		#{updatedatetime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.ichangyun.InforAnalyaizer.model.notice.Notice">
+		insert into m_notice
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="noticeid != null">
+				NoticeID,
+			</if>
+			<if test="title != null">
+				Title,
+			</if>
+			<if test="noticetype != null">
+				NoticeType,
+			</if>
+			<if test="monitordatestart != null">
+				MonitorDateStart,
+			</if>
+			<if test="monitordateend != null">
+				MonitorDateEnd,
+			</if>
+			<if test="monitortimestart != null">
+				MonitorTimeStart,
+			</if>
+			<if test="monitortimeend != null">
+				MonitorTimeEnd,
+			</if>
+			<if test="senddate != null">
+				SendDate,
+			</if>
+			<if test="sendtime != null">
+				SendTime,
+			</if>
+			<if test="email != null">
+				EMail,
+			</if>
+			<if test="validflag != null">
+				ValidFlag,
+			</if>
+			<if test="createuser != null">
+				CreateUser,
+			</if>
+			<if test="createdatetime != null">
+				CreateDateTime,
+			</if>
+			<if test="updateuser != null">
+				UpdateUser,
+			</if>
+			<if test="updatedatetime != null">
+				UpdateDateTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="noticeid != null">
+				#{noticeid,jdbcType=VARCHAR},
+			</if>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="noticetype != null">
+				#{noticetype,jdbcType=CHAR},
+			</if>
+			<if test="monitordatestart != null">
+				#{monitordatestart,jdbcType=CHAR},
+			</if>
+			<if test="monitordateend != null">
+				#{monitordateend,jdbcType=CHAR},
+			</if>
+			<if test="monitortimestart != null">
+				#{monitortimestart,jdbcType=CHAR},
+			</if>
+			<if test="monitortimeend != null">
+				#{monitortimeend,jdbcType=CHAR},
+			</if>
+			<if test="senddate != null">
+				#{senddate,jdbcType=CHAR},
+			</if>
+			<if test="sendtime != null">
+				#{sendtime,jdbcType=CHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="validflag != null">
+				#{validflag,jdbcType=CHAR},
+			</if>
+			<if test="createuser != null">
+				#{createuser,jdbcType=VARCHAR},
+			</if>
+			<if test="createdatetime != null">
+				#{createdatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateuser != null">
+				#{updateuser,jdbcType=VARCHAR},
+			</if>
+			<if test="updatedatetime != null">
+				#{updatedatetime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.ichangyun.InforAnalyaizer.model.notice.Notice">
+		update m_notice
+		<set>
+			<if test="title != null">
+				Title = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="noticetype != null">
+				NoticeType = #{noticetype,jdbcType=CHAR},
+			</if>
+			<if test="monitordatestart != null">
+				MonitorDateStart = #{monitordatestart,jdbcType=CHAR},
+			</if>
+			<if test="monitordateend != null">
+				MonitorDateEnd = #{monitordateend,jdbcType=CHAR},
+			</if>
+			<if test="monitortimestart != null">
+				MonitorTimeStart = #{monitortimestart,jdbcType=CHAR},
+			</if>
+			<if test="monitortimeend != null">
+				MonitorTimeEnd = #{monitortimeend,jdbcType=CHAR},
+			</if>
+			<if test="senddate != null">
+				SendDate = #{senddate,jdbcType=CHAR},
+			</if>
+			<if test="sendtime != null">
+				SendTime = #{sendtime,jdbcType=CHAR},
+			</if>
+			<if test="email != null">
+				EMail = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="validflag != null">
+				ValidFlag = #{validflag,jdbcType=CHAR},
+			</if>
+			<if test="createuser != null">
+				CreateUser = #{createuser,jdbcType=VARCHAR},
+			</if>
+			<if test="createdatetime != null">
+				CreateDateTime = #{createdatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateuser != null">
+				UpdateUser = #{updateuser,jdbcType=VARCHAR},
+			</if>
+			<if test="updatedatetime != null">
+				UpdateDateTime = #{updatedatetime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where NoticeID = #{noticeid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.ichangyun.InforAnalyaizer.model.notice.Notice">
+		update m_notice
+		set Title = #{title,jdbcType=VARCHAR},
+		NoticeType = #{noticetype,jdbcType=CHAR},
+		MonitorDateStart = #{monitordatestart,jdbcType=CHAR},
+		MonitorDateEnd = #{monitordateend,jdbcType=CHAR},
+		MonitorTimeStart = #{monitortimestart,jdbcType=CHAR},
+		MonitorTimeEnd = #{monitortimeend,jdbcType=CHAR},
+		SendDate = #{senddate,jdbcType=CHAR},
+		SendTime = #{sendtime,jdbcType=CHAR},
+		EMail = #{email,jdbcType=VARCHAR},
+		ValidFlag = #{validflag,jdbcType=CHAR},
+		CreateUser = #{createuser,jdbcType=VARCHAR},
+		CreateDateTime = #{createdatetime,jdbcType=TIMESTAMP},
+		UpdateUser = #{updateuser,jdbcType=VARCHAR},
+		UpdateDateTime = #{updatedatetime,jdbcType=TIMESTAMP}
+		where NoticeID = #{noticeid,jdbcType=VARCHAR}
+	</update>
+	<select id="queryAllNotice"
+		resultType="com.ichangyun.InforAnalyaizer.model.notice.NoticeVo"
+		parameterType="hashmap">
+		SELECT a.NoticeID noticeid, a.Title title, a.NoticeType noticetype,
+		a.MonitorDateStart monitordatestart, a.MonitorDateEnd monitordateend,
+		a.MonitorTimeStart monitortimestart,
+		a.MonitorTimeEnd monitortimeend, a.SendDate senddate, a.SendTime sendtime, a.EMail
+		email, a.ValidFlag validflag, a.CreateUser createuser,
+		a.CreateDateTime createdatetime,
+		a.UpdateUser updateuser, a.UpdateDateTime updatedatetime,b.MasterValue typename
+		from m_notice a INNER JOIN m_generalpurpose b on
+		a.NoticeType=b.DisplayOrder where b.MasterTypeID='F006'
+		order by
+		a.CreateDateTime DESC
+		LIMIT
+		#{l_pre},#{rowSize}
+	</select>
+
+	<select id="queryCount" resultType="Integer">
+		select
+		count(1)
+		from
+		m_notice
+	</select>
+
+	<select id="getNoticeType"
+		resultType="com.ichangyun.InforAnalyaizer.model.notice.NoticeType">
+		select
+		DisplayOrder typeId,MasterValue typeName
+		from m_generalpurpose
+		where MasterTypeID="F006"
+		order by
+		typeId
+	</select>
+	
+	<select id="queryById"
+		resultType="com.ichangyun.InforAnalyaizer.model.notice.NoticeVo"
+		parameterType="String">
+		SELECT a.NoticeID noticeid, a.Title title, a.NoticeType noticetype,
+		a.MonitorDateStart monitordatestart, a.MonitorDateEnd monitordateend,
+		a.MonitorTimeStart monitortimestart,
+		a.MonitorTimeEnd monitortimeend, a.SendDate senddate, a.SendTime sendtime, a.EMail
+		email, a.ValidFlag validflag, a.CreateUser createuser,
+		a.CreateDateTime createdatetime,
+		a.UpdateUser updateuser, a.UpdateDateTime updatedatetime,b.MasterValue typename
+		from m_notice a INNER JOIN m_generalpurpose b on
+		a.NoticeType=b.DisplayOrder where b.MasterTypeID='F006' and a.NoticeID=#{value}
+	</select>
+</mapper>

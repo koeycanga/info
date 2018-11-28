@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ichangyun.InforAnalyaizer.mapper.usermanage.RoleMapper">
+
+    <select id="getRoleCountByID" parameterType="java.util.Map"  resultType="java.lang.Integer">
+           select count(1) from m_userrole where UserRoleName=#{param.roleID}
+    </select>
+    
+    <insert id="AddNewRole" parameterType="java.util.Map" >
+    			insert into m_userrole (UserRole_ID,UserRoleName,Description,CreateUser,CreateDateTime,Status,Authority,UpdateUser,UpdateDateTime)
+
+				values (null,#{param.roleName},#{param.roleDes},#{param.createrID},NOW(),'0',#{param.Authority},#{param.createrID},NOW())
+    </insert>
+    
+    <update id="updateRole" parameterType="com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean">
+    	update m_userrole set UserRoleName=#{UserRoleName},Authority=#{Authority},Description=#{Description},UpdateUser=#{UpdateUser},UpdateDateTime=NOW() where UserRole_ID=#{UserRole_ID}
+    </update>
+    
+    <select id="getRoleCount" resultType="java.lang.Integer">
+           select count(1) from m_userrole
+    </select>
+  
+    <select  id="getRole" parameterType="java.util.Map" resultType="com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean">
+           select UserRole_ID,UserRoleName,Authority,Description,DATE_FORMAT(UpdateDateTime,'%Y-%m-%d %H:%i:%s') UpdateDateTime,Status from m_userrole order by CreateDateTime desc limit #{param.l_pre},#{param.rowSize} 
+    </select>
+    
+    <delete id="delRole" parameterType="java.util.List">
+		<!-- delete from emp where empno in(7789,7790) -->
+		<!-- forEach : 用来循环 collection : 用来指定循环的数据的类型 可以填的值有：array,list,map item 
+			: 循环中为每个循环的数据指定一个别名 index : 循环中循环的下标 open : 开始 close : 结束 separator : 数组中元素之间的分隔符 -->
+		delete from m_userrole where UserRole_ID in
+		<foreach collection="list" item="list" index="no" open="("
+			separator="," close=")">
+			#{list.UserRole_ID}
+		</foreach>
+	</delete>
+   <select  id="queryAllRole" resultType="com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean">
+           select * from m_userrole
+    </select>
+   
+   <select  id="queryById" resultType="com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean">
+           select DATE_FORMAT(UpdateDateTime,'%Y-%m-%d %H:%i:%s') UpdateDateTime from m_userrole where UserRole_ID = #{value}
+    </select>
+</mapper>

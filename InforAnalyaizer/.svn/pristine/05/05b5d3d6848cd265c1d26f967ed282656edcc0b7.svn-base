@@ -1,0 +1,31 @@
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ * 竞争情报分析系统
+ */
+package com.ichangyun.InforAnalyaizer.service.comprehensivemonitoring;
+
+import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
+
+/**综合监测对应service
+ * @author renhao
+ * 2018-11-19 10:05
+ */
+public interface ComprehensivemonitoringService {
+
+	/**
+	 * 查询综合监测文章总数量
+	 * @param ab 
+	 * @return
+	 */
+	public int getArticleRowCount(ArticleInfoBean ab);
+
+	
+	/**
+	 * 查询综合监测所需文章数据
+	 * @param ab
+	 * @return
+	 */
+	public String getArticleJSON(ArticleInfoBean ab);
+
+}

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ichangyun.InforAnalyaizer.mapper.thematicmonitoring.ThematicmonitoringMapper">
+    
+     <select id="getAllFA" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ThematicmonitoringBean">
+          
+          select * from m_planinfo
+          
+     </select>
+     
+     <select id="exist" parameterType="java.lang.String" resultType="java.lang.Integer">
+          select count(*) from m_planinfo where PlanName=#{param}
+     </select>
+     
+     <select id="existwithID" resultType="java.lang.Integer">
+          select count(*) from m_planinfo where PlanName=#{p2} and Plan_ID!=#{p1}
+     </select>
+     
+     <insert id="SaveNewfa"  parameterType="com.ichangyun.InforAnalyaizer.mapper.thematicmonitoring.ThematicmonitoringMapper">
+          insert into m_planinfo(User_ID,Plan_ID,PlanName,UnitNumber,CreateUser,CreateDateTime,UpdateUser,UpdateDateTime)
+           values(#{User_ID},#{Plan_ID},#{PlanName},#{UnitNumber},#{CreateUser},NOW(),#{UpdateUser},NOW())
+     </insert>
+     
+     
+     <insert id="SaveNewfaDetail" parameterType="java.util.List">
+          insert into m_plandetail(Plan_ID,UnitNo,MonitoringWord1,MonitoringWord2,MonitoringWord3,MonitoringWord4,RemoveWord,CreateUser,CreateDateTime,UpdateUser,UpdateDateTime)
+           values
+           <foreach collection="list" item="item" index="index" separator=",">
+		           (#{item.Plan_ID},#{item.UnitNo},#{item.MonitoringWord1},#{item.MonitoringWord2},#{item.MonitoringWord3},#{item.MonitoringWord4},#{item.RemoveWord},
+		           #{item.CreateUser},NOW(),#{item.UpdateUser},NOW())
+		       </foreach>
+     </insert>
+     
+     <delete id="delfa" parameterType="java.lang.String">
+         delete from m_planinfo where Plan_ID=#{param}
+     </delete>
+    
+    <delete id="delfadetail" parameterType="java.lang.String">
+         delete from m_plandetail where Plan_ID=#{param}
+    </delete>
+     
+     <select id="getDetail" parameterType="java.lang.String" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ThematicmonitoringBean">
+          select * from m_plandetail where Plan_ID=#{param}
+     </select>
+     
+     <select id="getArticleRowCount" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="java.lang.Integer">
+         select count(*) from a_articlebasicinfo where 
+             Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
+             <if test="search_key!=null and search_key!=''">
+                and ArticleText like CONCAT('%',#{search_key},'%')
+             </if>
+             <if test="emoana!=-1">
+             and EmotionDivision=#{emoana}
+             </if>
+             <if test="infsour!=-1">
+              and SourceDivision=#{infsour}
+              </if>
+     </select>
+     
+     <select id="getlastestNews" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="java.lang.Integer">
+           select count(*) from a_articlebasicinfo where 
+             Releasetime>#{releasetime} 
+             <if test="search_key!=null and search_key!=''">
+                and ArticleText like CONCAT('%',#{search_key},'%')
+             </if>
+             <if test="emoana!=-1">
+             and EmotionDivision=#{emoana}
+             </if>
+             <if test="infsour!=-1">
+              and SourceDivision=#{infsour}
+              </if>
+     </select>
+     
+     <select id="getSearchLaestRelsetime"  parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="java.lang.String">
+         select Releasetime from a_articlebasicinfo 
+         where 
+             Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
+             <if test="search_key!=null and search_key!=''">
+                and ArticleText like CONCAT('%',#{search_key},'%')
+             </if>
+             <if test="emoana!=-1">
+             and EmotionDivision=#{emoana}
+             </if>
+             <if test="infsour!=-1">
+              and SourceDivision=#{infsour}
+             </if>
+           ORDER BY Releasetime desc
+           limit 0,1
+     </select>
+     
+     <select id="getArticle" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+            
+           select a.*,
+            (select m.WebsiteName from m_websiteinfo m where m.Website_ID = a.Website_ID) WebsiteName,
+            (select count(*) from a_articlebasicinfo b where a.ArticleKeyWord=b.ArticleKeyWord and a.Article_ID!=b.Article_ID) sim_cnt
+            from a_articlebasicinfo a where 
+             Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
+             <if test="search_key!=null and search_key!=''">
+                and ArticleText like CONCAT('%',#{search_key},'%')
+             </if>
+             <if test="emoana!=-1">
+             and EmotionDivision=#{emoana}
+             </if>
+             <if test="infsour!=-1">
+              and SourceDivision=#{infsour}
+             </if>
+             <if test="sort==0">
+               order by Releasetime desc
+             </if>
+             <if test="sort==1">
+               order by Releasetime asc
+             </if>
+            limit #{l_pre},#{rowSize}
+     </select>
+     
+     <update id="toyj">
+         update a_articlebasicinfo set EarlyWarningState='1',UpdateUser=#{userid},UpdateDateTime=NOW()
+         where Article_ID in 
+          <foreach item="item" index="index" collection="list" open="(" separator="," close=")">#{item}</foreach>  
+     </update>
+     
+     <delete id="delarticle" parameterType="java.util.List">
+          delete from a_articlebasicinfo where Article_ID in 
+           <foreach item="item" index="index" collection="list" open="(" separator="," close=")">#{item}</foreach>  
+     </delete>
+     
+     <select id="getSimContent" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+         
+         select a.Article_ID,a.ArticleTitle,a.ArticleURL from a_articlebasicinfo a where a.ArticleKeyWord=
+			(select b.ArticleKeyWord from a_articlebasicinfo b where b.Article_ID=#{Article_ID}) and a.Article_ID!=#{Article_ID}
+      
+     </select>
+     
+     
+     <select id="getCollectionType" parameterType="java.lang.String" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.CollectionBean">
+             select a.CollectionType_ID,a.CollectionTypeName,a.Parent_CollectionType_ID,a.DisplayOrder,
+				 (select count(*) from m_collectiontype b where b.Parent_CollectionType_ID=a.CollectionType_ID) children_lg
+				 from m_collectiontype a where a.User_ID=#{param} and a.ValidFlag='1' order by a.DisplayOrder asc
+     </select>
+     
+     <select id="getNextDisplayorder" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.CollectionBean" resultType="java.lang.Integer">
+          select case when max(DisplayOrder) is null then 0 else max(DisplayOrder) end from m_mycollection where User_ID=#{User_ID} and CollectionType_ID=#{CollectionType_ID} for update
+     </select>
+     
+     <insert id="addnewconllect" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.CollectionBean">
+         insert into m_mycollection(User_ID,CollectionType_ID,Article_ID,DisplayOrder,CreateUser,CreateDateTime,UpdateUser,UpdateDateTime)
+				values(#{User_ID},#{CollectionType_ID},#{Article_ID},#{DisplayOrder},#{User_ID},NOW(),#{User_ID},NOW())
+     </insert>
+     
+     <select id="getConllectCount" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.CollectionBean" resultType="java.lang.Integer">
+         select count(*) from m_mycollection where User_ID=#{User_ID} and CollectionType_ID=#{CollectionType_ID} and Article_ID=#{Article_ID}
+     </select>
+     
+     <select id="getQGSXJSON" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+      
+      select EmotionDivision ,count(EmotionDivision) cnt from a_articlebasicinfo
+			 where 1=1  and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end}
+			 <if test="infsour!=-1">
+			 and SourceDivision=#{infsour} 
+			 </if>
+			group by EmotionDivision
+     </select>
+     
+</mapper>

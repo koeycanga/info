@@ -1,0 +1,68 @@
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ * 竞争情报分析系统
+ */
+package com.ichangyun.InforAnalyaizer.service.front.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.alibaba.fastjson.JSONArray;
+import com.ichangyun.InforAnalyaizer.mapper.front.HomeMapper;
+import com.ichangyun.InforAnalyaizer.model.front.HotWordBean;
+import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
+import com.ichangyun.InforAnalyaizer.service.front.HomeService;
+
+/**
+ * @author 作者名 <br/>
+ * 2018-11-16 10:19
+ */
+
+@Service
+public class HomeServiceImpl implements HomeService {
+
+	@Autowired
+	private HomeMapper homeMapper;
+
+	@Override
+	public String getHotWord() {
+		
+		List<HotWordBean> list = homeMapper.getHotWord();
+		
+		JSONArray ja = (JSONArray) JSONArray.toJSON(list);
+		
+		return ja.toJSONString();
+		
+	}
+
+	@Override
+	public int getArticleCountByHotWord(HotWordBean hb) {
+	
+		return homeMapper.getArticleCountByHotWord(hb);
+	}
+
+	@Override
+	public String getArticleByHotWord(HotWordBean hb) {
+		
+		hb.setL_pre((hb.getPageNow()-1)*hb.getRowSize());
+		
+		List<ArticleInfoBean> list = homeMapper.getArticleByHotWord(hb);
+		
+		JSONArray ja = (JSONArray) JSONArray.toJSON(list);
+	    
+		return ja.toJSONString();
+	}
+
+	@Override
+	public String getSimContent(ArticleInfoBean ab) {
+		
+	    List<ArticleInfoBean> list = homeMapper.getSimContent(ab);
+		
+		JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
+
+	    return listArray.toJSONString();
+	}
+}

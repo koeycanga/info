@@ -1,0 +1,323 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>竞争情报分析系统</title>
+    <link rel="stylesheet" type="text/css" href="css/cy_CIAS_style.css">
+    <link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
+    <script type="text/javascript" src="easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+    <script src="//unpkg.com/iview/dist/iview.min.js"></script>
+</head>
+
+<body style="background-color: #f2f3f8;">
+<div class="cy_hidebg" id="cy_hidebg"></div>
+<!--头部-->
+<div class="cy_CIASFE_top">
+    <div class="cy_CIASFE_logo"><img src="../image/fontend-logo.png"></div>
+    <div class="cy_CIASFE_tit">国药器械-竞争情报分析系统</div>
+    <ic_top_menu></ic_top_menu> <!-- 上部菜单栏 -->
+    <ic_user_info></ic_user_info> <!-- 登录用户信息框 -->
+</div>
+
+<div class="cy_CIAFE_main">
+    <div class="cy_CIASFE_intmonbody" id="collectionType">
+		<!--============左侧收藏夹=====================-->
+        <div class="cy_CIASFE_intmonbodyleft">
+            <div class="cy_CIASFE_colletree">
+                <div class="cy_CIASFE_newfolder"><input type="button" value="新建文件夹"></div>
+                <ul class="easyui-tree">
+                    <li><span>我的收藏</span>
+                        <ul>
+                            <li><span>产品</span>
+                                <ul>
+                                    <li><span>人脸识别</span>
+                                        <ul>
+                                            <li><span>人脸识别</span></li>
+                                        </ul>
+                                    </li>
+                                    <li><span>图像识别</span>
+                                        <ul>
+                                            <li><span>图片识别</span></li>
+                                            <li><span>文字识别</span></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><span>测试</span>
+                                <ul>
+                                    <li><span>信息测试</span></li>
+                                    <li><span>数据测试</span></li>
+                                </ul>
+                            </li>
+                            <li><span>测试1</span>
+                                <ul>
+                                    <li>测试文件1</li>
+                                </ul>
+                            </li>
+                            <li><span>测试2</span>
+                                <ul>
+                                    <li>测试文件2</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--=========================================-->
+
+
+        <!--============右侧列表=====================-->
+        <div class="cy_CIASFE_intmonbodyright" id="collections">
+            <div class="cy_CIASFE_search">
+                <select v-model="searchOpt">
+                    <option :value="opt.id" v-for="(opt,index)in opts">{{opt.name}}</option>
+                </select>
+                <div class="cy_CMICBMS_schbox02"><input type="text" placeholder="请输入关键词检索…" style="cursor: text" v-model="voSearch.articleTitle"></div>
+                <input type="button" class="cy_CMICBMS_schbtn" value="检索" v-on:click="btn_search">
+            </div>
+            <div class="cy_CIASFE_condition02">
+
+                <div class="cy_CIASFE_conbox13">
+                    <input type="button" class="cy_CMICBMS_mvbtn" value="移动" v-on:click="btn_move">
+                    <input type="button" class="cy_CMICBMS_dltbtn" value="删除" v-on:click="btn_delete">
+                </div>
+                <div class="cy_CIASFE_conbox13">
+                    <table width="100%" border="0" class="cy_CIASFE_bttb" cellspacing="0">
+                        <tbody>
+                        <tr>
+                            <th scope="col" width="40px"><input type="checkbox"></th>
+                            <th>标题名称</th>
+                            <th>发布时间</th>
+                            <th style="text-align: center;" width="13%">操作</th>
+                        </tr>
+                        <tr class="cy_CMICBMS_treven" v-for="vo in vos" >
+                            <td><input type="checkbox" :value="vo.id"
+                                       v-model="checkedId"></td>
+                            <td>{{vo.articleTitle}}</td>
+                            <td>{{vo.releasetime}}</td>
+                            <td style="text-align: center;"><a v-on:click="deleteOne(vo.id)"><img src="image/usermana-dele.png"></a></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <pager ref="pagecomponent"></pager>
+                </div>
+            </div>
+        </div>
+        <!--============================================-->
+    </div>
+
+</div>
+
+<div class="cy_CIASFE_footer02"><a href="">使用手册</a>&nbsp;&nbsp;&nbsp;&nbsp;联系我们（电话：1648726161 邮箱：sales@ichangyun.com）
+    Copyright&copy;2018-2021 &nbsp;&nbsp;&nbsp;&nbsp;湖北畅云时讯软件技术有限公司版权所有
+</div>
+<!--弹出层-->
+<div id="cy_CMICBMS_newfd">
+    <div class="cy_CMICBMS_newbttop">
+        <div class="cy_CMICBMS_newbttit">新增节点</div>
+        <div class="cy_CMICBMS_newtbclose" onClick="hide();">X</div>
+    </div>
+    <div class="cy_CMICBMS_newfdbd">
+        <div class="cy_CMICBMS_newfdtb" style="	margin-bottom: 20px;">
+            <div class="cy_CMICBMS_newfdip"><span>*</span>名称：</div>
+            <input type="text" class="cy_CMICBMS_newbtinput" placeholder="请输入名称"></div>
+        <div class="cy_CMICBMS_newfdtb">
+            <div class="cy_CMICBMS_newfdip">父节点：</div>
+            <select>
+                <option>人脸识别</option>
+            </select>
+        </div>
+        <div class="cy_CMICBMS_infeddn"><input type="button" value="确定"></div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="${ctx}/js/vue.min.js"></script>
+<script src="${ctx}/js/vue-resource.min.js"></script>
+<script src="${ctx}/js/axios.min.js"></script>
+<script type="text/javascript" src="${ctx}/layui/layui.js"></script>
+<script type="text/javascript" src="${ctx}/layer/layer.js"></script>
+<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
+<script>
+    function show()  //显示隐藏层和弹出层
+    {
+        var hideobj = document.getElementById("cy_hidebg");
+        cy_hidebg.style.display = "block";  //显示隐藏层
+        document.getElementById("cy_CMICBMS_newfd").style.display = "block";  //显示弹出层
+    }
+
+    function hide()  //去除隐藏层和弹出层
+    {
+        document.getElementById("cy_hidebg").style.display = "none";
+        document.getElementById("cy_CMICBMS_newfd").style.display = "none";
+    }
+    //左侧列表
+    var vm = new Vue({
+        el: '#collections',
+        data: {
+            voSearch: {},           //搜索对象
+            vos: [],
+            isok: false,
+            checkedId: [],
+            searchOpt:1,            //选择的搜索条件
+            opts:[]                 //搜索条件集合
+        },
+        mounted: function () {
+            this.btn_search();
+            this.getOpts();
+        },
+        components:{
+            'pager':ic_pager
+        },
+        methods: {
+            getOpts:
+                function () {
+                    var url = "getOpts";
+                    var _this = this;
+                    axios.get(url,{})
+                        .then(function (response) {
+                            _this.opts =response.data;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+            checkedAll:
+                function () {
+                    if (!this.isok) { //全选中 所有CheckBox
+                        var vos = [];
+                        var vos = this.vos;
+                        this.checkedId = [];
+                        vos.forEach(function (vo) {
+                            this.checkedId.push(vo.id);
+                        }, this);
+                    } else {   //反选清楚所有CheckBox选中
+                        this.checkedId = []
+                    }
+                },
+            btn_search:
+                function () {
+                    this.search(this.$refs.pagecomponent.pageBean);
+
+                },
+
+
+            btn_move:                         //移动弹出
+                function () {
+                    var checkedId = [];
+
+                    checkedId= this.checkedId;
+                    if (checkedId.length!=1){
+                        layer.msg(Info.E0006);
+                    }else {
+                        window.show();
+                    }
+                },
+
+            btn_delete:                     //批量删除
+                function () {
+                    var _this = this;
+                    if(this.checkedId==null){
+                        layer.msg(Info.E0019);
+                    }else{
+                        var deleteLayer =layer.confirm(Info.W0002, {
+                            btn: ['确定', '取消'] //按钮
+                        }, function () {
+                            var url = "delete";
+                            var option = {emulateJSON: true};
+                            var checkedId = [];
+                            _this.checkedId.forEach(function (id) {
+                                checkedId.push(id);
+                            }, this);
+                            $.ajax({
+                                url:url,
+                                data:{"checkedId":checkedId},
+                                dateType:"json",
+                                type:"post",
+                                traditional:true,
+                                success:function(res){
+                                    if ("ok" == res.msg) {
+                                        layer.msg(Info.I0014, {icon: 1});
+                                        _this.btn_search()
+                                    }
+                                }
+                            })
+                        });
+                    }
+                },
+            deleteOne:                              //点击图标删除单个
+                function (id) {
+                    var _this = this;
+                        var deleteLayer =layer.confirm(Info.W0002, {
+                            btn: ['确定', '取消'] //按钮
+                        }, function () {
+                            var url = "deleteOne";
+                            var option = {emulateJSON: true};
+
+                            $.ajax({
+                                url:url,
+                                data:{"id":id},
+                                dateType:"json",
+                                type:"post",
+                                traditional:true,
+                                success:function(res){
+                                    if ("ok" == res.msg) {
+                                        layer.msg(Info.I0014, {icon: 1});
+                                        _this.btn_search()
+                                    }
+                                }
+                            })
+                        });
+
+                }
+        },
+        watch: {
+            "checkedId": function() {
+                if (this.checkedId.length != this.vos.length) {
+                    this.isok = false
+                } else {
+                    this.isok = true
+                }
+            }
+        },
+
+        computed:{
+            search:function(){
+                return function (pageBean) {
+                    var _this = this;
+                    var url = "../collection/queryAll";
+                    var vo = this.voSearch;
+                    axios.get(url,{
+                        params: {
+                            articleTitle:vo.articleTitle,           //文章标题
+                            searchOpt:this.searchOpt.id,            //检索选项
+                            collectiontypeId:vo.collectiontypeId,   //收藏节点ID
+                            pageNow:pageBean.pageNow,
+                            rowSize:pageBean.rs_selected
+                        }
+                    })
+                        .then(function (response) {
+                            var rowCount = response.data.rowCount+"";
+                            var allVos = response.data.vos;
+                            _this.$refs.pagecomponent.dealAfterSearch(rowCount); //rowCount为总条目数  在ajax请求返回函数需调用该方法
+                            _this.vos =allVos;
+
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+
+</html>

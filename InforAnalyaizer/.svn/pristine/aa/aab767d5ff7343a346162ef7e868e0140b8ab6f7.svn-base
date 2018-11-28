@@ -1,0 +1,49 @@
+package com.ichangyun.InforAnalyaizer.controller.front;
+
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+/**
+ * 详情页信息 对应Controller
+ * @author renhao
+ * 2018-11-19
+ */
+
+@RestController
+@RequestMapping("/detailspage")
+public class DetailsPageController {
+
+	
+	/**
+	 * 进入到详情页
+	 * @param from
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/toDetailsPage")
+	@ResponseBody
+	public Object toDetailsPage(String from,String article_id,HttpServletRequest request) {
+		
+		String title = "";
+		
+		if(from.equals("comprehensivemonitoring")) {
+			title = "综合监测";
+		}
+		
+		request.setAttribute("m_title", title);
+		request.setAttribute("m_article_id",article_id);
+		
+		return new ModelAndView("frontpage/detailspage");
+	}
+	
+	@RequestMapping("/getArticleByID")
+	public Object getArticleByID(String article_id) {
+		
+		
+		return "";
+	}
+	
+}

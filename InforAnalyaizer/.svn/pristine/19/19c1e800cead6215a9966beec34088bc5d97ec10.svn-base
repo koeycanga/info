@@ -1,0 +1,29 @@
+package com.ichangyun.InforAnalyaizer.controller.front.notice;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ichangyun.InforAnalyaizer.model.BaseBean;
+import com.ichangyun.InforAnalyaizer.service.notice.NoticeResService;
+
+@Controller
+@RequestMapping("/noticeRes")
+public class NoticeResController {
+	@Autowired
+	private NoticeResService noticeResService;
+	@RequestMapping("/queryAll")
+	@ResponseBody
+	public Map<String, Object> queryAll(BaseBean baseBean){
+	  // 取得当前简报任务
+	   Map<String, Object> list = noticeResService.queryAll(baseBean.getPageNow(),baseBean.getRowSize());
+	       return list;
+	   }
+	@RequestMapping("/toNoticeRes")
+	public String toNoticeRes(){
+		return "frontpage/noticeRes";
+	}
+}

@@ -1,0 +1,18 @@
+package com.ichangyun.InforAnalyaizer.mapper.collection;
+
+import com.ichangyun.InforAnalyaizer.model.collection.CollectionType;
+import com.ichangyun.InforAnalyaizer.model.collection.CollectionTypeKey;
+
+public interface CollectionTypeMapper {
+    int deleteByPrimaryKey(CollectionTypeKey key);
+
+    int insert(CollectionType record);
+
+    int insertSelective(CollectionType record);
+
+    CollectionType selectByPrimaryKey(CollectionTypeKey key);
+
+    int updateByPrimaryKeySelective(CollectionType record);
+
+    int updateByPrimaryKey(CollectionType record);
+}

@@ -1,0 +1,37 @@
+package com.ichangyun.InforAnalyaizer.mapper.collection;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.dao.DataAccessException;
+
+import com.ichangyun.InforAnalyaizer.model.SearchOptBean;
+import com.ichangyun.InforAnalyaizer.model.collection.MyCollection;
+import com.ichangyun.InforAnalyaizer.model.collection.MyCollectionKey;
+import com.ichangyun.InforAnalyaizer.model.collection.MyCollectionVo;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
+public interface MyCollectionMapper {
+    int deleteByPrimaryKey(MyCollectionKey key);
+
+    int insert(MyCollection record);
+
+    int insertSelective(MyCollection record);
+
+    MyCollection selectByPrimaryKey(MyCollectionKey key);
+
+    int updateByPrimaryKeySelective(MyCollection record);
+
+    int updateByPrimaryKey(MyCollection record);
+
+	List<SearchOptBean> getOpts();
+
+	List<MyCollectionVo> queryAll(Map<String, Object> key);
+
+	int queryCount(Map<String, Object> key);
+
+	void delete(Map<String, String> key);
+
+	void updateType(Map<String, String> key) throws DataAccessException;
+}

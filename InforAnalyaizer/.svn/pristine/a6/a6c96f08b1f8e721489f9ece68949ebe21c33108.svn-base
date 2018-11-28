@@ -1,0 +1,12 @@
+package com.ichangyun.InforAnalyaizer.service.front;
+/**
+ * @author ×÷ÕßÃû <br/>
+ * 2018-11-16 10:18
+ */
+
+
+public interface HomeService {
+
+	public String getHotWord();
+
+}

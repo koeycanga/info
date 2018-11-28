@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ichangyun.InforAnalyaizer.mapper.thematicmonitoring.ThematicmonitoringMapper">
+    
+     <select id="getAllFA" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ThematicmonitoringBean">
+          
+          select * from m_planinfo
+          
+     </select>
+     
+     <select id="exist" parameterType="java.lang.String" resultType="java.lang.Integer">
+          select count(*) from m_planinfo where PlanName=#{param}
+     </select>
+     
+     <select id="existwithID" resultType="java.lang.Integer">
+          select count(*) from m_planinfo where PlanName=#{p2} and Plan_ID!=#{p1}
+     </select>
+     
+     <insert id="SaveNewfa"  parameterType="com.ichangyun.InforAnalyaizer.mapper.thematicmonitoring.ThematicmonitoringMapper">
+          insert into m_planinfo(User_ID,Plan_ID,PlanName,UnitNumber,CreateUser,CreateDateTime,UpdateUser,UpdateDateTime)
+           values(#{User_ID},#{Plan_ID},#{PlanName},#{UnitNumber},#{CreateUser},NOW(),#{UpdateUser},NOW())
+     </insert>
+     
+     
+     <insert id="SaveNewfaDetail" parameterType="java.util.List">
+          insert into m_plandetail(Plan_ID,UnitNo,MonitoringWord1,MonitoringWord2,MonitoringWord3,MonitoringWord4,RemoveWord,CreateUser,CreateDateTime,UpdateUser,UpdateDateTime)
+           values
+           <foreach collection="list" item="item" index="index" separator=",">
+		           (#{item.Plan_ID},#{item.UnitNo},#{item.MonitoringWord1},#{item.MonitoringWord2},#{item.MonitoringWord3},#{item.MonitoringWord4},#{item.RemoveWord},
+		           #{item.CreateUser},NOW(),#{item.UpdateUser},NOW())
+		       </foreach>
+     </insert>
+     
+     <delete id="delfa" parameterType="java.lang.String">
+         delete from m_planinfo where Plan_ID=#{param}
+     </delete>
+    
+    <delete id="delfadetail" parameterType="java.lang.String">
+         delete from m_plandetail where Plan_ID=#{param}
+    </delete>
+     
+     <select id="getDetail" parameterType="java.lang.String" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ThematicmonitoringBean">
+          select * from m_plandetail where Plan_ID=#{param}
+     </select>
+     
+</mapper>

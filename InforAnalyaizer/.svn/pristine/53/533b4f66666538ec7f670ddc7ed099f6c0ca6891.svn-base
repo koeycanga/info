@@ -1,0 +1,6 @@
+#\u5F00\u53D1\u73AF\u5883  10.168.3.2
+jdbc.driver=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://10.168.3.2:6666/inforAnalyaizer_test
+jdbc.user=root
+jdbc.password=admin
+aa=dasdasd

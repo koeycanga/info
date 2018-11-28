@@ -1,0 +1,45 @@
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ * 竞争情报分析系统
+ */
+package com.ichangyun.InforAnalyaizer.service.comprehensivemonitoring.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.alibaba.fastjson.JSONArray;
+import com.ichangyun.InforAnalyaizer.mapper.comprehensivemonitoring.ComprehensivemonitoringMapper;
+import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
+import com.ichangyun.InforAnalyaizer.service.comprehensivemonitoring.ComprehensivemonitoringService;
+
+/**
+ * @author renhao
+ * 2018-11-19 10:07
+ */
+
+@Service
+public class ComprehensivemonitoringServiceImpl implements ComprehensivemonitoringService {
+
+	@Autowired
+	private ComprehensivemonitoringMapper comprehensivemonitoringMapper;
+
+	@Override
+	public int getArticleRowCount(ArticleInfoBean ab) {
+		
+		return comprehensivemonitoringMapper.getArticleRowCount(ab);
+	}
+
+	@Override
+	public String getArticleJSON(ArticleInfoBean ab) {
+		ab.setL_pre((ab.getPageNow()-1)*ab.getRowSize());
+		
+		List<ArticleInfoBean> list = comprehensivemonitoringMapper.getArticle(ab);
+		
+		JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
+
+	    return listArray.toJSONString();
+	}
+}

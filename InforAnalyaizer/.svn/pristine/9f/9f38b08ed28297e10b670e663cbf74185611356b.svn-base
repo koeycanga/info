@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ichangyun.InforAnalyaizer.mapper.front.DetailsPageMapper">
+	
+	<select id="getArticleByID" parameterType="java.lang.String" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+	     select CollectionField_ID,Article_ID,Classification_ID,ArticleTitle,ArticleAbstract,ArticleText,
+			ArticleAuthor,DATE_FORMAT(Releasetime,'%Y-%m-%d %H:%i:%s') Releasetime,
+			ArticleURL,ArticleKeyWord,PictureStoragePath,
+			Website_ID,
+			(select b.WebsiteName from m_websiteinfo b where a.Website_ID=b.Website_ID)  WebsiteName,
+			SourceDivision,EmotionDivision,EarlyWarningState
+			 from a_articlebasicinfo a where a.Article_ID=#{article_id}
+	</select>
+	
+</mapper>

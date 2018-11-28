@@ -1,0 +1,34 @@
+package com.ichangyun.InforAnalyaizer.mapper.classification;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean;
+import com.ichangyun.InforAnalyaizer.model.webinfo.WebInfoBean;
+
+public interface ClassificationSourceMapper {
+
+	public ClassificationInfoBean getClassifcInfoCount(ClassificationInfoBean cb) ;
+
+	public List<ClassificationInfoBean> getClassifcInfo(ClassificationInfoBean cb);
+
+	public List<ClassificationInfoBean> getchild(ClassificationInfoBean cb);
+
+	public int getWebInfoCount(WebInfoBean wb);
+
+	public List<WebInfoBean> getWebInfo(WebInfoBean wb);
+
+	public int getAlWebInfoCount(WebInfoBean wb);
+
+	public List<WebInfoBean> getAlWebInfo(WebInfoBean wb);
+
+	public int getWebNo();
+
+	public void addNewSource(List<WebInfoBean> list);
+
+	public void delteSource(@Param("p1")String classification_ID, @Param("p2")List<Integer> list);
+
+	public void updatesource(@Param("p1")String Classification_ID ,@Param("p2")String updater);
+
+}

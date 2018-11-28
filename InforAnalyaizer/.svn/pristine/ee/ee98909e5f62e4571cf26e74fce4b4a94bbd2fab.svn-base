@@ -1,0 +1,106 @@
+package com.ichangyun.InforAnalyaizer.controller.usermanage;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.ichangyun.InforAnalyaizer.model.CommBean;
+import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean;
+import com.ichangyun.InforAnalyaizer.service.ValidatorService;
+import com.ichangyun.InforAnalyaizer.service.usermanage.RoleService;
+
+
+@RestController
+@RequestMapping("/yhgl/role")
+public class RoleController {
+	
+	@Autowired
+	private RoleService roleService;
+	
+	@RequestMapping("/index")
+	@ResponseBody
+	public Object index() {
+		
+		return new ModelAndView("usermanage/rolemanage");
+	}
+	
+	@RequestMapping("/search")
+	public Object search(int pageNow,int rowSize) {
+		
+		int rowCount = roleService.getRoleCount();
+		
+		String json_res = roleService.getRole(pageNow,rowSize);
+		
+		String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
+		
+		return res;
+	}
+	
+	@RequestMapping("/addnewrole")
+	public Object AddNewRole(@Validated RoleManageBean ub,BindingResult result,HttpSession session) {
+		String res = "ok";
+		if(result.hasErrors()) {
+			/*List<ObjectError> allErrors = result.getAllErrors();
+			for(ObjectError oe:allErrors) {
+				System.out.println(oe.getDefaultMessage());
+			}*/
+			res = "nok";
+		}else {
+			if(roleService.exist(ub.getUserRoleName())) {
+				res = "exist";
+			}else {
+				User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+				if(!roleService.AddNewRole(ub.getUserRoleName(),ub.getDescription(),user.getUser_ID(),ub.getAuthority())) {
+					res = "nok";
+				}
+			}
+		}
+		return res;
+	}
+	
+	@RequestMapping("/updaterole")
+	public Object UpdateRole(@Validated RoleManageBean ub,BindingResult result,HttpSession session) {
+		String res = "ok";
+		if(result.hasErrors()) {
+			res = "nok";
+		}else {
+			User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+			ub.setUpdateUser(user.getUser_ID());
+			if(!roleService.updateRole(ub)) {
+				res = "nok";
+			}
+		}
+		return res;
+	}
+	
+	@RequestMapping("/delrole")
+	public Object delrole(@RequestBody Map map) {
+		String res = "ok";
+		String json = (String) map.get("json");
+		if(json==null||"".equals(json)) {
+			res = "nok";
+		}else {
+			if(!roleService.delRole(json)) {
+				res = "nok";
+			}
+		}
+		return res;
+	}
+}

@@ -1,0 +1,5 @@
+package com.ichangyun.InforAnalyaizer.service.collection;
+
+public interface CollectionService {
+
+}

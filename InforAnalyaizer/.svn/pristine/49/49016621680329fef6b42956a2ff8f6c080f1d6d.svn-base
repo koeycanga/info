@@ -1,0 +1,28 @@
+package com.ichangyun.InforAnalyaizer.service.classification;
+
+import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean;
+import com.ichangyun.InforAnalyaizer.model.webinfo.WebInfoBean;
+
+public interface ClassificationSourceService {
+
+	public int getClassifcInfoCount(ClassificationInfoBean cb);
+
+	public String getClassifcInfo(ClassificationInfoBean cb);
+
+	public String getchild(ClassificationInfoBean cb);
+
+	public int getWebInfoCount(WebInfoBean wb);
+
+	public String getWebInfo(WebInfoBean wb);
+
+	public int getAlWebInfoCount(WebInfoBean wb);
+
+	public String getAlWebInfo(WebInfoBean wb);
+
+	public void addNewSource(String classification_ID, String json, String creater);
+
+	public void delteSource(String classification_ID, String json);
+
+	public void updatesource(String Classification_ID,String updater);
+
+}

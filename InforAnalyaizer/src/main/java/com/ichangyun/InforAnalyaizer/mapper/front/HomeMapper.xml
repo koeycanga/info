@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ichangyun.InforAnalyaizer.mapper.front.HomeMapper">
+	
+	<select id="getHotWord" resultType="com.ichangyun.InforAnalyaizer.model.front.HotWordBean">
+	  
+	      select * from a_hotwordsbasicinfo ORDER BY UpdateDateTime desc LIMIT 0,20
+	
+	</select>
+	
+	
+	<select id="getArticleCountByHotWord" parameterType="com.ichangyun.InforAnalyaizer.model.front.HotWordBean" resultType="java.lang.Integer">
+	      select count(1) from a_articlebasicinfo where ArticleKeyWord  like CONCAT('%',#{HotWord},'%')
+	</select>
+	
+	
+	<select id="getArticleByHotWord" parameterType="com.ichangyun.InforAnalyaizer.model.front.HotWordBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+	      select a.*,
+            (select m.WebsiteName from m_websiteinfo m where m.Website_ID = a.Website_ID) WebsiteName,
+            (select count(1) from a_articlebasicinfo b where a.SimilarArticlesNo=b.SimilarArticlesNo and a.Article_ID!=b.Article_ID) sim_cnt,
+            (select count(1) from m_mycollection c where c.Article_ID=a.Article_ID ) collcnt
+            from a_articlebasicinfo a where a.ArticleKeyWord like CONCAT('%',#{HotWord},'%')
+            ORDER BY UpdateDateTime desc
+          limit #{l_pre},#{rowSize}
+	</select>
+	
+	<select id="getSimContent" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+	      select a.Article_ID,a.ArticleTitle,a.ArticleURL from a_articlebasicinfo a where a.SimilarArticlesNo=
+			(select b.SimilarArticlesNo from a_articlebasicinfo b where b.Article_ID=#{Article_ID}) and a.Article_ID!=#{Article_ID}
+	      order by Releasetime desc 
+	</select>
+	
+	<select id="getNewestDatas" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+	     select Article_ID,ArticleTitle from a_articlebasicinfo ORDER BY UpdateDateTime desc limit 0,6
+	</select>
+	
+	<select id="getWarnDatas" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+	     select Article_ID,ArticleTitle from a_articlebasicinfo where EarlyWarningState='1' ORDER BY UpdateDateTime desc limit 0,10
+	</select>
+	
+	<select id="getNegativeDatas" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+	    select Article_ID,ArticleTitle from a_articlebasicinfo where EmotionDivision='2' ORDER BY UpdateDateTime desc limit 0,10
+	</select>
+	
+</mapper>

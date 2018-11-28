@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.ichangyun.InforAnalyaizer.mapper.notice.NoticeExecuteResultMapper">
+	<resultMap id="BaseResultMap"
+		type="com.ichangyun.InforAnalyaizer.model.notice.NoticeExecuteResult">
+		<id column="NoticeID" property="noticeid" jdbcType="VARCHAR" />
+		<result column="ExecuteResult" property="executeresult"
+			jdbcType="CHAR" />
+		<result column="ExecuteID" property="executeid" jdbcType="CHAR" />
+		<result column="CreateUser" property="createuser"
+			jdbcType="VARCHAR" />
+		<result column="CreateDateTime" property="createdatetime"
+			jdbcType="TIMESTAMP" />
+		<result column="UpdateUser" property="updateuser"
+			jdbcType="VARCHAR" />
+		<result column="UpdateDateTime" property="updatedatetime"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		NoticeID, ExecuteResult, ExecuteID, CreateUser,
+		CreateDateTime, UpdateUser,
+		UpdateDateTime
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from m_noticeexecuteresult
+		where NoticeID =
+		#{noticeid,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		m_noticeexecuteresult
+		where NoticeID = #{noticeid,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert"
+		parameterType="com.ichangyun.InforAnalyaizer.model.notice.NoticeExecuteResult">
+		insert into m_noticeexecuteresult (NoticeID,
+		ExecuteResult, ExecuteID,
+		CreateUser, CreateDateTime, UpdateUser,
+		UpdateDateTime)
+		values (#{noticeid,jdbcType=VARCHAR},
+		#{executeresult,jdbcType=CHAR},
+		#{executeid,jdbcType=CHAR},
+		#{createuser,jdbcType=VARCHAR}, #{createdatetime,jdbcType=TIMESTAMP},
+		#{updateuser,jdbcType=VARCHAR},
+		#{updatedatetime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.ichangyun.InforAnalyaizer.model.notice.NoticeExecuteResult">
+		insert into m_noticeexecuteresult
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="noticeid != null">
+				NoticeID,
+			</if>
+			<if test="executeresult != null">
+				ExecuteResult,
+			</if>
+			<if test="executeid != null">
+				ExecuteID,
+			</if>
+			<if test="createuser != null">
+				CreateUser,
+			</if>
+			<if test="createdatetime != null">
+				CreateDateTime,
+			</if>
+			<if test="updateuser != null">
+				UpdateUser,
+			</if>
+			<if test="updatedatetime != null">
+				UpdateDateTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="noticeid != null">
+				#{noticeid,jdbcType=VARCHAR},
+			</if>
+			<if test="executeresult != null">
+				#{executeresult,jdbcType=CHAR},
+			</if>
+			<if test="executeid != null">
+				#{executeid,jdbcType=CHAR},
+			</if>
+			<if test="createuser != null">
+				#{createuser,jdbcType=VARCHAR},
+			</if>
+			<if test="createdatetime != null">
+				#{createdatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateuser != null">
+				#{updateuser,jdbcType=VARCHAR},
+			</if>
+			<if test="updatedatetime != null">
+				#{updatedatetime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.ichangyun.InforAnalyaizer.model.notice.NoticeExecuteResult">
+		update m_noticeexecuteresult
+		<set>
+			<if test="executeresult != null">
+				ExecuteResult = #{executeresult,jdbcType=CHAR},
+			</if>
+			<if test="executeid != null">
+				ExecuteID = #{executeid,jdbcType=CHAR},
+			</if>
+			<if test="createuser != null">
+				CreateUser = #{createuser,jdbcType=VARCHAR},
+			</if>
+			<if test="createdatetime != null">
+				CreateDateTime = #{createdatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateuser != null">
+				UpdateUser = #{updateuser,jdbcType=VARCHAR},
+			</if>
+			<if test="updatedatetime != null">
+				UpdateDateTime = #{updatedatetime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where NoticeID = #{noticeid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.ichangyun.InforAnalyaizer.model.notice.NoticeExecuteResult">
+		update m_noticeexecuteresult
+		set ExecuteResult =
+		#{executeresult,jdbcType=CHAR},
+		ExecuteID = #{executeid,jdbcType=CHAR},
+		CreateUser = #{createuser,jdbcType=VARCHAR},
+		CreateDateTime =
+		#{createdatetime,jdbcType=TIMESTAMP},
+		UpdateUser =
+		#{updateuser,jdbcType=VARCHAR},
+		UpdateDateTime =
+		#{updatedatetime,jdbcType=TIMESTAMP}
+		where NoticeID =
+		#{noticeid,jdbcType=VARCHAR}
+	</update>
+	<select id="queryAllRes"
+		resultType="com.ichangyun.InforAnalyaizer.model.notice.NoticeResVo"
+		parameterType="hashmap">
+		select
+		a.Title title,b.NoticeID noticeid,b.ExecuteID
+		executeid,b.ExecuteResult executeresult,b.CreateDateTime
+		createdatetime,b.CreateUser createuser,b.UpdateDateTime
+		updatedatetime,b.UpdateUser updateuser
+		from m_notice a inner JOIN
+		m_noticeexecuteresult b ON
+		a.NoticeID=b.NoticeID order by
+		b.CreateDateTime DESC
+		LIMIT
+		#{l_pre},#{rowSize}
+	</select>
+
+	<select id="queryCount" resultType="Integer">
+		select
+		count(1)
+		from
+		m_noticeexecuteresult
+	</select>
+</mapper>

@@ -1,0 +1,74 @@
+package com.ichangyun.InforAnalyaizer.controller.collection;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ichangyun.InforAnalyaizer.model.BaseBean;
+import com.ichangyun.InforAnalyaizer.model.CommBean;
+import com.ichangyun.InforAnalyaizer.model.SearchOptBean;
+import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.collection.MyCollectionVo;
+import com.ichangyun.InforAnalyaizer.service.collection.CollectionService;
+
+@Controller
+@RequestMapping("collection")
+public class CollectionController {
+	@Autowired
+	private CollectionService collectionService;
+	@RequestMapping("toCollection")
+	public String toCollection() {
+		return "frontpage/collection";
+	}
+	@RequestMapping("getOpts")
+	@ResponseBody
+	public List<SearchOptBean> getOpts(){
+		return this.collectionService.getOpts();
+	}
+	@RequestMapping("queryAll")
+	@ResponseBody
+	public Map<String, Object>  queryAll(MyCollectionVo vo, BaseBean baseBean,SearchOptBean sob,HttpSession session){
+		User u = (User)session.getAttribute(CommBean.SESSION_NAME);
+		if(sob.getId()==1) {
+			List<MyCollectionVo> vos = this.collectionService.queryAll(vo,baseBean,u);
+			int count = this.collectionService.queryCount(vo,u);
+			Map<String, Object> map = new HashMap<>();
+			map.put("vos", vos);
+			map.put("rowCount", count);
+			return map;
+		}else if(sob.getId()==2) {
+			List<MyCollectionVo> vos = this.collectionService.queryAll(vo,baseBean,u);
+			int count = this.collectionService.queryCount(vo,u);
+			Map<String, Object> map = new HashMap<>();
+			map.put("vos", vos);
+			map.put("rowCount", count);
+			return map;
+		}
+		return null;
+	}
+	@RequestMapping("delete")
+	@ResponseBody
+	public Map<String, Object> delete(String[] checkedId){
+		String msg = this.collectionService.delete(checkedId);
+		Map<String, Object> map = new HashMap<>();
+		map.put("msg", msg);
+		return map;
+	}
+	@RequestMapping("deleteOne")
+	@ResponseBody
+	public Map<String, Object> deleteOne(String id){
+		String[] ids = {id};
+		String msg = this.collectionService.delete(ids);
+		Map<String, Object> map = new HashMap<>();
+		map.put("msg", msg);
+		return map;
+	}
+}
