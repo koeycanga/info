@@ -3,7 +3,7 @@ package com.ichangyun.InforAnalyaizer.service.notice;
 import java.util.List;
 import java.util.Map;
 
-import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.notice.NoticeType;
 import com.ichangyun.InforAnalyaizer.model.notice.NoticeVo;
 

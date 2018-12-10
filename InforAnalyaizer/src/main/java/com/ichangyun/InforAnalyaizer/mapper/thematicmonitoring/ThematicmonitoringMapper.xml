@@ -5,11 +5,21 @@
 
 <mapper namespace="com.ichangyun.InforAnalyaizer.mapper.thematicmonitoring.ThematicmonitoringMapper">
     
-     <select id="getAllFA" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ThematicmonitoringBean">
+     <select id="getAllFA" parameterType="java.lang.String" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ThematicmonitoringBean">
           
-          select * from m_planinfo
+          select * from m_planinfo where User_ID=#{userid}
           
      </select>
+     
+     <update id="updatefa">
+		update m_planinfo set PlanName=#{planinfo_name},
+						  PlanStartTime=#{fromDate},
+						  PlanEndTime=#{toDate},
+						  UnitNumber=#{num},
+						  UpdateUser=#{userid},
+						  UpdateDateTime=NOW()
+			 where Plan_ID=#{plan_id}
+     </update>
      
      <select id="exist" parameterType="java.lang.String" resultType="java.lang.Integer">
           select count(1) from m_planinfo where PlanName=#{param}
@@ -20,8 +30,8 @@
      </select>
      
      <insert id="SaveNewfa"  parameterType="com.ichangyun.InforAnalyaizer.mapper.thematicmonitoring.ThematicmonitoringMapper">
-          insert into m_planinfo(User_ID,Plan_ID,PlanName,UnitNumber,CreateUser,CreateDateTime,UpdateUser,UpdateDateTime)
-           values(#{User_ID},#{Plan_ID},#{PlanName},#{UnitNumber},#{CreateUser},NOW(),#{UpdateUser},NOW())
+          insert into m_planinfo(User_ID,Plan_ID,PlanName,UnitNumber,CreateUser,CreateDateTime,UpdateUser,UpdateDateTime,PlanStartTime,PlanEndTime)
+           values(#{User_ID},#{Plan_ID},#{PlanName},#{UnitNumber},#{CreateUser},NOW(),#{UpdateUser},NOW(),#{PlanStartTime},#{PlanEndTime})
      </insert>
      
      
@@ -56,15 +66,22 @@
                  <if test="search_type=='title'">
                      and ArticleTitle like CONCAT('%',#{search_key},'%')
                  </if>
+                 <if test="search_type=='abstract'">
+                     and ArticleAbstract like CONCAT('%',#{search_key},'%')
+                 </if>
                  <if test="search_type=='text'">
                      and ArticleText like CONCAT('%',#{search_key},'%')
                  </if>
              </if>
-             <if test="emoana!=-1">
+         and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
+         <if test="emoana!=-1">
              and EmotionDivision=#{emoana}
              </if>
              <if test="infsour!=-1">
               and SourceDivision=#{infsour}
+              </if>
+              <if test="Plan_ID!=null and Plan_ID!=''">
+              and Article_ID in (select Article_ID from a_articleplaninfo where Plan_ID=#{Plan_ID})
               </if>
      </select>
      
@@ -81,16 +98,23 @@
                  <if test="search_type=='title'">
                      and ArticleTitle like CONCAT('%',#{search_key},'%')
                  </if>
+                 <if test="search_type=='abstract'">
+                     and ArticleAbstract like CONCAT('%',#{search_key},'%')
+                 </if>
                  <if test="search_type=='text'">
                      and ArticleText like CONCAT('%',#{search_key},'%')
                  </if>
              </if>
+         and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
              <if test="emoana!=-1">
              and EmotionDivision=#{emoana}
              </if>
              <if test="infsour!=-1">
               and SourceDivision=#{infsour}
               </if>
+             <if test="Plan_ID!=null and Plan_ID!=''">
+	             and Article_ID in (select Article_ID from a_articleplaninfo where Plan_ID=#{Plan_ID})
+	         </if>
 		   ) dd
 		   Group By dd.SimilarArticlesNo)
      </select>
@@ -98,13 +122,16 @@
      <select id="getArticleWithHB" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
           SELECT
 				c.*,
+				(select MonitoringWord from a_articleplaninfo where Article_ID=c.Article_ID and Plan_ID=#{Plan_ID}) MonitoringWord,
 			  (select m.WebsiteName from m_websiteinfo m where m.Website_ID = c.Website_ID) WebsiteName,
 			   (
 			     select count(1) from a_articlebasicinfo bb where c.SimilarArticlesNo=bb.SimilarArticlesNo and c.Article_ID!=bb.Article_ID
 			     and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end}
+         and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
 			   ) sim_cnt,
-			   (select count(1) from m_mycollection cc where cc.Article_ID=c.Article_ID ) collcnt
-			FROM
+			   (select count(1) from m_mycollection cc where cc.Article_ID=c.Article_ID ) collcnt,
+         IF(c.Article_ID in (SELECT k.Article_ID FROM a_userearlywarningarticleinfo as k where k.User_ID=#{userid}),"yes","no")  isearlywarning
+             FROM
 				a_articlebasicinfo c
 			WHERE
 				c.Article_ID  IN 
@@ -119,16 +146,23 @@
                              <if test="search_type=='title'">
                                  and ArticleTitle like CONCAT('%',#{search_key},'%')
                              </if>
+                             <if test="search_type=='abstract'">
+                                and ArticleAbstract like CONCAT('%',#{search_key},'%')
+                            </if>
                              <if test="search_type=='text'">
                                  and ArticleText like CONCAT('%',#{search_key},'%')
                              </if>
 			             </if>
+         and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
 			             <if test="emoana!=-1">
 			             and EmotionDivision=#{emoana}
 			             </if>
 			             <if test="infsour!=-1">
 			              and SourceDivision=#{infsour}
 			             </if>
+			             <if test="Plan_ID!=null and Plan_ID!=''">
+				             and Article_ID in (select Article_ID from a_articleplaninfo where Plan_ID=#{Plan_ID})
+				         </if>
 			             <if test="sort==0">
 			               order by Releasetime desc
 			             </if>
@@ -149,13 +183,16 @@
      
       <select id="getArticle" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
            select a.*,
+           (select MonitoringWord from a_articleplaninfo where Article_ID=a.Article_ID and Plan_ID=#{Plan_ID}) MonitoringWord,
             (select m.WebsiteName from m_websiteinfo m where m.Website_ID = a.Website_ID) WebsiteName,
             (
                select count(1) from a_articlebasicinfo b where a.SimilarArticlesNo=b.SimilarArticlesNo and a.Article_ID!=b.Article_ID
-	              and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
+	              and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end}
+          and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
             ) sim_cnt,
-            (select count(1) from m_mycollection c where c.Article_ID=a.Article_ID ) collcnt
-            from a_articlebasicinfo a where 
+            (select count(1) from m_mycollection c where c.Article_ID=a.Article_ID ) collcnt,
+          IF(a.Article_ID in (SELECT k.Article_ID FROM a_userearlywarningarticleinfo as k where k.User_ID=#{userid}),"yes","no")  isearlywarning
+          from a_articlebasicinfo a where
              Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
              <if test="search_key!=null and search_key!=''">
                  <if test="search_type=='all'">
@@ -164,16 +201,23 @@
                  <if test="search_type=='title'">
                      and ArticleTitle like CONCAT('%',#{search_key},'%')
                  </if>
+                 <if test="search_type=='abstract'">
+                     and ArticleAbstract like CONCAT('%',#{search_key},'%')
+                 </if>
                  <if test="search_type=='text'">
                      and ArticleText like CONCAT('%',#{search_key},'%')
                  </if>
              </if>
+          and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
              <if test="emoana!=-1">
              and EmotionDivision=#{emoana}
              </if>
              <if test="infsour!=-1">
               and SourceDivision=#{infsour}
              </if>
+               <if test="Plan_ID!=null and Plan_ID!=''">
+	             and Article_ID in (select Article_ID from a_articleplaninfo where Plan_ID=#{Plan_ID})
+	         </if>
              <if test="sort==0">
                order by Releasetime desc
              </if>
@@ -186,6 +230,7 @@
      <select id="getlastestNews" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="java.lang.Integer">
            select count(1) from a_articlebasicinfo where 
              Releasetime>#{releasetime} 
+             and Article_ID in (select Article_ID from a_articleplaninfo where Plan_ID=#{Plan_ID})
             
      </select>
      
@@ -195,24 +240,34 @@
            limit 0,1
      </select>
      
-    
+     <!--<update id="toyj">-->
+         <!--update a_articlebasicinfo set EarlyWarningState='1',UpdateUser=#{userid},UpdateDateTime=NOW()-->
+         <!--where Article_ID in -->
+          <!--<foreach item="item" index="index" collection="list" open="(" separator="," close=")">#{item}</foreach>  -->
+     <!--</update>-->
+
+    <insert id="toyj">
+        insert ignore into a_userearlywarningarticleinfo(User_ID,Article_ID,EarlyWarningMode,SensitiveWord_ID) VALUES
+        <foreach item="item" index="index" collection="list" separator="," >(#{userid},#{item},"2",0)</foreach>
+    </insert>
      
-     <update id="toyj">
-         update a_articlebasicinfo set EarlyWarningState='1',UpdateUser=#{userid},UpdateDateTime=NOW()
-         where Article_ID in 
-          <foreach item="item" index="index" collection="list" open="(" separator="," close=")">#{item}</foreach>  
-     </update>
-     
-     <delete id="delarticle" parameterType="java.util.List">
-          delete from a_articlebasicinfo where Article_ID in 
-           <foreach item="item" index="index" collection="list" open="(" separator="," close=")">#{item}</foreach>  
-     </delete>
-     
+     <!--<delete id="delarticle" parameterType="java.util.List">-->
+          <!--delete from a_articlebasicinfo where Article_ID in -->
+           <!--<foreach item="item" index="index" collection="list" open="(" separator="," close=")">#{item}</foreach>  -->
+     <!--</delete>-->
+
+    <insert id="delarticle">
+        INSERT INTO a_userdeletearticleinfo (User_ID,DeleteMode,Article_ID) VALUES
+        <foreach item="item" index="index" collection="list" separator="," >(#{userid},#{deletemode},#{item})</foreach>
+
+    </insert>
+
      <select id="getSimContent" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
          
          select a.Article_ID,a.ArticleTitle,a.ArticleURL from a_articlebasicinfo a where a.SimilarArticlesNo=
 			(select b.SimilarArticlesNo from a_articlebasicinfo b where b.Article_ID=#{Article_ID}) and a.Article_ID!=#{Article_ID}
-			and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
+			and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end}
+            and not exists (select 1 from A_UserDeleteArticleInfo b where b.Article_ID=a.Article_ID and b.User_ID=#{userid})
 	      order by Releasetime desc
       
      </select>
@@ -236,13 +291,19 @@
          select count(1) from m_mycollection where User_ID=#{User_ID} and CollectionType_ID=#{CollectionType_ID} and Article_ID=#{Article_ID}
      </select>
      
-     <select id="getQGSXJSON" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+     <select id="getContentList" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
       
-      select EmotionDivision ,count(EmotionDivision) cnt from a_articlebasicinfo
+      select *,DATE_FORMAT(Releasetime,'%Y/%m/%d %H:%i:%s') Releasetime_bak,DATE_FORMAT(Releasetime,'%Y/%m/%d') YMD_Date, 
+              DATE_FORMAT(Releasetime,'%H:%i') Hi_Date,
+              (select WebsiteName from m_websiteinfo a where a.Website_ID=b.Website_ID ) WebsiteName
+              from a_articlebasicinfo b
 			 where 1=1  and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end}
 			 <if test="infsour!=-1">
 			 and SourceDivision=#{infsour} 
 			 </if>
+			  <if test="Plan_ID!=null and Plan_ID!=''">
+	             and Article_ID in (select Article_ID from a_articleplaninfo where Plan_ID=#{Plan_ID})
+	         </if>
              <if test="search_key!=null and search_key!=''">
                  <if test="search_type=='all'">
                      and (ArticleText like CONCAT('%',#{search_key},'%') or ArticleTitle like CONCAT('%',#{search_key},'%') or ArticleAbstract like CONCAT('%',#{search_key},'%'))
@@ -250,14 +311,62 @@
                  <if test="search_type=='title'">
                      and ArticleTitle like CONCAT('%',#{search_key},'%')
                  </if>
+                 <if test="search_type=='abstract'">
+                     and ArticleAbstract like CONCAT('%',#{search_key},'%')
+                 </if>
                  <if test="search_type=='text'">
                      and ArticleText like CONCAT('%',#{search_key},'%')
                  </if>
              </if>
-			group by EmotionDivision
+         and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
+             order by Releasetime desc
      </select>
      
      <select id="getHotWord" resultType="com.ichangyun.InforAnalyaizer.model.front.HotWordBean">
 	      select * from a_hotwordsbasicinfo ORDER BY UpdateDateTime desc LIMIT 0,20
 	</select>
+	
+	<select id="getFAByIdAndUser" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ThematicmonitoringBean">
+	      select m2.MonitoringWord1,m2.MonitoringWord2,m2.MonitoringWord3,m2.MonitoringWord4,RemoveWord from M_PlanInfo m1,M_PlanDetail m2
+ 			where m1.Plan_ID=m2.Plan_ID  and m1.Plan_ID=#{pl_id} and m1.User_ID=#{userid}
+	</select>
+	
+	<select id="getArticleRowCountWithPlanInfo" parameterType="java.lang.String" resultType="java.lang.Integer">
+	      select count(1) from a_articlebasicinfo where 1=1  ${sql}
+	</select>
+	
+	<select id="getArticleWithPlanInfo" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ThematicmonitoringBean">
+	     select 
+         <if test="sql_m1!=''">
+             ${sql_m1},
+         </if>
+	      <if test="sql_m2!=''">
+             ${sql_m2},
+         </if>
+          <if test="sql_m3!=''">
+             ${sql_m3},
+         </if>
+          Article_ID
+	      from a_articlebasicinfo a where 1=1  ${sql}  limit #{l_pre},#{rowSize} 
+	</select>
+	
+	<select id="getPlanInfoWordUseCount"  resultType="java.lang.Integer">
+	    select count(1) from a_articlebasicinfo where 1=1 and ${sql} and Article_ID=#{Article_ID}
+	</select>
+	
+	<insert id="insertArtileWithPlanInfoBatch" parameterType="java.util.List">
+	     insert into a_articleplaninfo(Article_ID,Plan_ID,CreateUser,CreateDateTime,UpdateUser,UpdateDateTime,MonitoringWord)
+          values
+          <foreach collection ="list" item="planinfo" index= "index" separator =",">
+          (
+            #{planinfo.Article_ID},#{planinfo.Plan_ID},#{planinfo.User_ID},NOW(),#{planinfo.User_ID},NOW(),#{planinfo.MonitoringWord}
+          )
+          </foreach>
+	</insert>
+	
+	
+	<delete id="delArticleWithPlanInfo" parameterType="java.lang.String">
+	    delete from a_articleplaninfo where  Plan_ID=#{pl_id}
+	</delete>
+	
 </mapper>

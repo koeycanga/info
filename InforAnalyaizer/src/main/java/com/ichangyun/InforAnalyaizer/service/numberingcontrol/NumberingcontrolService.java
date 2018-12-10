@@ -5,5 +5,5 @@ package com.ichangyun.InforAnalyaizer.service.numberingcontrol;
  */
 public interface NumberingcontrolService {
 
-	public String getNextCFID(String cpid);
+	public String getNextCFID(String cpid) throws Exception;
 }

@@ -5,6 +5,11 @@
  */
 package com.ichangyun.InforAnalyaizer.model.thematicmonitoring;
 
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ *  竞争情报系统
+ */
 import com.ichangyun.InforAnalyaizer.model.BaseBean;
 
 /** 文字信息实体类,对应数据表 A_ArticleBasicInfo
@@ -48,10 +53,18 @@ public class ArticleInfoBean extends BaseBean {
 	 */
 	private String ArticleAuthor;
 	
+	
 	/**
 	 * 发布时间
 	 */
 	private String Releasetime;
+	
+	
+	/**
+	 * 发布时间(备用)
+	 */
+	private String Releasetime_bak;
+	
 	
 	/**
 	 * 原文链接URL
@@ -90,11 +103,7 @@ public class ArticleInfoBean extends BaseBean {
 	 * 情感区分
 	 */
 	private String EmotionDivision;
-	
-	/**
-	 * 预警状态
-	 */
-	private String EarlyWarningState;
+
 	
 	/**
 	 * 作成者
@@ -171,10 +180,261 @@ public class ArticleInfoBean extends BaseBean {
 	 */
 	private int collcnt;
 
+	
+	/**
+	 * 方案ID
+	 */
+	private String Plan_ID;
+	
+	/**
+	 * 只有年月日的日期
+	 */
+	private String YMD_Date ;
+	
+	
+	/**
+	 * 只有时间和分钟的日期
+	 */
+	private String Hi_Date;
+	
+	
+	/**
+	 * 监测词
+	 */
+	private String MonitoringWord;
+	
+	
+	
+	/**
+	 * 用户预警规则敏感词ID
+	 */
+	private int SensitiveWord_ID;
+	
+	/**
+	 * 敏感词
+	 */
+	private String SensitiveWord;
+	
+	
+	/**
+	 * 昨天预警总数
+	 */
+	private int yesterday_total;
+	
+	/**
+	 * 今天预警总数
+	 */
+	private int totday_total;
+	
 	/**
 	 * 搜索类型,all,title,text
 	 */
 	private String search_type;
+
+	/**
+	 * userid
+	 */
+	private String userid;
+
+    /**
+     *  用户预警的文章的数量
+     */
+	private int yj_cnt;
+
+	/**
+	 * 敏感词NO
+	 */
+	private int SensitiveWordNo;
+
+	/**
+	 * 推荐敏感词种类ID
+	 */
+	private String MasterID;
+	
+	/**
+	 * 推荐敏感词种类名称
+	 */
+	private String ControlName ;
+	
+	/**
+	 * 敏感词名称
+	 */
+	private String MasterValue;
+	
+	/**
+	 * 排位顺序
+	 */
+	private int DisplayOrder;
+	
+	
+	/**
+	 * 是否预警
+	 */
+	private  String isearlywarning;
+	
+	/**
+	 * 是否显示预警词
+	 */
+	private boolean isshowyjc;
+	
+	/**
+	 * 敏感词区分ID
+	 */
+	private String SensitiveWordType_ID;
+	
+	public String getSensitiveWordType_ID() {
+		return SensitiveWordType_ID;
+	}
+
+	public void setSensitiveWordType_ID(String sensitiveWordType_ID) {
+		SensitiveWordType_ID = sensitiveWordType_ID;
+	}
+
+	public boolean isIsshowyjc() {
+		return isshowyjc;
+	}
+
+	public void setIsshowyjc(boolean isshowyjc) {
+		this.isshowyjc = isshowyjc;
+	}
+
+	public String getIsearlywarning() {
+		return isearlywarning;
+	}
+
+	public void setIsearlywarning(String isearlywarning) {
+		this.isearlywarning = isearlywarning;
+	}
+
+	private String yjfs;
+	
+	public String getYjfs() {
+		return yjfs;
+	}
+
+	public void setYjfs(String yjfs) {
+		this.yjfs = yjfs;
+	}
+
+	public int getSensitiveWord_ID() {
+		return SensitiveWord_ID;
+	}
+
+	public void setSensitiveWord_ID(int sensitiveWord_ID) {
+		SensitiveWord_ID = sensitiveWord_ID;
+	}
+	
+	public int getDisplayOrder() {
+		return DisplayOrder;
+	}
+
+	public void setDisplayOrder(int displayOrder) {
+		DisplayOrder = displayOrder;
+	}
+
+	public String getMasterValue() {
+		return MasterValue;
+	}
+
+	public void setMasterValue(String masterValue) {
+		MasterValue = masterValue;
+	}
+
+	public String getMasterID() {
+		return MasterID;
+	}
+
+	public void setMasterID(String masterID) {
+		MasterID = masterID;
+	}
+
+	public String getControlName() {
+		return ControlName;
+	}
+
+	public void setControlName(String controlName) {
+		ControlName = controlName;
+	}
+
+	public int getSensitiveWordNo() {
+		return SensitiveWordNo;
+	}
+
+	public void setSensitiveWordNo(int sensitiveWordNo) {
+		SensitiveWordNo = sensitiveWordNo;
+	}
+
+	public int getYesterday_total() {
+		return yesterday_total;
+	}
+
+	public void setYesterday_total(int yesterday_total) {
+		this.yesterday_total = yesterday_total;
+	}
+
+	public int getTotday_total() {
+		return totday_total;
+	}
+
+	public void setTotday_total(int totday_total) {
+		this.totday_total = totday_total;
+	}
+
+	public String getSensitiveWord() {
+		return SensitiveWord;
+	}
+
+	public void setSensitiveWord(String sensitiveWord) {
+		SensitiveWord = sensitiveWord;
+	}
+
+	public String getMonitoringWord() {
+		return MonitoringWord;
+	}
+
+	public void setMonitoringWord(String monitoringWord) {
+		MonitoringWord = monitoringWord;
+	}
+
+	public String getHi_Date() {
+		return Hi_Date;
+	}
+
+	public void setHi_Date(String hi_Date) {
+		Hi_Date = hi_Date;
+	}
+
+	public String getReleasetime_bak() {
+		return Releasetime_bak;
+	}
+
+	public void setReleasetime_bak(String releasetime_bak) {
+		Releasetime_bak = releasetime_bak;
+	}
+	
+	public String getYMD_Date() {
+		return YMD_Date;
+	}
+
+	public void setYMD_Date(String yMD_Date) {
+		YMD_Date = yMD_Date;
+	}
+
+	public String getPlan_ID() {
+		return Plan_ID;
+	}
+
+	public void setPlan_ID(String plan_ID) {
+		Plan_ID = plan_ID;
+	}
+	
+	public int getYj_cnt() {
+		return yj_cnt;
+	}
+
+	public void setYj_cnt(int yj_cnt) {
+		this.yj_cnt = yj_cnt;
+	}
 
 	public String getSearch_type() {
 		return search_type;
@@ -341,12 +601,6 @@ public class ArticleInfoBean extends BaseBean {
 	public void setEmotionDivision(String emotionDivision) {
 		EmotionDivision = emotionDivision;
 	}
-	public String getEarlyWarningState() {
-		return EarlyWarningState;
-	}
-	public void setEarlyWarningState(String earlyWarningState) {
-		EarlyWarningState = earlyWarningState;
-	}
 	public String getCreateUser() {
 		return CreateUser;
 	}
@@ -371,5 +625,12 @@ public class ArticleInfoBean extends BaseBean {
 	public void setUpdateDateTime(String updateDateTime) {
 		UpdateDateTime = updateDateTime;
 	}
-	
+
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
 }

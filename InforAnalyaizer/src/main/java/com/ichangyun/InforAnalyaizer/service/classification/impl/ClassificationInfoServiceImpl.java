@@ -63,7 +63,12 @@ public class ClassificationInfoServiceImpl implements ClassificationInfoService 
 	@Override
 	public String getClassificationInfoID() {
 		
-		return numberingcontrolService.getNextCFID("NC00000004");
+		try {
+			return numberingcontrolService.getNextCFID("NC00000004");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
 		
 	}
 
@@ -85,7 +90,11 @@ public class ClassificationInfoServiceImpl implements ClassificationInfoService 
 	       
 	       cb.setDisplayOrder(display_order);
 	   
-	       cb.setNodePath(cb.getNodePath()+cb.getClassification_ID());
+	       if(cb.getClassificationPath().equals("")) {
+	    	   cb.setClassificationPath(cb.getClassification_ID());
+	       }else {
+	    	   cb.setClassificationPath(cb.getClassificationPath()+"/"+cb.getClassification_ID());
+	       }
 	       
 	       int res = classificationInfoMapper.addNew(cb);
 	       
@@ -258,6 +267,10 @@ public class ClassificationInfoServiceImpl implements ClassificationInfoService 
 	private void dealCntCB(ClassificationInfoBean cb, List<ClassificationInfoBean> list, String yesterday,String today) {
 		
 		if(cb.getReleasetime()!=null&&!cb.getReleasetime().equals("")&&cb.getCnt()>0) {
+			
+			for(ClassificationInfoBean ccb:list) {
+				System.out.println(ccb.getClassificationName());
+			}
 			
 			ClassificationInfoBean root = getRootNode(cb,list);
             

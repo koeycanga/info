@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ichangyun.InforAnalyaizer.mapper.userInfoMapper.UserMapper;
 import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean;
 import com.ichangyun.InforAnalyaizer.service.userInfo.UserService;
 import com.ichangyun.InforAnalyaizer.utils.PBKDF2;

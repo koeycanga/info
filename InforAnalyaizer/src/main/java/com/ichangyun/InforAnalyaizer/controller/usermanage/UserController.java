@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.IconifyAction;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.log4j.Logger;
@@ -23,7 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ichangyun.InforAnalyaizer.model.BaseBean;
 import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoVo;
 import com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean;
 import com.ichangyun.InforAnalyaizer.service.common.service.DBUpdateCheckService;
@@ -51,6 +52,7 @@ public class UserController {
 	
 	@Autowired
 	private DBUpdateCheckService dbUpdateCheckService;
+	
 	/**
 	 * addUser：新增用户
 	 *
@@ -61,7 +63,9 @@ public class UserController {
 	 * @throws NoSuchAlgorithmException 
 	 */
 	@RequestMapping("/addUser")
-	public Map<String, String> addUser(UserInfoVo user, HttpSession session) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public Map<String, String> addUser(UserInfoVo user, HttpSession session) 
+			throws NoSuchAlgorithmException, InvalidKeySpecException {
+
 		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
 		Map<String, String> map = new HashMap<>();
 		// 状态选择Check
@@ -96,16 +100,20 @@ public class UserController {
 	 * @return Object
 	 */
 	@RequestMapping("/updateUser")
-	public Object update(UserInfoVo vo, HttpSession session) throws NoSuchAlgorithmException, InvalidKeySpecException{
+	public Object update(UserInfoVo vo, HttpSession session) 
+			throws NoSuchAlgorithmException, InvalidKeySpecException{
+		
 		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
 		Map<String, String> map = new HashMap<>();
 		List<String> uid = new ArrayList<>();
 		uid.add(vo.getUid());
+		//排他check
 		String dateTimeTemp = vo.getUupdatedatetime();
-		if (!dbUpdateCheckService.DBUpdateCheck("1", uid,dateTimeTemp)) {
+		if (!dbUpdateCheckService.DBUpdateCheck("1", uid, dateTimeTemp)) {
 			map.put("msg", "checkFalse");
 			return map;
 		}
+		
 		String msg = userInfoService.updateUser(vo, u);
 		map.put("msg", msg);
 		return map;
@@ -130,9 +138,12 @@ public class UserController {
 	 * @return Map<String, Object>
 	 */
 	@RequestMapping("/queryAll")
-	public Map<String, Object> queryAll(UserInfoVo vo, BaseBean baseBean) {
+	public Map<String, Object> queryAll(UserInfoVo vo, BaseBean baseBean,HttpSession session) {
 		// 取得当前表示用户情报
-		Map<String, Object> list = userInfoService.queryAllUser(vo, baseBean.getPageNow(), baseBean.getRowSize());
+		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+		Map<String, Object> list = userInfoService.queryAllUser(vo, 
+					baseBean.getPageNow(), baseBean.getRowSize(),u);			
+		
 		return list;
 	}
 
@@ -143,14 +154,19 @@ public class UserController {
 	 * @return String
 	 */
 	@RequestMapping("/delete")
-	public Object delete(Integer[] checkedId) {
+	public Object delete(Integer[] checkedId,HttpSession session) {
 		// 删除选中的用户情报
+		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
 		for (int i : checkedId) {
 			// 超级管理员区分取得
-			String strTemp = userInfoService.queryUserByNum(i).getUsuperuserflag();
+			UserInfoVo vo = userInfoService.queryUserByNum(i);
+			String strTemp = vo.getUsuperuserflag();
 			if ((!strTemp.isEmpty()) && "1".equals(strTemp)) {
 				// 超级管理员不能被删除
 				return userInfoService.queryUserByNum(i).getUid();
+			}
+			if (vo.getUid().equals(u.getUser_ID())) {
+				return "current";
 			}
 		}
 		userInfoService.deleteUser(checkedId);
@@ -166,6 +182,7 @@ public class UserController {
 	 */
 	@RequestMapping("/queryOne")
 	public UserInfoVo queryOne(Integer unum) {
+		
 		// 根据用户No查询用户
 		UserInfoVo vo = userInfoService.queryUserByNum(unum);
 		return vo;
@@ -179,6 +196,7 @@ public class UserController {
 	 */
 	@RequestMapping("/CheckId")
 	public int CheckId(String uid) {
+		
 		// 根据用户名，取得用户情报的件数
 		int i = userInfoService.queryCountById(uid);
 		return i;
@@ -192,6 +210,7 @@ public class UserController {
 	 */
 	@RequestMapping("/thisUser")
 	public UserInfoVo thisUser(HttpSession session) {
+		
 		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
 		// 根据用户id查询用户信息
 		UserInfoVo vo = userInfoService.queryById(u.getUser_ID());
@@ -210,11 +229,14 @@ public class UserController {
 	 * @return String
 	 */
 	@RequestMapping("/returnPwd")
-	public String returnPwd(String upwd, int unum) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public String returnPwd(String upwd, int unum) 
+			throws NoSuchAlgorithmException, InvalidKeySpecException {
+		
 		// 根据用户No查询用户
 		UserInfoVo vo = this.userInfoService.queryUserByNum(unum);
 		// 密码加密
-		String passwd = PBKDF2.getPBKDF2(upwd, DatatypeConverter.printHexBinary(vo.getUid().getBytes()));
+		String passwd = PBKDF2.getPBKDF2(upwd, 
+				DatatypeConverter.printHexBinary(vo.getUid().getBytes()));
 		return passwd;
 	}
 }

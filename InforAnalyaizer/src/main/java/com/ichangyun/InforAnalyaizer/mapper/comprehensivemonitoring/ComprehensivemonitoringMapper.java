@@ -35,7 +35,7 @@ public interface ComprehensivemonitoringMapper {
 	 * и╬ЁЩндуб
 	 * @param list
 	 */
-	public void delarticle(List<String> list);
+	public void delarticle(@Param("list")List<String> list,@Param("userid")String userid,@Param("deletemode")String deletemode);
 
 
 

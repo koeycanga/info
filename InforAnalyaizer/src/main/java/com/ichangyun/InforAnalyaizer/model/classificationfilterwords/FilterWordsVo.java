@@ -16,6 +16,15 @@ public class FilterWordsVo extends ClassificationFilterwordsWithBLOBs{
 	private int isParent;								//判断是否为父节点
 	private boolean is_show=false;						//此节点是否显示
 	private List<FilterWordsVo> children = new ArrayList<>();
+	private String allParent_name;
+	
+	public String getAllParent_name() {
+		return allParent_name;
+	}
+
+	public void setAllParent_name(String allParent_name) {
+		this.allParent_name = allParent_name;
+	}
 
 	public List<FilterWordsVo> getChildren() {
 		return children;

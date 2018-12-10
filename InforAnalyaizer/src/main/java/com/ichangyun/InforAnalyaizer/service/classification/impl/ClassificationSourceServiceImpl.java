@@ -107,8 +107,8 @@ public class ClassificationSourceServiceImpl implements ClassificationSourceServ
 	public void addNewSource(String classification_ID, String json, String creater) {
 		
 		TransactionStatus status = null;
-		/* 关闭事务自动提交 */
 		try {
+			    /* 关闭事务自动提交 */
 				DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 				def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 				status = platformTransactionManager.getTransaction(def);

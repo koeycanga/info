@@ -4,6 +4,9 @@
  * 竞争情报分析系统
  */
 package com.ichangyun.InforAnalyaizer.service.front;
+
+import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
+
 /**
  * 详情页对应service
  * @author renhao
@@ -14,9 +17,10 @@ public interface DetailsPageService {
 	/**
 	 * 根据文章ID获得文章信息
 	 * @param article_id  文章id
+	 * @param userid
 	 * @return
 	 */
-	public String getArticleByID(String article_id);
+	public String getArticleByID(String article_id, String userid);
 
 	/**
 	 * 根据文章ID获得文章的媒体报道信息
@@ -25,4 +29,9 @@ public interface DetailsPageService {
 	 */
 	public String getBDArticleByID(String article_id);
 
+	/**
+	 * 获得相似文章
+	 * @return
+	 */
+	public String getSimContent(ArticleInfoBean ab);
 }

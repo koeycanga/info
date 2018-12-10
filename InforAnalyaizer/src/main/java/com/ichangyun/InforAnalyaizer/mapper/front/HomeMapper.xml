@@ -18,7 +18,8 @@
 	      select a.*,
             (select m.WebsiteName from m_websiteinfo m where m.Website_ID = a.Website_ID) WebsiteName,
             (select count(1) from a_articlebasicinfo b where a.SimilarArticlesNo=b.SimilarArticlesNo and a.Article_ID!=b.Article_ID) sim_cnt,
-            (select count(1) from m_mycollection c where c.Article_ID=a.Article_ID ) collcnt
+            (select count(1) from m_mycollection c where c.Article_ID=a.Article_ID ) collcnt,
+            (select count(1) from a_userearlywarningarticleinfo d where  d.Article_ID=a.Article_ID and  d.User_ID=#{CreateUser}) yj_cnt
             from a_articlebasicinfo a where a.ArticleKeyWord like CONCAT('%',#{HotWord},'%')
             ORDER BY UpdateDateTime desc
           limit #{l_pre},#{rowSize}
@@ -31,15 +32,53 @@
 	</select>
 	
 	<select id="getNewestDatas" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
-	     select Article_ID,ArticleTitle from a_articlebasicinfo ORDER BY UpdateDateTime desc limit 0,6
+	     select a.Article_ID,a.ArticleTitle from a_articlebasicinfo a
+	     where not exists 
+	     (select 1 from a_userdeletearticleinfo b where b.Article_ID=a.Article_ID)
+	      ORDER BY a.Releasetime desc limit 0,10
 	</select>
 	
-	<select id="getWarnDatas" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
-	     select Article_ID,ArticleTitle from a_articlebasicinfo where EarlyWarningState='1' ORDER BY UpdateDateTime desc limit 0,10
+	<select id="getWarnDatas" parameterType="java.lang.String" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+	    select distinct a.Article_ID,a.ArticleTitle from a_articlebasicinfo a,a_userearlywarningarticleinfo b
+	     where a.Article_ID = b.Article_ID and b.User_ID=#{userid}
+	     and not exists 
+	     (select 1 from a_userdeletearticleinfo c where c.Article_ID=a.Article_ID)
+			ORDER BY a.Releasetime desc limit 0,10
 	</select>
 	
 	<select id="getNegativeDatas" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
-	    select Article_ID,ArticleTitle from a_articlebasicinfo where EmotionDivision='2' ORDER BY UpdateDateTime desc limit 0,10
+	    select a.Article_ID,a.ArticleTitle from a_articlebasicinfo a where a.EmotionDivision='2' 
+	    and not exists 
+	     (select 1 from a_userdeletearticleinfo b where b.Article_ID=a.Article_ID)
+	    ORDER BY a.Releasetime desc limit 0,10
+	</select>
+	
+	<select id="getJCMsg" resultType="java.util.Map">
+	   SELECT
+
+	    (SELECT count(1) from a_articlebasicinfo where DATE_FORMAT(Releasetime,'%Y/%m/%d')=#{today}) t_total,
+	
+	    (select count(1) from a_articlebasicinfo a,a_articleplaninfo b,m_planinfo c where DATE_FORMAT(a.Releasetime,'%Y/%m/%d')=#{today}
+	                  and a.Article_ID=b.Article_ID and b.Plan_ID=c.Plan_ID and c.User_ID=#{userid}
+	     ) t_ztjc,
+	
+	     (SELECT count(1) from a_articlebasicinfo where DATE_FORMAT(Releasetime,'%Y/%m/%d')=#{today} and EmotionDivision='2' ) t_fmxx,
+	
+	     (select count(1) from A_UserEarlyWarningArticleInfo a ,a_articlebasicinfo b where a.Article_ID = b.Article_ID and a.User_ID=#{userid} 
+		
+		and DATE_FORMAT(b.Releasetime,'%Y/%m/%d')=#{today}) t_yjxx,
+	
+	  (SELECT count(1) from a_articlebasicinfo where DATE_FORMAT(Releasetime,'%Y/%m/%d')=#{yesterday}) y_total,
+	
+	    (select count(1) from a_articlebasicinfo a,a_articleplaninfo b,m_planinfo c where DATE_FORMAT(a.Releasetime,'%Y/%m/%d')=#{yesterday}
+	                  and a.Article_ID=b.Article_ID and b.Plan_ID=c.Plan_ID and c.User_ID=#{userid}
+	     ) y_ztjc,
+	
+	     (SELECT count(1) from a_articlebasicinfo where DATE_FORMAT(Releasetime,'%Y/%m/%d')=#{yesterday} and EmotionDivision='2' ) y_fmxx,
+	
+	     (select count(1) from A_UserEarlyWarningArticleInfo a ,a_articlebasicinfo b where a.Article_ID = b.Article_ID and a.User_ID=#{userid} 
+		
+		and DATE_FORMAT(b.Releasetime,'%Y/%m/%d')=#{yesterday}) y_yjxx
 	</select>
 	
 </mapper>

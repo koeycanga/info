@@ -23,7 +23,8 @@
 <fmt:message key="I0019" var="I0019" bundle="${sysInfo}" />
 <fmt:message key="E0031" var="E0031" bundle="${sysInfo}" /> 
 <fmt:message key="E0019" var="E0019" bundle="${sysInfo}" />   
-
+<fmt:message key="E0052" var="E0052" bundle="${sysInfo}" />
+<fmt:message key="I0029" var="I0029" bundle="${sysInfo}" />  
 <!doctype html>
 <html>
 <head>
@@ -53,40 +54,57 @@
 	<div class="cy_CIASFE_intmonbodyright">
 	
 <!--条件筛选-->
+    <div class="cy_CIASFE_condition02">
+       <div class="cy_CIASFE_conbox04">
+			<a href="${ctx}/thematicmonitoring/informationaggregation"><div class="cy_CIASFE_conbox06">信息汇总</div></a>
+			<a href="${ctx}/thematicmonitoring/contentanalysis"><div class="cy_CIASFE_conbox06">内容分析</div></a>
+			<a href="#"><div class="cy_CIASFE_conbox05">传播分析</div></a>
+		</div>
+			
 		<div class="cy_CIASFE_search">
-			<select v-model="selected">
-				<option v-for="opt in options" v-bind:value="opt.searchtype">{{opt.value}}</option>
+			<select v-model="search_type">
+			     <option v-for="opt in options" v-bind:value="opt.description">{{opt.masterValue}}</option>
 			</select>
 			<div class="cy_CMICBMS_schbox01"><input type="text" v-model="search_key" placeholder="请输入…" style="cursor: text"></div>
 			<input type="button" v-on:click="btn_search()" class="cy_CMICBMS_schbtn" value="检索">
 		</div>
 		<div class="cy_CIASFE_condition01">
-			<div class="cy_CIASFE_conbox04">
-				<a href="${ctx}/thematicmonitoring/informationaggregation"><div class="cy_CIASFE_conbox06">信息汇总</div></a>
-				<a href="${ctx}/thematicmonitoring/contentanalysis"><div class="cy_CIASFE_conbox06">内容分析</div></a>
-				<a href="#"><div class="cy_CIASFE_conbox05">传播分析</div></a>
+			
+			<div class="cy_CIASFE_conbox01">
+			  <table border="0">
+				   <tr>
+				   <td>{{jc_time_name}}：  </td>
+				    <td v-for="(data,index) in jc_time_datas">
+					   <input  type="radio" name="montime" v-on:change="btn_search()"
+						    v-bind:value="data.description" v-model="montime" 
+						    v-bind:id="'montime_'+index" style="display: none;"
+						     v-bind:checked="index==0">
+						     <label v-bind:for="'montime_'+index">{{data.masterValue}}</label> 
+					</td>
+					<td>
+					   <input type="radio" name="montime" value="10" v-model="montime" id="montime_6" style="display: none;"><label for="montime_6">自定义</label>
+					   <input type="date" id="fromdate" class="cy_CIASFE_timetb">—<input type="date" id="todate" class="cy_CIASFE_timetb"><input type="button" v-on:click="btn_search()" class="cy_CMICBMS_schbtn" value="确认">
+				   </td>
+				   </tr>
+			   </table>
 			</div>
-			<div class="cy_CIASFE_conbox01">监测时间：<input type="radio" name="montime" value="单选" id="montime_0" style="display: none;" checked><label for="montime_0">今天</label>
-				<input type="radio" v-model="montime" name="montime" value="0" id="montime_1" style="display: none;"><label for="montime_1">24小时</label>
-           		<input type="radio" v-model="montime" name="montime" value="-1" id="montime_2" style="display: none;"><label for="montime_2">2天</label>
-           		<input type="radio" v-model="montime" name="montime" value="-2" id="montime_3" style="display: none;"><label for="montime_3">3天</label>
-           		<input type="radio" v-model="montime" name="montime" value="-3" id="montime_4" style="display: none;"><label for="montime_4">7天</label>
-           		<input type="radio" v-model="montime" name="montime" value="-7" id="montime_5" style="display: none;"><label for="montime_5">10天</label>
-           		<input type="radio" v-model="montime" name="montime" value="10" id="montime_6" style="display: none;"><label for="montime_6">自定义</label><input type="date" class="cy_CIASFE_timetb">—<input type="date" class="cy_CIASFE_timetb"><input type="button" class="cy_CMICBMS_schbtn" value="确认">
-            </div>
 		 
 		  <div class="cy_CIASFE_conbox02">
-				<div class="cy_CIASFE_conbox03">媒体平台：
-					<input type="radio" v-model="infsour" name="infsour" value="-1" id="infsour_0" style="display: none;" checked><label for="infsour_0">全部</label>
-					<input type="radio" v-model="infsour" name="infsour" value="0" id="infsour_1" style="display: none;"><label for="infsour_1">新闻</label>
-					<input type="radio" v-model="infsour" name="infsour" value="1" id="infsour_2" style="display: none;"><label for="infsour_2">微博</label>
-					<input type="radio" v-model="infsour" name="infsour" value="2" id="infsour_3" style="display: none;"><label for="infsour_3">微信</label>
-					<input type="radio" v-model="infsour" name="infsour" value="3" id="infsour_4" style="display: none;"><label for="infsour_4">论坛</label>
-					<input type="radio" v-model="infsour" name="infsour" value="4" id="infsour_5" style="display: none;"><label for="infsour_5">博客</label>
+				<div class="cy_CIASFE_conbox03">
+				    <table border="0">
+				        <tr>
+				            <td>{{infsour_name}}：</td>
+				            <td v-for="(data,index) in infsour_datas">
+				               <input type="radio" name="infsour" v-on:change="btn_search()" v-bind:value="data.description" 
+				                v-model="infsour" v-bind:id="'infsour_'+index" style="display: none;" v-bind:checked="index==0">
+				               <label v-bind:for="'infsour_'+index">{{data.masterValue}}</label>
+				            </td>
+				        </tr>
+				    </table>
 				</div>
 			</div>
 	  </div>
-	  
+	  </div>
 <!--	内容-->
 	<!--	空数据-->
 		<div class="cy_CIASFE_ctnodata">
@@ -135,6 +153,7 @@
 <script type="text/javascript" src="${ctx}/js/vue.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/axios.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/polyfill.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/laydate/laydate.js"></script>
 <script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script type="text/javascript" src="${ctx}/js/comm.js"></script>
 
@@ -158,7 +177,9 @@ var Info = {
 		  E0029:'${E0029}',
 		  E0031:'${E0031}',
 		  I0019:'${I0019}',
-		  E0019:'${E0019}'
+		  E0019:'${E0019}',
+		  E0052:'${E0052}',
+		  I0029:'${I0029}'
 	};
 
 var menu_datas = JSON.parse('${front_menu}');  //菜单数据来源于 classes/resources.properties
@@ -177,15 +198,43 @@ var app = new Vue({
 		search_key:'',
 		montime:'0',  //监测时间
 		infsour:'-1',  //信息来源
-        selected: 'all', //搜索类型,默认'all' 全文检索
-        options: [
-            { searchtype: 'all', value: '全文匹配' },
-            { searchtype: 'title', value: '标题匹配' },
-            { searchtype: 'text', value: '正文匹配' }
-        ]
+		  /****************以下是顶部搜索条件相关参数**********************************/
+		search_type:'',
+	    options: [],
+	    
+	    jc_time_name:'',
+	    jc_time_datas:[],
+	    
+	    infsour_name:'',
+	    infsour_datas:[]
+        /****************以上是顶部搜索条件相关参数**********************************/
 	},
 	methods:{
-		
+		getGeneralPurpose:function(){  //获得顶部筛选条件
+			 var _this = this;
+			 axios.get('../GeneralPurpose/getSearchPropaOps')
+               .then(function (response) {
+                   var data = JSON.parse(response.data);
+           
+                   _this.options = data.options;
+                   _this.search_type = data.options[0].description;
+                   
+					 _this.jc_time_datas = data.jc_time;
+                   _this.jc_time_name = data.jc_time[0].controlName;
+                   
+                   _this.infsour_datas = data.infsour ;
+                   _this.infsour_name = data.infsour[0].controlName;
+            
+                   _this.btn_search();
+               })
+               .catch(function (error) {
+                   console.log(error);
+               });
+			 
+		 },
+		searchByFA:function(plan_ID){
+			
+		 },
 		btn_search:function(){
 			if(this.montime=='10'){
         		this.montime = $("#fromdate").val()+"-"+$("#todate").val();
@@ -200,7 +249,7 @@ var app = new Vue({
 	    				search_key:_this.search_key.trim(),
 	    				montime:_this.montime,
 	    				infsour:_this.infsour,
-                    	search_type:_this.selected, //检索类型
+                    	search_type:_this.search_type, //检索类型
     				}
     			})
     			.then(function (response) {
@@ -308,7 +357,6 @@ var app = new Vue({
 					top: 20,
 					bottom: 20,
 					data: data.legendData,
-
 					selected: data.selected
 				},
 				series : [
@@ -431,6 +479,7 @@ var app = new Vue({
 		}
 	},
 	mounted:function(){
+		this.getGeneralPurpose();
 		this.createFZQS();
 		this.createMTFB();
 		this.createCBTJ();

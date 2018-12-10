@@ -21,9 +21,10 @@ public interface DetailsPageMapper {
 	/**
 	 * 根据文章ID获得文章信息
 	 * @param article_id
+	 * @param userid
 	 * @return
 	 */
-	public ArticleInfoBean getArticleByID(@Param("article_id")String article_id);
+	public ArticleInfoBean getArticleByID(@Param("article_id") String article_id,@Param("userid") String userid);
 
 	/**
 	 * 根据文章ID获得文章在媒体上的报道情况
@@ -32,4 +33,9 @@ public interface DetailsPageMapper {
 	 */
 	public List<ArticleInfoBean> getBDArticleByID(@Param("article_id")String article_id);
 
+	/**
+	 * 获得相似文章
+	 * @return
+	 */
+	public List<ArticleInfoBean> getSimContent(ArticleInfoBean ab);
 }

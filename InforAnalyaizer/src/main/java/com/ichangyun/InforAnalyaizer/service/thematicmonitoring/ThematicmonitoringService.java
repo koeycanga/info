@@ -5,6 +5,8 @@
  */
 package com.ichangyun.InforAnalyaizer.service.thematicmonitoring;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
@@ -19,18 +21,21 @@ public interface ThematicmonitoringService {
 
 	/**
 	 * 获得所有的方案
+	 * @param session 
 	 * @return
 	 */
-	public String getAllFA();
+	public String getAllFA(HttpSession session);
 
 	/**
 	 * 保存新的方案
 	 * @param planinfo_name  //方案名称
 	 * @param jcc_json       //方案监测词JSON字面量
 	 * @param session
+	 * @param toDate 
+	 * @param fromDate 
 	 * @return true 成功   false 失败
 	 */
-	public boolean SaveNewfa(String planinfo_name, String jcc_json,String planinfo_removeWord, HttpSession session);
+	public boolean SaveNewfa(String planinfo_name, String jcc_json,String planinfo_removeWord, HttpSession session, String fromDate, String toDate);
 
 	/**
 	 * 判断方案名称是否已存在
@@ -68,9 +73,11 @@ public interface ThematicmonitoringService {
 	 * @param jcc_json  方案监测词json字面量
 	 * @param planinfo_removeWord  方案排除词
 	 * @param session
+	 * @param toDate 
+	 * @param fromDate 
 	 * @return  true 成功   false 失败
 	 */
-	public boolean updatefa(String plan_id, String planinfo_name, String jcc_json, String planinfo_removeWord,HttpSession session);
+	public boolean updatefa(String plan_id, String planinfo_name, String jcc_json, String planinfo_removeWord,HttpSession session, String fromDate, String toDate);
 
 	/**
 	 * 获得要查询的文章总数
@@ -99,7 +106,7 @@ public interface ThematicmonitoringService {
 	 * @param json 参数
 	 * @return
 	 */
-	public boolean delarticle(String json);
+	public boolean delarticle(String json,String userid ,String deletemode);
 
 	/**
 	 * 获得相似文章信息的json字面量
@@ -124,10 +131,10 @@ public interface ThematicmonitoringService {
 
 	/**
 	 * 获得情感属性环状图所需信息的json字面量
-	 * @param ab
+	 * @param list
 	 * @return
 	 */
-	public String getQGSXJSON(ArticleInfoBean ab);
+	public String getQGSXJSON(List<ArticleInfoBean> list);
 
 	/**
 	 * 获得新消息条目数
@@ -143,6 +150,24 @@ public interface ThematicmonitoringService {
 	 */
 	public String getSearchLaestRelsetime(ArticleInfoBean ab);
 
+	/**
+	 * 获得专题监测页面热词云相关信息
+	 * @return
+	 */
 	public String getHotWord();
+
+	/**
+	 * 获得文章信息集合
+	 * @param ab
+	 * @return
+	 */
+	public List<ArticleInfoBean> getContentList(ArticleInfoBean ab);
+
+	/**
+	 * 获得事件脉络相关信息
+	 * @param list
+	 * @return
+	 */
+	public String getSJMLJSON(List<ArticleInfoBean> list);
 
 }

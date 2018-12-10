@@ -122,21 +122,25 @@
 		createdatetime,a.CreateUser createuser,
 		a.UpdateDateTime
 		updatedatetime,a.UpdateUser updateuser,a.User_ID userId,b.ArticleTitle
-		articleTitle,b.Releasetime releasetime FROM m_mycollection a INNER
-		JOIN
-		a_articlebasicinfo b ON a.Article_ID=b.Article_ID
+		articleTitle,b.Releasetime releasetime,
+				(select  GROUP_CONCAT(CollectionTypeName ORDER BY CollectionStratum asc SEPARATOR '>')
+				FROM m_collectiontype WHERE  LOCATE(CollectionType_ID,
+				(select DISTINCT getParentList_collectiontype(c.CollectionType_ID)  
+				from m_collectiontype))>0 ) allparentname
+		FROM (m_mycollection a INNER JOIN a_articlebasicinfo b ON a.Article_ID=b.Article_ID)
+		INNER JOIN m_collectiontype c ON a.CollectionType_ID = c.CollectionType_ID
 		<where>
 			<if test="1==1">
 				and a.User_ID=#{userId}
 			</if>
-			<if test="collectiontypeId!=null">
+			<if test="collectiontypeId!=null and collectiontypeId!=''">
 				and a.CollectionType_ID = #{collectiontypeId}
 			</if>
 			<if test="articleTitle!=null">
 				and b.ArticleTitle like concat("%",#{articleTitle},"%")
 			</if>
 		</where>
-		ORDER BY a.DisplayOrder limit #{l_pre},#{rowSize}
+		ORDER BY c.CollectionStratum,c.CollectionPath,a.DisplayOrder ASC limit #{l_pre},#{rowSize}
 	</select>
 
 	<select id="queryCount" resultType="Integer"
@@ -170,8 +174,6 @@
 			CollectionType_ID = #{updateTypeId}
 		</set>
 		where User_ID = #{userid}
-		and CollectionType_ID =
-		#{collectiontypeid}
 		and Article_ID in
 		(${articleId})
 	</update>

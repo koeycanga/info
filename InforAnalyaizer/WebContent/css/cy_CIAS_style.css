@@ -878,7 +878,9 @@ input{
 	color: white;
 	text-decoration: none;
 }
-.cy_CIASFE_nagivbox{
+
+
+.cy_CIASFE_nagivbox , .cy_CIASFE_nagivboxchk,.cy_CIASFE_nagivboxchk_no{
 	width: 110px;
 	height: 50px;
 	font-size: 20px;
@@ -887,6 +889,12 @@ input{
 	padding-top: 25px;
 	margin-right: 40px;
 }
+
+.cy_CIASFE_nagivboxchk{
+	background: url(../image/home-menubg.png);
+}
+
+
 .cy_CIASFE_nagivbox:hover{
 	background: url(../image/home-menubg.png);
 }
@@ -1316,6 +1324,17 @@ input{
 	color: #999999;
 	display: flex;
 }
+
+.cy_CIASFE_footbox01{
+	width:50%;
+}
+.cy_CIASFE_footbox02{
+	width:50%;
+	position: relative;
+	right: 20px;
+	text-align: right;
+}
+
 .cy_CIASFE_contpastfoot a{
 	text-decoration: none;
 	color:#3598dc;

@@ -18,6 +18,18 @@ public class MyCollectionVo extends MyCollection{
 	private String releasetime;//发布时间
 	
 	private String id;			//此对象id（用户id+节点id+文章id）
+	
+	private String allparentname;
+	
+	
+
+	public String getAllparentname() {
+		return allparentname;
+	}
+
+	public void setAllparentname(String allparentname) {
+		this.allparentname = allparentname;
+	}
 
 	public String getId() {
 		if(null!=this.getUserId()&&null!=this.getCollectiontypeId()&&null!=this.getArticleId()) {

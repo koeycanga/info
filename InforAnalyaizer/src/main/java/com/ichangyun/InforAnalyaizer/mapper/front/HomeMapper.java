@@ -6,6 +6,9 @@
 package com.ichangyun.InforAnalyaizer.mapper.front;
 
 import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
 
 import com.ichangyun.InforAnalyaizer.model.front.HotWordBean;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
@@ -51,14 +54,17 @@ public interface HomeMapper {
 
 	/**
 	 * 获得预警信息top10集合
+	 * @param userid 
 	 * @return
 	 */
-	public List<ArticleInfoBean> getWarnDatas();
+	public List<ArticleInfoBean> getWarnDatas(@Param("userid")String userid);
 
 	/**
 	 * 获得负面信息top10集合
 	 * @return
 	 */
 	public List<ArticleInfoBean> getNegativeDatas();
+
+	public Map getJCMsg(@Param("today")String today, @Param("yesterday")String yesterday, @Param("userid")String userid);
 
 }

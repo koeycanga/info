@@ -33,7 +33,7 @@ public class ClassificationInfoBean extends BaseBean{
 	/**
 	 * 分类体系节点路径
 	 */
-	private String nodePath;
+	private String ClassificationPath;
 	
 	
 	/**
@@ -112,16 +112,16 @@ public class ClassificationInfoBean extends BaseBean{
 	 */
 	private boolean isclick;
 	
-	public ClassificationInfoBean() {
-		this.isclick = false;
-	}
-	
-	public String getNodePath() {
-		return nodePath;
+	public String getClassificationPath() {
+		return ClassificationPath;
 	}
 
-	public void setNodePath(String nodePath) {
-		this.nodePath = nodePath;
+	public void setClassificationPath(String classificationPath) {
+		ClassificationPath = classificationPath;
+	}
+	
+	public ClassificationInfoBean() {
+		this.isclick = false;
 	}
 	
 	public boolean isIsclick() {

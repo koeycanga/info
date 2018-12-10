@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.ichangyun.InforAnalyaizer.model.BaseBean;
 import com.ichangyun.InforAnalyaizer.model.SearchOptBean;
-import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.collection.CollectionTypeVo;
 import com.ichangyun.InforAnalyaizer.model.collection.MyCollectionVo;
 
@@ -27,5 +27,7 @@ public interface CollectionService {
 	String deleteType(CollectionTypeVo vo);
 
 	String move(String[] checkedId, String collectiontypeId);
+
+	String moveType(String collectiontypeId, String targetId);
 
 }

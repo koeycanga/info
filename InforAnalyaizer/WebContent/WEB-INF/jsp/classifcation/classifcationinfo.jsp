@@ -20,6 +20,7 @@
 <fmt:message key="W0002" var="W0002" bundle="${sysInfo}" />
 <fmt:message key="W0004" var="W0004" bundle="${sysInfo}" />
 <fmt:message key="E0038" var="E0038" bundle="${sysInfo}" />
+<fmt:message key="I0024" var="I0024" bundle="${sysInfo}" />
 <!doctype html>
 <html>
 <head>
@@ -77,6 +78,9 @@
 			          <ic_tree_dv v-bind:model="data.json_createUser"></ic_tree_dv>
 			       </td>
 			    </tr>
+			     <tr>
+					<td v-if="datas.length==0" colspan="5">{{info}}</td>
+				</tr>
 			  </tbody>
 			</table>
 		</div>
@@ -133,7 +137,8 @@ var Info = {
 		I0008:'${I0008}',
 		I0011:'${I0011}',
 		W0004:'${W0004}',
-		E0038:'${E0038}'
+		E0038:'${E0038}',
+		I0024:'${I0024}'
 	};
 
 //树形结构用到的节点类
@@ -326,6 +331,8 @@ var checkedArr = [];    //复选框相关
 var app = new Vue({
 	el:"#app",
 	data:{
+		  isfirstinjsp:true,    //是否第一次进入页面
+		  info:Info.I0024,
 		  datas:[],                  //查询所得的数据集合
 		  
 		  search_key:'',             //查询条件
@@ -386,7 +393,7 @@ var app = new Vue({
 								this.tempNode = this.datas[i_index];             //位移发生了翻页,pageNow-1 
 								this.btn_wy_disabled = true;
 								this.$refs.pagecomponent.pageBean.pageNow-=1;
-								this.search(this.$refs.pagecomponent.pageBean);
+								this.search(this.$refs.pagecomponent.pageBean,true);
 							}
 							
 						}else{
@@ -419,7 +426,7 @@ var app = new Vue({
 								this.tempNode = this.datas[i_index];               //位移发生了翻页, pageNow+1
 								this.btn_wy_disabled = true;                          
 								this.$refs.pagecomponent.pageBean.pageNow+=1;
-								this.search(this.$refs.pagecomponent.pageBean);
+								this.search(this.$refs.pagecomponent.pageBean,true);
 							}
 						}else{
 							this.dealchange(i_index + 1,i_index,this.datas);   //位移没有发生翻页，交换两节点的位置
@@ -490,7 +497,7 @@ var app = new Vue({
 			  
 			  checkedNames = [];
 			  this.$refs.pagecomponent.pageBean.pageNow = 1;
-			  this.search(this.$refs.pagecomponent.pageBean);
+			  this.search(this.$refs.pagecomponent.pageBean,true);
 		  },
 		  EditData:function(){                  //弹出编辑层    
 			 if(checkedNames.length!=1){
@@ -530,7 +537,7 @@ var app = new Vue({
 			    						var obj = _this.getClickNode(checkedNames[i],_this.datas);
 			    						if(obj[1].val.parent_Classification_ID=='0000000000'){
 			    							 checkedNames = [];
-		    								 _this.search_after_update(_this.$refs.pagecomponent.pageBean);
+		    								 _this.search_after_update(_this.$refs.pagecomponent.pageBean,false);
 		    								 b = false;
 		    								 break;
 			    						}
@@ -670,10 +677,10 @@ var app = new Vue({
 			  if(fid!=''){
 				  var node  = this.getClickNode(fid,arr)[1];
 				  
-				  str = node.val.classification_ID+str;
+				  str = node.val.classification_ID;
 				  
 				  if(node.val.parent_Classification_ID!='0000000000'){
-					  str = this.getNodePath(node.val.parent_Classification_ID,arr) + str;
+					  str = this.getNodePath(node.val.parent_Classification_ID,arr) +"/"+str;
 				  }
 			  }
 			  
@@ -685,12 +692,13 @@ var app = new Vue({
 			  }else{
 				    var _this = this;
 				    var nodePath = this.getNodePath(this.father_node_id,this.datas);
+				    nodePath = nodePath.replace("\/\/","\/");
 		        	axios.get('../classifcationinfo/addclassifcationinfo',{
 		    			params: {
 		    				ClassificationName:_this.typeInfo.type_name.trim(),
 		    				Description:_this.typeInfo.type_des.trim(),
 		    				Parent_Classification_ID:_this.father_node_id,
-		    				nodePath:nodePath
+		    				ClassificationPath:nodePath
 		    				}
 		    			})
 		    			.then(function (response) {
@@ -701,7 +709,7 @@ var app = new Vue({
 		    				}else{
 		    					layer.msg(Info.I0008);
 		    					if(_this.father_node_id==''){
-		    						_this.search_after_update(_this.$refs.pagecomponent.pageBean);
+		    						_this.search_after_update(_this.$refs.pagecomponent.pageBean,false);
 		    					}else{
 		    					    var click_node = _this.getClickNode(checkedNames[0],_this.datas)[1];
 		    					    var root_node = _this.getRootNodeByid(click_node);
@@ -752,9 +760,9 @@ var app = new Vue({
 		    			});
 			  }
 		  },
-		  search_after_update:function(pageBean){
-			  pageBean.pageNow = 1;
-			  this.search(pageBean);
+		  search_after_update:function(pageBean,b){
+
+			  this.search(pageBean,b);
 		  },
 		  hideTcc:function(){     //关闭弹出层
 			  this.typeInfo.type_id = '';
@@ -916,14 +924,15 @@ var app = new Vue({
 		 },
 	  computed:{
 		   search:function(){                               //查询数据
-		        return function(pageBean){
+		        return function(pageBean,ismsg){
 		        	 checked = false;
 					  $("#thch").prop("checked",false);
+					  if(ismsg){
 			        	var l_index = layer.msg(Info.I0011, {
 			        		  icon: 16
 			        		  ,shade: 0.01
 			        		});
-			        	
+					  }
 			        	var _this = this;
 			        	axios.get('../classifcationinfo/search',{
 			    			params: {
@@ -937,7 +946,11 @@ var app = new Vue({
 			    				
 			    				 checkedNames = [];
 			    				 var data = JSON.parse(response.data);
-			    				 
+			    				 if(data.resdata.length==0&&pageBean.pageNow>1){
+			    					 pageBean.pageNow-=1;
+			    					 _this.search(pageBean,ismsg);
+			    					 return;
+			    				 }
 			    				 _this.datas = [];
 			    				 var temp = data.resdata;
 			    				 for(var i=0;i<temp.length;i++){
@@ -956,10 +969,12 @@ var app = new Vue({
 			    					  checkedArr.push(data.resdata[i].classification_ID);
 			    				  }
 			    				  
-			    				  if(data.rowCount=='0'){
+			    				  if(data.rowCount=='0'&&!_this.isfirstinjsp){
 			    					 layer.msg(Info.I0002);
+			    					 
 			    				  }
-			    			
+			    				  _this.isfirstinjsp = false;
+			    				  
 			    				 _this.$refs.pagecomponent.dealAfterSearch(data.rowCount);  //查询完成后回调分页组件的函数,处理分页组件的相关参数
 			    				
 			    				  
@@ -990,9 +1005,10 @@ var app = new Vue({
 			    					  checkedNames.push(_this.tempNode.val.classification_ID);
 			    					  
 			    				  }
-			    				
-			    				  layer.close(l_index);
 			    				  
+			    				 if(ismsg){
+			    				  layer.close(l_index);
+			    				 }
 			    			})
 			    			.catch(function (error) {
 			    			    console.log(error);
@@ -1003,7 +1019,7 @@ var app = new Vue({
 			}
 		  },
 		  mounted:function(){
-			  this.search(this.$refs.pagecomponent.pageBean);
+			  this.search(this.$refs.pagecomponent.pageBean,false);
 		  }
 });
 

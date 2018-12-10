@@ -28,13 +28,16 @@ public class DetailsPageServiceImpl implements DetailsPageService {
 	private DetailsPageMapper detailsPageMapper;
 
 	@Override
-	public String getArticleByID(String article_id) {
+	public String getArticleByID(String article_id, String userid) {
 		
-		ArticleInfoBean ab = detailsPageMapper.getArticleByID(article_id);
+		ArticleInfoBean ab = detailsPageMapper.getArticleByID(article_id,userid);
+		if(ab!=null) {
+			JSONObject obj = (JSONObject) JSONObject.toJSON(ab);
 		
-		JSONObject obj = (JSONObject) JSONObject.toJSON(ab);
-		
-		return obj.toJSONString();
+			return obj.toJSONString();
+		}else {
+			return "\"\"";
+		}
 	}
 
 	@Override
@@ -46,5 +49,13 @@ public class DetailsPageServiceImpl implements DetailsPageService {
 		
 		return listArray.toJSONString();
 	}
-	
+
+	@Override
+	public String getSimContent(ArticleInfoBean ab) {
+		List<ArticleInfoBean> list = detailsPageMapper.getSimContent(ab);
+
+		JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
+
+		return listArray.toJSONString();
+	}
 }

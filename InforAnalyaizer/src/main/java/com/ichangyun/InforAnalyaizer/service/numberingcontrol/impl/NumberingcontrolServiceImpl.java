@@ -33,7 +33,7 @@ public class NumberingcontrolServiceImpl implements NumberingcontrolService {
     private PlatformTransactionManager platformTransactionManager;
 	
 	@Override
-	public String getNextCFID(String cpid) {
+	public String getNextCFID(String cpid) throws Exception {
 		TransactionStatus status = null;
 		try {
 			//关闭Spring事务自动提交
@@ -66,7 +66,7 @@ public class NumberingcontrolServiceImpl implements NumberingcontrolService {
 		}catch(Exception e) {
 			e.printStackTrace();
 			if(status!=null) {platformTransactionManager.rollback(status);}
-			return "" ;
+			throw new Exception();
 		}
 	}
 

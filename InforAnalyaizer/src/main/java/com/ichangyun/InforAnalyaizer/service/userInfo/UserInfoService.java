@@ -9,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Map;
 
-import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoVo;
 
 /**
@@ -26,7 +26,7 @@ public interface UserInfoService {
     // 删除用户
     void deleteUser(Integer[] checkedId);
     // 查询所有用户
-    Map<String, Object> queryAllUser(UserInfoVo record, int pageNow, int rowSize);
+    Map<String, Object> queryAllUser(UserInfoVo record, int pageNow, int rowSize, User u);
     // 根据用户num查询用户
     UserInfoVo queryUserByNum(int unum);
     // 根据用户名查询用户是否存在
@@ -37,4 +37,5 @@ public interface UserInfoService {
     void updateRoleStatus();
     // 修改用户密码
     void updateUser2_byold(UserInfoVo vo, User u, String changePwd) throws Exception;
+   
 }

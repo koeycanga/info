@@ -2,21 +2,25 @@
 /*以下是根据屏幕大小做分辨率选择*/
 function AdaptationResolution(url){
 	var ic_m_screenWidth = window.screen.width;
-	 	
-	if(ic_m_screenWidth==1920){
+	if(ic_m_screenWidth>1440){
 		document.getElementById("lnk").href = url+"/css/cy_CIAS_style-1920_1080.css";
-	}
-	if(ic_m_screenWidth==1440){
+	}else if(ic_m_screenWidth>1366){
 		document.getElementById("lnk").href = url+"/css/cy_CIAS_style-1440_900.css";
-	}
-	if(ic_m_screenWidth==1366){
+	}else if(ic_m_screenWidth>1200){
 		document.getElementById("lnk").href = url+"/css/cy_CIAS_style-1366_768.css";
-	}
-	if(ic_m_screenWidth==1200){
+	}else if(ic_m_screenWidth>1024){
 		document.getElementById("lnk").href = url+"/css/cy_CIAS_style-1200_800.css";
 	}
 }
 
+
+/*处理带有{0},{1}这样参数的info, 替换{0}等为attrs中参数*/
+function IC_GETINFOBYAttrs(info,attrs){
+	for(var i=0;i<attrs.length;i++){
+		info = info.replace("{"+i+"}",attrs[i]);
+	}
+	return info;
+}
 
 /*根据arr生成JSON字符串*/
 function createJSON(arr){

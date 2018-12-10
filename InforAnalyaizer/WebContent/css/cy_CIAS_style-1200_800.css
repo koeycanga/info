@@ -883,15 +883,26 @@ input{
 	color: white;
 	text-decoration: none;
 }
-.cy_CIASFE_nagivbox{
-	width: 110px;
-	height: 50px;
-	font-size: 20px;
+.cy_CIASFE_nagivbox , .cy_CIASFE_nagivboxchk,.cy_CIASFE_nagivboxchk_no{
+	width: 85px;
+	height: 35px;
+	font-size: 16px;
 	color: white;
 	text-align: center;
-	padding-top: 25px;
+	padding-top: 17px;
 	margin-right: 40px;
 }
+
+.cy_CIASFE_nagivboxchk{
+	background: url(../image/home-menubg.png);
+	background-size: 85px 55px;
+}
+
+.cy_CIASFE_nagivboxchk_no{
+
+	background-size: 85px 55px;
+}
+
 .cy_CIASFE_nagivbox:hover{
 	background: url(../image/home-menubg.png);
 }
@@ -2506,7 +2517,7 @@ input{
 	box-shadow: 0 0 15px 12px #e6e7eb;
 }
 .cy_CIAFE_intmonbox04{
-	text-align: center;
+	/*text-align: center;*/
 }
 .cy_CIAFE_intmontit{
 	align-items:center;

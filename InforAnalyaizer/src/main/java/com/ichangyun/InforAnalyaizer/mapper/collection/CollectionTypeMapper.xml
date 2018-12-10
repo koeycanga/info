@@ -14,8 +14,9 @@
     <result column="UpdateDateTime" property="updatedatetime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    User_ID userId, CollectionType_ID collectiontypeId, CollectionTypeName collectiontypename, Parent_CollectionType_ID parentCollectiontypeId, DisplayOrder displayorder, 
-    ValidFlag validflag, CreateUser createuser, CreateDateTime createdatetime, UpdateUser updateuser, DATE_FORMAT(UpdateDateTime,'%Y-%m-%d %H:%i:%s') updatedatetime
+    a.User_ID userId, a.CollectionType_ID collectiontypeId, a.CollectionTypeName collectiontypename,a.Parent_CollectionType_ID parentCollectiontypeId, a.DisplayOrder displayorder, 
+    a.ValidFlag validflag, a.CreateUser createuser, a.CreateDateTime createdatetime, a.UpdateUser updateuser, DATE_FORMAT(a.UpdateDateTime,'%Y-%m-%d %H:%i:%s') updatedatetime,a.CollectionPath collectionpath,
+        a.CollectionStratum collectionstratum,(SELECT COUNT(1) FROM m_collectiontype where Parent_CollectionType_ID=a.CollectionType_ID) childrenNum
   </sql>
 
   <delete id="deleteByPrimaryKey" parameterType="com.ichangyun.InforAnalyaizer.model.collection.CollectionTypeKey" >
@@ -55,7 +56,12 @@
       <if test="updateuser != null" >
         UpdateUser,
       </if>
-
+	<if test="collectionpath != null" >
+        CollectionPath,
+      </if>
+      	<if test="collectionstratum != null" >
+        CollectionStratum,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
@@ -85,7 +91,12 @@
       <if test="updateuser != null" >
         #{updateuser,jdbcType=VARCHAR},
       </if>
-
+ <if test="collectionpath != null" >
+        #{collectionpath,jdbcType=VARCHAR},
+      </if> 
+      <if test="collectionstratum != null" >
+        #{collectionstratum},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.ichangyun.InforAnalyaizer.model.collection.CollectionType" >
@@ -112,7 +123,12 @@
       <if test="updateuser != null" >
         UpdateUser = #{updateuser,jdbcType=VARCHAR},
       </if>
-
+	<if test="collectionpath != null" >
+        CollectionPath = #{collectionpath},
+      </if>
+      	<if test="collectionstratum != null" >
+        CollectionStratum = #{collectionstratum},
+      </if>
     </set>
     where User_ID = #{userId,jdbcType=CHAR}
       and CollectionType_ID = #{collectiontypeId,jdbcType=CHAR}
@@ -121,7 +137,7 @@
     <select id="queryAllType" resultType="com.ichangyun.InforAnalyaizer.model.collection.CollectionTypeVo" parameterType="String" >
     select 
     <include refid="Base_Column_List" />
-    from m_collectiontype
+    from m_collectiontype a
     where User_ID = #{value}
     ORDER BY DisplayOrder
 
@@ -134,10 +150,40 @@
     where Parent_CollectionType_ID=#{value}
 
   </select>
-    <select id="queryOne" resultType="com.ichangyun.InforAnalyaizer.model.collection.CollectionTypeVo" parameterType="String" >
+  <select id="queryOne" resultType="com.ichangyun.InforAnalyaizer.model.collection.CollectionTypeVo" parameterType="String" >
     select 
     <include refid="Base_Column_List" />
-    from m_collectiontype
+    from m_collectiontype a
     where CollectionType_ID = #{value}
   </select>
+  
+    <update id="beforeOrder" parameterType="com.ichangyun.InforAnalyaizer.model.collection.CollectionType" >
+    update m_collectiontype
+   	set DisplayOrder = DisplayOrder-1
+    where User_ID = #{userId,jdbcType=CHAR}
+      and Parent_CollectionType_ID = #{parentCollectiontypeId,jdbcType=CHAR}
+      and DisplayOrder &gt; #{displayorder}
+  </update>
+  
+      <update id="afterOrder" parameterType="com.ichangyun.InforAnalyaizer.model.collection.CollectionType" >
+    update m_collectiontype
+   	set DisplayOrder = DisplayOrder+1
+    where User_ID = #{userId,jdbcType=CHAR}
+      and Parent_CollectionType_ID = #{parentCollectiontypeId,jdbcType=CHAR}
+      and DisplayOrder &gt;= #{displayorder}
+  </update>
+   <update id="changeOrder1" parameterType="hashmap" >
+    update m_collectiontype
+   	set DisplayOrder = DisplayOrder+1
+    where User_ID = #{userId,jdbcType=CHAR}
+      and Parent_CollectionType_ID = #{parentCollectiontypeId,jdbcType=CHAR}
+      and DisplayOrder &lt; #{oldDisplayOrder} and DisplayOrder &gt;= #{displayorder}
+  </update>
+     <update id="changeOrder2" parameterType="hashmap" >
+    update m_collectiontype
+   	set DisplayOrder = DisplayOrder-1
+    where User_ID = #{userId,jdbcType=CHAR}
+      and Parent_CollectionType_ID = #{parentCollectiontypeId,jdbcType=CHAR}
+      and DisplayOrder &gt;  #{oldDisplayOrder} and DisplayOrder &lt; #{displayorder}
+  </update>
 </mapper>

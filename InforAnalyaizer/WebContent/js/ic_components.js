@@ -10,9 +10,9 @@
  * 
 ic_collectiont   I0023   E0022
 
-ic_jcfa          I0017  I0018  E0029  I0012  E0030  E0022  I0008  E0030  I0014
+ic_jcfa          I0017  I0018  E0029  I0012  E0030  E0022  I0008  E0030  I0014 E0052  I0029
 
-ic_user_info    E0004  E0014  I0012  E0025  I0013
+ic_user_info    E0004  E0014  I0012  E0025  I0013 W0003
  */
 
 
@@ -26,10 +26,10 @@ function CTreeNode(val,depth){
 //我的收藏组件
 var ic_collectiont = {
 		template:'<div class="cy_CIASFE_colle" v-bind:style="collcnt>0?\'background: url(../image/fontend-colle02.png) no-repeat\':\'\'">'+
-					'<div class="cy_CIASFE_collebox">'+
+					'<div class="cy_CIASFE_decollebox">'+
 						'<div>我的收藏</div>'+
 						 '<a v-for="data in collect_datas" v-on:click="conllect(data.val.collectionType_ID,$event)" href="#" style="text-align: left">'+
-                         '<span v-for="n in data.depth+1">&emsp;</span>{{data.val.collectionTypeName}}</a>'+
+                         '{{data.val.collectionTypeName}}</a>'+ //<span v-for="n in data.depth+1">&emsp;</span>
 					'</div>'+
 				'</div>',
 	    props:['aid','collcnt','collect_datas'],
@@ -44,7 +44,7 @@ var ic_collectiont = {
 				event.preventDefault();
 				
 				if(this.collcnt!=0){
-					layer.msg("该文章已经被收藏,详情请到我的收藏模块查看");
+					layer.msg("该文章已经被收藏，详情请到我的收藏模块查看");
 					return;
 				}
 				var _this = this;
@@ -85,20 +85,22 @@ var ic_jcfa  = {
 		template:'<div>'+
 	'<div class="cy_CIASFE_intmonbodyleft">'+
 		'<div class="cy_CIASFE_monpltop">监测方案<a href="#"><img src="../image/monplan-plus.png" v-on:click="NewJCFA()"></a></div>'+
-		'<div v-for="(fndata,index) in fa_name_datas" class="cy_CIASFE_monplan">'+
-		    '<div class="cy_CIASFE_monplantit">{{fndata.planName}}</div><a href="#"><img v-on:click="editFa(index)" src="../image/monplan-edit.png"></a><a href="#"><img v-on:click="delFA(fndata.plan_ID)" src="../image/monplan-dele.png"></a>'+
+		'<div v-for="(fndata,index) in fa_name_datas" class="cy_CIASFE_monplan" v-bind:style="sel_index==index?\'background-color: #86c1ea;\':\'\'">'+
+		    '<div class="cy_CIASFE_monplantit" style="cursor:pointer;"  v-on:click="searchByFA(fndata.plan_ID,index)">{{fndata.planName}}</div><a href="#"><img v-on:click="editFa(index)" src="../image/monplan-edit.png"></a><a href="#"><img v-on:click="delFA(fndata.plan_ID)" src="../image/monplan-dele.png"></a>'+
 		'</div>'+
 	'</div>'+
 		'<div id="newfadv" class="cy_CIASFE_addmonpl" style="display:none;">'+
 			'<div class="cy_CIASFE_addmonpltop"><div class="cy_CIASFE_addmonpltit">{{title}}</div><div class="cy_CMICBMS_addmonplclose" v-on:click="hide()">X</div></div>'+
 			'<div class="cy_CIASFE_addmonplbd">'+
-				'<div class="cy_CIASFE_addmonplbox"><div class="cy_CIASFE_addmonplbox02">方案名称：</div><input v-model="planinfo_name" type="text" class="cy_CMICBMS_addmonplipbox" placeholder="请输入方案名称"></div>'+
+			'<div class="cy_CIASFE_addmonplbox"><div class="cy_CIASFE_addmonplbox02">监测时间</div>&nbsp;<input type="text" value=""  style="width:70px;" placeholder="请选择日期" readonly  id="theDate3">&nbsp;<select id="theTime3"><option v-for="tdata in time_ops" v-bind:value="tdata">{{tdata}}</option></select>&nbsp;——&nbsp;<input type="text" value="" style="width:70px;" placeholder="请选择日期" readonly id="theDate4">&nbsp;<select id="theTime4"><option v-for="tdata in time_ops" v-bind:value="tdata">{{tdata}}</option></select></div>'+
+				'<div class="cy_CIASFE_addmonplbox">'+
+			    '<div class="cy_CIASFE_addmonplbox02">方案名称：</div><input v-model="planinfo_name" type="text" class="cy_CMICBMS_addmonplipbox" placeholder="请输入方案名称"></div>'+
 				'<div v-for="(fadata,fi) in fa_datas" class="cy_CIASFE_addmonplbox">'+
 				'	<div  class="cy_CIASFE_addmonplbox02">{{fadata.val}}：</div>'+
 				'	<div v-for="(wdata,index) in fadata.words" class="cy_CIASFE_addmonplkwed" v-on:click="delglc(fi,index,$event)" v-bind:style="index==0?\'margin-left: 0\':\'\'">{{wdata}}</div>'+
 				'    <input v-if="fadata.words.length<4" type="button" v-on:click="addgjc(fi)" value="+添加关联词" v-bind:style="fadata.words.length==0?\'margin-left: 0\':\'\'" class="cy_CIASFE_editkw">'+
 				'</div>'+
-				'<div class="cy_CIASFE_addmonplbox">'+
+				'<div class="cy_CIASFE_addmonplbox" v-show="jccnum<3">'+
 				'	<div class="cy_CIASFE_addmonplbox02"></div>'+
 				'		<input type="button" value="+添加监测词" v-on:click="addjcc()" class="cy_CIASFE_editkw" style="margin-left: 0;">'+
 				'	</div>'+
@@ -111,16 +113,24 @@ var ic_jcfa  = {
 	'</div>',
 	data:function(){
 		return {
+			 isfirst:true,
 			 isnew:false,
+			 sel_index:-1,
 			 edit_id:'',
 			 title:'',
 			 planinfo_name:'',              //方案名称
 		     planinfo_removeWord:'',           //方案排除词
 		     fa_datas:[],                   //新增&编辑 监测词方案组合
-		     fa_name_datas:[]
+		     fa_name_datas:[],
+		     jccnum:1,
+		     time_ops:['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23']
 		}
 	},
 	methods:{
+		searchByFA:function(plan_ID,index){
+			this.sel_index = index;
+			this.$parent.searchByFA(plan_ID);
+		},
 		delglc:function(fi,index,event){
 			//alert(event.offsetX+"  "+event.offsetY);
 			if(event.offsetX>=105&&event.offsetY<=10){
@@ -130,12 +140,14 @@ var ic_jcfa  = {
 					for(var i=0;i<this.fa_datas.length;i++){
 						this.fa_datas[i].val = "监测词组合"+intToChinese(i+1);
 					}
+					this.jccnum--;
 				}
 			}
 		},
-		NewJCFA:function(){
+		NewJCFA:function(){              
 			 this.title = Info.I0017;
 			 this.isnew = true;
+			 this.jccnum = 1;
 			 var jcnode = new JCNode(1);
 			 this.fa_datas.push(jcnode);
 			 $("#newfadv").css("display","block");
@@ -147,6 +159,13 @@ var ic_jcfa  = {
 			 this.isnew = false;
 			 this.planinfo_name = this.fa_name_datas[index].planName;
 			 this.edit_id  = this.fa_name_datas[index].plan_ID;
+			 var startdate = this.fa_name_datas[index].planStartTime.split(" ");
+			 document.getElementById("theDate3").value = startdate[0];
+			 if(startdate.length==2){document.getElementById("theTime3").value = startdate[1].substring(0,2);}
+			 var enddate = this.fa_name_datas[index].planEndTime.split(" ");
+			 document.getElementById("theDate4").value = enddate[0];
+			 if(enddate.length==2){document.getElementById("theTime4").value = enddate[1].substring(0,2);}
+			 
 			 var _this = this;
 			 axios.get('../thematicmonitoring/getDetail',{
 					 params:{
@@ -156,7 +175,9 @@ var ic_jcfa  = {
     			.then(function (response) {
 
     				 var data = JSON.parse(response.data);
-
+    				 
+    				 _this.fa_datas = [];
+    				 
     				 for(var i=0;i<data.length;i++){
     				    var jcnode = new JCNode(i+1);
     					if(data[i].monitoringWord1!=null){
@@ -173,7 +194,10 @@ var ic_jcfa  = {
     					}
     					_this.fa_datas.push(jcnode);
                         _this.planinfo_removeWord = data[i].removeWord;
+
     				 }
+                     
+    				 _this.jccnum = _this.fa_datas.length;
 
     				 $("#newfadv").css("display","block");
     			     $("#cy_hidebg").css("display","block");
@@ -183,24 +207,59 @@ var ic_jcfa  = {
     			});
 
 		},
+		compareDate:function(fromDate,toDate){  //比较fromDate和toDate日期的先后，如果fromDate比toDate晚返回true   否则返回 false
+			var fds = fromDate.split(" ");
+			var tds = toDate.split(" ");
+			
+			var fds_date = fds[0].split("\/");
+			var tds_date = tds[0].split("\/");
+			if(fds_date[0]>tds_date[0]){
+				return true;
+			}
+			if(fds_date[0]==tds_date[0]&&fds_date[1]>tds_date[1]){
+				return true;
+			}
+			if(fds_date[0]==tds_date[0]&&fds_date[1]==tds_date[1]&&fds_date[2]>tds_date[2]){
+				return true;
+			}
+			
+			if(fds[0]==tds[0]&&fds[1]>tds[1]){
+				return true;
+			}
+			return false;
+		},
 		UpdateFA:function(){
 			if(this.planinfo_name.trim()==''){
 				layer.msg(Info.E0029);
 				return;
 			}
 			 var jcc_json = this.getJCCJson();
+			 if(jcc_json=='[]'&&this.planinfo_removeWord.trim()==''){
+				 layer.msg('请输入监测词或排除词');
+				 return;
+			 }
+			 var fromDate = document.getElementById("theDate3").value+" "+document.getElementById("theTime3").value;
+			 var toDate = document.getElementById("theDate4").value+" "+document.getElementById("theTime4").value;
+             if(document.getElementById("theDate3").value==''){fromDate='';}
+             if(document.getElementById("theDate4").value==''){toDate='';}
+			 if(fromDate!=''&&toDate!=''&&this.compareDate(fromDate,toDate)){
+				 layer.msg(Info.E0052);
+				 return;
+			 }
 		       var _this = this;
 	           axios.post('../thematicmonitoring/updatefa',
 		   			    {
 	        	           plan_id:_this.edit_id,
 		   				   planinfo_name:_this.planinfo_name.trim(),
 		   				   jcc_json:jcc_json,
-		   				   planinfo_removeWord:_this.planinfo_removeWord.trim()
+		   				   planinfo_removeWord:_this.planinfo_removeWord.trim(),
+		   				   fromDate:fromDate,
+		   				   toDate:toDate
 		   				}
 		   			)
 		   			.then(function (response) {
 		   				  if(response.data=="ok"){
-		   					  layer.msg(Info.I0012);
+		   					  layer.msg(Info.I0029);
 		   					  _this.hide();
 		   				  	  _this.getAllFA();
 		   				  }
@@ -222,28 +281,48 @@ var ic_jcfa  = {
 		     this.planinfo_removeWord = "";
 		     this.edit_id = "";
 		     this.fa_datas = [];
+		     document.getElementById("theDate3").value = ''
+			 document.getElementById("theTime3").value = '00';
+			 document.getElementById("theDate4").value = ''
+			 document.getElementById("theTime4").value = '00';
 		},
 		addjcc:function(){
 			var jcnode = new JCNode(this.fa_datas.length+1);
 			this.fa_datas.push(jcnode);
+			this.jccnum++;
 		},
 		SaveNewFA:function(){
 			if(this.planinfo_name.trim()==''){
 				layer.msg(Info.E0029);
 				return;
 			}
+			
 	       var jcc_json = this.getJCCJson();
+	       if(jcc_json=='[]'&&this.planinfo_removeWord.trim()==''){
+	    	   layer.msg('请输入监测词或排除词');
+	    	   return;
+	       }
+	       var fromDate = document.getElementById("theDate3").value+" "+document.getElementById("theTime3").value;
+		   var toDate = document.getElementById("theDate4").value+" "+document.getElementById("theTime4").value;
+           if(document.getElementById("theDate3").value==''){fromDate='';}
+           if(document.getElementById("theDate4").value==''){toDate='';}
+			 if(fromDate!=''&&toDate!=''&&this.compareDate(fromDate,toDate)){
+				 layer.msg(Info.E0052);
+				 return;
+			 }
 	       var _this = this;
            axios.post('../thematicmonitoring/savenewfa',
 	   			    {
 	   				   planinfo_name:_this.planinfo_name.trim(),
 	   				   jcc_json:jcc_json,
-	   				   planinfo_removeWord:_this.planinfo_removeWord.trim()
+	   				   planinfo_removeWord:_this.planinfo_removeWord.trim(),
+	   				   fromDate:document.getElementById("theDate3").value+" "+document.getElementById("theTime3").value,
+	   				   toDate:document.getElementById("theDate4").value+" "+document.getElementById("theTime4").value
 	   				}
 	   			)
 	   			.then(function (response) {
 	   				  if(response.data=="ok"){
-	   					  layer.msg(Info.I0008);
+	   					  layer.msg(Info.I0019);
 	   					  _this.hide();
 	   				  	  _this.getAllFA();
 	   				  }
@@ -283,21 +362,35 @@ var ic_jcfa  = {
 		        });
 		},
 		getJCCJson:function(){
+			for(var i=0;i<this.fa_datas.length;i++){  //去除重复的元素
+				var map = new Map();
+				for(var j=this.fa_datas[i].words.length-1;j>=0;j--){
+					if(map.get(this.fa_datas[i].words[j].trim())==null){
+						map.set(this.fa_datas[i].words[j].trim(),this.fa_datas[i].words[j].trim());
+					}else{
+						this.fa_datas[i].words.splice(i,1);  //删除
+					}
+				}
+			}
 			var str = '[';
-	        for(var i=0;i<this.fa_datas.length;i++){
-	        	 if(i==0){
-	        		 str+='[';
-	        	 }else{
-	        		 str+=',[';
+			var cnt = 0;
+	        for(var i=0;i<this.fa_datas.length;i++){  //将敏感词和排除词组装成json字面量
+	        	 if(this.fa_datas[i].words.length>0){
+		        	 if(cnt==0){
+		        		 str+='[';
+		        		 cnt++;
+		        	 }else{
+		        		 str+=',[';
+		        	 }
+		        	for(var j=0;j<this.fa_datas[i].words.length;j++){
+		        		if(j==0){
+		        			str+='{"jcc":"'+this.fa_datas[i].words[j].trim()+'"}';
+		        		}else{
+		        			str+=',{"jcc":"'+this.fa_datas[i].words[j].trim()+'"}';
+		        		}
+		        	}
+		        	str+=']';
 	        	 }
-	        	for(var j=0;j<this.fa_datas[i].words.length;j++){
-	        		if(j==0){
-	        			str+='{"jcc":"'+this.fa_datas[i].words[j]+'"}';
-	        		}else{
-	        			str+=',{"jcc":"'+this.fa_datas[i].words[j]+'"}';
-	        		}
-	        	}
-	        	str+=']';
 	        }
 	        str+=']';
 	        return str;
@@ -339,9 +432,15 @@ var ic_jcfa  = {
 	    	axios.get('../thematicmonitoring/getallfa')
 				.then(function (response) {
 					  var data = JSON.parse(response.data);
+					  
+					  _this.jccnum = data.length;
 					  for(var i=0;i<data.length;i++){
 						  _this.fa_name_datas.push(data[i]);
 					  }
+					  if(_this.isfirst&&data.length>0){
+						  _this.searchByFA(data[0].plan_ID,0);
+					  }
+					  _this.isfirst = false;
 				})
 				.catch(function (error) {
 
@@ -350,7 +449,16 @@ var ic_jcfa  = {
 	},
 	mounted:function(){
 		this.getAllFA();
-
+		laydate.render({
+			  elem: '#theDate3', //指定元素
+			  type:'date',
+			  format:'yyyy/MM/dd'
+			});
+		laydate.render({
+			  elem: '#theDate4', //指定元素
+			  type:'date',
+			  format:'yyyy/MM/dd'
+			});
 	}
 };
 
@@ -358,7 +466,7 @@ var ic_jcfa  = {
 var ic_top_menu = {
 
 		template:'<div class="cy_CIASFE_nagiv">'+
-		    '<a v-bind:href="mdata.url" v-for="mdata in model"><div class="cy_CIASFE_nagivbox" v-bind:style="mdata.style">{{mdata.name}}</div></a>'+
+		    '<a v-bind:href="mdata.url" v-for="mdata in model"><div v-bind:class="mdata.style">{{mdata.name}}</div></a>'+
 			'</div>',
 	    //props: ['model'],
 		data:function(){
@@ -370,13 +478,19 @@ var ic_top_menu = {
 		mounted:function(){
 			for(var i=0;i<this.model.length;i++){
 				if(this.cur_url.indexOf(this.model[i].url.replace('..',''))>0){
-					this.model[i].style = {background: 'url(../image/home-menubg.png)'};
-					break;
-				}
-				if(typeof menu_url_data!="undefined"){
-					if(menu_url_data!=null&&this.model[i].url.replace('..','').indexOf(menu_url_data)>0){
-						this.model[i].style = {background: 'url(../image/home-menubg.png)'};
-						break;
+					this.model[i].style = "cy_CIASFE_nagivboxchk";//{background: 'url(../image/home-menubg.png)'};
+					
+				}else{
+					if(typeof menu_url_data!="undefined"){
+						
+						if(menu_url_data!=null&&this.model[i].url.indexOf(menu_url_data)>=0){
+							
+							this.model[i].style = "cy_CIASFE_nagivboxchk";
+						}else{
+							this.model[i].style = "cy_CIASFE_nagivboxchk_no";
+						}
+					}else{
+						this.model[i].style = "cy_CIASFE_nagivboxchk_no";
 					}
 				}
 			}

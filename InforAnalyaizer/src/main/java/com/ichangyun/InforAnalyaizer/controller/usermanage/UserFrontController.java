@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoVo;
 import com.ichangyun.InforAnalyaizer.service.userInfo.UserInfoService;
 import com.ichangyun.InforAnalyaizer.utils.PBKDF2;

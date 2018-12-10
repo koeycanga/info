@@ -3,7 +3,9 @@ package com.ichangyun.InforAnalyaizer.service.classificationfilterwords;
 import java.util.List;
 import java.util.Map;
 
-import com.ichangyun.InforAnalyaizer.model.User;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.classificationfilterwords.FilterWordsVo;
 
 public interface FilterWordsService {
@@ -15,5 +17,7 @@ public interface FilterWordsService {
 	String updateFwVo(FilterWordsVo vo, User u);
 	//查新当前节点的子节点
 	List<FilterWordsVo> queryChild(FilterWordsVo vo);
+	HSSFWorkbook output(String[] ids);
+	String input(List<FilterWordsVo> vos);
 
 }

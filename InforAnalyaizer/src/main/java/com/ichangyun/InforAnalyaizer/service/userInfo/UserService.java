@@ -7,8 +7,7 @@ package com.ichangyun.InforAnalyaizer.service.userInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 
 /**
  * UserService 业务层接口
@@ -17,9 +16,9 @@ import com.ichangyun.InforAnalyaizer.model.User;
  */
 public interface UserService {
 
-    User isUserExist(String username, String passwd);
+    public User isUserExist(String username, String passwd);
 
-    void addCookie(HttpServletResponse response, User user,String passwd);
+    public void addCookie(HttpServletResponse response, User user,String passwd);
 
-    void delCookie(HttpServletRequest request, HttpServletResponse response);
+    public void delCookie(HttpServletRequest request, HttpServletResponse response);
 }

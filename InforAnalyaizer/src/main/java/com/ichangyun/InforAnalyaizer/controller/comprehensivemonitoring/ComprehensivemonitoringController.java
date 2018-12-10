@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,6 +50,12 @@ public class ComprehensivemonitoringController {
 		return new ModelAndView("frontpage/comprehensivemonitoring");
 	}
 	
+	/**
+	 * 执行页面查询请求
+	 * @param ab
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("/search")
 	public Object search(ArticleInfoBean ab,HttpSession session) {
 		
@@ -56,10 +63,14 @@ public class ComprehensivemonitoringController {
 		
 		ab.setMontime_start(montime[0]);
 		ab.setMontime_end(montime[1]);
-		
+
+		User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+		String userid = user.getUser_ID();
+		ab.setUserid(userid);
+
 		String lastest_relsetime = comprehensivemonitoringService.getSearchLaestRelsetime(ab);
 		
-		session.setAttribute(CommBean.LAST_CONTENT_SEARCH_TIME,lastest_relsetime);
+		session.setAttribute(CommBean.LAST_CONTENT_SEARCH_TIME_ZHJC,lastest_relsetime);
 		
 		int rowCount = comprehensivemonitoringService.getArticleRowCount(ab);
 		
@@ -76,12 +87,15 @@ public class ComprehensivemonitoringController {
 	 * @return
 	 */
 	@RequestMapping("/delarticle")
-	public Object delarticle(@RequestBody Map map) {
+	public Object delarticle(@RequestBody Map map,HttpSession session) {
 		String res = "ok";
-		
+
 		String json = (String) map.get("json");
-		
-		if(!comprehensivemonitoringService.delarticle(json)) {
+		String deletemode = (String) map.get("deletemode");
+		User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+		String userid = user.getUser_ID();
+
+		if(!comprehensivemonitoringService.delarticle(json,userid,deletemode)) {
 			res = "nok";
 		}
 		
@@ -115,7 +129,7 @@ public class ComprehensivemonitoringController {
 	@RequestMapping("/getlastestNews")
 	public Object getlastestNews(ArticleInfoBean ab,HttpSession session) {
 		
-		String last_time = (String) session.getAttribute(CommBean.LAST_CONTENT_SEARCH_TIME);
+		String last_time = (String) session.getAttribute(CommBean.LAST_CONTENT_SEARCH_TIME_ZHJC);
 		
 		ab.setReleasetime(last_time);
 		
@@ -129,12 +143,16 @@ public class ComprehensivemonitoringController {
 	 * @return
 	 */
 	@RequestMapping("/getSimContent")
-	public Object getSimContent(ArticleInfoBean ab) {
+	public Object getSimContent(ArticleInfoBean ab,HttpSession session) {
 		   
 		String[] montime = DateUtils.dealMontime(ab.getMontime());
 		
 		ab.setMontime_start(montime[0]);
 		ab.setMontime_end(montime[1]);
+
+		User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+		String userid = user.getUser_ID();
+		ab.setUserid(userid);
 		
 		String json = comprehensivemonitoringService.getSimContent(ab);
 		    

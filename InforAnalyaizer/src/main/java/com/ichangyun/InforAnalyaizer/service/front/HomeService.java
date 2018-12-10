@@ -5,6 +5,8 @@
  */
 package com.ichangyun.InforAnalyaizer.service.front;
 
+import javax.servlet.http.HttpSession;
+
 import com.ichangyun.InforAnalyaizer.model.front.HotWordBean;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
 
@@ -52,14 +54,17 @@ public interface HomeService {
 
 	/**
 	 * 获得预警信息top10的json字面量
+	 * @param session 
 	 * @return
 	 */
-	public String getWarnDatas();
+	public String getWarnDatas(HttpSession session);
 
 	/**
 	 * 获得负面信息top10的json字面量
 	 * @return
 	 */
 	public String getNegativeDatas();
+
+	public String getJCMsg(HttpSession session);
 
 }

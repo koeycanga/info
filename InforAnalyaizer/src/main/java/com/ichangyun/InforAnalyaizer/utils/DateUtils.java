@@ -18,10 +18,10 @@ import java.util.Date;
 public class DateUtils {
 
     /** 时间格式(yyyy-MM-dd) */
-    public final static String DATE_PATTERN = "yyyy-MM-dd";
+    public final static String DATE_PATTERN = "yyyy/MM/dd";
 
     /** 时间格式(yyyy-MM-dd HH:mm:ss) */
-    public final static String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    public final static String DATE_TIME_PATTERN = "yyyy/MM/dd HH:mm:ss";
 
     /**
      * DateUtils：系统时间取得
@@ -167,26 +167,26 @@ public class DateUtils {
 			String today = format(new Date(),DATE_PATTERN);
 			str[0] = today+" 00:00:00";
 			str[1] = today+" 23:59:59";
-		}
-		
-		if(montime.equals("-1")) {  //24小时内
+		}else if(montime.equals("-1")) {  //24小时内
 			Date cur_date = new Date();
 			Date pre_date = addDateHours(cur_date,-24);
 			str[0] = format(pre_date,DATE_TIME_PATTERN);
 			str[1] = format(cur_date,DATE_TIME_PATTERN);
-		}
-		
-		if(montime.equals("-2")||montime.equals("-3")||montime.equals("-7")||montime.equals("-10")) {  //2 3 7 10 天内
+		}else if(montime.equals("-2")||montime.equals("-3")||montime.equals("-7")||montime.equals("-10")) {  //2 3 7 10 天内
 			Date cur_date = new Date();
 			Date pre_date = addDateDays(cur_date, Integer.parseInt(montime));
 			str[0] = format(pre_date,DATE_PATTERN+" 00:00:00");
 			str[1] = format(cur_date,DATE_TIME_PATTERN);
-		}
-		
-		if(montime.equals("10")) { //自定义
+		}else{ //自定义
 			String[] ss  = montime.split("-");
-			str[0] = ss+" 00:00:00";
-			str[1] = ss+" 23:59:59";
+			if(ss.length==6) {
+				str[1] = ss[3]+"-"+ss[4]+"-"+ss[5]+" 23:59:59";
+				str[0] = ss[0]+"-"+ss[1]+"-"+ss[2]+" 00:00:00";
+			}else {
+				String today = format(new Date(),DATE_PATTERN);
+				str[0] = today+" 00:00:00";
+				str[1] = today+" 23:59:59";
+			}
 		}
 		return str;
 	}

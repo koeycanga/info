@@ -15,13 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ichangyun.InforAnalyaizer.model.BaseBean;
 import com.ichangyun.InforAnalyaizer.model.CommBean;
 import com.ichangyun.InforAnalyaizer.model.SearchOptBean;
-import com.ichangyun.InforAnalyaizer.model.User;
 import com.ichangyun.InforAnalyaizer.model.collection.CollectionTypeVo;
 import com.ichangyun.InforAnalyaizer.model.collection.MyCollectionVo;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.service.collection.CollectionService;
 import com.ichangyun.InforAnalyaizer.service.common.service.DBUpdateCheckService;
-import com.ichangyun.InforAnalyaizer.service.numberingcontrol.NumberingcontrolService;
-import com.ichangyun.InforAnalyaizer.utils.DateUtils;
 /**
  * Controller：我的收藏
  *
@@ -33,8 +31,7 @@ import com.ichangyun.InforAnalyaizer.utils.DateUtils;
 public class CollectionController {
 	@Autowired
 	private CollectionService collectionService;
-	@Autowired
-	private NumberingcontrolService numberService;
+
 	@Autowired
 	private DBUpdateCheckService dbUpdateCheckService;
     /**
@@ -125,8 +122,8 @@ public class CollectionController {
 	@ResponseBody
 	public List<CollectionTypeVo> getTypes(HttpSession session){
 		User u = (User)session.getAttribute(CommBean.SESSION_NAME);
-
-		return this.collectionService.getTypes(u);
+		List<CollectionTypeVo> types = this.collectionService.getTypes(u);
+		return types;
 	}
     /**
      * getTypes：添加收藏夹
@@ -139,8 +136,6 @@ public class CollectionController {
 	@ResponseBody
 	public Map<String, Object> addType(HttpSession session,CollectionTypeVo vo){
 		User u = (User)session.getAttribute(CommBean.SESSION_NAME);
-		String cID = this.numberService.getNextCFID("NC00000002");//为收藏命名
-		vo.setCollectiontypeId(cID);
 		vo.setUserId(u.getUser_ID());
 		String msg = this.collectionService.addType(vo);
 		Map<String, Object> map = new HashMap<>();
@@ -199,6 +194,22 @@ public class CollectionController {
 	public Map<String, Object> move(String[] checkedId,String collectiontypeId){
 		String msg = this.collectionService.move(checkedId,collectiontypeId);
 		Map<String, Object> map = new HashMap<>();
+		map.put("msg", msg);
+		return map;
+	}
+    /**
+     * moveType：移动节点
+     *
+     * @param String collectiontypeId 要移动的文章id
+     * @param String targetId 目标收藏夹id，如果是排序则_top
+     * @return map
+     */
+	@RequestMapping("moveType")
+	@ResponseBody
+	public Map<String, Object> moveType(String collectiontypeId,String targetId){
+		String msg = "ok";
+		Map<String, Object> map = new HashMap<>();
+		msg = this.collectionService.moveType(collectiontypeId, targetId);
 		map.put("msg", msg);
 		return map;
 	}

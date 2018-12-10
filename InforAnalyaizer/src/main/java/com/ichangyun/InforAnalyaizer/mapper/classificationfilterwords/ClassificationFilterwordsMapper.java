@@ -4,7 +4,8 @@ package com.ichangyun.InforAnalyaizer.mapper.classificationfilterwords;
 import java.util.List;
 import java.util.Map;
 
-import com.ichangyun.InforAnalyaizer.model.classificationfilterwords.ClassificationFilterwords;
+import org.springframework.dao.DataAccessException;
+
 import com.ichangyun.InforAnalyaizer.model.classificationfilterwords.ClassificationFilterwordsWithBLOBs;
 import com.ichangyun.InforAnalyaizer.model.classificationfilterwords.FilterWordsVo;
 
@@ -27,4 +28,12 @@ public interface ClassificationFilterwordsMapper {
 	void updateFwVo(FilterWordsVo vo);					//编辑节点过滤词信息
 
 	List<FilterWordsVo> queryChild(FilterWordsVo vo);//查询当前节点的子节点
+	
+	List<FilterWordsVo> queryById(String ids);		//通过id查询节点
+
+	List<FilterWordsVo> queryByName(String names);			//通过名称查询节点
+
+	void insertMany(List<FilterWordsVo> createVo) throws DataAccessException;//批量新增
+
+	void updateMany(List<FilterWordsVo> vos) throws DataAccessException;	//批量更新
 }

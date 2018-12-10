@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ichangyun.InforAnalyaizer.model.BaseBean;
 import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.notice.NoticeType;
 import com.ichangyun.InforAnalyaizer.model.notice.NoticeVo;
 import com.ichangyun.InforAnalyaizer.service.common.service.DBUpdateCheckService;
@@ -32,8 +32,7 @@ import com.ichangyun.InforAnalyaizer.utils.DateUtils;
 public class NoticeController {
 	@Autowired
 	private NoticeService noticeService;
-	@Autowired
-	private NumberingcontrolService numberService;
+
 	@Autowired
 	private DBUpdateCheckService dbUpdateCheckService;
 	@RequestMapping("toNoticeList")
@@ -74,8 +73,7 @@ public class NoticeController {
 	@ResponseBody
 	public Map<String, Object>addNotice(NoticeVo vo,HttpSession session){
 		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
-		String noticeID = this.numberService.getNextCFID("NC00000001");//Îª¼ò±¨ÃüÃû
-		vo.setNoticeid(noticeID);
+		
 		String msg= this.noticeService.addNotice(vo,u);
 		Map<String, Object>map = new HashMap<>();
 		map.put("msg", msg);

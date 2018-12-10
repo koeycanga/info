@@ -102,4 +102,8 @@ public interface UserInfoMapper {
     void updateRoleStatusToZero();
 
 	public void deleteUser(String string);
+
+	public List<UserInfoVo> queryAllUser2(Map<String, Object> key);
+
+	public int queryCount2(Map<String, Object> key);
 }

@@ -10,7 +10,7 @@
           select count(1) from a_articlebasicinfo where 
              Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
               <if test="Classification_ID!=''">
-                 and locate(#{Classification_ID},Classification_ID)>0
+                 and locate(#{Classification_ID},ClassificationPath)>0
               </if>
              <if test="search_key!=null and search_key!=''">
                  <if test="search_type=='all'">
@@ -19,10 +19,14 @@
                  <if test="search_type=='title'">
                      and ArticleTitle like CONCAT('%',#{search_key},'%')
                  </if>
+                  <if test="search_type=='abstract'">
+                     and ArticleAbstract like CONCAT('%',#{search_key},'%')
+                 </if>
                  <if test="search_type=='text'">
                      and ArticleText like CONCAT('%',#{search_key},'%')
                  </if>
              </if>
+        and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
              <if test="emoana!=-1">
              and EmotionDivision=#{emoana}
              </if>
@@ -40,7 +44,7 @@
 		     select * from a_articlebasicinfo
 		      where 1=1 and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
               <if test="Classification_ID!=''">
-                 and locate(#{Classification_ID},Classification_ID)>0
+                 and locate(#{Classification_ID},ClassificationPath)>0
               </if>
              <if test="search_key!=null and search_key!=''">
                  <if test="search_type=='all'">
@@ -49,10 +53,14 @@
                  <if test="search_type=='title'">
                      and ArticleTitle like CONCAT('%',#{search_key},'%')
                  </if>
+                  <if test="search_type=='abstract'">
+                     and ArticleAbstract like CONCAT('%',#{search_key},'%')
+                 </if>
                  <if test="search_type=='text'">
                      and ArticleText like CONCAT('%',#{search_key},'%')
                  </if>
              </if>
+        and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
              <if test="emoana!=-1">
              and EmotionDivision=#{emoana}
              </if>
@@ -70,10 +78,12 @@
 			  (select m.WebsiteName from m_websiteinfo m where m.Website_ID = c.Website_ID) WebsiteName,
 			   (
 			     select count(1) from a_articlebasicinfo bb where c.SimilarArticlesNo=bb.SimilarArticlesNo and c.Article_ID!=bb.Article_ID
-			     and bb.Releasetime>=#{montime_start} and bb.Releasetime <![CDATA[<= ]]>#{montime_end} 
+			     and bb.Releasetime>=#{montime_start} and bb.Releasetime <![CDATA[<= ]]>#{montime_end}
+        and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
 			   ) sim_cnt,
-			   (select count(1) from m_mycollection cc where cc.Article_ID=c.Article_ID ) collcnt
-			FROM
+			   (select count(1) from m_mycollection cc where cc.Article_ID=c.Article_ID ) collcnt,
+        IF(c.Article_ID in (SELECT k.Article_ID FROM a_userearlywarningarticleinfo as k where k.User_ID=#{userid}),"yes","no")  isearlywarning
+            FROM
 				a_articlebasicinfo c
 			WHERE
 				c.Article_ID  IN 
@@ -83,7 +93,7 @@
 				      (select * from a_articlebasicinfo
 		     				 where 1=1 and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
 			              <if test="Classification_ID!=''">
-				               and locate(#{Classification_ID},Classification_ID)>0
+				               and locate(#{Classification_ID},ClassificationPath)>0
 				          </if>
 			             <if test="search_key!=null and search_key!=''">
                              <if test="search_type=='all'">
@@ -92,21 +102,19 @@
                              <if test="search_type=='title'">
                                  and ArticleTitle like CONCAT('%',#{search_key},'%')
                              </if>
+                              <if test="search_type=='abstract'">
+                                and ArticleAbstract like CONCAT('%',#{search_key},'%')
+                            </if>
                              <if test="search_type=='text'">
                                  and ArticleText like CONCAT('%',#{search_key},'%')
                              </if>
 			             </if>
+        and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
 			             <if test="emoana!=-1">
 			             and EmotionDivision=#{emoana}
 			             </if>
 			             <if test="infsour!=-1">
 			              and SourceDivision=#{infsour}
-			             </if>
-			             <if test="sort==0">
-			               order by Releasetime desc
-			             </if>
-			             <if test="sort==1">
-			               order by Releasetime asc
 			             </if>
 			             ) dd
 				 		Group By dd.SimilarArticlesNo
@@ -125,13 +133,15 @@
             (select m.WebsiteName from m_websiteinfo m where m.Website_ID = a.Website_ID) WebsiteName,
             (
               select count(1) from a_articlebasicinfo b where a.SimilarArticlesNo=b.SimilarArticlesNo and a.Article_ID!=b.Article_ID
-              and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
+              and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end}
+         and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
             ) sim_cnt,
-            (select count(1) from m_mycollection c where c.Article_ID=a.Article_ID ) collcnt
-            from a_articlebasicinfo a where 
+            (select count(1) from m_mycollection c where c.Article_ID=a.Article_ID ) collcnt,
+         IF(a.Article_ID in (SELECT k.Article_ID FROM a_userearlywarningarticleinfo as k where k.User_ID=#{userid}),"yes","no")  isearlywarning
+             from a_articlebasicinfo a where
              Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
               <if test="Classification_ID!=''">
-	               and locate(#{Classification_ID},Classification_ID)>0
+	               and locate(#{Classification_ID},ClassificationPath)>0
 	          </if>
              <if test="search_key!=null and search_key!=''">
                  <if test="search_type=='all'">
@@ -140,10 +150,14 @@
                  <if test="search_type=='title'">
                      and ArticleTitle like CONCAT('%',#{search_key},'%')
                  </if>
+                  <if test="search_type=='abstract'">
+                      and ArticleAbstract like CONCAT('%',#{search_key},'%')
+                  </if>
                  <if test="search_type=='text'">
                      and ArticleText like CONCAT('%',#{search_key},'%')
                  </if>
              </if>
+         and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
              <if test="emoana!=-1">
              and EmotionDivision=#{emoana}
              </if>
@@ -162,7 +176,7 @@
       <select id="getSearchLaestRelsetime"  parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="java.lang.String">
          select Releasetime from a_articlebasicinfo where 1=1
            <if test="Classification_ID!=''">
-               and locate(#{Classification_ID},Classification_ID)>0
+               and locate(#{Classification_ID},ClassificationPath)>0
            </if>
            ORDER BY Releasetime desc
            limit 0,1
@@ -172,27 +186,40 @@
            select count(1) from a_articlebasicinfo where 
              Releasetime>#{releasetime} 
               <if test="Classification_ID!=''">
-               and locate(#{Classification_ID},Classification_ID)>0
+               and locate(#{Classification_ID},ClassificationPath)>0
            </if>
      </select>
      
      
-     <delete id="delarticle" parameterType="java.util.List">
-       delete from a_articlebasicinfo where Article_ID in 
-           <foreach item="item" index="index" collection="list" open="(" separator="," close=")">#{item}</foreach>  
-     </delete>
+     <!--<delete id="delarticle" parameterType="java.util.List">-->
+       <!--delete from a_articlebasicinfo where Article_ID in -->
+           <!--<foreach item="item" index="index" collection="list" open="(" separator="," close=")">#{item}</foreach>  -->
+     <!--</delete>-->
+
+    <insert id="delarticle">
+        INSERT INTO a_userdeletearticleinfo (User_ID,DeleteMode,Article_ID) VALUES
+        <foreach item="item" index="index" collection="list" separator="," >(#{userid},#{deletemode},#{item})</foreach>
+     </insert>
+
      
-      <update id="toyj">
-         update a_articlebasicinfo set EarlyWarningState='1',UpdateUser=#{userid},UpdateDateTime=NOW()
-         where Article_ID in 
-          <foreach item="item" index="index" collection="list" open="(" separator="," close=")">#{item}</foreach>  
-     </update>
+      <!--<update id="toyj">-->
+         <!--update a_articlebasicinfo set EarlyWarningState='1',UpdateUser=#{userid},UpdateDateTime=NOW()-->
+         <!--where Article_ID in -->
+          <!--<foreach item="item" index="index" collection="list" open="(" separator="," close=")">#{item}</foreach>-->
+     <!--</update>-->
+
+    <insert id="toyj">
+        insert ignore into a_userearlywarningarticleinfo(User_ID,Article_ID,EarlyWarningMode,SensitiveWord_ID) VALUES
+        <foreach item="item" index="index" collection="list" separator="," >(#{userid},#{item},"1",0)</foreach>
+    </insert>
+
      
       <select id="getSimContent" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
          
          select a.Article_ID,a.ArticleTitle,a.ArticleURL from a_articlebasicinfo a where a.SimilarArticlesNo=
 			(select b.SimilarArticlesNo from a_articlebasicinfo b where b.Article_ID=#{Article_ID}) and a.Article_ID!=#{Article_ID}
-			and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
+			and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end}
+			and not exists (select 1 from A_UserDeleteArticleInfo b where b.Article_ID=a.Article_ID and b.User_ID=#{userid})
 	      order by Releasetime desc 
       
      </select>

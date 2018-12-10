@@ -34,7 +34,7 @@ public final class ImageUtil {
     // 干扰线数量
     private static final int LINES = 5;
     // 宽度
-    private static final int WIDTH = 120;
+    private static final int WIDTH = 97;
     // 高度
     private static final int HEIGHT = 40;
     // 字体大小

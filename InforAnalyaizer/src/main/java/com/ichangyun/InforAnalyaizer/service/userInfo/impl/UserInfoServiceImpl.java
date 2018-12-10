@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import com.ichangyun.InforAnalyaizer.controller.usermanage.UserController;
 import com.ichangyun.InforAnalyaizer.mapper.userInfoMapper.UserInfoMapper;
 import com.ichangyun.InforAnalyaizer.mapper.usermanage.RoleMapper;
-import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfo;
 import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoKey;
 import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoVo;
@@ -194,25 +194,32 @@ public class UserInfoServiceImpl implements UserInfoService{
      * @param rowSize
      */
     @Override
-    public Map<String, Object> queryAllUser(UserInfoVo vo, int pageNow, int rowSize) {
-
+    public Map<String, Object> queryAllUser(UserInfoVo vo, int pageNow, int rowSize,User u) {
+    	
         Map<String, Object> key = Obj2Map.object2Map(vo);   
         int l_pre = (pageNow-1)*rowSize;
         // 查询条件的map参数
         key.put("l_pre", l_pre);
         key.put("rowSize", rowSize);
-
-        // 取得用户信息
-        List<UserInfoVo> vos = this.userInfoMapper.queryAllUser(key);
-
         Map<String, Object> res = new HashMap<>();
-        // 取得用户信息的件数
-        int count = this.userInfoMapper.queryCount(key);
-        res.put("users", vos);
-        res.put("rowCount", count);
+        if(u.getSuperUserFlag().equals("1")) {
+        	// 取得用户信息
+        	List<UserInfoVo> vos = this.userInfoMapper.queryAllUser(key);
+        	// 取得用户信息的件数
+        	int count = this.userInfoMapper.queryCount(key);	
+        	res.put("users", vos);
+        	res.put("rowCount", count);
+        }else {
+        	// 取得用户信息
+        	List<UserInfoVo> vos = this.userInfoMapper.queryAllUser2(key);
+        	// 取得用户信息的件数
+        	int count = this.userInfoMapper.queryCount2(key);	
+        	res.put("users", vos);
+        	res.put("rowCount", count);
+        }
+        
         return res;
     }
-
     /**
      * queryUserByNum：根据用户No查询用户
      * @param unum 用户No
@@ -264,6 +271,8 @@ public class UserInfoServiceImpl implements UserInfoService{
         // 更新用户角色情报的状态为0（暂未使用）
         this.userInfoMapper.updateRoleStatusToZero();
     }
+
+
 
 
 }

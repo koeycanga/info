@@ -81,6 +81,87 @@ public class ThematicmonitoringBean extends BaseBean {
 	 */
 	private String MonitoringWord4;
 	
+	/**
+	 * 文章ID
+	 */
+	private String Article_ID;
+	
+	/**
+	 * 监测词
+	 */
+	private String MonitoringWord;
+	
+	/**
+	 * 监测词组合一对应的文章数量
+	 */
+	private int m_lg1;
+	
+	/**
+	 * 监测词组合二对应的文章数量
+	 */
+	private int m_lg2;
+	
+	
+	/**
+	 * 监测词组合三对应的文章数量
+	 */
+	private int m_lg3;
+	
+	
+	/**
+	 * 监测方案开始时间
+	 */
+	private String PlanStartTime;
+	
+	
+	/**
+	 * 监测方案结束时间
+	 */
+	private String PlanEndTime;
+	
+
+	public String getPlanStartTime() {
+		return PlanStartTime;
+	}
+	public void setPlanStartTime(String planStartTime) {
+		PlanStartTime = planStartTime;
+	}
+	public String getPlanEndTime() {
+		return PlanEndTime;
+	}
+	public void setPlanEndTime(String planEndTime) {
+		PlanEndTime = planEndTime;
+	}
+	public int getM_lg1() {
+		return m_lg1;
+	}
+	public void setM_lg1(int m_lg1) {
+		this.m_lg1 = m_lg1;
+	}
+	public int getM_lg2() {
+		return m_lg2;
+	}
+	public void setM_lg2(int m_lg2) {
+		this.m_lg2 = m_lg2;
+	}
+	public int getM_lg3() {
+		return m_lg3;
+	}
+	public void setM_lg3(int m_lg3) {
+		this.m_lg3 = m_lg3;
+	}
+	public String getMonitoringWord() {
+		return MonitoringWord;
+	}
+	public void setMonitoringWord(String monitoringWord) {
+		MonitoringWord = monitoringWord;
+	}
+	public String getArticle_ID() {
+		return Article_ID;
+	}
+	public void setArticle_ID(String article_ID) {
+		Article_ID = article_ID;
+	}
 	public String getMonitoringWord1() {
 		return MonitoringWord1;
 	}

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.front.HotWordBean;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
 import com.ichangyun.InforAnalyaizer.service.front.HomeService;
@@ -61,15 +61,17 @@ public class HomeController {
 	 * @return
 	 */
 	@RequestMapping("/getHomeDatas")
-	public Object getHomeDatas() {
+	public Object getHomeDatas(HttpSession session) {
 	    
 		String newest_datas = homeService.getNewestDatas();
 		
-		String warn_datas = homeService.getWarnDatas();
+		String warn_datas = homeService.getWarnDatas(session);
 		
 		String negative_datas = homeService.getNegativeDatas();
 		
-		String res = "{\"newest_datas\":"+newest_datas+",\"warn_datas\":"+warn_datas+",\"negative_datas\":"+negative_datas+"}";
+		String jcmsg = homeService.getJCMsg(session);
+		
+		String res = "{\"newest_datas\":"+newest_datas+",\"warn_datas\":"+warn_datas+",\"negative_datas\":"+negative_datas+","+jcmsg+"}";
 		
 		return res;
 	}
@@ -94,7 +96,13 @@ public class HomeController {
 	 * @return
 	 */
 	@RequestMapping("/searchbyhotword")
-	public Object searchByHotWord(HotWordBean hb) {
+	public Object searchByHotWord(HotWordBean hb,HttpSession session) {
+		
+		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+		
+		String Userid = u.getUser_ID();
+		
+		hb.setCreateUser(Userid);
 		
 		int rowCount = homeService.getArticleCountByHotWord(hb);
 		

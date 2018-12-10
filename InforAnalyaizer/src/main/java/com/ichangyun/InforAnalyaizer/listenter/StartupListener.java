@@ -49,11 +49,8 @@ public class StartupListener implements ServletContextListener {
         List<String> au_list = new ArrayList<String>();
 	    for(String s:as) {
 	    	au_list.add(s);
-	    }
-        
+	    }  
         servletContext.setAttribute("au_list", au_list);
-        
- 
     }  
       
 } 

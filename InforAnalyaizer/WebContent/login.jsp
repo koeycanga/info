@@ -25,19 +25,21 @@
 <head>
 <meta charset="UTF-8">
 <title>竞争情报分析系统</title>
-<link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style-1920_1080.css">
 </head>
 
-<body>
-<div id="loginapp" class="cy_CIAS_lgbody">
+<body onkeyup="enterlogin(event)">
+<div id="loginapp" class="cy_CIAS_lgbody" v-on:keyup="enterlogin($event)">
 	<div  class="cy_CIAS_lgbox">
 		<div class="cy_CIAS_lgboxL"><img src="${ctx}/image/login-boxbg01.png"></div>
 		<div class="cy_CIAS_lgboxR">
 			<input type="text" class="cy_CIAS_lgusn" v-model="username" v-validate:zip="['required']" style="background-color: white" placeholder="请输入用户名">
 			<input type="password" class="cy_CIAS_lgpsw" v-model="passwd" style="background-color: white" placeholder="请输入密码">
 				<div class="cy_CIAS_lgfm" >
-					<input type="text" v-on:keyup="enterlogin($event)"  class="cy_CIAS_lgvcp" v-model="checkCode" style="background-color: white" placeholder="请输入验证码">
-					<div class="cy_CIAS_lgvc"><img height="100%" v-bind:src="checkimg_src" v-on:click="flash_checkimg"/></div>
+					<input type="text"   class="cy_CIAS_lgvcp" v-model="checkCode" style="background-color: white" placeholder="请输入验证码">
+					<div class="cy_CIAS_lgvc">
+					   <img height="100%" v-bind:src="checkimg_src" v-on:click="flash_checkimg"/>
+					</div>
 				</div>
 			<div class="cy_CIAS_lgfml"><input type="checkbox" id="cy_CIAS_lgrem" v-model="isremberusrname" hidden>
 			<label for="cy_CIAS_lgrem"></label><span>记住用户名</span></div>
@@ -56,6 +58,19 @@
 <script type="text/javascript" src="${ctx}/js/md5.min.js"></script>
 <script type="text/javascript">
     
+    function enterlogin(event){
+    	 event.preventDefault();
+		 if(event.keyCode==13){
+			var flag = $("input[name='xzqw']:checked").val();
+        	if(flag=='0'){
+        		window.location.href = "${ctx}/front/index";
+        	}
+        	if(flag=='1'){
+        		window.location.href = "${ctx}/login/toLogin";
+        	}
+		 }
+    }
+
      var Info = {
     		E0002:'${E0002}', 
     	    E0003:'${E0003}',
@@ -69,6 +84,7 @@
 		 
 		 el:'#loginapp',
 		 data:{
+			 enter_num:0,
 			 username:'',
 			 passwd:'',
 			 checkCode:'',
@@ -76,9 +92,62 @@
 			 checkimg_src:'${ctx}/login/valicode'
 		 },
 		 methods:{
+			 showChose:function(){
+				 this.enter_num = 1;
+				 layer.open({
+					    id:1,
+				        type: 1,
+				        title:'选择前往',
+				        skin:'layui-layer-rim',
+				        area:['320px', 'auto'],
+				        
+				        content: ' <div  class="row" style="width: 300px;height:100px;  margin-left:7px; margin-top:10px;">'
+				            +'<div class="col-sm-12">'
+				            +'<div class="input-group">'
+				            +'<input id="firstch" type="radio" name="xzqw" checked class="form-control" value="0">'
+				            +'<span class="input-group-addon"> 前台首页 </span>'
+				            +'</div>'
+				            +'</div>'
+				              +'<div class="col-sm-12" style="margin-top: 10px">'
+				              +'<div class="input-group">'
+				              +'<input id="secondch" type="radio" name="xzqw" class="form-control" value="1">'
+				              +'<span class="input-group-addon"> 后台管理 </span>'
+				              +'</div>'
+				              +'</div>'
+				              +'</div>'
+				        ,
+				        btn:['确定','取消'],
+				        btn1: function (index,layero) {
+				        	var flag = $("input[name='xzqw']:checked").val();
+				        	if(flag=='0'){
+				        		window.location.href = "${ctx}/front/index";
+				        	}
+				        	if(flag=='1'){
+				        		window.location.href = "${ctx}/login/toLogin";
+				        	}
+				    	},
+				        btn2:function (index,layero) {
+				        	 this.enter_num = 0;
+				        	 layer.close(index);
+				        }
+				 
+				    });
+			 },
 			 enterlogin:function(event){
+				 event.preventDefault();
 				 if(event.keyCode==13){
-					 this.login();
+					 if(this.enter_num==0){
+					 	this.login();
+					 }
+					 if(this.enter_num==1){
+						var flag = $("input[name='xzqw']:checked").val();
+			        	if(flag=='0'){
+			        		window.location.href = "${ctx}/front/index";
+			        	}
+			        	if(flag=='1'){
+			        		window.location.href = "${ctx}/login/toLogin";
+			        	}
+					 }
 				 }
 			 },
 			 login:function(){             //登录操作
@@ -104,17 +173,20 @@
 		    				}
 		    			})
 		    			.then(function (response) {
-		    				console.log(response.data);
-		    				if(response.data=="ok"){ //登录成功
-		    					window.location.href = "${ctx}/login/toLogin";
+		    				if(response.data.indexOf("success")>=0){ //登录成功
+		    					if(response.data.indexOf("1")>=0){
+		    						_this.showChose();
+		    					}else{
+		    						window.location.href = "${ctx}/front/index";
+		    					}
 		    				}else if(response.data=="checkCode_n_ok"){ //验证码不正确
-		    					_this.checkimg_src = '${ctx}/login/valicode?date='+new Date();
+		    					_this.checkimg_src = '${ctx}/login/valicode?date='+new Date().getTime();
 		    					_this.passwd = "";
 		    					_this.checkCode = "";
 		    					layer.msg(Info.E0002);
 		    				}else{   //用户名或密码错误
 		    					_this.username = "";
-		    					_this.checkimg_src = '${ctx}/login/valicode?date='+new Date();
+		    					_this.checkimg_src = '${ctx}/login/valicode?date='+new Date().getTime();
 		    					_this.passwd = "";
 		    					_this.checkCode = "";
 		    					layer.msg(Info.E0003);

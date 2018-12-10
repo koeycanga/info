@@ -9,6 +9,8 @@
 <fmt:message key="E0014" var="E0014" bundle="${sysInfo}" />
 <fmt:message key="I0012" var="I0012" bundle="${sysInfo}" />
 <fmt:message key="I0013" var="I0013" bundle="${sysInfo}" />
+<fmt:message key="I0002" var="I0002" bundle="${sysInfo}" />
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -91,6 +93,7 @@ var Info = {
 		E0004:'${E0004}',
 		E0014:'${E0014}',
 		I0012:'${I0012}',
+        I0002:'${I0002}',
 		I0013:'${I0013}'
 		
 };
@@ -145,7 +148,9 @@ Vue.component('ic_user_info',ic_user_info);  // ic_user_info 引自 js/ic_compon
                             var rowCount = response.data.rowCount + "";
                             _this.$refs.pagecomponent.dealAfterSearch(rowCount); //rowCount为总条目数  在ajax请求返回函数需调用该方法
                             _this.vos = response.data.vos;
-
+                            if(rowCount=='0'){
+      	    					 layer.msg(Info.I0002);
+      	    				  	}
                         })
                         .catch(function (error) {
                             console.log(error);

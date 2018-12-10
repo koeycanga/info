@@ -9,10 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ichangyun.InforAnalyaizer.mapper.notice.NoticeMapper;
-import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.notice.NoticeType;
 import com.ichangyun.InforAnalyaizer.model.notice.NoticeVo;
 import com.ichangyun.InforAnalyaizer.service.notice.NoticeService;
+import com.ichangyun.InforAnalyaizer.service.numberingcontrol.NumberingcontrolService;
 /**
  * NoticeService：简报任务
  *
@@ -23,6 +24,8 @@ import com.ichangyun.InforAnalyaizer.service.notice.NoticeService;
 public class NoticeServiceImpl implements NoticeService{
 	@Autowired
 	private NoticeMapper noticeMapper;
+	@Autowired
+	private NumberingcontrolService numberService;
 	/**
      * queryAll：查询所有简报
      *
@@ -68,6 +71,8 @@ public class NoticeServiceImpl implements NoticeService{
 		Date time= new java.sql.Date(t.getTime());
 		vo.setCreatedatetime(time);
 		try {
+			String noticeID = this.numberService.getNextCFID("NC00000001");//为简报命名
+			vo.setNoticeid(noticeID);
 			this.noticeMapper.insertSelective(vo);
 		} catch (Exception e) {
 			// TODO: handle exception

@@ -169,14 +169,14 @@
 		textexcludephrases,a.CreateUser
 		createuser,a.CreateDateTime createdatetime,
 		a.UpdateUser
-		updateuser,DATE_FORMAT(a.UpdateDateTime,'%Y-%m-%d %H:%i:%s') updatedatetime FROM
+		updateuser,DATE_FORMAT(a.UpdateDateTime,'%Y/%m/%d %H:%i:%s') updatedatetime FROM
 		m_classificationfilterwords a right
 		JOIN m_classificationinfo b on
 		a.Classification_ID=b.Classification_ID
 		<where>
 			b.Parent_Classification_ID = "0000000000"
 			<if test="classificationName != null and classificationName != ''" >
-				and b.Classification_ID in (select left(nodePath,10) from m_classificationinfo c where ClassificationName like CONCAT('%',#{classificationName},'%'))
+				and b.Classification_ID in (select left(ClassificationPath,10) from m_classificationinfo c where ClassificationName like CONCAT('%',#{classificationName},'%'))
 			</if>
 		</where>
 		order by displayOrder DESC limit #{l_pre},#{rowSize} 
@@ -188,7 +188,7 @@
 		<where>
 		Parent_Classification_ID = "0000000000"
 			<if test="classificationName != null and classificationName != ''" >
-				and Classification_ID in (select left(nodePath,10) from m_classificationinfo c where ClassificationName like CONCAT('%',#{classificationName},'%'))
+				and Classification_ID in (select left(ClassificationPath,10) from m_classificationinfo c where ClassificationName like CONCAT('%',#{classificationName},'%'))
 			</if>
 		</where>
 	</select>
@@ -199,6 +199,8 @@
 		classificationId,b.ClassificationName
 		classificationName,b.Parent_Classification_ID
 		parent_Classification_ID,b.DisplayOrder displayOrder,a.InformationTropism informationtropism,
+		(SELECT ClassificationName FROM m_classificationinfo 
+		 where Classification_ID=b.parent_Classification_ID) parent_name,
 		a.AllCorePhrases allcorephrases,a.AllExcludePhrases
 		allexcludephrases,a.TitleCorePhrases
 		titlecorephrases,a.TitleExcludePhrases
@@ -206,7 +208,7 @@
 		a.SummaryExcludePhrases summaryexcludephrases,a.TextCorePhrases
 		textcorephrases,a.TextExcludePhrases textexcludephrases,a.CreateUser
 		createuser,a.CreateDateTime createdatetime, a.UpdateUser
-		updateuser,DATE_FORMAT(a.UpdateDateTime,'%Y-%m-%d %H:%i:%s') updatedatetime  FROM m_classificationinfo b
+		updateuser,DATE_FORMAT(a.UpdateDateTime,'%Y/%m/%d %H:%i:%s') updatedatetime  FROM m_classificationinfo b
 		LEFT JOIN m_classificationfilterwords a on
 		a.Classification_ID=b.Classification_ID WHERE b.Classification_ID
 		=#{value}
@@ -279,7 +281,7 @@
 		textexcludephrases,a.CreateUser
 		createuser,a.CreateDateTime createdatetime,
 		a.UpdateUser
-		updateuser,DATE_FORMAT(a.UpdateDateTime,'%Y-%m-%d %H:%i:%s') updatedatetime FROM
+		updateuser,DATE_FORMAT(a.UpdateDateTime,'%Y/%m/%d %H:%i:%s') updatedatetime FROM
 		m_classificationfilterwords a right
 		JOIN m_classificationinfo b on
 		a.Classification_ID=b.Classification_ID
@@ -291,4 +293,162 @@
 		</where>
 		order by displayOrder DESC
 	</select>
+	<select id="queryById" parameterType="String" resultType="com.ichangyun.InforAnalyaizer.model.classificationfilterwords.FilterWordsVo">
+		select b.Classification_ID classificationId,b.ClassificationName
+		classificationName,b.Parent_Classification_ID
+		parent_Classification_ID,b.DisplayOrder displayOrder,
+		(select GROUP_CONCAT(ClassificationName SEPARATOR '》')  
+				FROM m_classificationinfo WHERE  LOCATE(Classification_ID,
+				(select DISTINCT getParentList_classificationinfo(b.Classification_ID) 
+				from m_classificationinfo))>0) allParent_name,
+		a.InformationTropism informationtropism,
+		a.AllCorePhrases allcorephrases,a.AllExcludePhrases
+		allexcludephrases,a.TitleCorePhrases
+		titlecorephrases,a.TitleExcludePhrases
+		titleexcludephrases,a.SummaryCorePhrases summarycorephrases,
+		a.SummaryExcludePhrases summaryexcludephrases,a.TextCorePhrases
+		textcorephrases,a.TextExcludePhrases
+		textexcludephrases,a.CreateUser
+		createuser,a.CreateDateTime createdatetime,
+		a.UpdateUser
+		updateuser,DATE_FORMAT(a.UpdateDateTime,'%Y/%m/%d %H:%i:%s') updatedatetime FROM
+		m_classificationfilterwords a right
+		JOIN m_classificationinfo b on
+		a.Classification_ID=b.Classification_ID
+		<where>
+			
+			b.Classification_ID in (${value})
+
+		</where>
+		order by displayOrder DESC
+	</select>
+		<select id="queryByName" parameterType="String"
+		resultType="com.ichangyun.InforAnalyaizer.model.classificationfilterwords.FilterWordsVo">
+		select b.Classification_ID classificationId,b.ClassificationName
+		classificationName,b.Parent_Classification_ID
+		parent_Classification_ID,b.DisplayOrder displayOrder,
+		(select
+		GROUP_CONCAT(ClassificationName SEPARATOR '》')
+		FROM
+		m_classificationinfo WHERE LOCATE(Classification_ID,
+		(select DISTINCT
+		getParentList_classificationinfo(b.Classification_ID)
+		from
+		m_classificationinfo))>0) allParent_name,
+		a.InformationTropism
+		informationtropism,
+		a.AllCorePhrases allcorephrases,a.AllExcludePhrases
+		allexcludephrases,a.TitleCorePhrases
+		titlecorephrases,a.TitleExcludePhrases
+		titleexcludephrases,a.SummaryCorePhrases summarycorephrases,
+		a.SummaryExcludePhrases summaryexcludephrases,a.TextCorePhrases
+		textcorephrases,a.TextExcludePhrases
+		textexcludephrases,a.CreateUser
+		createuser,a.CreateDateTime createdatetime,
+		a.UpdateUser
+		updateuser,DATE_FORMAT(a.UpdateDateTime,'%Y/%m/%d %H:%i:%s')
+		updatedatetime FROM
+		m_classificationfilterwords a right
+		JOIN
+		m_classificationinfo b on
+		a.Classification_ID=b.Classification_ID
+		<where>
+			b.ClassificationName in (${value})
+		</where>
+		order by displayOrder DESC
+	</select>
+
+	<insert id="insertMany" parameterType="List">
+		insert into m_classificationfilterwords
+		(Classification_ID,
+		InformationTropism,
+		AllCorePhrases,
+		AllExcludePhrases,
+		TitleCorePhrases,
+		TitleExcludePhrases,
+		SummaryCorePhrases,
+		SummaryExcludePhrases,
+		TextCorePhrases,
+		TextExcludePhrases)
+		VALUES
+		<foreach collection="list" item="vo" separator=",">
+			(#{vo.classificationId},#{vo.informationtropism},
+			#{vo.allcorephrases},#{vo.allexcludephrases},
+			#{vo.titlecorephrases},#{vo.titleexcludephrases},
+			#{vo.summarycorephrases},#{vo.summaryexcludephrases},
+			#{vo.textcorephrases},#{vo.textexcludephrases})
+		</foreach>
+	</insert>
+	<update id="updateMany" parameterType="list">
+		update m_classificationfilterwords
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="InformationTropism =case" suffix="end,">
+				<foreach collection="list" item="vo">
+					when
+					Classification_ID=#{vo.classificationId} then
+					#{vo.informationtropism}
+				</foreach>
+			</trim>
+			<trim prefix="AllCorePhrases =case" suffix="end,">
+				<foreach collection="list" item="vo">
+					when
+					Classification_ID=#{vo.classificationId} then #{vo.allcorephrases}
+				</foreach>
+			</trim>
+			<trim prefix="AllExcludePhrases =case" suffix="end,">
+				<foreach collection="list" item="vo">
+					when
+					Classification_ID=#{vo.classificationId} then
+					#{vo.allexcludephrases}
+				</foreach>
+			</trim>
+			<trim prefix="TitleCorePhrases =case" suffix="end,">
+				<foreach collection="list" item="vo">
+					when
+					Classification_ID=#{vo.classificationId} then
+					#{vo.titlecorephrases}
+				</foreach>
+			</trim>
+			<trim prefix="TitleExcludePhrases =case" suffix="end,">
+				<foreach collection="list" item="vo">
+					when
+					Classification_ID=#{vo.classificationId} then
+					#{vo.titleexcludephrases}
+				</foreach>
+			</trim>
+			<trim prefix="SummaryCorePhrases =case" suffix="end,">
+				<foreach collection="list" item="vo">
+					when
+					Classification_ID=#{vo.classificationId} then
+					#{vo.summarycorephrases}
+				</foreach>
+			</trim>
+			<trim prefix="SummaryExcludePhrases =case" suffix="end,">
+				<foreach collection="list" item="vo">
+					when
+					Classification_ID=#{vo.classificationId} then
+					#{vo.summaryexcludephrases}
+				</foreach>
+			</trim>
+			<trim prefix="TextCorePhrases =case" suffix="end,">
+				<foreach collection="list" item="vo">
+					when
+					Classification_ID=#{vo.classificationId} then
+					#{vo.textcorephrases}
+				</foreach>
+			</trim>
+			<trim prefix="TextExcludePhrases =case" suffix="end,">
+				<foreach collection="list" item="vo">
+					when
+					Classification_ID=#{vo.classificationId} then
+					#{vo.textexcludephrases}
+				</foreach>
+			</trim>
+		</trim>
+		where
+		<foreach collection="list" separator="or" item="vo"
+			index="index">
+			Classification_ID=#{vo.classificationId}
+		</foreach>
+	</update>
 </mapper>

@@ -5,8 +5,10 @@
 <fmt:setBundle basename="resources" var="sysInfo" />  <!-- basename: 在classes文件夹下properties文件的文件名 -->
 <fmt:message key="E0006" var="E0006" bundle="${sysInfo}" /> 
 <fmt:message key="E0024" var="E0024" bundle="${sysInfo}" /> 
+<fmt:message key="E0039" var="E0039" bundle="${sysInfo}" /> 
 <fmt:message key="I0011" var="I0011" bundle="${sysInfo}" />
 <fmt:message key="I0002" var="I0002" bundle="${sysInfo}" />
+<fmt:message key="I0024" var="I0024" bundle="${sysInfo}" />
 <!doctype html>
 <html>
 <head>
@@ -64,6 +66,9 @@
       <td nowrap><ic_tree_dv_updatetime v-bind:model="data"></ic_tree_dv_updatetime></td>
       <td nowrap><ic_tree_dv_updater v-bind:model="data"></ic_tree_dv_updater></td>
     </tr>
+     <tr>
+		<td v-if="datas.length==0" colspan="6">{{info}}</td>
+	</tr>
   </tbody>
 </table>
 		</div>
@@ -91,6 +96,9 @@
 						     <input type="checkbox" name="l_boxs" onclick="left_box_sel(this)" v-bind:value="wdata.website_ID" v-model="web_checkedNames">
 						   </th>
 						  <td v-bind:style="index==webinfo_datas.length-1?{'border-bottom': '1px #e0e0e0 solid'}:{}">{{wdata.websiteName}}</td>
+						</tr>
+						 <tr>
+							<td v-if="webinfo_datas.length==0" colspan="6">{{info}}</td>
 						</tr>
 					  </tbody>
 					</table>
@@ -121,6 +129,9 @@
 						  </th>
 						  <td v-bind:style="index==webinfo_al_datas.length-1?{'border-bottom': '1px #e0e0e0 solid'}:{}">{{rdata.websiteName}}</td>
 						</tr>
+						 <tr>
+							<td v-if="webinfo_al_datas.length==0" colspan="6">{{info}}</td>
+						</tr>
 					  </tbody>
 					</table>
 				</div>
@@ -149,7 +160,9 @@ var Info = {
 	E0006:'${E0006}',
 	E0024:'${E0024}',
 	I0011:'${I0011}',
-	I0002:'${I0002}'
+	I0002:'${I0002}',
+	I0024:'${I0024}',
+	E0039:'${E0039}'
 };
 
 //某个复选框被点击后，判断全选/反选情况
@@ -338,6 +351,8 @@ var app = new Vue({
 	
 	el:"#app",
 	data:{
+		info:Info.I0024,
+		isfirstinjsp:true,   //是否第一次进入页面
 		search_key:'',       //查询条件
 		isbinding:'',        //查询条件--是否绑定信息源
 		datas:[],            //查询所得的数据集合
@@ -645,6 +660,8 @@ var app = new Vue({
 		    			    console.log(error);
 		    			    layer.close(l_index);
 		    			});
+			}else{
+				layer.msg(Info.E0039);
 			}
 		},
 		joingright:function(){   //弹出层左侧侧的数据加入到右侧
@@ -676,7 +693,9 @@ var app = new Vue({
 		    			    console.log(error);
 		    			    layer.close(l_index);
 		    			});
-		    }
+		    }else{
+				layer.msg(Info.E0039);
+			}
 		},
 		confim:function(){             ////弹出层确认按钮
 			var _this = this;
@@ -805,7 +824,7 @@ var app = new Vue({
 	    				
 	    				 checkedNames = [];
 	    				 var data = JSON.parse(response.data);
-	    				 //console.log(data);
+
 	    				 _this.datas = [];
 	    				 
 	    				 var temp = data.resdata;
@@ -828,9 +847,11 @@ var app = new Vue({
 	    					  checkedArr.push(data.resdata[i].classification_ID);
 	    				  }
 	    			
-	    				  if(data.rowCount=='0'){
+	    				  if(data.rowCount=='0'&&!_this.isfirstinjsp){
 	    					 layer.msg(Info.I0002);
 	    				  }
+	    				  
+	    				  _this.isfirstinjsp = false;
 	    				  
 	    				 _this.$refs.pagecomponent.dealAfterSearch(data.rowCount); 
 	    				

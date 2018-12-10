@@ -21,7 +21,11 @@ pageEncoding="UTF-8"%>
 <fmt:message key="W0004" var="W0004" bundle="${sysInfo}" />
 <fmt:message key="I0011" var="I0011" bundle="${sysInfo}" />
 <fmt:message key="I0024" var="I0024" bundle="${sysInfo}" />
-
+<fmt:message key="I0002" var="I0002" bundle="${sysInfo}" />
+<fmt:message key="E0042" var="E0042" bundle="${sysInfo}" />
+<fmt:message key="I0026" var="I0026" bundle="${sysInfo}" />
+<fmt:message key="W0001" var="W0001" bundle="${sysInfo}" />
+<fmt:message key="MaxSearchCnt" var="MaxSearchCnt" bundle="${sysInfo}" />
 <html xmlns:v-on="http://www.w3.org/1999/xhtml"
       xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
@@ -124,32 +128,33 @@ pageEncoding="UTF-8"%>
         </div>
         <div class="cy_CMICBMS_addtb">
             <div>
-                <span>*</span>用户角色：<select v-model="userInfoVo.urole" ><option
+                <span>*</span>用户角色：<select v-model="userInfoVo.urole" v-if="userInfoVo.usuperuserflag==0"><option
                     :value="role.userRole_ID" v-for="role in roles">{{role.userRoleName}}</option></select>
+                    <span v-if="userInfoVo.usuperuserflag==1">该用户为超级管理员</span>
             </div>
             <div>
                 <span>*</span>用户名：<input type="text" placeholder="输入用户名"
-                                         class="cy_CMICBMS_addinput" v-model="userInfoVo.uid" :disabled="is_disabled" @focus="uid_f" @blur="uid_b">
+                                         class="cy_CMICBMS_addinput" v-model="userInfoVo.uid" :disabled="is_disabled" @focus="uid_f" @blur="uid_b" maxlength="10" >
                 <div class="cy_CMICBMS_errortip" v-if="userInfoVo.uid==''" v-show="uidshow">请输入用户名！</div>
             </div>
             <div>
                 <span>*</span>设置密码：<input type="password" placeholder="设置密码"
-                                          class="cy_CMICBMS_addinput" v-model="userInfoVo.upwd" @focus="upwd_f" @blur="upwd_b">
+                                          class="cy_CMICBMS_addinput" v-model="userInfoVo.upwd" @focus="upwd_f" @blur="upwd_b" maxlength="32">
                 <div class="cy_CMICBMS_errortip" v-if="userInfoVo.upwd==''" v-show="upwdshow">请输入设置密码！</div>
             </div>
             <div>
                 <span>*</span>确认密码：<input type="password" placeholder="确认密码"
-                                          class="cy_CMICBMS_addinput" v-model="checkPwd" @focus="checkPwd_f" @blur="checkPwd_b">
+                                          class="cy_CMICBMS_addinput" v-model="checkPwd" @focus="checkPwd_f" @blur="checkPwd_b" maxlength="32">
                 <div class="cy_CMICBMS_errortip" v-if="checkPwd==''" v-show="checkPwdshow">请确认密码！</div>
             </div>
             <div>
                 <span>*</span>姓名：<input type="text" placeholder="输入姓名"
-                                        class="cy_CMICBMS_addinput" v-model="userInfoVo.uname" @focus="uname_f" @blur="uname_b">
+                                        class="cy_CMICBMS_addinput" v-model="userInfoVo.uname" @focus="uname_f" @blur="uname_b" maxlength="20">
                 <div class="cy_CMICBMS_errortip" v-if="userInfoVo.uname==''" v-show="unameshow">请输入姓名！</div>
             </div>
             <div>
                 所属部门：<input type="text" placeholder="所属部门"
-                            class="cy_CMICBMS_addinput" v-model="userInfoVo.udep">
+                            class="cy_CMICBMS_addinput" v-model="userInfoVo.udep" maxlength="20">
             </div>
             <div>
                 手机号码：<input type="text" placeholder="输入手机号"
@@ -157,7 +162,7 @@ pageEncoding="UTF-8"%>
             </div>
             <div>
                 邮箱地址：<input type="text" placeholder="输入邮箱地址"
-                            class="cy_CMICBMS_addinput" v-model="userInfoVo.uemail">
+                            class="cy_CMICBMS_addinput" v-model="userInfoVo.uemail" maxlength="50">
             </div>
             <div id="cy_CMICBMS_status">
                 状态：<input type="radio" name="RadioGroup1" value="1" id="RadioGroup1_0" v-model="userInfoVo.ustatus">启用
@@ -179,6 +184,7 @@ pageEncoding="UTF-8"%>
         E0006:'${E0006}',
         E0019:'${E0019}',
         W0002:'${W0002}',
+        I0012:'${I0012}',
         I0014:'${I0014}',
         E0026:'${E0026}',
         E0004:'${E0004}',
@@ -191,6 +197,11 @@ pageEncoding="UTF-8"%>
         E0037:'${E0037}',
         W0004:'${W0004}',
         I0024:'${I0024}',
+        I0002:'${I0002}',
+        E0042:'${E0042}',
+        I0026:'${I0026}',
+        W0001:'${W0001}',
+        MaxSearchCnt:'${MaxSearchCnt}',
 		I0011:'${I0011}'
     };
     var phoneReg = /^1[3-578]\d{9}$/;				//电话验证
@@ -262,6 +273,7 @@ pageEncoding="UTF-8"%>
                         }).then(function (res) {
                             vm2.userInfoVo=res.data;
                             vm2.userInfoVo.upwd='';
+                            vm2.checkPwd='';
                         })
                             .catch(function (error) {
                                 console.log(error);
@@ -294,12 +306,14 @@ pageEncoding="UTF-8"%>
                                 traditional:true,
                                 success:function(res){
                                     if ("OK" == res) {
-                                        layer.msg(Info.I0014, {icon: 1});
                                         if(checkedId.length==10){
                                             _this.$refs.pagecomponent.pageBean--;
                                         }
+                                        layer.msg(Info.I0014);
                                         _this.btn_search()
                                         _this.checkedId=[];
+                                    }else if("current"==res){
+                                    	layer.msg("当前用户不能被删除!");
                                     } else {
                                         // 超级管理员不能被删除
                                         layer.msg(Info.E0032 + " 超级管理员:" +res+"不能被删除");
@@ -344,7 +358,13 @@ pageEncoding="UTF-8"%>
                             _this.$refs.pagecomponent.dealAfterSearch(rowCount); //rowCount为总条目数  在ajax请求返回函数需调用该方法
                             _this.checkedId = [];		//检索完毕将复选框选择取消，防止点击分页等复选框仍然选取
                             _this.users =allUsers;
-                            layer.closeAll();	//关闭动画
+                            layer.close(l_index);	//关闭动画
+                            if(rowCount=='0'){
+      	    					 layer.msg(Info.I0002);
+      	    				  	}
+                            if(response.data.rowCount>parseInt(Info.MaxSearchCnt)){
+                            	layer.msg(Info.W0001)
+                            }
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -358,6 +378,7 @@ pageEncoding="UTF-8"%>
     {
         document.getElementById("cy_hidebg").style.display="none";
         document.getElementById("cy_CMICBMS_add").style.display="none";
+        vm2.reset_all();
     }
 
     //+++++++++++++++++++++++++++添加隐藏层++++++++++++++++++++++++
@@ -404,12 +425,17 @@ pageEncoding="UTF-8"%>
             uname_b:function () {
                 this.unameshow = true;
             },
-
+            reset_all:function(){		//关闭弹出层后，将属性重置
+            	this.uidshow=false		
+            	this.upwdshow=false
+            	this.checkPwdshow=false
+            	this.unameshow=false	
+            },
             submit:
                 function () {  // 新增&编辑时的提交处理
                     var _this = this;
                     var user = this.userInfoVo;
-                    if(user.urole==""||user.uid==""||user.uname==""||user.urole==""){
+                    if(user.urole==""||user.uid==""||user.uname==""||user.urole==null){
                         layer.msg(Info.E0026);  // 必须项未输入时，E0026输出
                         return false;
                     }else if(this.checkPwd!=user.upwd){
@@ -420,6 +446,10 @@ pageEncoding="UTF-8"%>
                         return false;
                     }else if(!phoneReg.test(user.utel)&&user.utel!=''){
                         layer.msg(Info.E0037);   // 手机格式输入不对时，E0037=请输入正确手机号码格式
+                        return false;
+                    }else if(user.upwd==""&&this.title=="添加用户"){
+                        layer.msg(Info.E0026); 
+
                         return false;
                     }
                     var url = this.url;
@@ -457,6 +487,7 @@ pageEncoding="UTF-8"%>
                         	// 修改成功MSG
                             window.hide();
                             vm.btn_search();
+                            _this.reset_all();
                             layer.msg(Info.I0012);
                         }
                     })
@@ -475,14 +506,18 @@ pageEncoding="UTF-8"%>
                             var data = response.data;
                             data.forEach(function (role) {
                                 _this.roles.push(role);
-
+									
+								
                             })
+								if(_this.roles.length==0){
+									layer.msg(Info.I0026);
+								}
                         })
                         .catch(function (error) {
                             console.log(error);
                         });
                 }
-        },
+        }
 
     })
 

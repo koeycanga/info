@@ -18,8 +18,28 @@ public class CollectionType extends CollectionTypeKey {
     private String updateuser;
 
     private String updatedatetime;
+    
+    private String collectionpath;
+    
+    private int collectionstratum;
 
-    public String getCollectiontypename() {
+    public String getCollectionpath() {
+		return collectionpath;
+	}
+
+	public void setCollectionpath(String collectionpath) {
+		this.collectionpath = collectionpath;
+	}
+
+	public int getCollectionstratum() {
+		return collectionstratum;
+	}
+
+	public void setCollectionstratum(int collectionstratum) {
+		this.collectionstratum = collectionstratum;
+	}
+
+	public String getCollectiontypename() {
         return collectiontypename;
     }
 

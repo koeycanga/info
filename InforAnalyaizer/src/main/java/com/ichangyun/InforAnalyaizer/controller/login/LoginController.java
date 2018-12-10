@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.service.userInfo.UserService;
 import com.ichangyun.InforAnalyaizer.utils.ImageUtil;
 
@@ -85,7 +85,7 @@ public class LoginController {
             String isremberusrname, HttpServletRequest request,
             HttpServletResponse response, HttpSession session) {
     	
-        String res = "ok";
+        String res = "";
         // 取得session中的验证码
         String s_checkCode = (String) session.getAttribute("checkCode");
         // 验证码正确性判断
@@ -103,11 +103,13 @@ public class LoginController {
 
                 // 登录成功
                 dealSession(user,session);
+               
                 if(isremberusrname.equals("true")) {  // 记住用户
                     userService.addCookie(response,user,passwd);
                 }else {  // 不记住用户
                     userService.delCookie(request,response);
                 }
+                res = "success"+user.getAuthority();
             }
         }
         return res;
@@ -152,7 +154,7 @@ public class LoginController {
      */
     @RequestMapping("/toLogin")
     public Object login(HttpServletRequest request, HttpSession session) {
-        request.setAttribute("user",session.getAttribute(CommBean.SESSION_NAME));
+
         return new ModelAndView("main");
     }
 

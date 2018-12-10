@@ -21,6 +21,7 @@
 <fmt:message key="I0012" var="I0012" bundle="${sysInfo}" />
 <fmt:message key="I0013" var="I0013" bundle="${sysInfo}" />
 <fmt:message key="W0004" var="W0004" bundle="${sysInfo}" />
+<fmt:message key="I0002" var="I0002" bundle="${sysInfo}" />
 
 <html>
 <head>
@@ -164,6 +165,7 @@
 		E0014:'${E0014}',
 		W0004:'${W0004}',
 		I0012:'${I0012}',
+        I0002:'${I0002}',
 		I0013:'${I0013}'
 
     };
@@ -321,6 +323,9 @@
                             var vos = response.data.vos;
                             _this.$refs.pagecomponent.dealAfterSearch(rowCount); //rowCount为总条目数  在ajax请求返回函数需调用该方法
                             _this.vos = vos;
+                            if(rowCount=='0'){
+   	    					 layer.msg(Info.I0002);
+   	    				  	}
                             _this.checkedId=[]
                         })
                         .catch(function (error) {

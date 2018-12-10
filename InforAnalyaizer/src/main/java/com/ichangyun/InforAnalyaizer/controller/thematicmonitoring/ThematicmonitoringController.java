@@ -5,6 +5,7 @@
  */
 package com.ichangyun.InforAnalyaizer.controller.thematicmonitoring;
 
+import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.CollectionBean;
 import com.ichangyun.InforAnalyaizer.service.thematicmonitoring.ThematicmonitoringService;
@@ -72,9 +73,9 @@ public class ThematicmonitoringController {
 	 * @return
 	 */
 	@RequestMapping("/getallfa")
-	public Object getAllFA() {
+	public Object getAllFA(HttpSession session) {
 		
-		String json = thematicmonitoringService.getAllFA();
+		String json = thematicmonitoringService.getAllFA(session);
 		
 		return json;
 	}
@@ -95,10 +96,14 @@ public class ThematicmonitoringController {
 		String jcc_json  = (String) map.get("jcc_json");
 		String planinfo_removeWord  = (String) map.get("planinfo_removeWord");
 		planinfo_removeWord = planinfo_removeWord.replace("，", ",");
+		
+		String fromDate = (String) map.get("fromDate");
+		String toDate = (String) map.get("toDate");
+		
 		if(thematicmonitoringService.exist(planinfo_name)) {
 			res = "exist";
 		}else {
-			if(!thematicmonitoringService.SaveNewfa(planinfo_name,jcc_json,planinfo_removeWord,session)) {
+			if(!thematicmonitoringService.SaveNewfa(planinfo_name,jcc_json,planinfo_removeWord,session,fromDate,toDate)) {
 				res = "nok";
 			}
 		}
@@ -132,10 +137,13 @@ public class ThematicmonitoringController {
 	 * @return  ok:删除成功   nok  删除失败
 	 */
 	@RequestMapping("/delarticle")
-	public Object delarticle(@RequestBody Map map) {
+	public Object delarticle(@RequestBody Map map,HttpSession session) {
 		String res = "ok";
 		String json = (String) map.get("json");
-		if(!thematicmonitoringService.delarticle(json)) {
+		String deletemode = (String) map.get("deletemode");
+		User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+		String userid = user.getUser_ID();
+		if(!thematicmonitoringService.delarticle(json,userid,deletemode)) {
 			res = "nok"; 
 		}
 		return res;
@@ -148,12 +156,16 @@ public class ThematicmonitoringController {
 	 * @return
 	 */
 	@RequestMapping("/getSimContent")
-	public Object getSimContent(ArticleInfoBean ab) {
+	public Object getSimContent(ArticleInfoBean ab,HttpSession session) {
 		
 		String[] montime = DateUtils.dealMontime(ab.getMontime());
 		
 		ab.setMontime_start(montime[0]);
 		ab.setMontime_end(montime[1]);
+
+		User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+		String userid = user.getUser_ID();
+		ab.setUserid(userid);
 		
 	    String json = thematicmonitoringService.getSimContent(ab);
 	    
@@ -175,15 +187,17 @@ public class ThematicmonitoringController {
 		String jcc_json  = (String) map.get("jcc_json");
 		String planinfo_removeWord  = (String) map.get("planinfo_removeWord");
 		planinfo_removeWord = planinfo_removeWord.replace("，", ",");
+		
+		String fromDate = (String) map.get("fromDate");
+		String toDate  = (String) map.get("toDate");
+		
 		if(thematicmonitoringService.existwithID(plan_id,planinfo_name)) {
 			 res = "exist";
 		}else {
-			
-			if(!thematicmonitoringService.updatefa(plan_id,planinfo_name,jcc_json,planinfo_removeWord,session)) {
+			if(!thematicmonitoringService.updatefa(plan_id,planinfo_name,jcc_json,planinfo_removeWord,session,fromDate,toDate)) {
 				res = "nok";
 			}
 		}
-		
 		return res;
 	}
 	
@@ -229,10 +243,14 @@ public class ThematicmonitoringController {
 		
 		ab.setMontime_start(montime[0]);
 		ab.setMontime_end(montime[1]);
-		
+
+		User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+		String userid = user.getUser_ID();
+		ab.setUserid(userid);
+
 		String lastest_relsetime = thematicmonitoringService.getSearchLaestRelsetime(ab);
 		
-		session.setAttribute(CommBean.LAST_CONTENT_SEARCH_TIME,lastest_relsetime);
+		session.setAttribute(CommBean.LAST_CONTENT_SEARCH_TIME_ZTJC,lastest_relsetime);
 		
 		int rowCount = thematicmonitoringService.getArticleRowCount(ab);
 		
@@ -252,7 +270,7 @@ public class ThematicmonitoringController {
 	@RequestMapping("/getlastestNews")
 	public Object getlastestNews(ArticleInfoBean ab,HttpSession session) {
 		
-		String last_time = (String) session.getAttribute(CommBean.LAST_CONTENT_SEARCH_TIME);
+		String last_time = (String) session.getAttribute(CommBean.LAST_CONTENT_SEARCH_TIME_ZTJC);
 		
 		ab.setReleasetime(last_time);
 		
@@ -273,9 +291,13 @@ public class ThematicmonitoringController {
 		ab.setMontime_start(montime[0]);
 		ab.setMontime_end(montime[1]);
 		
-		String qgsx_data = thematicmonitoringService.getQGSXJSON(ab);
+		List<ArticleInfoBean> list = thematicmonitoringService.getContentList(ab);
 		
-		String res = "{\"qgsx_data\":"+qgsx_data+"}";
+		String qgsx_data = thematicmonitoringService.getQGSXJSON(list); // 获得页面情感分析环状图所需的信息
+		
+		String sjml_data = thematicmonitoringService.getSJMLJSON(list); //获得文章脉络序列图所需的信息
+		
+		String res = "{\"qgsx_data\":"+qgsx_data+",\"sjml_data\":"+sjml_data+"}";
 		
 		return res;
 	}

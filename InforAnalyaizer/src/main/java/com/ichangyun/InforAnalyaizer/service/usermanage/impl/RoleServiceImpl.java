@@ -10,16 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ichangyun.InforAnalyaizer.mapper.usermanage.RoleMapper;
 import com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean;
+import com.ichangyun.InforAnalyaizer.service.numberingcontrol.NumberingcontrolService;
 import com.ichangyun.InforAnalyaizer.service.usermanage.RoleService;
 
 /**
@@ -34,10 +31,8 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleMapper roleMapper;
 
-    //spring事务管理manager
-    @Resource(name = "transactionManager")
-    private PlatformTransactionManager platformTransactionManager;
-
+    @Autowired
+    private NumberingcontrolService numberingcontrolService;
 
     @Override
     public int getRoleCount() {
@@ -62,17 +57,27 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public boolean AddNewRole(String roleName, String roleDes,String createrID,String Authority) {
-        Map map = new HashMap();
-        map.put("roleName", roleName);
-        map.put("roleDes", roleDes);
-        map.put("createrID", createrID);
-        map.put("Authority", Authority+"00000");
-        int res = roleMapper.AddNewRole(map);
-        if(res==1) {
-            return true;
-        }else {
-            return false;
-        }
+    	String roleID;
+		try {
+			roleID = numberingcontrolService.getNextCFID("NC00000005");
+			  Map map = new HashMap();
+		        map.put("roleID", roleID);
+		        map.put("roleName", roleName);
+		        map.put("roleDes", roleDes);
+		        map.put("createrID", createrID);
+		        map.put("Authority", Authority+"00000");
+		        
+		        int res = roleMapper.AddNewRole(map);
+		        if(res==1) {
+		            return true;
+		        }else {
+		            return false;
+		        }
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+      
     }
 
     @Override
@@ -90,6 +95,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public boolean updateRole(RoleManageBean ub) {
         try {
+        	ub.setAuthority(ub.getAuthority()+"00000");
             int res = roleMapper.updateRole(ub);
             if(res==1) {
                 return true;

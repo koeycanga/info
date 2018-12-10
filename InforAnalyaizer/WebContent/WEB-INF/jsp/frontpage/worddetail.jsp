@@ -31,7 +31,7 @@
 <head>
 <meta charset="UTF-8">
 <title>竞争情报分析系统</title>
-<link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style-1920_1080.css">
 </head>
 
 <body style="background-color: #f2f3f8;">
@@ -77,7 +77,7 @@
 				<div v-if="data.emotionDivision=='0'" class="cy_CIASFE_contpassta03">正</div>
 				<div v-if="data.emotionDivision=='1'" class="cy_CIASFE_contpassta02">中</div>
 				<div v-if="data.emotionDivision=='2'" class="cy_CIASFE_contpassta01">负</div>
-				<div v-if="data.earlyWarningState=='1'" class="cy_CIASFE_contpassta01">已预警</div>
+				<div v-if="data.yj_cnt>0" class="cy_CIASFE_contpassta01">已预警</div>
 				<div class="cy_CIASFE_contpascol">
 					<ic_collectiont v-bind:aid="data.article_ID" v-bind:collcnt="data.collcnt"></ic_collectiont>
 					<div class="cy_CIASFE_share" v-bind:data-clipboard-text="data.articleURL" v-bind:id="'sharedv'+index" v-on:click="share(index)"></div>
@@ -88,12 +88,18 @@
 				<a v-bind:href="'../detailspage/toDetailsPage?from=comprehensivemonitoring&article_id='+data.article_ID" target="_blank" style="text-decoration: none; color: rgb(0, 0, 0);">{{data.articleAbstract}}</a>
 			</div>
 			<div class="cy_CIASFE_contpastfoot">
-				<div v-on:mouseover="simcontent(index)" class="cy_CIASFE_simart">相似文章：{{data.sim_cnt}}条
-				<div  class="cy_CIASFE_simartbox">
-					<div v-for=" sdata in sim_datas[index]" ><a v-bind:href="'../detailspage/toDetailsPage?from=comprehensivemonitoring&article_id='+sdata.article_ID" target="_blank" >{{sdata.articleTitle}}</a></div>
-				</div>
-				</div>
-			   <a target="_blank" v-bind:href="data.articleURL">{{data.releasetime}} {{data.websiteName}}</a>
+			    <div class="cy_CIASFE_footbox01">&nbsp;</div>
+			    <div class="cy_CIASFE_footbox02" >
+			        <a target="_blank" v-bind:href="data.articleURL">{{data.releasetime}} {{data.websiteName}}</a>
+			        
+			        <span class="cy_CIASFE_simart" v-on:mouseover="simcontent(index)">
+			                              相似文章：{{data.sim_cnt}}条
+			          <div class="cy_CIASFE_simartbox">
+			             <div v-for=" sdata in sim_datas[index]" ><a v-bind:href="'../detailspage/toDetailsPage?from=comprehensivemonitoring&article_id='+sdata.article_ID" target="_blank" >{{sdata.articleTitle}}</a></div>
+			          </div>
+			        </span>
+			    
+			    </div>
 			</div>
 		</div>
 		

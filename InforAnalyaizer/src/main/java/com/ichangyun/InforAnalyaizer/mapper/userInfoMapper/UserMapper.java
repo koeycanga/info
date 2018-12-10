@@ -10,7 +10,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean;
 
 /**

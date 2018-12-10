@@ -20,6 +20,8 @@
 <fmt:message key="I0008" var="I0008" bundle="${sysInfo}" /> 
 <fmt:message key="I0011" var="I0011" bundle="${sysInfo}" />
 <fmt:message key="I0014" var="I0014" bundle="${sysInfo}" />
+<fmt:message key="I0024" var="I0024" bundle="${sysInfo}" />
+
 <!doctype html>
 <html>
 <head>
@@ -57,6 +59,9 @@
       <td  v-if="data.status=='0'">暂未使用</td>
       <td  v-if="data.status=='1'"><span>使用中</span></td>
     </tr>
+    <tr>
+		<td v-if="datas.length==0" colspan="5">{{info}}</td>
+	</tr>
   </tbody>
 </table>
  <pager ref="pagecomponent"></pager>  <!-- ref 固定为 pagecomponent  -->
@@ -67,13 +72,13 @@
 	<div class="cy_CMICBMS_addtop"><div class="cy_CMICBMS_addtit">{{tcc_title}}</div><div class="cy_CMICBMS_addclose" v-on:click="hideTcc()">X</div></div>
 	<div class="cy_CMICBMS_addtb">
 		<div>
-		  <span>*</span>角色名称：<input type="text" maxlength="20" v-on:blur="checkRoleName()" v-model="roleInfo.role_name" placeholder="角色名称" class="cy_CMICBMS_addinput">
+		  <span>*</span>角色名称：<input type="text" maxlength="20" v-on:blur="checkRoleName()" v-model="roleInfo.role_name" placeholder="请输入角色名称" class="cy_CMICBMS_addinput">
 		  <div v-if="errInfo.role_name_err" class="cy_CMICBMS_errortip">${E0016}</div>
 		</div>
 		<div style="float:left;padding:21px !important">
 		  <div style="float:left;">
-		  <span>*</span>权限设置：
-		  <input v-on:click="checkqx()" type="checkbox" id="yhgl" name="Authority" value="1">用户管理&nbsp;<br/>
+		     权限设置：&nbsp;
+		  <input v-on:click="checkqx()" type="checkbox" id="yhgl" name="Authority" value="1">&nbsp;用户管理&nbsp;&nbsp;<br/>
 		  <input v-on:click="checkqx()" style="margin:0px 0px 0 84px;" type="checkbox" id="qbgh" name="Authority" value="1"> 情报规划&nbsp;<br/>
 		  <input v-on:click="checkqx()" style="margin:0px 0px 0 84px;" type="checkbox" id="qbcj" name="Authority" value="1"> 情报采集&nbsp;<br/>
 		  <input v-on:click="checkqx()" style="margin:0px 0px 0 84px;" type="checkbox" id="qbjg" name="Authority" value="1"> 情报加工&nbsp;<br/>
@@ -120,7 +125,8 @@ var Info = {
 		I0007:'${I0007}',
 		I0008:'${I0008}',
 		I0011:'${I0011}',
-		I0014:'${I0014}'
+		I0014:'${I0014}',
+		I0024:'${I0024}'
 };
 
  
@@ -146,7 +152,8 @@ var Info = {
 			 role_id_err:false,
 			 role_name_err:false
 			// role_des_err:false
-		 }
+		 },
+		 info:Info.I0024
 	  },
 	  components:{
 		     'pager':ic_pager    //分页组件  引自js/ic_components.js
@@ -198,7 +205,7 @@ var Info = {
 				        }, function(index) {
 				            layer.close(index);
 				            var json = createJSON(_this.checkedNames);   //createJSON() 引自js/comm.js
-				            _this.checkedNames = [];
+				           // _this.checkedNames = [];
 							 axios.post('../role/delrole',
 									 {
 									 json:json
@@ -308,6 +315,10 @@ var Info = {
 					 this.errInfo.role_name_err = true;
 					 b = false;
 			  }
+			  if(this.roleInfo.role_name.indexOf("超级管理员")>=0||this.roleInfo.role_des.indexOf("超级管理员")>=0){
+				  layer.msg("超级管理员角色已经存在");
+				  b = false;
+			  }
 			  if(b){
 				 var auth = this.getAuth();
 			     var _this = this;
@@ -326,8 +337,9 @@ var Info = {
 		    			.then(function (response) {
 		    				if(response.data=='ok'){
 		    					layer.msg(Info.I0007);
-		    					_this.hideTcc();
 		    					_this.search(_this.$refs.pagecomponent.pageBean,false);
+		    					_this.checkedNames.push(_this.roleInfo.role_id.trim());
+		    					_this.hideTcc();
 		    				}
 		    				if(response.data=='nok'){
 		    					layer.msg(Info.E0022);
@@ -355,6 +367,10 @@ var Info = {
 				 if(this.roleInfo.role_des.trim()==''){
 			    	 this.roleInfo.role_des = this.getDescription();
 			     }
+				 if(this.roleInfo.role_name.indexOf("超级管理员")>=0||this.roleInfo.role_des.indexOf("超级管理员")>=0){
+					  layer.msg("超级管理员角色已经存在");
+					  return;
+				  }
 				 axios.get('../role/addnewrole',{
 		    			params: {
 		    				//UserRole_ID:this.roleInfo.role_id.trim(),

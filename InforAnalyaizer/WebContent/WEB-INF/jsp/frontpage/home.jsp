@@ -52,7 +52,7 @@
 		<div class="cy_CIASFE_newsbox04">
 			<div class="cy_CIASFE_newsbox01"><img src="../image/home-news.png"></div>
 			<div class="cy_CIASFE_newsbox02">
-				<div v-for="ndata in newest_datas" class="cy_CIASFE_newsbox03"><a v-bind:href="'../detailspage/toDetailsPage?from=front&article_id='+ndata.article_ID">{{ndata.articleTitle}}</a></div>
+				<div v-for="ndata in newest_datas" class="cy_CIASFE_newsbox03"><a target="_blank" v-bind:href="'../detailspage/toDetailsPage?from=front&article_id='+ndata.article_ID">{{ndata.articleTitle}}</a></div>
 				
 		</div>
 		</div>
@@ -63,7 +63,7 @@
 		<div class="cy_CIASFE_homeboxtit">预警信息TOP10</div>
 			<div class="cy_CIASFE_wrninfbox01">
 		
-			      <div v-for="(wdata,index) in warn_datas" class="cy_CIASFE_wrninfbox02"><span v-bind:class="index<=2?'cy_CIASFE_span01':'cy_CIASFE_span02'">{{index+1}}</span><a v-bind:href="'../detailspage/toDetailsPage?from=front&article_id='+wdata.article_ID">{{wdata.articleTitle}}</a></div>
+			      <div v-for="(wdata,index) in warn_datas" class="cy_CIASFE_wrninfbox02"><span v-bind:class="index<=2?'cy_CIASFE_span01':'cy_CIASFE_span02'">{{index+1}}</span><a target="_blank" v-bind:href="'../detailspage/toDetailsPage?from=front&article_id='+wdata.article_ID">{{wdata.articleTitle}}</a></div>
 			
 			</div>
 		</div>
@@ -127,16 +127,16 @@ var Info = {
     	data:{
     		
     		t_monitor_data:{               //今日监测数据
-    			total:'8600' ,                   //总数
-    			negative:'103',                //负面消息
-    			special:'1200',                 //专题
-    			warning:'3500'                  //预警
+    			total:'' ,                   //总数
+    			negative:'',                //负面消息
+    			special:'',                 //专题
+    			warning:''                  //预警
     		},
     		y_monitor_data:{               //昨日监测数据
-    			total:'8600' ,                   //总数
-    			negative:'103',                //负面消息
-    			special:'1200',                 //专题
-    			warning:'3500'                  //预警
+    			total:'' ,                   //总数
+    			negative:'',                //负面消息
+    			special:'',                 //专题
+    			warning:''                  //预警
     		},
     		
     		newest_datas:[],               //最新信息
@@ -175,12 +175,22 @@ var Info = {
     	    	 axios.get('../front/getHomeDatas')
 	      			.then(function (response) {
 	      				var data = JSON.parse(response.data);
-	      				
+	      			
 	      				_this.newest_datas = data.newest_datas;
 	                    
 	      				_this.warn_datas = data.warn_datas;
 	      				
 	      				_this.negative_datas = data.negative_datas;
+	      				
+	      				_this.t_monitor_data.total = data.t_total;
+	      				_this.t_monitor_data.negative = data.t_fmxx;
+	      				_this.t_monitor_data.special = data.t_ztjc;
+	      				_this.t_monitor_data.warning = data.t_yjxx;
+	      				
+	      				_this.y_monitor_data.total = data.y_total;
+	      				_this.y_monitor_data.negative = data.y_fmxx;
+	      				_this.y_monitor_data.special = data.y_ztjc;
+	      				_this.y_monitor_data.warning = data.y_yjxx;
 	      				
 	      			})
 	      			.catch(function (error) {

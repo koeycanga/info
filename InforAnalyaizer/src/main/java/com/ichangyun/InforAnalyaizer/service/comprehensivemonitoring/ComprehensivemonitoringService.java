@@ -34,9 +34,10 @@ public interface ComprehensivemonitoringService {
 	/**
 	 * 删除文章
 	 * @param json 要删除的文章的id json字面量
+	 * @param deletemode
 	 * @return
 	 */
-	public boolean delarticle(String json);
+	public boolean delarticle(String json, String userid, String deletemode);
 
 
 	/**

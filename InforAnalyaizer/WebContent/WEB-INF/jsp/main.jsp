@@ -1,14 +1,19 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" import="com.ichangyun.InforAnalyaizer.model.User"
+<%@ page language="java" contentType="text/html; charset=utf-8" import="com.ichangyun.InforAnalyaizer.model.userInfo.User,com.ichangyun.InforAnalyaizer.model.CommBean"
     pageEncoding="utf-8"%>
 <%
       String authority = "";
       boolean[] user_menu = new boolean[5];
-      User user =  (User)request.getAttribute("user");
+      User user =  (User)session.getAttribute(CommBean.SESSION_NAME);
       if(user==null){
     	  response.sendRedirect("../error/session_out.jsp");
       }else{
+     	   if(user.getSuperUserFlag().equals("1")){
+    		  user.setAuthority("1111111111");
+    	  }
     	  authority = user.getAuthority();
-    	  if(authority==null){authority="0000000000000";}
+    	  if(authority==null||authority.equals("")||authority.equals("0000000000")){
+    		  response.sendRedirect("../front/index");
+    	  }
     	  for(int i=0;i<user_menu.length;i++){
     		  user_menu[i] = (authority.charAt(i)=='1');
     	  }
@@ -32,6 +37,7 @@ function return_tologin(){
 	window.location.href = "${ctx}/login.jsp";
 }
 
+
 </script>
 </head>
 
@@ -48,7 +54,7 @@ function return_tologin(){
 </div>
 	<div class="cy_CMICBMS_manag">
 	<div class="cy_CMICBMS_box05"><a href="#" v-on:click="logout()">退出登录<img src="${ctx}/image/exit.png"></a></div>
-	<div class="cy_CMICBMS_box04"><a href="">跳转到前台{{menu_data[0].name}}</a></div>
+	<div class="cy_CMICBMS_box04"><a href="${ctx}/front/index">跳转到前台</a></div>
 
 	</div>
 </div>
@@ -91,7 +97,7 @@ function return_tologin(){
    //菜单组件
    var ic_menu = {
 		  
-		   template:'<div>'+
+		   template:'<div v-if="model">'+
 		   '<li  v-bind:class="t_class" v-on:click="toggle($event)"><a v-bind:href="model.href" target="mainiframe"><img v-if="model.imgsrc" v-bind:src="model.imgsrc"/>{{model.name}}</a></li>'+
 
 		   '<ic_menu v-show="isopen" v-for="model in model.children" v-bind:model="model"></ic_menu>'+
@@ -112,7 +118,6 @@ function return_tologin(){
  
 
    Vue.component('ic_menu',ic_menu);
-
    
    var app = new Vue({
 	   el:'#app',
@@ -176,8 +181,10 @@ function return_tologin(){
 		   
 	   },
 	   mounted:function(){
-		   $(".cy_CMICBMS_fstmenu")[0].click();
-	       $("#mainiframe").attr("src",$($(".cy_CMICBMS_sndmenu")[0]).children().eq(0).attr("href"));
+		   if( $(".cy_CMICBMS_fstmenu").length>0){
+		   		$(".cy_CMICBMS_fstmenu")[0].click();
+	       		$("#mainiframe").attr("src",$($(".cy_CMICBMS_sndmenu")[0]).children().eq(0).attr("href"));
+		   }
 	   }
    });
   

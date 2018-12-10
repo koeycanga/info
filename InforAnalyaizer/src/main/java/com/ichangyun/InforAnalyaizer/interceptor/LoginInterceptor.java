@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 
 /**
  * 用户 权限验证 拦截器
@@ -46,7 +46,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         User user = (User) session.getAttribute(CommBean.SESSION_NAME);
         //判断session中是否有用户数据，如果有，则返回true，继续向下执行
         if (user != null) {
-        	
+
         	String auth = user.getAuthority();
         	
         	List<String> au_list = (List<String>) servletContext.getAttribute("au_list");  //获得需要验证的权限列表

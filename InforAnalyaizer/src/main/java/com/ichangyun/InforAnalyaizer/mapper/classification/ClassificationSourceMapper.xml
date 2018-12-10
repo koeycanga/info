@@ -18,7 +18,7 @@
 			  <if test="ClassificationName!=null and ClassificationName!=''">
 			   and Classification_ID in (
 			   
-			   select left(nodePath,10) from m_classificationinfo c where ClassificationName like CONCAT('%',#{ClassificationName},'%')
+			   select left(ClassificationPath,10) from m_classificationinfo c where ClassificationName like CONCAT('%',#{ClassificationName},'%')
 				  <if test="isbinding==1">
 				   HAVING
 						(
@@ -53,7 +53,7 @@
         SELECT  a.Classification_ID,a.ClassificationName ,a.Parent_Classification_ID,
 		 (select count(1) from m_classificationinfo c where a.Classification_ID=c.Parent_Classification_ID) children_lg,
 		 (select count(DISTINCT b.Website_ID) from m_ClassificationInfoSource b where a.Classification_ID=b.Classification_ID)  binding_lg,
-			DATE_FORMAT(a.UpdateDateTime,'%Y-%m-%d %H:%i:%s') UpdateDateTime,
+			DATE_FORMAT(a.UpdateDateTime,'%Y/%m/%d %H:%i:%s') UpdateDateTime,
 			a.UpdateUser
 		from m_classificationinfo a 
 		where 1=1
@@ -61,7 +61,7 @@
 			       and Parent_Classification_ID = '0000000000'
 			  </if>
 		     <if test="ClassificationName!=null and ClassificationName!=''">
-			   and Classification_ID in (select left(nodePath,10) from m_classificationinfo c where ClassificationName like CONCAT('%',#{ClassificationName},'%')
+			   and Classification_ID in (select left(ClassificationPath,10) from m_classificationinfo c where ClassificationName like CONCAT('%',#{ClassificationName},'%')
 			      <if test="isbinding==1">
 				   HAVING
 						(
@@ -113,7 +113,7 @@
           SELECT distinct a.Classification_ID,a.ClassificationName ,a.Parent_Classification_ID,
 		 (select count(1) from m_classificationinfo c where a.Classification_ID=c.Parent_Classification_ID) children_lg,
 		 (select count(1) from m_ClassificationInfoSource b where a.Classification_ID=b.Classification_ID)  binding_lg,
-			DATE_FORMAT(a.UpdateDateTime,'%Y-%m-%d %H:%i:%s') UpdateDateTime,
+			DATE_FORMAT(a.UpdateDateTime,'%Y/%m/%d %H:%i:%s') UpdateDateTime,
 			a.UpdateUser
 		from m_classificationinfo a 
 		where 1=1 and Parent_Classification_ID=#{Classification_ID}  ORDER BY a.DisplayOrder desc

@@ -18,7 +18,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ichangyun.InforAnalyaizer.mapper.comprehensivemonitoring.ComprehensivemonitoringMapper;
 import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
 import com.ichangyun.InforAnalyaizer.service.comprehensivemonitoring.ComprehensivemonitoringService;
 import com.ichangyun.InforAnalyaizer.utils.DateUtils;
@@ -68,8 +68,8 @@ public class ComprehensivemonitoringServiceImpl implements Comprehensivemonitori
 	}
 
 	@Override
-	public boolean delarticle(String json) {
-		
+	public boolean delarticle(String json, String userid, String deletemode) {
+
 		try {
 			List<String> list = new ArrayList<String>();
 			JSONArray ja = JSONArray.parseArray(json);
@@ -80,7 +80,7 @@ public class ComprehensivemonitoringServiceImpl implements Comprehensivemonitori
 			}
 			
 			if(list.size()>0) {
-				comprehensivemonitoringMapper.delarticle(list);
+				comprehensivemonitoringMapper.delarticle(list,userid,deletemode);
 			}
 		}catch(Exception e) {
 			return false;

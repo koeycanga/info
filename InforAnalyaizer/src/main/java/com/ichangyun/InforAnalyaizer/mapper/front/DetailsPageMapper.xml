@@ -1,21 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ichangyun.InforAnalyaizer.mapper.front.DetailsPageMapper">
-	
+
 	<select id="getArticleByID" parameterType="java.lang.String" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
 	     select CollectionField_ID,Article_ID,Classification_ID,ArticleTitle,ArticleAbstract,ArticleText,
-			ArticleAuthor,DATE_FORMAT(Releasetime,'%Y-%m-%d %H:%i:%s') Releasetime,
+	        (select count(1) from m_mycollection cc where cc.Article_ID=a.Article_ID ) collcnt,
+			ArticleAuthor,DATE_FORMAT(Releasetime,'%Y/%m/%d %H:%i:%s') Releasetime,
 			ArticleURL,ArticleKeyWord,PictureStoragePath,
 			Website_ID,
 			(select b.WebsiteName from m_websiteinfo b where a.Website_ID=b.Website_ID)  WebsiteName,
-			SourceDivision,EmotionDivision,EarlyWarningState
+			SourceDivision,EmotionDivision,
+			(
+              select count(1) from a_articlebasicinfo b where a.SimilarArticlesNo=b.SimilarArticlesNo and a.Article_ID!=b.Article_ID
+              and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
+            ) sim_cnt,
+			IF(a.Article_ID in (SELECT k.Article_ID FROM a_userearlywarningarticleinfo as k where k.User_ID=#{userid}),"yes","no") isearlywarning
 			 from a_articlebasicinfo a where a.Article_ID=#{article_id}
+			 and not exists (select 1 from a_userdeletearticleinfo b where a.Article_ID=b.Article_ID)
 	</select>
-	
+
 	<select id="getBDArticleByID" parameterType="java.lang.String" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
-	     select DATE_FORMAT(a.Releasetime,'%Y-%m-%d %H:%i:%s') Releasetime,a.ArticleURL,b.WebsiteName from a_articlebasicinfo a,m_websiteinfo b
+	     select DATE_FORMAT(a.Releasetime,'%Y/%m/%d %H:%i:%s') Releasetime,a.ArticleURL,b.WebsiteName from a_articlebasicinfo a,m_websiteinfo b
 			where a.Website_ID=b.Website_ID and a.ArticleTitle=(select c.ArticleTitle from a_articlebasicinfo c where c.Article_ID=#{article_id} )
+			and not exists (select 1 from a_userdeletearticleinfo b where a.Article_ID=b.Article_ID)
 			order by a.Releasetime desc
 	</select>
-	
+
+
+    <select id="getSimContent" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+
+         select a.Article_ID,a.ArticleTitle,a.ArticleURL from a_articlebasicinfo a where a.SimilarArticlesNo=
+			(select b.SimilarArticlesNo from a_articlebasicinfo b where b.Article_ID=#{Article_ID}) and a.Article_ID!=#{Article_ID}
+			and not exists (select 1 from A_UserDeleteArticleInfo b where b.Article_ID=a.Article_ID and b.User_ID=#{userid})
+	      order by Releasetime desc
+
+     </select>
 </mapper>

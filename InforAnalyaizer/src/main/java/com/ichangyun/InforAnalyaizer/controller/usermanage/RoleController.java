@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.User;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean;
 import com.ichangyun.InforAnalyaizer.service.common.service.DBUpdateCheckService;
 import com.ichangyun.InforAnalyaizer.service.usermanage.RoleService;

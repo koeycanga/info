@@ -23,9 +23,10 @@ public interface ThematicmonitoringMapper {
 
 	/**
 	 * 获得所有方案
+	 * @param userid 
 	 * @return
 	 */
-	public List<ThematicmonitoringBean> getAllFA();
+	public List<ThematicmonitoringBean> getAllFA(@Param("userid")String userid);
 
 	/**
 	 * 判断方案名称是否已存在
@@ -98,7 +99,7 @@ public interface ThematicmonitoringMapper {
 	 * 删除文章
 	 * @param list 要删除的文章id集合
 	 */
-	public void delarticle(List<String> list);
+	public void delarticle(@Param("list")List<String> list,@Param("userid")String userid,@Param("deletemode")String deletemode);
 
 	/**
 	 * 获得相似文章
@@ -135,14 +136,24 @@ public interface ThematicmonitoringMapper {
 	public int getConllectCount(CollectionBean cb);
 
 	/**
-	 * 获得情感属性环状图所需信息
+	 * 获得内容分析页面所需信息
 	 * @param ab
 	 * @return
 	 */
-	public List<ArticleInfoBean> getQGSXJSON(ArticleInfoBean ab);
+	public List<ArticleInfoBean> getContentList(ArticleInfoBean ab);
 
+	/**
+	 * 获得最新消息条目数
+	 * @param ab
+	 * @return
+	 */
 	public int getlastestNews(ArticleInfoBean ab);
 
+	/**
+	 * 获得最近一次查询文章的最新文章发布时间
+	 * @param ab
+	 * @return
+	 */
 	public String getSearchLaestRelsetime(ArticleInfoBean ab);
 
 	/**
@@ -159,6 +170,62 @@ public interface ThematicmonitoringMapper {
 	 */
 	public List<ArticleInfoBean> getArticleWithHB(ArticleInfoBean ab);
 
+	/**
+	 * 获得专题监测页面热词云信息
+	 * @return
+	 */
 	public List<HotWordBean> getHotWord();
+
+	/**
+	 * 根据方案ID和用户ID获得方案详细信息
+	 * @param pl_id
+	 * @param userid
+	 * @return
+	 */
+	public List<ThematicmonitoringBean> getFAByIdAndUser(@Param("pl_id")String pl_id, @Param("userid")String userid);
+
+	/**
+	 * 获得符合专题监测规则的文章总数
+	 * @param sql
+	 * @return
+	 */
+	public int getArticleRowCountWithPlanInfo(@Param("sql")String sql);
+
+	/**
+	 * 获得符合专题监测规则的文章集合
+	 * @param sql
+	 * @param l_pre
+	 * @param rowSize
+	 * @param sql_m1
+	 * @param sql_m2
+	 * @param sql_m3
+	 * @return
+	 */
+	public List<ThematicmonitoringBean> getArticleWithPlanInfo(@Param("sql")String sql, @Param("l_pre")int l_pre, @Param("rowSize")int rowSize, @Param("sql_m1")String sql_m1, @Param("sql_m2")String sql_m2, @Param("sql_m3")String sql_m3);
+
+	/**
+	 * 添加符合符合专题监测方案的文章到监测表
+	 * @param list
+	 */
+	public void insertArtileWithPlanInfoBatch(List<ThematicmonitoringBean> list);
+
+	/**
+	 * 根据方案ID删除文章监测表中的相关文章
+	 * @param pl_id
+	 */
+	public void delArticleWithPlanInfo(@Param("pl_id")String pl_id);
+
+
+	//public int getPlanInfoWordUseCount(@Param("sql")String sql,@Param("Article_ID")String Article_ID);
+
+	/**
+	 * 更新方案
+	 * @param plan_id
+	 * @param planinfo_name
+	 * @param fromDate
+	 * @param toDate
+	 * @param num  组合数
+	 */
+	public void updatefa(@Param("plan_id")String plan_id, @Param("planinfo_name")String planinfo_name, @Param("fromDate")String fromDate, @Param("toDate")String toDate, @Param("num")int num,@Param("userid")String userid);
 
 }
