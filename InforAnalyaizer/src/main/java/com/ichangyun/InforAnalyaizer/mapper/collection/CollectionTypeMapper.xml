@@ -20,7 +20,7 @@
   </sql>
 
   <delete id="deleteByPrimaryKey" parameterType="com.ichangyun.InforAnalyaizer.model.collection.CollectionTypeKey" >
-      delete from m_collectiontype where User_ID = #{userId} and locate(
+      delete m_mycollection,m_collectiontype from m_collectiontype a left join m_mycollection b on a.CollectionType_ID=b.CollectionType_ID  where a.User_ID = #{userId} and locate(
    		CollectionType_ID,
   		(select DISTINCT getChildList_collectiontype(#{collectiontypeId}) from m_collectiontype)
 		)>0 
@@ -162,7 +162,7 @@
    	set DisplayOrder = DisplayOrder-1
     where User_ID = #{userId,jdbcType=CHAR}
       and Parent_CollectionType_ID = #{parentCollectiontypeId,jdbcType=CHAR}
-      and DisplayOrder &gt; #{displayorder}
+      and DisplayOrder <![CDATA[>]]> #{displayorder}
   </update>
   
       <update id="afterOrder" parameterType="com.ichangyun.InforAnalyaizer.model.collection.CollectionType" >
@@ -170,7 +170,7 @@
    	set DisplayOrder = DisplayOrder+1
     where User_ID = #{userId,jdbcType=CHAR}
       and Parent_CollectionType_ID = #{parentCollectiontypeId,jdbcType=CHAR}
-      and DisplayOrder &gt;= #{displayorder}
+      and DisplayOrder <![CDATA[>=]]> #{displayorder}
   </update>
    <update id="changeOrder1" parameterType="hashmap" >
     update m_collectiontype
@@ -184,6 +184,6 @@
    	set DisplayOrder = DisplayOrder-1
     where User_ID = #{userId,jdbcType=CHAR}
       and Parent_CollectionType_ID = #{parentCollectiontypeId,jdbcType=CHAR}
-      and DisplayOrder &gt;  #{oldDisplayOrder} and DisplayOrder &lt; #{displayorder}
+      and DisplayOrder <![CDATA[>]]>  #{oldDisplayOrder} and DisplayOrder <![CDATA[<=]]> #{displayorder}
   </update>
 </mapper>

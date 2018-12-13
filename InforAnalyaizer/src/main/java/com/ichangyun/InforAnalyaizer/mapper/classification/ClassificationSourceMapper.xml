@@ -12,8 +12,36 @@
 				a.Classification_ID
 			FROM m_classificationinfo a
 			WHERE 1 = 1
-			  <if test="ClassificationName==null or ClassificationName==''">
+			  <if test="(ClassificationName==null or ClassificationName=='') and isbinding==0">
 			       and Parent_Classification_ID = '0000000000'
+			  </if>
+			  <if test="(ClassificationName==null or ClassificationName=='') and isbinding!=0">
+			         and Classification_ID in (
+			   
+			   select left(ClassificationPath,10) from m_classificationinfo c where ClassificationName like CONCAT('%',#{ClassificationName},'%')
+				  <if test="isbinding==1">
+				   HAVING
+						(
+							SELECT
+								count(DISTINCT b.Website_ID)
+							FROM
+								m_ClassificationInfoSource b
+							WHERE
+								c.Classification_ID = b.Classification_ID
+						) > 0
+				   </if>
+				   <if test="isbinding==2">
+				       HAVING
+						(
+							SELECT
+								count(DISTINCT b.Website_ID)
+							FROM
+								m_ClassificationInfoSource b
+							WHERE
+								c.Classification_ID = b.Classification_ID
+						) = 0
+				   </if>
+			    )
 			  </if>
 			  <if test="ClassificationName!=null and ClassificationName!=''">
 			   and Classification_ID in (
@@ -57,8 +85,36 @@
 			a.UpdateUser
 		from m_classificationinfo a 
 		where 1=1
-		      <if test="ClassificationName==null or ClassificationName==''">
+		      <if test="ClassificationName==null or ClassificationName=='' and isbinding==0">
 			       and Parent_Classification_ID = '0000000000'
+			  </if>
+			   <if test="(ClassificationName==null or ClassificationName=='') and isbinding!=0">
+			         and Classification_ID in (
+			   
+			   select left(ClassificationPath,10) from m_classificationinfo c where ClassificationName like CONCAT('%',#{ClassificationName},'%')
+				  <if test="isbinding==1">
+				   HAVING
+						(
+							SELECT
+								count(DISTINCT b.Website_ID)
+							FROM
+								m_ClassificationInfoSource b
+							WHERE
+								c.Classification_ID = b.Classification_ID
+						) > 0
+				   </if>
+				   <if test="isbinding==2">
+				       HAVING
+						(
+							SELECT
+								count(DISTINCT b.Website_ID)
+							FROM
+								m_ClassificationInfoSource b
+							WHERE
+								c.Classification_ID = b.Classification_ID
+						) = 0
+				   </if>
+			    )
 			  </if>
 		     <if test="ClassificationName!=null and ClassificationName!=''">
 			   and Classification_ID in (select left(ClassificationPath,10) from m_classificationinfo c where ClassificationName like CONCAT('%',#{ClassificationName},'%')

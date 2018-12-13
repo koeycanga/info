@@ -46,25 +46,28 @@ public interface HomeService {
 	 */
 	public String getSimContent(ArticleInfoBean ab);
 
+
+	
 	/**
-	 * 获得最新消息的json字面量
+	 * 获得首页监测相关的信息
+	 * @param session
 	 * @return
 	 */
-	public String getNewestDatas();
-
-	/**
-	 * 获得预警信息top10的json字面量
-	 * @param session 
-	 * @return
-	 */
-	public String getWarnDatas(HttpSession session);
-
-	/**
-	 * 获得负面信息top10的json字面量
-	 * @return
-	 */
-	public String getNegativeDatas();
-
 	public String getJCMsg(HttpSession session);
+
+	/**
+	 * 获得首页top10相关文章信息
+	 * @param session
+	 * @return
+	 */
+	public String[] getTopTenDatas(HttpSession session);
+
+	/**
+	 * 获得即将发生相关信息
+	 * @return
+	 */
+	public String getJJFSWord();
+
+	public String getHotWordFromDetial(String flag);
 
 }

@@ -61,7 +61,7 @@ public interface ClassificationInfoService {
 	 * @return  true 修改成功　　false　异常
 	 * Date:2018-11-12
 	 */
-	public boolean updateData(ClassificationInfoBean cb);
+	public String updateData(ClassificationInfoBean cb);
 
 	/**
 	 * 查询除某ＩＤ以外的分类体系名称是否已存在

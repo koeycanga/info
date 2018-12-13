@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%>
-<%@ taglib prefix="ss" uri="http://www.springframework.org/tags" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="ss" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:setBundle basename="resources" var="sysInfo" />
 <fmt:message key="front_menu" var="front_menu" bundle="${sysInfo}" />
@@ -27,157 +27,186 @@ pageEncoding="UTF-8"%>
 <fmt:message key="W0001" var="W0001" bundle="${sysInfo}" />
 <fmt:message key="MaxSearchCnt" var="MaxSearchCnt" bundle="${sysInfo}" />
 <html xmlns:v-on="http://www.w3.org/1999/xhtml"
-      xmlns:v-bind="http://www.w3.org/1999/xhtml">
+	xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title></title>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="${ctx}/js/vue.min.js"></script>
-    <script src="${ctx}/js/vue-resource.min.js"></script>
-   <!-- <link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style.css">   -->
-    
+<meta charset="UTF-8">
+<title></title>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="${ctx}/js/vue.min.js"></script>
+<script src="${ctx}/js/vue-resource.min.js"></script>
+<!-- <link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style.css">   -->
+
 <link rel="stylesheet" type="text/css" href="${ctx}/layui/css/layui.css" />
 <link id="lnk" rel="stylesheet" type="text/css" href="">
-    
-    <script type="text/javascript" src="${ctx}/layer/layer.js"></script>
-    <script src="${ctx}/js/axios.min.js"></script>
-    <script type="text/javascript" src="${ctx}/js/polyfill.min.js"></script>
-    <style>
-        [v-cloak] {
-            display: none;
-            /* 配合样式使用 */
-        }
-    </style>
+
+<script type="text/javascript" src="${ctx}/layer/layer.js"></script>
+<script src="${ctx}/js/axios.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/polyfill.min.js"></script>
+<style>
+[v-cloak] {
+	display: none;
+	/* 配合样式使用 */
+}
+
+.mark1 {
+	display: inline-block;
+	width: 0px;
+	height: 0px;
+	border-width: 7px;
+	border-style: dashed;
+	overflow: hidden;
+	border-color: #666 transparent transparent transparent;
+	top: 12.5%;
+	right: 11%;
+	position: absolute;
+}
+input[disabled]{color:#fff;opacity:1}
+</style>
 </head>
 <body>
-<div id="userInfo" v-cloak>
-    <div class="cy_hidebg" id="cy_hidebg"></div>
-    <div class="cy_CMICBMS_bodybg">
-        <p>
-            用户管理 > <span>账号管理</span>
-        </p>
-        <div class="cy_CMICBMS_tablebox">
-            <form @submit.prevent>
-                <div class="cy_CMICBMS_box07">
+	<div id="userInfo" v-cloak>
+		<div class="cy_hidebg" id="cy_hidebg"></div>
+		<div class="cy_CMICBMS_bodybg">
+			<p>
+				用户管理 > <span>账号管理</span>
+			</p>
+			<div class="cy_CMICBMS_tablebox">
+				<form @submit.prevent>
+					<div class="cy_CMICBMS_box07">
 
-                    <select v-model="userInfoVo2.ustatus">
-                        <option value="2">账号状态</option>
-                        <option value="1">启用</option>
-                        <option value="0">停用</option>
-                    </select>
-                    <div class="cy_CMICBMS_schbox01">
-                        <input type="text" placeholder="请输入用户名检索"
-                               v-model="userInfoVo2.uid">
-                    </div>
-                    <input type="button" class="cy_CMICBMS_schbtn" value="检索"
-                           v-on:click="btn_search">
+						<select v-model="userInfoVo2.ustatus">
+							<option value="2">账号状态</option>
+							<option value="1">启用</option>
+							<option value="0">停用</option>
+						</select>
+						<div class="cy_CMICBMS_schbox01">
+							<input type="text" placeholder="输入用户名检索..."
+								v-model="userInfoVo2.uid">
+						</div>
+						<input type="button" class="cy_CMICBMS_schbtn" value="检索"
+							v-on:click="btn_search">
 
-                </div>
-            </form>
-            <div class="cy_CMICBMS_box08">
-                <input type="button" class="cy_CMICBMS_addbtn" value="新增"
-                       v-on:click="addUser"> <input type="button"
-                                                    class="cy_CMICBMS_edbtn" value="编辑" v-on:click="updateUser">
-                <input type="button" class="cy_CMICBMS_dltbtn" value="删除"
-                       v-on:click="deleteUser">
-            </div>
-            <div class="cy_CMICBMS_box08">
-                <table width="100%" border="0" class="cy_CMICBMS_accmngtb"
-                       cellspacing="0">
-                    <tbody>
-                    <tr>
-                        <th width="25px" scope="col"><input type="checkbox" v-model='isok'
-                                                            v-on:click='checkedAll' /></th>
-                        <th scope="col">用户名</th>
-                        <th scope="col">用户角色</th>
-                        <th scope="col">姓名</th>
-                        <th scope="col">职位</th>
-                        <th scope="col">手机号</th>
-                        <th scope="col">邮箱</th>
-                        <th scope="col" style="text-align: center">状态</th>
-                    </tr>
-                    <tr class="cy_CMICBMS_treven" v-for="userInfoVo in users">
-                        <td><input type="checkbox" :value="userInfoVo.unum"
-                                   v-model="checkedId"></td>
-                        <td>{{userInfoVo.uid}}</td>
-                        <td>{{userInfoVo.urolename}}</td>
-                        <td>{{userInfoVo.uname}}</td>
-                        <td>{{userInfoVo.udep}}</td>
-                        <td>{{userInfoVo.utel}}</td>
-                        <td>{{userInfoVo.uemail}}</td>
-                        <td>{{userInfoVo.ustatus==1?"启用":"停用"}}</td>
-                    </tr>
+					</div>
+				</form>
+				<div class="cy_CMICBMS_box08">
+					<input type="button" class="cy_CMICBMS_addbtn" value="新增"
+						v-on:click="addUser"> <input type="button"
+						class="cy_CMICBMS_edbtn" value="编辑" v-on:click="updateUser">
+					<input type="button" class="cy_CMICBMS_dltbtn" value="删除"
+						v-on:click="deleteUser">
+				</div>
+				<div class="cy_CMICBMS_box08">
+					<table width="100%" border="0" class="cy_CMICBMS_accmngtb"
+						cellspacing="0">
+						<tbody>
+							<tr>
+								<th width="25px" scope="col"><input type="checkbox"
+									v-model='isok' v-on:click='checkedAll' /></th>
+								<th scope="col">用户名</th>
+								<th scope="col">用户角色</th>
+								<th scope="col">姓名</th>
+								<th scope="col">所属部门</th>
+								<th scope="col">手机号</th>
+								<th scope="col">邮箱</th>
+								<th scope="col" style="text-align: center">状态</th>
+							</tr>
+							<tr class="cy_CMICBMS_treven" v-for="userInfoVo in users">
+								<td><input type="checkbox" :value="userInfoVo.unum"
+									v-model="checkedId"></td>
+								<td>{{userInfoVo.uid}}</td>
+								<td>{{userInfoVo.usuperuserflag==0?userInfoVo.urolename:'超级管理员'}}</td>
+								<td>{{userInfoVo.uname}}</td>
+								<td>{{userInfoVo.udep}}</td>
+								<td>{{userInfoVo.utel}}</td>
+								<td>{{userInfoVo.uemail}}</td>
+								<td>{{userInfoVo.ustatus==1?"启用":"停用"}}</td>
+							</tr>
 							<tr>
 								<td v-if="users.length==0" colspan="8">{{info}}</td>
 							</tr>
-                    </tbody>
-                </table>
-            </div>
+						</tbody>
+					</table>
+				</div>
 
-            <pager ref="pagecomponent"></pager>
+				<pager ref="pagecomponent"></pager>
 
 
-        </div>
-    </div>
-</div>
-<div id="addform">
-    <div id="cy_CMICBMS_add">
-        <div class="cy_CMICBMS_addtop">
-            <div class="cy_CMICBMS_addtit">{{title}}</div>
-            <div class="cy_CMICBMS_addclose" onClick="hide();">X</div>
-        </div>
-        <div class="cy_CMICBMS_addtb">
-            <div>
-                <span>*</span>用户角色：<select v-model="userInfoVo.urole" v-if="userInfoVo.usuperuserflag==0"><option
-                    :value="role.userRole_ID" v-for="role in roles">{{role.userRoleName}}</option></select>
-                    <span v-if="userInfoVo.usuperuserflag==1">该用户为超级管理员</span>
-            </div>
-            <div>
-                <span>*</span>用户名：<input type="text" placeholder="输入用户名"
-                                         class="cy_CMICBMS_addinput" v-model="userInfoVo.uid" :disabled="is_disabled" @focus="uid_f" @blur="uid_b" maxlength="10" >
-                <div class="cy_CMICBMS_errortip" v-if="userInfoVo.uid==''" v-show="uidshow">请输入用户名！</div>
-            </div>
-            <div>
-                <span>*</span>设置密码：<input type="password" placeholder="设置密码"
-                                          class="cy_CMICBMS_addinput" v-model="userInfoVo.upwd" @focus="upwd_f" @blur="upwd_b" maxlength="32">
-                <div class="cy_CMICBMS_errortip" v-if="userInfoVo.upwd==''" v-show="upwdshow">请输入设置密码！</div>
-            </div>
-            <div>
-                <span>*</span>确认密码：<input type="password" placeholder="确认密码"
-                                          class="cy_CMICBMS_addinput" v-model="checkPwd" @focus="checkPwd_f" @blur="checkPwd_b" maxlength="32">
-                <div class="cy_CMICBMS_errortip" v-if="checkPwd==''" v-show="checkPwdshow">请确认密码！</div>
-            </div>
-            <div>
-                <span>*</span>姓名：<input type="text" placeholder="输入姓名"
-                                        class="cy_CMICBMS_addinput" v-model="userInfoVo.uname" @focus="uname_f" @blur="uname_b" maxlength="20">
-                <div class="cy_CMICBMS_errortip" v-if="userInfoVo.uname==''" v-show="unameshow">请输入姓名！</div>
-            </div>
-            <div>
-                所属部门：<input type="text" placeholder="所属部门"
-                            class="cy_CMICBMS_addinput" v-model="userInfoVo.udep" maxlength="20">
-            </div>
-            <div>
-                手机号码：<input type="text" placeholder="输入手机号"
-                            class="cy_CMICBMS_addinput" v-model="userInfoVo.utel">
-            </div>
-            <div>
-                邮箱地址：<input type="text" placeholder="输入邮箱地址"
-                            class="cy_CMICBMS_addinput" v-model="userInfoVo.uemail" maxlength="50">
-            </div>
-            <div id="cy_CMICBMS_status">
-                状态：<input type="radio" name="RadioGroup1" value="1" id="RadioGroup1_0" v-model="userInfoVo.ustatus">启用
-                <input type="radio" name="RadioGroup1" value="0" id="RadioGroup1_1" v-model="userInfoVo.ustatus">停用
-            </div>
-            <div style="margin: 40px 20px 0 0;">
-                <input type="button" value="确定" class="cy_CMICBMS_schbtn"
-                       v-on:click="submit">
-            </div>
-        </div>
-    </div>
-</div>
-<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
-<script type="text/javascript" src="${ctx}/js/comm.js"></script>
-<script>
+			</div>
+		</div>
+	</div>
+	<div id="addform">
+		<div id="cy_CMICBMS_add">
+			<div class="cy_CMICBMS_addtop">
+				<div class="cy_CMICBMS_addtit">{{title}}</div>
+				<div class="cy_CMICBMS_addclose" onClick="hide();">X</div>
+			</div>
+			<div class="cy_CMICBMS_addtb">
+				<div>
+					<span>*</span>用户角色：<select v-model="userInfoVo.urole"
+						v-if="userInfoVo.usuperuserflag==0">
+						<option value="0" selected="selected">输入用户角色</option>
+						<option :value="role.userRole_ID" v-for="role in roles">{{role.userRoleName}}</option>
+					</select> <i class="mark1"></i><span v-if="userInfoVo.usuperuserflag==1">该用户为超级管理员</span>
+				</div>
+				<div>
+					<span>*</span>用户名：<input type="text" placeholder="输入用户名"
+						class="cy_CMICBMS_addinput" v-model="userInfoVo.uid"
+						:disabled="is_disabled" @focus="uid_f" @blur="uid_b"
+						maxlength="10" >
+					<div class="cy_CMICBMS_errortip" v-if="userInfoVo.uid==''"
+						v-show="uidshow">输入用户名！</div>
+				</div>
+				<div>
+					<span>*</span>设置密码：<input type="password" placeholder="设置密码"
+						class="cy_CMICBMS_addinput" v-model="userInfoVo.upwd"
+						@focus="upwd_f" @blur="upwd_b" maxlength="32">
+					<div class="cy_CMICBMS_errortip" v-if="userInfoVo.upwd==''"
+						v-show="upwdshow">输入设置密码！</div>
+				</div>
+				<div>
+					<span>*</span>确认密码：<input type="password" placeholder="确认密码"
+						class="cy_CMICBMS_addinput" v-model="checkPwd" @focus="checkPwd_f"
+						@blur="checkPwd_b" maxlength="32">
+					<div class="cy_CMICBMS_errortip" v-if="checkPwd==''"
+						v-show="checkPwdshow">确认密码！</div>
+				</div>
+				<div>
+					<span>*</span>姓名：<input type="text" placeholder="输入姓名"
+						class="cy_CMICBMS_addinput" v-model="userInfoVo.uname"
+						@focus="uname_f" @blur="uname_b" maxlength="20">
+					<div class="cy_CMICBMS_errortip" v-if="userInfoVo.uname==''"
+						v-show="unameshow">输入姓名！</div>
+				</div>
+				<div>
+					所属部门：<input type="text" placeholder="所属部门"
+						class="cy_CMICBMS_addinput" v-model="userInfoVo.udep"
+						maxlength="20">
+				</div>
+				<div>
+					手机号码：<input type="text" placeholder="输入手机号"
+						class="cy_CMICBMS_addinput" v-model="userInfoVo.utel">
+				</div>
+				<div>
+					邮箱地址：<input type="text" placeholder="输入邮箱地址"
+						class="cy_CMICBMS_addinput" v-model="userInfoVo.uemail"
+						maxlength="50">
+				</div>
+				<div id="cy_CMICBMS_status">
+					状态：<input type="radio" name="RadioGroup1" value="1"
+						id="RadioGroup1_0" v-model="userInfoVo.ustatus">启用 <input
+						type="radio" name="RadioGroup1" value="0" id="RadioGroup1_1"
+						v-model="userInfoVo.ustatus">停用
+				</div>
+				<div style="margin: 40px 20px 0 0;">
+					<input type="button" value="确定" class="cy_CMICBMS_schbtn"
+						v-on:click="submit">
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="${ctx}/js/comm.js"></script>
+	<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
+	<script>
     AdaptationResolution('${ctx}');//分辨率适配
     
     var Info = {				//提示信息
@@ -245,7 +274,7 @@ pageEncoding="UTF-8"%>
                 function () {
                     vm2.title="添加用户";			//弹出层标题更改
                     vm2.url="addUser";			//弹出层url更改
-                    vm2.userInfoVo={uid:'',uname:'',udep:'',utel:'',uemail:'',upwd:'',uupdatedatetime:''};//将弹出层中的user属性置为空
+                    vm2.userInfoVo={uid:'',uname:'',udep:'',utel:'',uemail:'',upwd:'',uupdatedatetime:'',urole:0,usuperuserflag:0,ustatus:"0"};//将弹出层中的user属性置为空
                     vm2.userInfoVo.unum=null;	//将unum、密码置为空
                     vm2.checkPwd="";			
                     vm2.is_disabled = false;	//添加用户状态，可以输入用户名
@@ -265,7 +294,7 @@ pageEncoding="UTF-8"%>
                         vm2.title="修改用户";			//修改标题、url
                         vm2.url="updateUser";
                         vm2.is_disabled = true;		//修改用户状态，不可修改用户名
-
+                        vm2.bgc_style = {'background-color': '#949494'};
                         axios.get("queryOne",{		//回显当前user信息
                             params: {
                                 unum:checkedId[0]
@@ -287,7 +316,7 @@ pageEncoding="UTF-8"%>
             deleteUser:                     //删除提示
                 function () {
                     var _this = this;
-                    if(this.checkedId.length==0){		//如果没选中信息的提示——请选择1至1条以上信息
+                    if(this.checkedId.length==0){		//如果没选中信息的提示——选择1至1条以上信息
                         layer.msg(Info.E0019);			
                     }else{
                         var deleteLayer =layer.confirm(Info.W0002, {		//提示——确定删除？
@@ -355,7 +384,7 @@ pageEncoding="UTF-8"%>
                         .then(function (response) {
                             var rowCount = response.data.rowCount+"";
                             var allUsers = response.data.users;
-                            _this.$refs.pagecomponent.dealAfterSearch(rowCount); //rowCount为总条目数  在ajax请求返回函数需调用该方法
+                            _this.$refs.pagecomponent.dealAfterSearch(rowCount); //rowCount为总条目数  在ajax求返回函数需调用该方法
                             _this.checkedId = [];		//检索完毕将复选框选择取消，防止点击分页等复选框仍然选取
                             _this.users =allUsers;
                             layer.close(l_index);	//关闭动画
@@ -393,7 +422,8 @@ pageEncoding="UTF-8"%>
             url:"",			
             uidshow:false,		//四个必填项的气泡控制
             upwdshow:false,		
-            checkPwdshow:false, 
+            checkPwdshow:false,
+            bgc_style:{},
             unameshow:false		
         },
         created: function () {
@@ -434,18 +464,19 @@ pageEncoding="UTF-8"%>
             submit:
                 function () {  // 新增&编辑时的提交处理
                     var _this = this;
+                	this.reset_all();
                     var user = this.userInfoVo;
-                    if(user.urole==""||user.uid==""||user.uname==""||user.urole==null){
+                    if(user.urole==""||user.uid==""||user.uname==""||user.urole==null||user.urole==0){
                         layer.msg(Info.E0026);  // 必须项未输入时，E0026输出
                         return false;
                     }else if(this.checkPwd!=user.upwd){
                         layer.msg(Info.E0004);  // 密码和确认密码不一致时，E0004输出
                         return false;
                     }else if(!mailReg.test(user.uemail)&&user.uemail!=''){
-                        layer.msg(Info.E0036);   // 邮箱格式输入不对时，E0036=请输入正确邮箱格式
+                        layer.msg(Info.E0036);   // 邮箱格式输入不对时，E0036=输入正确邮箱格式
                         return false;
                     }else if(!phoneReg.test(user.utel)&&user.utel!=''){
-                        layer.msg(Info.E0037);   // 手机格式输入不对时，E0037=请输入正确手机号码格式
+                        layer.msg(Info.E0037);   // 手机格式输入不对时，E0037=输入正确手机号码格式
                         return false;
                     }else if(user.upwd==""&&this.title=="添加用户"){
                         layer.msg(Info.E0026); 

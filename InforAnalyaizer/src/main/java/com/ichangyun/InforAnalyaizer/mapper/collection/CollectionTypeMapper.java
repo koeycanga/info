@@ -20,9 +20,9 @@ public interface CollectionTypeMapper {
 
 	CollectionTypeVo queryOne(String string);//根据id查询
 
-	void beforeOrder(CollectionTypeVo vo);		//当前父节点后的所有节点减一
+	void beforeOrder(CollectionTypeVo vo);		//当前节点后的所有节点减一
 	
-	void afterOrder(CollectionTypeVo vo);		//当前父节点后的所有节点加一
+	void afterOrder(CollectionTypeVo vo);		//当前节点后的所有节点加一
 	
 	void changeOrder1(Map<String, Object> map);	//往上排序，两个节点之间的节点全部加一
 

@@ -47,11 +47,23 @@ public class HomeController {
 	 * @return
 	 */
 	@RequestMapping("/tohotword")
-	public Object tohotword(String word,HttpServletRequest request) {
+	public Object tohotword(String wordid,String flag,HttpServletRequest request) {
 		
-		request.setAttribute("table_title", "热词云");
+		String title = "";
 		
-		request.setAttribute("word",word);
+		if(flag.equals("0")) {
+			title = "热词云";
+		}
+		
+		if(flag.equals("1")) {
+			title = "即将发生";
+		}
+		
+		request.setAttribute("flag", flag);
+	
+		request.setAttribute("table_title",title);
+		
+		request.setAttribute("word",wordid);
 		
 		return new ModelAndView("frontpage/worddetail");
 	}
@@ -63,15 +75,11 @@ public class HomeController {
 	@RequestMapping("/getHomeDatas")
 	public Object getHomeDatas(HttpSession session) {
 	    
-		String newest_datas = homeService.getNewestDatas();
-		
-		String warn_datas = homeService.getWarnDatas(session);
-		
-		String negative_datas = homeService.getNegativeDatas();
+		String[] datas = homeService.getTopTenDatas(session);
 		
 		String jcmsg = homeService.getJCMsg(session);
 		
-		String res = "{\"newest_datas\":"+newest_datas+",\"warn_datas\":"+warn_datas+",\"negative_datas\":"+negative_datas+","+jcmsg+"}";
+		String res = "{\"newest_datas\":"+datas[0]+",\"warn_datas\":"+datas[1]+",\"negative_datas\":"+datas[2]+","+jcmsg+"}";
 		
 		return res;
 	}
@@ -87,6 +95,22 @@ public class HomeController {
 		String json_hotword = homeService.getHotWord();
 		
 		return json_hotword;
+	}
+	
+	@RequestMapping("/getHotWordFromDetial")
+	public Object getHotWordFromDetial(String flag) {
+		
+		String json_hotword = homeService.getHotWordFromDetial(flag);
+		
+		return json_hotword;
+	}
+	
+	@RequestMapping("/getJJFSWord")
+	public Object getJJFSWord() {
+		
+		String json_jjfsword = homeService. getJJFSWord();
+		
+		return json_jjfsword;
 	}
 	
 	

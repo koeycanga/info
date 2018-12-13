@@ -1,4 +1,12 @@
-﻿
+﻿$(document).ready(function(){
+	
+	/*alert($(document).height());
+	alert($(window).height());
+	alert($(document.body).outerHeight(true));
+	alert(document.body.scrollHeight);*/
+	$(".cy_hidebg").css("height",($(document).height()+document.body.scrollHeight));
+});
+
 /*以下是根据屏幕大小做分辨率选择*/
 function AdaptationResolution(url){
 	var ic_m_screenWidth = window.screen.width;
@@ -36,6 +44,20 @@ function createJSON(arr){
 	  return json;
 }
 
+
+//中文标点符号转为英文标点符号
+function repSign(s) {
+	s = s.replace(/([\u4E00-\u9FA5]|^|\n|\r)([\,\.\?\!])(?=[\u4E00-\u9FA5]|$|\n|\r)/g,function(u,v,w,x) {
+		sign = {
+			',': '，',
+			'.': '。',
+			'?': '？',
+			'!': '！'
+		};
+		return sign[w] ? v + sign[w] : u;
+	});
+	return s;
+}
 
 //阿拉伯数字转为大小汉字
 function intToChinese ( str ) {

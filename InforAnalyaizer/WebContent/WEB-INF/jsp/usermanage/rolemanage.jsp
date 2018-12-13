@@ -34,7 +34,7 @@
 </head>
 <body >
 <div id="app" class="cy_CMICBMS_bodybg" v-cloak>
-		<p>用户管理 >  <span>角色管理</span></p>
+		<p><b>用户管理</b> >  <span><b>角色管理</b></span></p>
 		<div class="cy_CMICBMS_tablebox">
 		<div class="cy_CMICBMS_box08">
 			<input type="button" v-on:click="NewRole()" class="cy_CMICBMS_addbtn" value="新增">
@@ -46,7 +46,7 @@
   <tbody>
     <tr>
       <th scope="col" width="25px"><input type="checkbox" v-model="checked" v-on:click="changeAllChecked()"></th>
-      <th scope="col" >用户名称</th>
+      <th scope="col" >角色名称</th>
       <th scope="col" >角色描述</th>
       <th scope="col" >最后编辑时间</th>
       <th scope="col" >状态</th>
@@ -72,12 +72,12 @@
 	<div class="cy_CMICBMS_addtop"><div class="cy_CMICBMS_addtit">{{tcc_title}}</div><div class="cy_CMICBMS_addclose" v-on:click="hideTcc()">X</div></div>
 	<div class="cy_CMICBMS_addtb">
 		<div>
-		  <span>*</span>角色名称：<input type="text" maxlength="20" v-on:blur="checkRoleName()" v-model="roleInfo.role_name" placeholder="请输入角色名称" class="cy_CMICBMS_addinput">
+		  <span>*</span>角色名称：<input type="text" maxlength="20" v-on:blur="checkRoleName()" v-model="roleInfo.role_name" placeholder="输入角色名称" class="cy_CMICBMS_addinput">
 		  <div v-if="errInfo.role_name_err" class="cy_CMICBMS_errortip">${E0016}</div>
 		</div>
 		<div style="float:left;padding:21px !important">
 		  <div style="float:left;">
-		     权限设置：&nbsp;
+		     权限设置：<span style="visibility:hidden;">*</span>&nbsp;
 		  <input v-on:click="checkqx()" type="checkbox" id="yhgl" name="Authority" value="1">&nbsp;用户管理&nbsp;&nbsp;<br/>
 		  <input v-on:click="checkqx()" style="margin:0px 0px 0 84px;" type="checkbox" id="qbgh" name="Authority" value="1"> 情报规划&nbsp;<br/>
 		  <input v-on:click="checkqx()" style="margin:0px 0px 0 84px;" type="checkbox" id="qbcj" name="Authority" value="1"> 情报采集&nbsp;<br/>
@@ -87,7 +87,7 @@
 		  <div style="width:470px;height:100px;margin:0px 0 0 0px;vertical-align: text-top;">
 		       <div style="height:100px;float: left;">角色描述:</div>
 		       <div style="width:390px;height:100px;float: left;">
-		           <textarea v-model="roleInfo.role_des" maxlength="50" style="width:100%;height:100%;resize:none;background-color: white !important;"></textarea>
+		           <textarea v-model="roleInfo.role_des" maxlength="50" style="width:100%;height:100%;resize:none;background-color: white !important;border: 1px solid #cccccc;background-color: #fbfbfb;border-radius: 5px;"></textarea>
 		      </div>
 		  </div>
 		</div>
@@ -104,11 +104,12 @@
 <script type="text/javascript" src="${ctx}/js/vue.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/axios.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/polyfill.min.js"></script>
-<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script type="text/javascript" src="${ctx}/js/comm.js"></script>
+<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script>
 
 AdaptationResolution('${ctx}'); //分辨率适配
+
 
 //提示信息，详见clasees/resources.properties
 var Info = { 

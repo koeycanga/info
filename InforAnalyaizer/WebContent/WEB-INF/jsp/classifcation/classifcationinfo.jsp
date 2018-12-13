@@ -34,11 +34,11 @@
 </head>
 <body >
 <div id="app" class="cy_CMICBMS_bodybg" v-cloak >
-		<p>情报规划 > <span>分类体系</span></p>
+		<p><b>情报规划</b> > <span><b>分类体系</b></span></p>
 		<div class="cy_CMICBMS_tablebox">
 		<div class="cy_CMICBMS_box07">
 			<div class="cy_CMICBMS_schbox01">
-				<input type="text" v-model="search_key" placeholder="请输入关键词检索">
+				<input type="text" v-model="search_key" placeholder="输入分类名称检索">
 			</div>
 			<input type="button" class="cy_CMICBMS_schbtn" v-on:click="btn_search()" value="检索">
 		</div>
@@ -90,7 +90,7 @@
     
     <div class="cy_hidebg" v-bind:style="showtcc" id="cy_hidebg"></div> <!-- 遮罩层 -->
     <!--新增按钮弹窗-->
-	<div  v-bind:style="showtcc" id="cy_CMICBMS_add">
+	<div  v-bind:style="showtcc" id="cy_CMICBMS_add" style="height:310px;">
 		<div class="cy_CMICBMS_addtop"><div class="cy_CMICBMS_addtit">{{tcc_title}}</div><div class="cy_CMICBMS_addclose" v-on:click="hideTcc()">X</div></div>
 		<div class="cy_CMICBMS_addtb">
 		
@@ -100,10 +100,15 @@
 			    <span>*</span>分类名称：<input type="text" maxlength="20" placeholder="输入分类名称" v-on:blur="checkTypeName()" v-model="typeInfo.type_name" class="cy_CMICBMS_addinput">
 			    <div v-if="errInfo.type_name_err" class="cy_CMICBMS_errortip">请输入分类名称！</div>
 			</div>
-			<div class="cy_CMICBMS_addtbinp">&nbsp;&nbsp;备注：<input type="text" maxlength="50" v-model="typeInfo.type_des" placeholder="输入备注" class="cy_CMICBMS_addinput"></div>
+			<div style="width:470px;height:100px;margin:0px 0 0 0px;vertical-align: text-top;">
+				<div style="height:100px;float: left;">备注：</div>
+				<div style="width:398px;height:100px;float: left;">
+				  <textarea v-model="typeInfo.type_des" placeholder="  输入备注"  maxlength="50" style="width:100%;height:100%;resize:none;background-color: white !important;border: 1px solid #cccccc;background-color: #fbfbfb;border-radius: 5px;"></textarea>
+				 </div>
+			</div>
 			
-			<div class="cy_CMICBMS_addtbinp" v-if="isnew" style="align-self:flex-end;margin:40px 20px 0 0;"><input type="button" v-on:click="SaveNewData()" value="确定" class="cy_CMICBMS_schbtn"></div>
-	        <div class="cy_CMICBMS_addtbinp" v-else style="align-self:flex-end;margin:40px 20px 0 0;"><input type="button" v-on:click="UpdateData()" value="确定" class="cy_CMICBMS_schbtn"></div>
+			<div class="cy_CMICBMS_addtbinp" v-if="isnew" style="align-self:flex-end;margin:15px 20px 0 0;"><input type="button" v-on:click="SaveNewData()" value="确定" class="cy_CMICBMS_schbtn"></div>
+	        <div class="cy_CMICBMS_addtbinp" v-else style="align-self:flex-end;margin:15px 20px 0 0;"><input type="button" v-on:click="UpdateData()" value="确定" class="cy_CMICBMS_schbtn"></div>
 		</div>
 	</div>
 </div>
@@ -112,12 +117,22 @@
 <script type="text/javascript" src="${ctx}/js/vue.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/axios.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/polyfill.min.js"></script>
-<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script type="text/javascript" src="${ctx}/js/comm.js"></script>
+<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 
 <script>
 
 AdaptationResolution('${ctx}');//分辨率适配
+
+$(document).ready(function(){
+	
+	/*alert($(document).height());
+	alert($(window).height());
+	alert($(document.body).outerHeight(true));
+	alert(document.body.scrollHeight);*/
+	$(".cy_hidebg").css("height",($(document).height()+document.body.scrollHeight));
+});
+
 
 //提示信息集合  来源于 classes/resources.properties
 var Info = {
@@ -505,6 +520,7 @@ var app = new Vue({
 			 }else{
 				 this.isnew = false;
 				 this.tcc_title = Info.I0010;
+				 $("#cy_CMICBMS_add").css("height","300px");
 				 this.father_node_id = "";
 				 var click_node = this.getClickNode(checkedNames[0],this.datas)[1];
 				 this.typeInfo.type_id = click_node.val.classification_ID;
@@ -621,11 +637,16 @@ var app = new Vue({
 				  }else{
 					 this.father_node_id = '';
 				  }
+				  if(this.father_node_id==''){
+					  $("#cy_CMICBMS_add").css("height","300px");
+				  }else{
+					  $("#cy_CMICBMS_add").css("height","330px");
+				  }
 				  var anode = this.getClickNode(checkedNames[0],this.datas);
 				  if(anode!=null){
 					var c_node = anode[1];//this.getClickNode(checkedNames[0],this.datas)[1];
 					if(c_node.depth==3){
-						layer.msg(Info.E0038);
+						layer.msg(IC_GETINFOBYAttrs(Info.E0038,['4']));//IC_GETINFOBYAttrs引自 js/comm.js
 						return;
 					}
 				  	this.father_node_name = c_node.val.classificationName;
@@ -649,10 +670,11 @@ var app = new Vue({
 			    				}
 			    			})
 			    			.then(function (response) {
-			    				if(response.data=="ok"){         //编辑成功
+			    				if(response.data.indexOf("success")>=0){         //编辑成功
 			    					layer.msg(Info.I0007);
 			    					click_node.val.classificationName = _this.typeInfo.type_name.trim();
 			    					click_node.val.description = _this.typeInfo.type_des.trim();
+			    					click_node.val.updateDateTime = response.data.replace("success","");
 			    					_this.updateJsonData(root_node);
 			    					_this.hideTcc();
 			    				}
@@ -721,6 +743,7 @@ var app = new Vue({
 		    				    			})
 		    				    			.then(function (response) {
 		    				    				var data = JSON.parse(response.data);
+		    				    				
 		    				    				for(var i=0;i<data.length;i++){
 		    				    					 var tn = new TreeNode(data[i],click_node.depth+1,data[i].children_lg,uuid(),click_node);
 		    				    					 click_node.children.push(tn);
@@ -743,6 +766,7 @@ var app = new Vue({
 		    				    			});
 		    				        }else{
 		    				        	var json = JSON.parse(response.data);
+		    				        	console.log(json);
 			    						var tn = new TreeNode(json,click_node.depth+1,json.children_lg,uuid(),click_node);
 			    						click_node.children.unshift(tn);
 			    						click_node.children_lg = click_node.children.length;

@@ -282,6 +282,41 @@ public class ArticleInfoBean extends BaseBean {
 	 */
 	private String SensitiveWordType_ID;
 	
+	/**
+	 *  标识位  用来做sql语句中的一些标示
+	 */
+	private String flag;
+	
+	
+	private String Keyword_ID;
+	
+	
+	private String HotWord;
+	
+	public String getKeyword_ID() {
+		return Keyword_ID;
+	}
+
+	public void setKeyword_ID(String keyword_ID) {
+		Keyword_ID = keyword_ID;
+	}
+
+	public String getHotWord() {
+		return HotWord;
+	}
+
+	public void setHotWord(String hotWord) {
+		HotWord = hotWord;
+	}
+
+	public String getFlag() {
+		return flag;
+	}
+
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+
 	public String getSensitiveWordType_ID() {
 		return SensitiveWordType_ID;
 	}

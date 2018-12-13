@@ -100,7 +100,9 @@ public class LoginController {
                 //用户名或密码错误 TODO messageID？？
                 res = "";
             }else {
-
+                if(user.getSuperUserFlag().equals("1")) {
+                	user.setAuthority("1111111111");
+                }
                 // 登录成功
                 dealSession(user,session);
                

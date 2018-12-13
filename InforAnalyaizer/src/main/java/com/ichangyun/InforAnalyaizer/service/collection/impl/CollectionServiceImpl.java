@@ -240,6 +240,7 @@ public class CollectionServiceImpl implements CollectionService {
 	public String deleteType(CollectionTypeVo vo) {
 		try {
 			this.typeMapper.deleteByPrimaryKey(vo);
+			this.typeMapper.beforeOrder(vo);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "fault";
@@ -258,19 +259,26 @@ public class CollectionServiceImpl implements CollectionService {
 	public String moveType(String collectiontypeId, String targetId) {
 		String msg = "ok";
 		String[]ids = targetId.split("_");
-		CollectionTypeVo vo = this.typeMapper.queryOne(collectiontypeId);
-		CollectionTypeVo pvo = this.typeMapper.queryOne(ids[0]);
+		CollectionTypeVo vo = this.typeMapper.queryOne(collectiontypeId);//当前节点
+		CollectionTypeVo pvo = this.typeMapper.queryOne(ids[0]);		//目标节点
+		//当目标节点为当前节点的子节点时
+		String cpath = vo.getCollectionpath();
+		String tpath = pvo.getCollectionpath();
+		if(tpath.indexOf(cpath)!=-1) {
+			return "fault";
+		}
 		if(ids.length==1&&!ids[0].equals(collectiontypeId)) {		//移动到目标文件夹内	
 			if(pvo.getCollectionstratum()==4) {
 				return "overstep";
 			}
+			this.typeMapper.beforeOrder(vo);//修改自身收藏夹的顺序，自此节点后的节点都减1
 			vo.setParentCollectiontypeId(pvo.getCollectiontypeId());
 			vo.setCollectionpath(pvo.getCollectionpath()+vo.getCollectiontypeId());
 			vo.setCollectionstratum(vo.getCollectionpath().length()/10);
 			vo.setDisplayorder(Integer.parseInt(pvo.getChildrenNum()));
 			try {
 				//此时应该修改目标收藏夹的顺序，但默认添加结尾所以不做修改	
-				this.typeMapper.beforeOrder(vo);//修改自身收藏夹的顺序，自此节点后的节点都减1
+				
 				this.typeMapper.updateByPrimaryKeySelective(vo);
 			} catch (Exception e) {
 				msg = "fault";
@@ -293,6 +301,7 @@ public class CollectionServiceImpl implements CollectionService {
 			}else{		//在同一个文件夹下
 				if (oldDisplayOrder>targetDisplayOrder) {		//往上排序
 					voLoad(vo, pvo);
+					
 					Map<String, Object> map = Obj2Map.object2Map(vo);
 					map.put("oldDisplayOrder", oldDisplayOrder);
 					this.typeMapper.changeOrder1(map);
@@ -304,6 +313,7 @@ public class CollectionServiceImpl implements CollectionService {
 					}
 				}else {				//往下排序
 					voLoad(vo, pvo);
+					vo.setDisplayorder(pvo.getDisplayorder()-1);
 					Map<String, Object> map = Obj2Map.object2Map(vo);
 					map.put("oldDisplayOrder", oldDisplayOrder);
 					this.typeMapper.changeOrder2(map);
@@ -325,6 +335,7 @@ public class CollectionServiceImpl implements CollectionService {
 		vo.setParentCollectiontypeId(pvo.getParentCollectiontypeId());
 		vo.setCollectionpath(pvo.getCollectionpath().substring(0, pvo.getCollectionpath().length()-10)+vo.getCollectiontypeId());
 		vo.setDisplayorder(pvo.getDisplayorder());
+		vo.setCollectionstratum(vo.getCollectionpath().length()/10);
 	}
 	//将包含全部对象的集合整理为每个对象带有子节点的集合
 	private List<CollectionTypeVo> neat(List<CollectionTypeVo> list,String pid){

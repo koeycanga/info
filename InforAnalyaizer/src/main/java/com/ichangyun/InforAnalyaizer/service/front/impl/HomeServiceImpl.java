@@ -5,6 +5,7 @@
  */
 package com.ichangyun.InforAnalyaizer.service.front.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +45,13 @@ public class HomeServiceImpl implements HomeService {
 
 	@Override
 	public int getArticleCountByHotWord(HotWordBean hb) {
-	
-		return homeMapper.getArticleCountByHotWord(hb);
+	    if(hb.getFlag().equals("0")) {   // 热词云
+	    	return homeMapper.getArticleCountByHotWord(hb);
+	    }
+		if(hb.getFlag().equals("1")) {   //即将发生
+			return homeMapper.getArticleCountByJJFSWord(hb);
+		}
+	    return 0;
 	}
 
 	@Override
@@ -53,11 +59,17 @@ public class HomeServiceImpl implements HomeService {
 		
 		hb.setL_pre((hb.getPageNow()-1)*hb.getRowSize());
 		
-		List<ArticleInfoBean> list = homeMapper.getArticleByHotWord(hb);
+		List<ArticleInfoBean> list = null;
 		
-		JSONArray ja = (JSONArray) JSONArray.toJSON(list);
+		if(hb.getFlag().equals("0")) {  // 热词云
+			list = homeMapper.getArticleByHotWord(hb);
+		}
 	    
-		return ja.toJSONString();
+		if(hb.getFlag().equals("1")) {  //即将发生
+			list = homeMapper.getArticleByJJFSWord(hb);
+		}
+		
+		return ((JSONArray) JSONArray.toJSON(list)).toJSONString();
 	}
 
 	@Override
@@ -71,9 +83,18 @@ public class HomeServiceImpl implements HomeService {
 	}
 
 	@Override
-	public String getNewestDatas() {
+	public String getJJFSWord() {
 		
-		List<ArticleInfoBean> list = homeMapper.getNewestDatas();
+		List<HotWordBean> list = homeMapper.getJJFSWord();
+		
+		int yz = 10 - list.size();
+		
+		for(int i=0;i<yz;i++) {
+			HotWordBean ab = new HotWordBean();
+			ab.setKeyword_ID("");
+			ab.setHotWord("");
+			list.add(ab);
+		}
 		
 		JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
 
@@ -81,28 +102,50 @@ public class HomeServiceImpl implements HomeService {
 	}
 
 	@Override
-	public String getWarnDatas(HttpSession session) {
+	public String getHotWordFromDetial(String flag) {  //flag  0:热词   1 即将发生     
+		if(flag.equals("0")) {
+			return getHotWord();
+		}
+		if(flag.equals("1")) {
+			return getJJFSWord();
+		}
+		return null;
+	}
+	
+	@Override
+	public String[] getTopTenDatas(HttpSession session) {
 		
 		User user = (User) session.getAttribute(CommBean.SESSION_NAME);
 		
 		String userid = user.getUser_ID();
 		
-		List<ArticleInfoBean> list = homeMapper.getWarnDatas(userid);
+		List<ArticleInfoBean> allist = homeMapper.getTopTenDatas(userid);
 		
-		JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
-
-	    return listArray.toJSONString();
-	}
-
-	@Override 
-	public String getNegativeDatas() {
-
-		List<ArticleInfoBean> list = homeMapper.getNegativeDatas();
+		List<ArticleInfoBean> newlist = new ArrayList<ArticleInfoBean> ();
 		
-		JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
-
-	    return listArray.toJSONString();
+		List<ArticleInfoBean> warnlist = new ArrayList<ArticleInfoBean> ();
+		
+		List<ArticleInfoBean> negativelist = new ArrayList<ArticleInfoBean> ();
+		
+		for(ArticleInfoBean ab:allist) {
+			if(ab.getFlag().equals("1")) { //最新消息top10
+				newlist.add(ab);
+			}
+			if(ab.getFlag().equals("2")) { //预警信息top10
+				warnlist.add(ab);
+			}
+			if(ab.getFlag().equals("3")) { //负面信息top10
+				negativelist.add(ab);
+			}
+		}
+		
+		String[] res = new String[3];
+		res[0] = ((JSONArray) JSONArray.toJSON(newlist)).toJSONString();
+		res[1] = ((JSONArray) JSONArray.toJSON(warnlist)).toJSONString();
+		res[2] = ((JSONArray) JSONArray.toJSON(negativelist)).toJSONString();
+		return res;
 	}
+	
 
 	@Override
 	public String getJCMsg(HttpSession session) {
@@ -127,4 +170,7 @@ public class HomeServiceImpl implements HomeService {
 		
 		return res;
 	}
+
+	
+
 }

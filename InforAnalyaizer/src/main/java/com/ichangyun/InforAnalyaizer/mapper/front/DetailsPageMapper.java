@@ -31,7 +31,7 @@ public interface DetailsPageMapper {
 	 * @param article_id
 	 * @return
 	 */
-	public List<ArticleInfoBean> getBDArticleByID(@Param("article_id")String article_id);
+	public List<ArticleInfoBean> getBDArticleByID(@Param("article_id")String article_id,@Param("userid")String userid);
 
 	/**
 	 * 获得相似文章

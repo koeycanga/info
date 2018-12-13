@@ -85,7 +85,7 @@ public class DetailsPageController {
 		
 		String article_data = detailsPageService.getArticleByID(article_id,userid);      //文章信息
 		
-		String bd_data = detailsPageService.getBDArticleByID(article_id);          //文章在媒体上的出现情况
+		String bd_data = detailsPageService.getBDArticleByID(article_id,userid);          //文章在媒体上的出现情况
 		
 		String json = "{\"article_data\":"+article_data+",\"bd_data\":"+bd_data+"}";
 		

@@ -46,25 +46,16 @@ public interface HomeMapper {
 	 */
 	public List<ArticleInfoBean> getSimContent(ArticleInfoBean ab);
 
-	/**
-	 * 获得最新消息集合
-	 * @return
-	 */
-	public List<ArticleInfoBean> getNewestDatas();
-
-	/**
-	 * 获得预警信息top10集合
-	 * @param userid 
-	 * @return
-	 */
-	public List<ArticleInfoBean> getWarnDatas(@Param("userid")String userid);
-
-	/**
-	 * 获得负面信息top10集合
-	 * @return
-	 */
-	public List<ArticleInfoBean> getNegativeDatas();
 
 	public Map getJCMsg(@Param("today")String today, @Param("yesterday")String yesterday, @Param("userid")String userid);
+
+	
+	public List<ArticleInfoBean> getTopTenDatas(@Param("userid")String userid);
+
+	public List<HotWordBean> getJJFSWord();
+
+	public int getArticleCountByJJFSWord(HotWordBean hb);
+
+	public List<ArticleInfoBean> getArticleByJJFSWord(HotWordBean hb);
 
 }

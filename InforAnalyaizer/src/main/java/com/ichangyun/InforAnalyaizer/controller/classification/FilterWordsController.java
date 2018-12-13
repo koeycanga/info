@@ -120,17 +120,18 @@ public class FilterWordsController {
 	 * @return null
 	 */
 	@RequestMapping("/output")
-	public String output(String[] ids, HttpServletResponse response) throws IOException {
+	public void output(String[] ids, HttpServletResponse response,HttpServletRequest request) throws IOException {
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");//设置日期格式
 		String thisTime = df.format(new Date());// new Date()为获取当前系统时间
-		HSSFWorkbook wb = this.fwService.output(ids);
+	    String realPath=request.getServletContext().getRealPath("/templates");
+		HSSFWorkbook wb = this.fwService.output(ids,realPath);
+		
 		OutputStream output = response.getOutputStream();
 		response.reset();
 		response.setHeader("Content-disposition", "attachment; filename=" + OutputUtil.toUtf8String("分类过滤词-"+thisTime+".xls"));
 		response.setContentType("application/msexcel");
 		wb.write(output);
 		output.close();
-		return null;
 	}
 
 	/**
@@ -151,6 +152,11 @@ public class FilterWordsController {
 		String msg = "ok";
 		//上传文件，文件名为原文件名+当前用户id
 		String filePath = user.getUser_ID() + "-" + file.getOriginalFilename();
+		if (!filePath.endsWith(CommBean.UPLOAD_FILE_EXTENSION_XLS)&&!filePath.endsWith(CommBean.UPLOAD_FILE_EXTENSION_XLSX)) {
+			msg = "fileTypeException";
+			map.put("msg", msg);
+			return map;
+		}
 		String savePath = request.getSession().getServletContext().getRealPath("/") + "uploadExcel" + filePath;
 		if (!file.isEmpty()) {
 			// String savePath = "/uploadExcel";

@@ -135,15 +135,19 @@ public class ClassificationInfoServiceImpl implements ClassificationInfoService 
 	}
 
 	@Override
-	public boolean updateData(ClassificationInfoBean cb) {
+	public String updateData(ClassificationInfoBean cb) {
+		
 		
 		int count = classificationInfoMapper.updateData(cb);
 		
+	
+		
 		if(count==1) {
-			return true;
+			String updateTime = classificationInfoMapper.getUpdateTime(cb);
+			return "success"+updateTime;
 		}
 		
-		return false;
+		return "nok";
 	}
 
 	@Override

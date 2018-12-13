@@ -84,8 +84,8 @@ function return_tologin(){
 <script type="text/javascript" src="${ctx}/js/vue.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/axios.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/polyfill.min.js"></script>
-<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script type="text/javascript" src="${ctx}/js/comm.js"></script>
+<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 
 <script>
  

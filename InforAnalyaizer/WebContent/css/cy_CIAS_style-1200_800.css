@@ -401,11 +401,11 @@ body{
 
    .cy_hidebg {
 	  position:absolute;
+	  left:0px;
+	  top:0px;
       background-color:#535353;
       width: 100%;
 	  height: 100%;
-	  left:0px;
-      top:0px
       filter:alpha(opacity=50); 
       opacity:0.5;
       display:none;
@@ -514,7 +514,7 @@ body{
 
 .cy_CIAS_lgbody{
 	height:852px;
-	background:url(../image/login-bg.png) no-repeat;
+	background:url(../image/login-bg.png) no-repeat -250px 0px;
 }
 .cy_CIAS_lgbox{
 	width:840px;
@@ -560,7 +560,8 @@ body{
 	border:1px solid #4b90ff;
 }
 .cy_CIAS_lgvc{
-	width:55px;
+	width:97px;
+	padding:0;
 	height: 43px;
 	border: none;
 	float: right;
@@ -626,15 +627,17 @@ input{
 }
 .cy_CIAS_lgfoot{
 	height: auto;
-	padding:35px 0;
+	padding:20px 0;
 	text-align: center;
 	font-size: 14px;
 	background: url(../image/login-foot.png) no-repeat;
+	background-size: contain;
 }
 
 .cy_CIAS_lgtop{
 	height: 120px;
 	background: url(../image/login-top.png) no-repeat;
+	background-size: contain;
 }
 .cy_CIAS_lgboxN{
 	width: 420px;
@@ -697,7 +700,7 @@ input{
 }
 .cy_CIAS_umtbmain iframe{
 	width: 100%;
-	height: 800px;
+	height: 700px;
 	
 }
 .cy_CIAS_umtbhead{
@@ -860,19 +863,19 @@ input{
 
 /*竞争情报分析系统首页*/
 .cy_CIASFE_top{
-	height: 75px;
+	height: 55px;
 	background-color: #133786;
 	display: flex;
-	font-size: 24px;
+	font-size: 16px;
 }
 .cy_CIASFE_logo{
-	padding:22px 0 22px 30px;
+	padding:13px 0 22px 20px;
 }
 .cy_CIASFE_tit{
 	width: 35%;
 	font-family: 'FZZhengHeiS-R-GB';
 	color: white;
-	padding: 25px 0 0 8px;
+	padding: 20px 0 0 8px;
 }
 .cy_CIASFE_nagiv{
 	width: 100%;
@@ -883,8 +886,9 @@ input{
 	color: white;
 	text-decoration: none;
 }
+
 .cy_CIASFE_nagivbox , .cy_CIASFE_nagivboxchk,.cy_CIASFE_nagivboxchk_no{
-	width: 85px;
+	width: 75px;
 	height: 35px;
 	font-size: 16px;
 	color: white;
@@ -893,84 +897,101 @@ input{
 	margin-right: 40px;
 }
 
+.cy_tree_node{
+	width:270px;
+	overflow-x:hidden;
+}
+
+.cy_tree_node_hover{
+	overflow-x:hidden;
+	text-overflow: ellipsis;
+	white-space:nowrap;
+	width:110px;
+}
+
 .cy_CIASFE_nagivboxchk{
 	background: url(../image/home-menubg.png);
-	background-size: 85px 55px;
+	background-size: 75px 55px;
 }
-
-.cy_CIASFE_nagivboxchk_no{
-
-	background-size: 85px 55px;
-}
-
 .cy_CIASFE_nagivbox:hover{
 	background: url(../image/home-menubg.png);
+	background-size: 85px 55px;
 }
 .cy_CIASFE_nagivbox a{
 	text-decoration: none;
 	color: white;
 }
 .cy_CIASFE_userinfom{
-	width: 220px;
+	width: 245px;
 	font-size: 16px;
 	color: white;
-	padding: 25px;
+	padding: 15px;
 	display: flex;
 	cursor:pointer;
+	justify-content: center;;
 }
 .cy_CIASFE_user{
 	display: inline-block;
 	margin-bottom: 30px;
 }
 .cy_CIASFE_body{
-	margin:20px 30px;
+	margin:12px 15px;
 	display: flex;
 	color: white;
 }
 .cy_CIASFE_homebox01{
-	height: 366px;
-	width: 480px;
+	height: 320px;
+	width: 530px;
 	background: url(../image/home-boxbg01.png) no-repeat;
+	background-size:340px 320px;
 }
 .cy_CIASFE_homebox01:hover{
 	background: url(../image/home-boxbg01-h.png) no-repeat;
+	background-size:340px 320px;
 }
 .cy_CIASFE_homebox02{
-	height: 366px;
-	width: 880px;
+	height: 320px;
+	width: 820px;
 	background: url(../image/home-boxbg02.png) no-repeat;
-	margin:0 20px;
+	margin:0 15px;
+	background-size: 528px 320px;
 }
 .cy_CIASFE_homebox02:hover{
 	background: url(../image/home-boxbg02-h.png) no-repeat;
+	background-size: 528px 320px;
 }
 .cy_CIASFE_homebox03{
-	height: 366px;
+	height: 320px;
 	width: 545px;
 	background: url(../image/home-boxbg03.png) no-repeat;
+	background-size: 350px 320px;
 }
 .cy_CIASFE_homebox03:hover{
 	background: url(../image/home-boxbg03-h.png) no-repeat;
+	background-size: 350px 320px;
 }
 .cy_CIASFE_homeboxtit{
 	color:#c3eefd;
-	font-size: 16px;
+	font-size: 15px;
 	text-align: center;
-	padding-top: 8px;
+	padding-top: 5px;
 	font-weight: 700;
 }
 .cy_CIASFE_databox01{
-	margin:40px 20px 20px 20px;
+	margin:25px 20px 10px 20px;
 	width: 100%;
 	font-size: 14px;
 	background: url(../image/home-data.png) no-repeat;
 	padding-left: 30px;
 	display: flex;
 }
+.cy_CIASFE_newsbox01 img{
+	max-height: 160px;
+}
 .cy_CIASFE_databox02{
 	color:#18f7f2;
-	font-size: 26px;
-	margin: -10px 20px;
+	font-size: 22px;
+	margin: -5px 20px;
 	display: flex;
 }
 .cy_CIASFE_databox02:hover{
@@ -984,11 +1005,11 @@ input{
 	padding-left: 20px;
 }
 .cy_CIASFE_databox03 div{
-	padding:0 40px;
+	padding:5px 25px;
 	font-size: 14px;
 }
 .cy_CIASFE_databox03 span{
-	font-size: 24px;
+	font-size: 20px;
 	color: #f88b48;
 	display: inline-block;
 	padding: 7px;
@@ -1004,19 +1025,19 @@ input{
 }
 .cy_CIASFE_newsbox01{
 	text-align: center;
-	width: 40%;
-	margin:60px 25px;
+	width: 30%;
+	margin:40px 17px;
 }
 .cy_CIASFE_newsbox02{
-	width: 50%;
+	width: 60%;
 	color: white;
 	height: 100%;
-	margin:55px 0;
+	margin:10px 0;
 }
 .cy_CIASFE_newsbox03{
-	font-size: 14px;
-	padding: 10px 15px;
-	background: url(../image/home-pic01.png) no-repeat 0px 16px;
+	font-size: 13px;
+	padding: 5px 0 4px 13px;
+	background: url(../image/home-pic01.png) no-repeat 0px 13px;
 }
 .cy_CIASFE_newsbox03 a{
 	color:white;
@@ -1034,11 +1055,11 @@ input{
 	font-size: 14px;
 }
 .cy_CIASFE_wrninfbox01 , .cy_CIASFE_ngtinfbox01{
-	margin: 30px 0 0 40px;
+	margin: 10px 10px 0 17px;
 }
 .cy_CIASFE_wrninfbox02{
-	padding-bottom: 10px;
-	font-size: 14px;
+	padding-bottom: 6px;
+	font-size: 13px;
 }
 .cy_CIASFE_wrninfbox02 a{
 	color:white;
@@ -1069,10 +1090,14 @@ input{
 	margin-left: 10px;
 }
 .cy_CIASFE_coming{
-	margin: 42px 0 0 57px;
+	margin: 25px 0 0 33px;
+}
+.cy_CIASFE_coming img{
+	max-width: 280px;
 }
 .cy_CIASFE_hotword{
-	margin: 60px 0 0 80px;
+	margin-top: 30px;
+	text-align: center;
 }
 .cy_CIASFE_usermenu{
 	position: absolute;
@@ -1082,6 +1107,7 @@ input{
 	background-color: white;
 	display: none;
 	border:1px solid #e0e0e0;
+	z-index: 20;
 }
 .cy_CIASFE_usermenu a{
 	display: block;
@@ -1099,7 +1125,7 @@ input{
 }
 .cy_CIASFE_footer01{
 	width: 100%;
-	padding: 25px 0 45px 0;
+	padding: 15px 0 20px 0;
 	color: white;
 	text-align: center;
 	font-size: 14px;
@@ -1113,7 +1139,7 @@ input{
 }
 .cy_CIASFE_footer02{
 	width: 100%;
-	padding: 25px 0 45px 0;
+	padding: 20px 0 25px 0;
 	color: white;
 	text-align: center;
 	font-size: 14px;
@@ -1135,7 +1161,7 @@ input{
 	padding:10px 0;
 	border:1px solid #e0e0e0;
 	border-right: 0px;
-	width: 118px;
+	width: 110px;
 	cursor: pointer;
 }
 .cy_CIASFE_2ndmenutabchk{
@@ -1191,14 +1217,14 @@ input{
 	margin-bottom: 20px;
 }
 .cy_CIASFE_search{
-	padding:20px;
+	padding:15px 20px;
 	display: flex;
 	border-bottom: 1px solid #e0e0e0;
 	background-color: white;
 }
 .cy_CIASFE_conbox01{
 	font-size: 14px;
-	margin:12px 30px;
+	margin:12px 28px;
 }
 .cy_CIASFE_conbox02 , .cy_CIASFE_conbox03{
 	align-items: baseline;
@@ -1211,13 +1237,13 @@ input{
 .cy_CIASFE_conbox03{
 	border:0px;
 	margin:8px 0px;
-	width: 550px;
+	width: 50%;
 }
 .cy_CIASFE_content{
 	background-color: white;
 }
 .cy_CIASFE_contentbox01{
-	padding:10px;
+	padding:7px;
 	display: flex;
 	font-size: 14px;
 }
@@ -1229,7 +1255,7 @@ input{
 	outline: none;
 	cursor: pointer;
 	padding:0px 10px;
-	margin:10px 5px;
+	margin:5px 5px;
 	border-radius: 3px;
 	height: 30px;
 	
@@ -1252,7 +1278,7 @@ input{
 	background-color: #e8f5ff;
 }
 .cy_CIASFE_contpaste{
-	height: 130px;
+	height: auto;
 	background-color: white;
 	font-size: 14px;
 	border-top: 1px solid #e0e0e0;
@@ -1263,7 +1289,7 @@ input{
 .cy_CIASFE_contpastetit{
 	display: flex;
 	align-items: baseline;
-	padding:15px;
+	padding:10px;
 	font-weight: 900;
 	margin-left:10px;
 }
@@ -1324,11 +1350,11 @@ input{
 	background: url(../image/fontend-dele02.png)no-repeat;
 }
 .cy_CIASFE_contpastecon{
-	margin-left: 45px;
+	margin:0 45px;
 }
 .cy_CIASFE_contpastfoot{
 	width: auto;
-	margin:20px 0 20px 45px;
+	margin:8px 0 20px 45px;
 	color: #999999;
 	display: flex;
 }
@@ -1342,12 +1368,12 @@ input{
 }
 .cy_CIASFE_ctpage{
 	display: flex;
-	height: 80px;
+	height: 70px;
 	font-size: 14px;
 	background-color: white;
 	width: auto;
 	text-align: center;
-	padding-top: 20px;
+	padding-top: 10px;
 }
 .cy_CIASFE_ctpg{
 	display: flex;
@@ -1407,7 +1433,7 @@ input{
 }
 .cy_CIASFE_contentbox01 label{
 	width: 50px;
-	padding:10px;
+	padding:4px 10px;
 	margin: 5px 0;
 }
 
@@ -1452,7 +1478,7 @@ input{
 	border-radius: 3px;
 	display: inline-block;
 	text-align: center;
-	margin-left:30px;
+	margin-left:10px;
 }
 
 #montime_0:checked + label{
@@ -1486,7 +1512,7 @@ input{
 .cy_CIASFE_timetb{
 	outline: none;
 	border: 0px;
-	width: 150px;
+	width: 130px;
 	height: 30px;
 	background-color: #eef1f5;
 	border-radius: 2px;
@@ -1695,7 +1721,7 @@ input{
 }
 .cy_CIASFE_collebox{
 	width:110px;
-	height: 110px;
+	height: auto;
 	border:1px solid #e0e0e0;
 	text-align: center;
 	position:relative;
@@ -1766,7 +1792,7 @@ input{
 	position:absolute;
 	width:980px;
 	height:800px;
-	top:80px;
+	top:10px;
 	left:20%;
 	background-color:#f5f5f5;
 	border-radius: 5px;
@@ -2007,7 +2033,7 @@ input{
 	font-weight: 700;
 	background-color: white;
 	text-decoration: none;
-	padding-bottom: 15px;
+	padding-bottom: 12px;
 }
 .cy_CIASFE_conbox05 , .cy_CIASFE_conbox06:hover{
 	border-bottom: 4px solid #3598dc;
@@ -2020,7 +2046,7 @@ input{
 .cy_CIASFE_conbox04 a{
 	color:#666666;
 	text-decoration: none;
-	padding: 15px 18px 0 15px;
+	padding: 13px 18px 0 15px;
 }
 .cy_CIASFE_monpltop{
 	background-color: #3598dc;
@@ -2066,6 +2092,7 @@ input{
 	font-size: 14px;
 	border-radius: 3px;
 	box-shadow: 0px 0px 10px 5px #a2a2a2;
+	z-index:22;
 }
 .cy_CIASFE_addmonplbox{
 	display: flex;
@@ -2157,7 +2184,7 @@ input{
 }
 .cy_CIASFE_conanabox02{
 	padding:10px 40px;
-	width: 695px;
+	width: 40%;
 	background-color: white;
 }
 .cy_CIASFE_conanabox03{
@@ -2313,7 +2340,7 @@ input{
 	width: 100px;
 }
 .cy_CIASFE_conbox10{
-	width: 1100px;
+	width: 75%;
 }
 .cy_CIASFE_conbox10 span{
 	color: red;
@@ -2328,7 +2355,7 @@ input{
 	margin: 15px 0;
 }
 .cy_CIASFE_conbox10 textarea{
-	width: 1055px;
+	width: 95%;
 	height: 120px;
 	padding: 15px;
 	background-color: #f5f5f5;
@@ -2351,7 +2378,7 @@ input{
 .cy_CIASFE_conbox11 label{
 	display: inline-block;
 	width: 100px;
-	margin: 12px 0 ;
+	margin: 8px 0 ;
 }
 .cy_CIASFE_buttondiv{
 	width: 100%;
@@ -2416,7 +2443,7 @@ input{
 }
 .cy_CIASFE_conbox12{
 	padding:20px;
-	height: 720px;
+	height: 100%;
 }
 .cy_CIASFE_bltb input{
 	width: 60px;
@@ -2467,8 +2494,8 @@ input{
 	width: 70px;
 }
 .cy_CIASFE_colletree{
-	width:300px;
-	height:790px;
+	width:296px;
+	height:745px;
 	background-color: white;
 }
 .cy_CIASFE_newfolder{
@@ -2509,15 +2536,11 @@ input{
 	display: flex;
 }
 .cy_CIAFE_intmonbox03{
-	height: 760px;
-	width: 72%;
+	height: 800px;
+	width: 68%;
 	background-color: white;
 	margin:0 20px 50px 20px;
-	padding: 20px;
 	box-shadow: 0 0 15px 12px #e6e7eb;
-}
-.cy_CIAFE_intmonbox04{
-	/*text-align: center;*/
 }
 .cy_CIAFE_intmontit{
 	align-items:center;
@@ -2525,6 +2548,7 @@ input{
 	font-weight: 800;
 	margin: 20px;
 	color: #656565;
+	display: flex;
 }
 .cy_CIAFE_intmonsr{
 	color: #666666;
@@ -2538,12 +2562,12 @@ input{
 }
 .cy_CIAFE_intmonbox06{
 	text-align: left;
-	text-indent:30px;
+	text-indent:28px;
 	font-size: 14px;
-	padding:30px 0;
+	padding:0 30px;
 }
 .cy_CIAFE_intmonbox07{
-	width:22%;
+	width:27%;
 	height: 30%;
 }
 .cy_CIAFE_intmonbox09{
@@ -2551,12 +2575,11 @@ input{
 	color: #656565;
 	font-size: 14px;
 	font-weight: 800;
-	width: 100%;
+	width: auto;
 	padding: 15px 0px 15px 20px;
 	border-bottom: 1px solid #e0e0e0;
 }
 .cy_CIAFE_intmonbox08{
-	padding:0 20px 0 0;
 	height: 100%;
 	margin-bottom: 20px;
 	background-color: white;
@@ -2629,7 +2652,7 @@ input{
 	display: block;
 	color: #333333;
 	text-decoration: none;
-	padding: 3px 0;
+	padding: 3px 10px;
 }
 .cy_CIASFE_colletreefile a:hover{
 	background:url(../image/colle-filebg.png) no-repeat;
@@ -2654,7 +2677,7 @@ input{
 }
 .cy_CIASFE_comdettreefile{
 	list-style: none;
-	padding-left: 75px;
+	padding-left: 45px;
 }
 .cy_CIASFE_hwc td{
 	border-bottom: 1px solid #e0e0e0;
@@ -2666,7 +2689,7 @@ input{
 }
 .cy_CIASFE_hwc a{
 	text-decoration: none;
-	color: #2195ec;
+	color: #050505;
 	display: block;
 	padding:11px 0 11px 30px;
 }
@@ -2674,15 +2697,85 @@ input{
 	color: white!important;
 	background-color: #3a8ddd;
 }
-
-.cy_tree_node{
-	width:270px;
-	overflow-x:hidden;
+.cy_CIASFE_decolle{
+	display: flex;
+	position:relative;
+	margin-top: 5px;
+	width: 125px;
+	float: right;
+	right: 20px;
 }
-
-.cy_tree_node_hover{
-	overflow-x:hidden;
-	text-overflow: ellipsis;
-	white-space:nowrap;
+.cy_CIASFE_decolle div{
+	margin:0 10px;
+}
+.cy_CIASFE_decollebox{
 	width:110px;
+	height: auto;
+	border:1px solid #e0e0e0;
+	text-align: center;
+	position:relative;
+	background-color: white;
+	border-radius: 5px;
+	top: 30px;
+	right: 55px;
+	z-index: 20;
+	display: none;
+}
+.cy_CIASFE_decollebox div{
+	font-weight: 700;
+	border-bottom: 1px solid #e0e0e0;
+	margin: 5px;
+	background: url(../image/fontend-colle03.png) no-repeat 2px 3px;
+	
+}
+.cy_CIASFE_decollebox img{
+	margin:0 5px;
+}
+.cy_CIASFE_decollebox a{
+	display: block;
+	text-decoration: none;
+	color: #333333;
+	font-weight: 400;
+	padding: 2px 0;
+}
+.cy_CIASFE_decollebox a:hover{
+	color: white;
+	background-color: #2ea1f8;
+}
+.cy_CIASFE_desimart{
+	cursor: pointer;
+	color: #3598dc;
+	position: relative;
+	width: 120px;
+	float: right;
+}
+.cy_CIASFE_desimart:hover{
+	text-decoration: underline;
+}
+.cy_CIASFE_desimartbox{
+	border:1px solid #e0e0e0;
+	width: 400px;
+	z-index: 30;
+	background-color: white;
+	position: absolute;
+	display: none;
+	text-align: left;
+	overflow:scroll;
+}
+.cy_CIASFE_desimartbox a{
+	line-height: 24px;
+	text-decoration: none!important;
+	color: #333333;
+	padding: 3px;
+	margin: 0;
+}
+.cy_CIASFE_desimartbox a:hover{
+	color: white;
+	background-color: #2ea1f8;
+}
+.cy_CIASFE_desimart:hover .cy_CIASFE_desimartbox{
+	display: block;
+}
+.cy_CIASFE_colle:hover .cy_CIASFE_decollebox{
+	display: block;
 }

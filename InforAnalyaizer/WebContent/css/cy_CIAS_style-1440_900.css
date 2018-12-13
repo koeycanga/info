@@ -400,11 +400,11 @@ body{
 
    .cy_hidebg {
 	  position:absolute;
+	  left:0px;
+	  top:0px;
       background-color:#535353;
       width: 100%;
 	  height: 100%;
-	  left:0px;
-      top:0px
       filter:alpha(opacity=50); 
       opacity:0.5;
       display:none;
@@ -512,8 +512,8 @@ body{
 
 
 .cy_CIAS_lgbody{
-	height:852px;
-	background:url(../image/login-bg.png) no-repeat;
+	height:833px;
+	background:url(../image/login-bg.png) no-repeat -220px 0;
 }
 .cy_CIAS_lgbox{
 	width:840px;
@@ -559,7 +559,8 @@ body{
 	border:1px solid #4b90ff;
 }
 .cy_CIAS_lgvc{
-	width:55px;
+	width:97px;
+	padding:0;
 	height: 43px;
 	border: none;
 	float: right;
@@ -625,15 +626,17 @@ input{
 }
 .cy_CIAS_lgfoot{
 	height: auto;
-	padding:35px 0;
+	padding:24px 0;
 	text-align: center;
 	font-size: 14px;
 	background: url(../image/login-foot.png) no-repeat;
+	background-size: contain;
 }
 
 .cy_CIAS_lgtop{
 	height: 120px;
 	background: url(../image/login-top.png) no-repeat;
+	background-size: contain;
 }
 .cy_CIAS_lgboxN{
 	width: 420px;
@@ -696,7 +699,7 @@ input{
 }
 .cy_CIAS_umtbmain iframe{
 	width: 100%;
-	height: 800px;
+	height: 730px;
 	
 }
 .cy_CIAS_umtbhead{
@@ -859,10 +862,10 @@ input{
 
 /*竞争情报分析系统首页*/
 .cy_CIASFE_top{
-	height: 75px;
+	height: 68px;
 	background-color: #133786;
 	display: flex;
-	font-size: 24px;
+	font-size: 22px;
 }
 .cy_CIASFE_logo{
 	padding:22px 0 22px 30px;
@@ -871,7 +874,7 @@ input{
 	width: 35%;
 	font-family: 'FZZhengHeiS-R-GB';
 	color: white;
-	padding: 25px 0 0 8px;
+	padding: 23px 0 0 8px;
 }
 .cy_CIASFE_nagiv{
 	width: 100%;
@@ -882,7 +885,6 @@ input{
 	color: white;
 	text-decoration: none;
 }
-
 .cy_CIASFE_nagivbox , .cy_CIASFE_nagivboxchk,.cy_CIASFE_nagivboxchk_no{
 	width: 100px;
 	height: 50px;
@@ -892,28 +894,40 @@ input{
 	padding-top: 22px;
 	margin-right: 40px;
 }
-.cy_CIASFE_nagivboxchk{
-	background: url(../image/home-menubg.png) no-repeat;
-	background-size: contain;
-}
 
 .cy_CIASFE_nagivboxchk_no{
 
 	background-size: contain;
 }
 
+.cy_tree_node{
+	width:330px;
+	overflow-x:hidden;
+}
+
+.cy_tree_node_hover{
+	overflow-x:hidden;
+	text-overflow: ellipsis;
+	white-space:nowrap;
+	width:160px;
+}
+
+.cy_CIASFE_nagivboxchk{
+	background: url(../image/home-menubg.png) no-repeat;
+	background-size: contain;
+}
 .cy_CIASFE_nagivbox:hover{
-	background: url(../image/home-menubg.png);
+	background: url(../image/home-menubg.png) no-repeat;
 }
 .cy_CIASFE_nagivbox a{
 	text-decoration: none;
 	color: white;
 }
 .cy_CIASFE_userinfom{
-	width: 220px;
+	width: 230px;
 	font-size: 16px;
 	color: white;
-	padding: 25px;
+	padding: 18px;
 	display: flex;
 	cursor:pointer;
 }
@@ -922,44 +936,50 @@ input{
 	margin-bottom: 30px;
 }
 .cy_CIASFE_body{
-	margin:20px 30px;
+	margin:20px;
 	display: flex;
 	color: white;
 }
 .cy_CIASFE_homebox01{
-	height: 366px;
-	width: 480px;
+	height: 350px;
+	width: 41%;
 	background: url(../image/home-boxbg01.png) no-repeat;
+	background-size: 388px 350px;
 }
 .cy_CIASFE_homebox01:hover{
 	background: url(../image/home-boxbg01-h.png) no-repeat;
+	background-size: 388px 350px;
 }
 .cy_CIASFE_homebox02{
-	height: 366px;
+	height: 350px;
 	width: 880px;
 	background: url(../image/home-boxbg02.png) no-repeat;
+	background-size: 594px 350px;
 	margin:0 20px;
 }
 .cy_CIASFE_homebox02:hover{
 	background: url(../image/home-boxbg02-h.png) no-repeat;
+	background-size: 594px 350px;
 }
 .cy_CIASFE_homebox03{
-	height: 366px;
-	width: 545px;
+	height: 350px;
+	width: 40%;
 	background: url(../image/home-boxbg03.png) no-repeat;
+	background-size: 379px 350px;
 }
 .cy_CIASFE_homebox03:hover{
 	background: url(../image/home-boxbg03-h.png) no-repeat;
+	background-size: 379px 350px;
 }
 .cy_CIASFE_homeboxtit{
 	color:#c3eefd;
-	font-size: 16px;
+	font-size: 15px;
 	text-align: center;
 	padding-top: 8px;
 	font-weight: 700;
 }
 .cy_CIASFE_databox01{
-	margin:40px 20px 20px 20px;
+	margin:35px 20px 20px 20px;
 	width: 100%;
 	font-size: 14px;
 	background: url(../image/home-data.png) no-repeat;
@@ -983,7 +1003,7 @@ input{
 	padding-left: 20px;
 }
 .cy_CIASFE_databox03 div{
-	padding:0 40px;
+	padding:0 30px;
 	font-size: 14px;
 }
 .cy_CIASFE_databox03 span{
@@ -1004,18 +1024,21 @@ input{
 .cy_CIASFE_newsbox01{
 	text-align: center;
 	width: 40%;
-	margin:60px 25px;
+	margin:60px 0px;
+}
+.cy_CIASFE_newsbox01 img{
+	max-width: 180px;
 }
 .cy_CIASFE_newsbox02{
-	width: 50%;
+	width: auto;
 	color: white;
 	height: 100%;
-	margin:55px 0;
+	margin:10px 0;
 }
 .cy_CIASFE_newsbox03{
 	font-size: 14px;
-	padding: 10px 15px;
-	background: url(../image/home-pic01.png) no-repeat 0px 16px;
+	padding: 5px 15px;
+	background: url(../image/home-pic01.png) no-repeat 0px 13px;
 }
 .cy_CIASFE_newsbox03 a{
 	color:white;
@@ -1033,11 +1056,11 @@ input{
 	font-size: 14px;
 }
 .cy_CIASFE_wrninfbox01 , .cy_CIASFE_ngtinfbox01{
-	margin: 30px 0 0 40px;
+	margin: 20px 0 0 20px;
 }
 .cy_CIASFE_wrninfbox02{
 	padding-bottom: 10px;
-	font-size: 14px;
+	font-size: 13px;
 }
 .cy_CIASFE_wrninfbox02 a{
 	color:white;
@@ -1068,10 +1091,11 @@ input{
 	margin-left: 10px;
 }
 .cy_CIASFE_coming{
-	margin: 42px 0 0 57px;
+	margin: 30px 0 0 20px;
 }
 .cy_CIASFE_hotword{
-	margin: 60px 0 0 80px;
+	margin-top: 40px;
+	text-align: center;
 }
 .cy_CIASFE_usermenu{
 	position: absolute;
@@ -1098,7 +1122,7 @@ input{
 }
 .cy_CIASFE_footer01{
 	width: 100%;
-	padding: 25px 0 45px 0;
+	padding: 25px 0;
 	color: white;
 	text-align: center;
 	font-size: 14px;
@@ -1112,7 +1136,7 @@ input{
 }
 .cy_CIASFE_footer02{
 	width: 100%;
-	padding: 25px 0 45px 0;
+	padding: 25px 0 32px 0;
 	color: white;
 	text-align: center;
 	font-size: 14px;
@@ -1134,7 +1158,7 @@ input{
 	padding:10px 0;
 	border:1px solid #e0e0e0;
 	border-right: 0px;
-	width: 118px;
+	width: 110px;
 	cursor: pointer;
 }
 .cy_CIASFE_2ndmenutabchk{
@@ -1190,7 +1214,7 @@ input{
 	margin-bottom: 20px;
 }
 .cy_CIASFE_search{
-	padding:20px;
+	padding:15px 20px;
 	display: flex;
 	border-bottom: 1px solid #e0e0e0;
 	background-color: white;
@@ -1210,13 +1234,13 @@ input{
 .cy_CIASFE_conbox03{
 	border:0px;
 	margin:8px 0px;
-	width: 550px;
+	width:50%;
 }
 .cy_CIASFE_content{
 	background-color: white;
 }
 .cy_CIASFE_contentbox01{
-	padding:10px;
+	padding:0px 12px;
 	display: flex;
 	font-size: 14px;
 }
@@ -1251,7 +1275,7 @@ input{
 	background-color: #e8f5ff;
 }
 .cy_CIASFE_contpaste{
-	height: 130px;
+	height: auto;
 	background-color: white;
 	font-size: 14px;
 	border-top: 1px solid #e0e0e0;
@@ -1262,7 +1286,7 @@ input{
 .cy_CIASFE_contpastetit{
 	display: flex;
 	align-items: baseline;
-	padding:15px;
+	padding:10px 15px;
 	font-weight: 900;
 	margin-left:10px;
 }
@@ -1327,7 +1351,7 @@ input{
 }
 .cy_CIASFE_contpastfoot{
 	width: auto;
-	margin:20px 0 20px 45px;
+	margin:15px 0 20px 45px;
 	color: #999999;
 	display: flex;
 }
@@ -1341,12 +1365,12 @@ input{
 }
 .cy_CIASFE_ctpage{
 	display: flex;
-	height: 80px;
+	height: 70px;
 	font-size: 14px;
 	background-color: white;
 	width: auto;
 	text-align: center;
-	padding-top: 20px;
+	padding-top: 10px;
 }
 .cy_CIASFE_ctpg{
 	display: flex;
@@ -1694,7 +1718,7 @@ input{
 }
 .cy_CIASFE_collebox{
 	width:110px;
-	height: 110px;
+	height: auto;
 	border:1px solid #e0e0e0;
 	text-align: center;
 	position:relative;
@@ -1765,7 +1789,7 @@ input{
 	position:absolute;
 	width:980px;
 	height:800px;
-	top:80px;
+	top:10px;
 	left:20%;
 	background-color:#f5f5f5;
 	border-radius: 5px;
@@ -1999,14 +2023,13 @@ input{
 }
 .cy_CIASFE_condition01{
 	background-color: white;
-	margin-bottom: 20px;
-	margin-top: 20px;
+	margin: 20px 0;
 }
 .cy_CIASFE_conbox05 , .cy_CIASFE_conbox06{
 	font-weight: 700;
 	background-color: white;
 	text-decoration: none;
-	padding-bottom: 15px;
+	padding-bottom: 12px;
 }
 .cy_CIASFE_conbox05 , .cy_CIASFE_conbox06:hover{
 	border-bottom: 4px solid #3598dc;
@@ -2065,6 +2088,7 @@ input{
 	font-size: 14px;
 	border-radius: 3px;
 	box-shadow: 0px 0px 10px 5px #a2a2a2;
+	z-index:22;
 }
 .cy_CIASFE_addmonplbox{
 	display: flex;
@@ -2156,7 +2180,7 @@ input{
 }
 .cy_CIASFE_conanabox02{
 	padding:10px 40px;
-	width: 695px;
+	width: 42%;
 	background-color: white;
 }
 .cy_CIASFE_conanabox03{
@@ -2312,7 +2336,7 @@ input{
 	width: 100px;
 }
 .cy_CIASFE_conbox10{
-	width: 1100px;
+	width: 83%;
 }
 .cy_CIASFE_conbox10 span{
 	color: red;
@@ -2327,7 +2351,7 @@ input{
 	margin: 15px 0;
 }
 .cy_CIASFE_conbox10 textarea{
-	width: 1055px;
+	width: 96%;
 	height: 120px;
 	padding: 15px;
 	background-color: #f5f5f5;
@@ -2349,7 +2373,7 @@ input{
 }
 .cy_CIASFE_conbox11 label{
 	display: inline-block;
-	width: 100px;
+	width: 95px;
 	margin: 12px 0 ;
 }
 .cy_CIASFE_buttondiv{
@@ -2415,7 +2439,7 @@ input{
 }
 .cy_CIASFE_conbox12{
 	padding:20px;
-	height: 720px;
+	height: auto;
 }
 .cy_CIASFE_bltb input{
 	width: 60px;
@@ -2467,7 +2491,7 @@ input{
 }
 .cy_CIASFE_colletree{
 	width:300px;
-	height:790px;
+	height:757px;
 	background-color: white;
 }
 .cy_CIASFE_newfolder{
@@ -2512,18 +2536,18 @@ input{
 	width: 72%;
 	background-color: white;
 	margin:0 20px 50px 20px;
-	padding: 20px;
 	box-shadow: 0 0 15px 12px #e6e7eb;
-}
-.cy_CIAFE_intmonbox04{
-	/*text-align: center;*/
 }
 .cy_CIAFE_intmontit{
 	align-items:center;
 	font-size: 18px;
 	font-weight: 800;
-	margin: 20px;
+	margin: 20px 30px;
 	color: #656565;
+	display: flex;
+}
+.cy_CIAFE_intmontit img{
+	padding-left: 5px;
 }
 .cy_CIAFE_intmonsr{
 	color: #666666;
@@ -2537,12 +2561,12 @@ input{
 }
 .cy_CIAFE_intmonbox06{
 	text-align: left;
-	text-indent:30px;
+	text-indent:28px;
 	font-size: 14px;
-	padding:30px 0;
+	padding: 0 30px;
 }
 .cy_CIAFE_intmonbox07{
-	width:22%;
+	width:25%;
 	height: 30%;
 }
 .cy_CIAFE_intmonbox09{
@@ -2550,12 +2574,11 @@ input{
 	color: #656565;
 	font-size: 14px;
 	font-weight: 800;
-	width: 100%;
+	width: 94%;
 	padding: 15px 0px 15px 20px;
 	border-bottom: 1px solid #e0e0e0;
 }
 .cy_CIAFE_intmonbox08{
-	padding:0 20px 0 0;
 	height: 100%;
 	margin-bottom: 20px;
 	background-color: white;
@@ -2628,7 +2651,7 @@ input{
 	display: block;
 	color: #333333;
 	text-decoration: none;
-	padding: 3px 0;
+	padding: 3px 10px;
 }
 .cy_CIASFE_colletreefile a:hover{
 	background:url(../image/colle-filebg.png) no-repeat;
@@ -2653,7 +2676,7 @@ input{
 }
 .cy_CIASFE_comdettreefile{
 	list-style: none;
-	padding-left: 75px;
+	padding-left: 45px;
 }
 .cy_CIASFE_hwc td{
 	border-bottom: 1px solid #e0e0e0;
@@ -2665,7 +2688,7 @@ input{
 }
 .cy_CIASFE_hwc a{
 	text-decoration: none;
-	color: #2195ec;
+	color: #050505;
 	display: block;
 	padding:11px 0 11px 30px;
 }
@@ -2673,19 +2696,6 @@ input{
 	color: white!important;
 	background-color: #3a8ddd;
 }
-
-.cy_tree_node{
-	width:330px;
-	overflow-x:hidden;
-}
-
-.cy_tree_node_hover{
-	overflow-x:hidden;
-	text-overflow: ellipsis;
-	white-space:nowrap;
-	width:160px;
-}
-
 .cy_CIASFE_decolle{
 	display: flex;
 	position:relative;

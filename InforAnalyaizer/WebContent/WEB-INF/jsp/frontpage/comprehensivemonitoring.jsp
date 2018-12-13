@@ -23,7 +23,7 @@
 <head>
     <meta charset="UTF-8">
     <title>竞争情报分析系统</title>
-    <link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style-1920_1080.css">
+    <link id="lnk" rel="stylesheet" type="text/css" href="">
 </head>
 
 <body style="background-color: #f2f3f8;">
@@ -262,9 +262,11 @@
 <script type="text/javascript" src="${ctx}/js/axios.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/polyfill.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/clipboard.min.js"></script>
-<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script type="text/javascript" src="${ctx}/js/comm.js"></script>
+<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script>
+
+    AdaptationResolution('${ctx}');//分辨率适配
 
     var Info = {
         W0003: '${W0003}',
@@ -530,7 +532,7 @@
                     var arr = [];
   				    for(var i=this.checkedNames.length-1;i>=0;i--){
   	            		 var data = this.getDataById(this.checkedNames[i]);
-  	            		 if(data.isearlywarning=='yes'){
+  	            		 if(data.isearlywarning!='yes'){
   	            			 arr.push(this.checkedNames[i]);
   	            		 }
   	            	 }

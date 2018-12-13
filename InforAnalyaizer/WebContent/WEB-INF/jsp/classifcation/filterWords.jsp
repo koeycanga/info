@@ -42,7 +42,7 @@
 				<form @submit.prevent>
 					<div class="cy_CMICBMS_box07">
 						<div class="cy_CMICBMS_schbox01">
-							<input type="text" placeholder="请输入关键词检索"
+							<input type="text" placeholder="输入关键词检索"
 								v-model="fwVoForSearch.classificationName">
 						</div>
 						<input type="button" class="cy_CMICBMS_schbtn" value="检索"
@@ -59,7 +59,7 @@
 					name="file" @mouseenter="show_import_in" @mouseleave="show_import_out"></td>
 				<td>&nbsp;&nbsp;<input type="button" class="cy_CMICBMS_expbtn" value="导出"
 					v-on:click="btn_output">&nbsp;&nbsp;</td>
-					<td v-if="show_import"><font color="red" size="1">请按照模板格式导入文件，最大不超过1024M</font></td>
+					<td v-if="show_import"><font color="red" size="1">按照模板格式导入文件，最大不超过1M</font></td>
 				</tr>
 				</table>
 			</div>
@@ -133,52 +133,52 @@
 							<div class="layui-tab-item layui-show">
 
 								<div>
-									核心词组：<input type="text" placeholder="输入词组"
+									核心词组：<textarea  type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
-										v-model="fwVoForUpdate.allcorephrases">
+										v-model="fwVoForUpdate.allcorephrases" maxlength="600"></textarea>
 								</div>
 
 								<div>
 
-									排除词组：<input type="text" placeholder="输入词组"
+									排除词组：<textarea  type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
-										v-model="fwVoForUpdate.allexcludephrases">
+										v-model="fwVoForUpdate.allexcludephrases" maxlength="600"></textarea>
 								</div>
 							</div>
 							<div class="layui-tab-item">
 								<div>
-									核心词组：<input type="text" placeholder="输入词组"
+									核心词组：<textarea  type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
-										v-model="fwVoForUpdate.titlecorephrases">
+										v-model="fwVoForUpdate.titlecorephrases" maxlength="600"></textarea>
 								</div>
 								<div>
-									排除词组：<input type="text" placeholder="输入词组"
+									排除词组：<textarea  type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
-										v-model="fwVoForUpdate.titleexcludephrases">
-								</div>
-							</div>
-							<div class="layui-tab-item">
-								<div>
-									核心词组：<input type="text" placeholder="输入词组"
-										class="cy_CMICBMS_addinput"
-										v-model="fwVoForUpdate.summarycorephrases">
-								</div>
-								<div>
-									排除词组：<input type="text" placeholder="输入词组"
-										class="cy_CMICBMS_addinput"
-										v-model="fwVoForUpdate.summaryexcludephrases">
+										v-model="fwVoForUpdate.titleexcludephrases" maxlength="600"></textarea>
 								</div>
 							</div>
 							<div class="layui-tab-item">
 								<div>
-									核心词组：<input type="text" placeholder="输入词组"
+									核心词组：<textarea  type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
-										v-model="fwVoForUpdate.textcorephrases">
+										v-model="fwVoForUpdate.summarycorephrases" maxlength="600"></textarea>
 								</div>
 								<div>
-									排除词组：<input type="text" placeholder="输入词组"
+									排除词组：<textarea  type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
-										v-model="fwVoForUpdate.textexcludephrases">
+										v-model="fwVoForUpdate.summaryexcludephrases" maxlength="600"></textarea>
+								</div>
+							</div>
+							<div class="layui-tab-item">
+								<div>
+									核心词组：<textarea  type="text" placeholder="输入词组"
+										class="cy_CMICBMS_addinput"
+										v-model="fwVoForUpdate.textcorephrases" maxlength="600"></textarea>
+								</div>
+								<div>
+									排除词组：<textarea  type="text" placeholder="输入词组"
+										class="cy_CMICBMS_addinput"
+										v-model="fwVoForUpdate.textexcludephrases" maxlength="600"></textarea>
 								</div>
 							</div>
 						</div>
@@ -660,7 +660,7 @@
         //执行实例
         upload.render({
             elem: '#impbtn' //绑定元素
-            ,size: 1048576		//最大大小
+            ,size: 1024		//最大大小
             , done: function (res) {
                 //上传完毕回调
                 if(res.msg=="ok"){
@@ -669,8 +669,9 @@
                 }else if(res.msg=="fault"){
                 	vm.btn_search();
 	                layer.msg(Info.I0016);
-                }
-                
+                }else if(res.msg=="fileTypeException"){
+                	layer.msg(Info.E0046);
+                }   
             }
             , error: function () {
                 //请求异常回调

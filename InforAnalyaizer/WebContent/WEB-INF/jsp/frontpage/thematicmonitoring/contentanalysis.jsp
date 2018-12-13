@@ -30,7 +30,7 @@
 <head>
 <meta charset="UTF-8">
 <title>竞争情报分析系统</title>
-<link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style.css">
+<link id="lnk" rel="stylesheet" type="text/css" href="">
 </head>
 
 <body style="background-color: #f2f3f8;">
@@ -159,10 +159,12 @@
 <script type="text/javascript" src="${ctx}/js/axios.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/polyfill.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/laydate/laydate.js"></script>
-<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script type="text/javascript" src="${ctx}/js/comm.js"></script>
+<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 
 <script type="text/javascript">
+
+AdaptationResolution('${ctx}');//分辨率适配
 
 var Info = {
 		  W0003:'${W0003}',

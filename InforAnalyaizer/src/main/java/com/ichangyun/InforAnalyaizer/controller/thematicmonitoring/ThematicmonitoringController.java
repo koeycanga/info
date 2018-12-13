@@ -100,7 +100,7 @@ public class ThematicmonitoringController {
 		String fromDate = (String) map.get("fromDate");
 		String toDate = (String) map.get("toDate");
 		
-		if(thematicmonitoringService.exist(planinfo_name)) {
+		if(thematicmonitoringService.exist(planinfo_name,session)) {
 			res = "exist";
 		}else {
 			if(!thematicmonitoringService.SaveNewfa(planinfo_name,jcc_json,planinfo_removeWord,session,fromDate,toDate)) {
@@ -191,7 +191,7 @@ public class ThematicmonitoringController {
 		String fromDate = (String) map.get("fromDate");
 		String toDate  = (String) map.get("toDate");
 		
-		if(thematicmonitoringService.existwithID(plan_id,planinfo_name)) {
+		if(thematicmonitoringService.existwithID(plan_id,planinfo_name,session)) {
 			 res = "exist";
 		}else {
 			if(!thematicmonitoringService.updatefa(plan_id,planinfo_name,jcc_json,planinfo_removeWord,session,fromDate,toDate)) {

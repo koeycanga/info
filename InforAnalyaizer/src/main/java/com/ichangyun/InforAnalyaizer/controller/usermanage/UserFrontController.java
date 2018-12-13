@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ichangyun.InforAnalyaizer.model.CommBean;
 import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoVo;
+import com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean;
 import com.ichangyun.InforAnalyaizer.service.userInfo.UserInfoService;
+import com.ichangyun.InforAnalyaizer.service.usermanage.RoleService;
 import com.ichangyun.InforAnalyaizer.utils.PBKDF2;
 
 /**
@@ -35,6 +37,8 @@ public class UserFrontController {
 	@Autowired
     private UserInfoService userInfoService;
 	
+	@Autowired
+	private RoleService roleService;
 	
 	@RequestMapping("/updateUser")	
 	public Object updateUser(UserInfoVo vo,String oripwd,String changePwd,HttpSession session) throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -59,4 +63,26 @@ public class UserFrontController {
 		 return res;
 	}
 	
+	/**
+	 * thisUser：返回当前登录中的用户信息
+	 *
+	 * @param session
+	 * @return UserInfoVo
+	 */
+	@RequestMapping("/thisUser")
+	public UserInfoVo thisUser(HttpSession session) {
+		
+		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+		// 根据用户id查询用户信息
+		UserInfoVo vo = userInfoService.queryById(u.getUser_ID());
+		// 根据用户的角色ID查询角色信息
+		RoleManageBean role = roleService.queryById(vo.getUrole());
+		// 设置角色名称
+		if(role!=null) {
+			vo.setUrolename(role.getUserRoleName());
+		}else if(vo.getUsuperuserflag().equals("1")){
+			vo.setUrolename("超级管理员");
+		}
+		return vo;
+	}
 }

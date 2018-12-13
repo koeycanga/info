@@ -29,4 +29,8 @@ public class CommBean {
 	public static final int DB_BATCH_NUM = 10000; //批量处理数据时一次处理的数量
 	
 	public static final String YJFS_NAME = "人工预警" ;  //预警中心里关于人工预警的名词
+	
+	public static final String UPLOAD_FILE_EXTENSION_XLS="xls";//导入导出文件后缀xls
+
+	public static final String UPLOAD_FILE_EXTENSION_XLSX="xlsx";//导入导出文件后缀xlsx
 }

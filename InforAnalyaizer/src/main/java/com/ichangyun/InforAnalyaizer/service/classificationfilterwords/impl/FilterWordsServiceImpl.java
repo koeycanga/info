@@ -71,19 +71,19 @@ public class FilterWordsServiceImpl implements FilterWordsService {
 	@Override
 	public List<FilterWordsVo> queryChild(FilterWordsVo vo) {		//通过节点id查询当前节点的子节点
 		List<FilterWordsVo> fwVos = this.fwMapper.queryChild(vo);
-		List<String> list = this.fwMapper.queryParents();
+		/*List<String> list = this.fwMapper.queryParents();
 		for (String p : list) {
 			for (FilterWordsVo fwvo : fwVos) {
 				if(fwvo.getClassificationId().equals(p)) {
 					fwvo.setIsParent(1);
 				}	
 			}
-		}
+		}*/
 		return fwVos;
 	}
 	//导出选择的节点过滤词信息
 	@Override
-	public HSSFWorkbook output(String[] ids) {
+	public HSSFWorkbook output(String[] ids,String path) {
 		StringBuilder fwid = new StringBuilder();
 		fwid.append("'");
 		for (int i = 0; i < ids.length; i++) {
@@ -96,7 +96,7 @@ public class FilterWordsServiceImpl implements FilterWordsService {
 		List<FilterWordsVo> vos = this.fwMapper.queryById(fwid.toString());
 		HSSFWorkbook wb = null ;
 		try {
-			wb =  OutputUtil.getExcel(vos);
+			wb =  OutputUtil.getExcel(vos,path);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -130,6 +130,7 @@ public class FilterWordsServiceImpl implements FilterWordsService {
 					if(checkVo.getInformationtropism()==null) {
 						createVo.add(vo);
 						vos.remove(i);
+						i--;
 					}
 				}
 			}

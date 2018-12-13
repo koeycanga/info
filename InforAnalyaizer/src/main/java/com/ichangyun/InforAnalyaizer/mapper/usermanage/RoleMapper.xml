@@ -41,6 +41,6 @@
     </select>
    
    <select  id="queryById" resultType="com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean">
-         select DATE_FORMAT(UpdateDateTime,'%Y/%m/%d %H:%i:%s') UpdateDateTime from m_userrole where UserRole_ID = #{value}
+         select UserRoleName,DATE_FORMAT(UpdateDateTime,'%Y/%m/%d %H:%i:%s') UpdateDateTime from m_userrole where UserRole_ID = #{value}
     </select>
 </mapper>

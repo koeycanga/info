@@ -17,7 +17,7 @@ public interface FilterWordsService {
 	String updateFwVo(FilterWordsVo vo, User u);
 	//查新当前节点的子节点
 	List<FilterWordsVo> queryChild(FilterWordsVo vo);
-	HSSFWorkbook output(String[] ids);
+	HSSFWorkbook output(String[] ids, String realPath);
 	String input(List<FilterWordsVo> vos);
 
 }

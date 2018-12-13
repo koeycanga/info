@@ -125,6 +125,14 @@ public interface ClassificationInfoMapper {
 	 */
 	public void delDataByFunction(@Param("cb")ClassificationInfoBean cb);
 
+	
+	/**
+	 * 获得分类体系的更新时间
+	 * @param cb
+	 * @return
+	 */
+	public String getUpdateTime(ClassificationInfoBean cb);
+
 	//public int getClassifcInfoCountWithName(ClassificationInfoBean cb);
 
 	//public List<ClassificationInfoBean> getClassifcInfoWithName(ClassificationInfoBean cb);

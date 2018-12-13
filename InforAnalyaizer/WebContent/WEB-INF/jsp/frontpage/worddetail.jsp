@@ -25,13 +25,13 @@
 <fmt:message key="E0019" var="E0019" bundle="${sysInfo}" />   
 <fmt:message key="I0019" var="I0019" bundle="${sysInfo}" />  
 <fmt:message key="I0023" var="I0023" bundle="${sysInfo}" />
-
+<fmt:message key="I0024" var="I0024" bundle="${sysInfo}" />
 <!doctype html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>竞争情报分析系统</title>
-<link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style-1920_1080.css">
+<link id="lnk" rel="stylesheet" type="text/css" href="">
 </head>
 
 <body style="background-color: #f2f3f8;">
@@ -54,7 +54,7 @@
 				  <th width="30%">{{table_title}}</th>
 				</tr>
 				<tr v-for="data in hotword_datas" >
-				  <td v-bind:style="data.hotWord==sel_word?'background-color:#3a8ddd;':''"><a href="#" v-on:click="tohotword(data.hotWord)">{{data.hotWord}}</a></td>
+				  <td v-bind:style="data.hotWord_ID==sel_word_id?'background-color:#3a8ddd;':''"><a href="#" v-on:click="tohotword(data.hotWord_ID)">{{data.hotWord}}</a></td>
 				</tr>
 			</tbody>
 		</table>
@@ -72,8 +72,10 @@
 		
 		<div v-for="(data,index) in datas" class="cy_CIASFE_contpaste" style="border-top: 0px;">
 			<div class="cy_CIASFE_contpastetit">
-				<label><input type="checkbox">
-				<b>{{data.articleTitle}}</b></label>
+			    <input type="checkbox">
+				<label>
+				<a v-bind:href="'../detailspage/toDetailsPage?from=comprehensivemonitoring&article_id='+data.article_ID" target="_blank" style="text-decoration: none; color: rgb(0, 0, 0);"><b>{{data.articleTitle}}</b></a>
+				</label>
 				<div v-if="data.emotionDivision=='0'" class="cy_CIASFE_contpassta03">正</div>
 				<div v-if="data.emotionDivision=='1'" class="cy_CIASFE_contpassta02">中</div>
 				<div v-if="data.emotionDivision=='2'" class="cy_CIASFE_contpassta01">负</div>
@@ -85,7 +87,7 @@
 				</div>
 			</div>
 			<div class="cy_CIASFE_contpastecon">
-				<a v-bind:href="'../detailspage/toDetailsPage?from=comprehensivemonitoring&article_id='+data.article_ID" target="_blank" style="text-decoration: none; color: rgb(0, 0, 0);">{{data.articleAbstract}}</a>
+				{{data.articleAbstract}}
 			</div>
 			<div class="cy_CIASFE_contpastfoot">
 			    <div class="cy_CIASFE_footbox01">&nbsp;</div>
@@ -102,7 +104,9 @@
 			    </div>
 			</div>
 		</div>
-		
+		<div v-if="datas.length==0">
+		   <!-- {{info}}  -->
+		</div>
 		
 <!--		分页-->
 		<pager ref="pagecomponent"></pager>  <!-- ref 固定为 pagecomponent  -->
@@ -125,9 +129,13 @@
 <script type="text/javascript" src="${ctx}/js/axios.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/polyfill.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/clipboard.min.js"></script>
-<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script type="text/javascript" src="${ctx}/js/comm.js"></script>
+<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script>
+
+AdaptationResolution('${ctx}');//分辨率适配
+
+var flag = "${flag}";   //0：热词     1：即将发生
 
 var Info = {
 		  W0003:'${W0003}',
@@ -148,7 +156,8 @@ var Info = {
 		  E0029:'${E0029}',
 		  E0031:'${E0033}',
 		  I0019:'${I0019}',
-		  I0023:'${I0023}'
+		  I0023:'${I0023}',
+		  I0024:'${I0024}'
 	};
 
 	var menu_datas = JSON.parse('${front_menu}');  //菜单数据来源于 classes/resources.properties
@@ -164,8 +173,9 @@ var Info = {
 	var app = new Vue({
 		el:'#app',
 		data:{
+			info:Info.I0024,
 			table_title:'${table_title}',  //左边框标题
-			sel_word:'${word}',           //选中的热词 
+			sel_word_id:'${word}',           //选中的热词ID 
 			checkedArr:[],
 			datas:[],
 			hotword_datas:[],             //热词集合
@@ -176,7 +186,7 @@ var Info = {
         },
 		methods:{
 			 tohotword:function(hotword){
-				 this.sel_word = hotword;
+				 this.sel_word_id = hotword;
 				 this.$refs.pagecomponent.pageBean.pageNow = 1;
 				 this.search(this.$refs.pagecomponent.pageBean);
 			 },
@@ -251,7 +261,11 @@ var Info = {
 			 },
 			 getHotWord:function(){     //获得热词集合
 				 var _this = this;
-    	    	 axios.get('../front/getHotWord')
+    	    	 axios.get('../front/getHotWordFromDetial',{
+    	    		 params:{
+    	    			 flag:flag
+    	    		 }
+    	    	 })
      			.then(function (response) {
 
      				_this.hotword_datas = JSON.parse(response.data);
@@ -273,9 +287,10 @@ var Info = {
 		        		});
 		    		axios.get('../front/searchbyhotword',{
 		    			params: {
-		    				    HotWord:_this.sel_word,
+		    				    HotWord:_this.sel_word_id,
 			    				pageNow:pageBean.pageNow,
-			    				rowSize:pageBean.rs_selected
+			    				rowSize:pageBean.rs_selected,
+			    				flag:flag
 		    				}
 		    			})
 		    			.then(function (response) {
@@ -302,6 +317,7 @@ var Info = {
 			}
 		},
 		mounted:function(){
+			
 			this.getHotWord();
 			
 			this.search(this.$refs.pagecomponent.pageBean);

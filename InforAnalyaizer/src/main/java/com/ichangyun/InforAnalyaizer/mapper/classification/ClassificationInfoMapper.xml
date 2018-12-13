@@ -32,7 +32,7 @@
   
   <select id="getChildernByID" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean"  resultType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
        select Classification_ID,ClassificationName,Parent_Classification_ID,DisplayOrder,Description,CreateUser,
-			DATE_FORMAT(CreateDateTime,'%Y/%m/%d %H:%m:%s') CreateDateTime,UpdateUser,DATE_FORMAT(UpdateDateTime,'%Y/%m/%d %H:%i:%s') UpdateDateTime,
+			DATE_FORMAT(CreateDateTime,'%Y/%m/%d %H:%i:%s') CreateDateTime,UpdateUser,DATE_FORMAT(UpdateDateTime,'%Y/%m/%d %H:%i:%s') UpdateDateTime,
 			 (select count(Classification_ID) from m_classificationinfo b where b.Parent_Classification_ID=a.Classification_ID) children_lg
 			 from m_classificationinfo a where a.Parent_Classification_ID=#{cb.Classification_ID}  order by a.DisplayOrder desc
   </select>
@@ -59,7 +59,7 @@
   
   <select id="getInfoByID" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean"  resultType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
        select Classification_ID,ClassificationName,Parent_Classification_ID,DisplayOrder,Description,CreateUser,
-			DATE_FORMAT(CreateDateTime,'%Y/%m/%d') CreateDateTime,UpdateUser,DATE_FORMAT(UpdateDateTime,'%Y/%m/%d %H:%i:%s') UpdateDateTime,
+			DATE_FORMAT(CreateDateTime,'%Y/%m/%d %H:%i:%s') CreateDateTime,UpdateUser,DATE_FORMAT(UpdateDateTime,'%Y/%m/%d %H:%i:%s') UpdateDateTime,
 			 (select count(Classification_ID) from m_classificationinfo b where b.Parent_Classification_ID=a.Classification_ID) children_lg
 			 from m_classificationinfo a where a.Classification_ID=#{cb.Classification_ID}  
   </select>
@@ -110,6 +110,10 @@
 		group by a.Classification_ID ,DATE_FORMAT(b.Releasetime,'%Y/%m/%d')
 		ORDER BY a.DisplayOrder DESC
      
+  </select>
+  
+  <select id="getUpdateTime"  parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean" resultType="java.lang.String">
+      select DATE_FORMAT(UpdateDateTime,'%Y/%m/%d %H:%i:%s') UpdateDateTime from m_classificationinfo where Classification_ID=#{Classification_ID}
   </select>
   
 </mapper>

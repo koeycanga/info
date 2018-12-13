@@ -16,13 +16,13 @@
             ) sim_cnt,
 			IF(a.Article_ID in (SELECT k.Article_ID FROM a_userearlywarningarticleinfo as k where k.User_ID=#{userid}),"yes","no") isearlywarning
 			 from a_articlebasicinfo a where a.Article_ID=#{article_id}
-			 and not exists (select 1 from a_userdeletearticleinfo b where a.Article_ID=b.Article_ID)
+			 and not exists (select 1 from a_userdeletearticleinfo b where a.Article_ID=b.Article_ID and b.User_ID=#{userid})
 	</select>
 
-	<select id="getBDArticleByID" parameterType="java.lang.String" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+	<select id="getBDArticleByID" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
 	     select DATE_FORMAT(a.Releasetime,'%Y/%m/%d %H:%i:%s') Releasetime,a.ArticleURL,b.WebsiteName from a_articlebasicinfo a,m_websiteinfo b
 			where a.Website_ID=b.Website_ID and a.ArticleTitle=(select c.ArticleTitle from a_articlebasicinfo c where c.Article_ID=#{article_id} )
-			and not exists (select 1 from a_userdeletearticleinfo b where a.Article_ID=b.Article_ID)
+			and not exists (select 1 from a_userdeletearticleinfo b where a.Article_ID=b.Article_ID  and b.User_ID=#{userid})
 			order by a.Releasetime desc
 	</select>
 

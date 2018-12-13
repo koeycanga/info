@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
+<%@ page language="java" contentType="text/html; charset=utf-8" import="com.ichangyun.InforAnalyaizer.model.userInfo.User,com.ichangyun.InforAnalyaizer.model.CommBean"
     pageEncoding="utf-8"%>
-<%@ page import="java.sql.* " %>  
 <%@ page import="java.io.*" %>  
 <%@ page import="java.util.*" %>  
 
@@ -18,7 +17,10 @@
  //String aa = resource.getString("aa"); // 属性名
  
  //System.out.println("aa="+aa);
- 
+ User user =  (User)session.getAttribute(CommBean.SESSION_NAME);
+ if(user!=null){
+	 response.sendRedirect("./login/toLogin");
+ }
 %>
 <!doctype html>
 <html>
@@ -57,19 +59,62 @@
 <script type="text/javascript" src="${ctx}/js/polyfill.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/md5.min.js"></script>
 <script type="text/javascript">
+   
+function enterlogin(event){
+	 event.preventDefault();
+	 if(event.keyCode==13){
+		var flag = $("input[name='xzqw']:checked").val();
+	   	if(flag=='0'){
+	   		window.location.href = "${ctx}/front/index";
+	   	}
+	   	if(flag=='1'){
+	   		window.location.href = "${ctx}/login/toLogin";
+	   	}
+	 }
+}
+
     
-    function enterlogin(event){
-    	 event.preventDefault();
-		 if(event.keyCode==13){
-			var flag = $("input[name='xzqw']:checked").val();
-        	if(flag=='0'){
-        		window.location.href = "${ctx}/front/index";
-        	}
-        	if(flag=='1'){
-        		window.location.href = "${ctx}/login/toLogin";
-        	}
-		 }
-    }
+    function showChose(){
+		 enter_num = 1;
+		 layer.open({
+			    id:1,
+		        type: 1,
+		        title:'选择前往',
+		        skin:'layui-layer-rim',
+		        area:['320px', 'auto'],
+		        
+		        content: ' <div  class="row" style="width: 300px;height:100px;  margin-left:7px; margin-top:10px;">'
+		            +'<div class="col-sm-12">'
+		            +'<div class="input-group">'
+		            +'<input id="firstch" type="radio" name="xzqw" checked class="form-control" value="0">'
+		            +'<span class="input-group-addon"> 前台首页 </span>'
+		            +'</div>'
+		            +'</div>'
+		              +'<div class="col-sm-12" style="margin-top: 10px">'
+		              +'<div class="input-group">'
+		              +'<input id="secondch" type="radio" name="xzqw" class="form-control" value="1">'
+		              +'<span class="input-group-addon"> 后台管理 </span>'
+		              +'</div>'
+		              +'</div>'
+		              +'</div>'
+		        ,
+		        btn:['确定','取消'],
+		        btn1: function (index,layero) {
+		        	var flag = $("input[name='xzqw']:checked").val();
+		        	if(flag=='0'){
+		        		window.location.href = "${ctx}/front/index";
+		        	}
+		        	if(flag=='1'){
+		        		window.location.href = "${ctx}/login/toLogin";
+		        	}
+		    	},
+		        btn2:function (index,layero) {
+		        	 enter_num = 0;
+		        	 layer.close(index);
+		        }
+		 
+		    });
+	 }
 
      var Info = {
     		E0002:'${E0002}', 

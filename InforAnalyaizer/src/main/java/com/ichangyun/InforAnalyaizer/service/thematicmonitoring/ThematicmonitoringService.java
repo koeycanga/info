@@ -40,9 +40,10 @@ public interface ThematicmonitoringService {
 	/**
 	 * 判断方案名称是否已存在
 	 * @param planinfo_name 方案名称
+	 * @param session 
 	 * @return true 已存在  false 不存在
 	 */
-	public boolean exist(String planinfo_name);
+	public boolean exist(String planinfo_name, HttpSession session);
 
 	/**
 	 * 删除方案
@@ -62,9 +63,10 @@ public interface ThematicmonitoringService {
 	 * 判断除plan_id外 方案名称是否已存在
 	 * @param plan_id   方案ID
 	 * @param planinfo_name  方案名称
+	 * @param session 
 	 * @return true 已存在  false 不存在
 	 */
-	public boolean existwithID(String plan_id, String planinfo_name);
+	public boolean existwithID(String plan_id, String planinfo_name, HttpSession session);
 
 	/**
 	 * 修改方案

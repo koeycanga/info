@@ -41,9 +41,9 @@ public class DetailsPageServiceImpl implements DetailsPageService {
 	}
 
 	@Override
-	public String getBDArticleByID(String article_id) {
+	public String getBDArticleByID(String article_id,String userid) {
 		
-		List<ArticleInfoBean> list = detailsPageMapper.getBDArticleByID(article_id);
+		List<ArticleInfoBean> list = detailsPageMapper.getBDArticleByID(article_id,userid);
 		
 		JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
 		

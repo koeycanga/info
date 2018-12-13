@@ -21,12 +21,12 @@
 			 where Plan_ID=#{plan_id}
      </update>
      
-     <select id="exist" parameterType="java.lang.String" resultType="java.lang.Integer">
-          select count(1) from m_planinfo where PlanName=#{param}
+     <select id="exist"  resultType="java.lang.Integer">
+          select count(1) from m_planinfo where PlanName=#{param} and User_ID=#{userid}
      </select>
      
      <select id="existwithID" resultType="java.lang.Integer">
-          select count(1) from m_planinfo where PlanName=#{p2} and Plan_ID!=#{p1}
+          select count(1) from m_planinfo where PlanName=#{p2} and User_ID=#{userid} and Plan_ID!=#{p1}
      </select>
      
      <insert id="SaveNewfa"  parameterType="com.ichangyun.InforAnalyaizer.mapper.thematicmonitoring.ThematicmonitoringMapper">

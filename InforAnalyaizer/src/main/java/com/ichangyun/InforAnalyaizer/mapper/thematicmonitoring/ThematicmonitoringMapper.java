@@ -31,9 +31,10 @@ public interface ThematicmonitoringMapper {
 	/**
 	 * 判断方案名称是否已存在
 	 * @param planinfo_name
+	 * @param userid 
 	 * @return
 	 */
-	public int exist( @Param("param") String planinfo_name);
+	public int exist( @Param("param") String planinfo_name, @Param("userid")String userid);
 
 	/**
 	 * 保存方案
@@ -70,9 +71,10 @@ public interface ThematicmonitoringMapper {
 	 * 判断除plan_id外方案名称是否存在
 	 * @param plan_id
 	 * @param planinfo_name
+	 * @param string 
 	 * @return
 	 */
-	public int existwithID(@Param("p1")String plan_id, @Param("p2")String planinfo_name);
+	public int existwithID(@Param("p1")String plan_id, @Param("p2")String planinfo_name,@Param("userid")String userid);
 
 	/**
 	 * 获得文章总数(不合并相似文章)

@@ -281,7 +281,9 @@
 		textexcludephrases,a.CreateUser
 		createuser,a.CreateDateTime createdatetime,
 		a.UpdateUser
-		updateuser,DATE_FORMAT(a.UpdateDateTime,'%Y/%m/%d %H:%i:%s') updatedatetime FROM
+		updateuser,DATE_FORMAT(a.UpdateDateTime,'%Y/%m/%d %H:%i:%s') updatedatetime, 
+		case when (select count(1) from m_classificationinfo c where b.Classification_ID=c.Parent_Classification_ID )>0 then true else false end isParent
+		FROM
 		m_classificationfilterwords a right
 		JOIN m_classificationinfo b on
 		a.Classification_ID=b.Classification_ID

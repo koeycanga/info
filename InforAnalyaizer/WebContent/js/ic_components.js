@@ -228,13 +228,39 @@ var ic_jcfa  = {
 			}
 			return false;
 		},
-		UpdateFA:function(){
+		dealRemoveWord:function(word){       //处理排除词    去掉其中重复及为空的元素
+			word = word.replace(/，/ig,',');
+			var ws  = word.split(",");
+			var map = new Map();
+			for(var i=ws.length-1;i>=0;i--){
+				if(map.get(ws[i].trim())!=null){
+					ws.splice(i,1);
+				}else{
+					map.set(ws[i],ws[i]);
+				}
+			}
+			var res = "";
+			var cnt = 0;
+			for(var i=0;i<ws.length;i++){
+				if(ws[i].trim()!=''){
+					if(cnt==0){
+						res = ws[i].trim();
+						cnt++;
+					}else{
+						res += ","+ws[i].trim();
+					}
+				}
+			}
+			return res;
+		},
+		UpdateFA:function(){                                 //更新方案
 			if(this.planinfo_name.trim()==''){
 				layer.msg(Info.E0029);
 				return;
 			}
+			this.planinfo_removeWord = this.dealRemoveWord(this.planinfo_removeWord.trim());
 			 var jcc_json = this.getJCCJson();
-			 if(jcc_json=='[]'&&this.planinfo_removeWord.trim()==''){
+			 if(jcc_json=='[]'&&this.planinfo_removeWord==''){
 				 layer.msg('请输入监测词或排除词');
 				 return;
 			 }
@@ -252,7 +278,7 @@ var ic_jcfa  = {
 	        	           plan_id:_this.edit_id,
 		   				   planinfo_name:_this.planinfo_name.trim(),
 		   				   jcc_json:jcc_json,
-		   				   planinfo_removeWord:_this.planinfo_removeWord.trim(),
+		   				   planinfo_removeWord:_this.planinfo_removeWord,
 		   				   fromDate:fromDate,
 		   				   toDate:toDate
 		   				}
@@ -296,9 +322,9 @@ var ic_jcfa  = {
 				layer.msg(Info.E0029);
 				return;
 			}
-			
+			this.planinfo_removeWord = this.dealRemoveWord(this.planinfo_removeWord.trim());
 	       var jcc_json = this.getJCCJson();
-	       if(jcc_json=='[]'&&this.planinfo_removeWord.trim()==''){
+	       if(jcc_json=='[]'&&this.planinfo_removeWord==''){
 	    	   layer.msg('请输入监测词或排除词');
 	    	   return;
 	       }
@@ -315,14 +341,14 @@ var ic_jcfa  = {
 	   			    {
 	   				   planinfo_name:_this.planinfo_name.trim(),
 	   				   jcc_json:jcc_json,
-	   				   planinfo_removeWord:_this.planinfo_removeWord.trim(),
+	   				   planinfo_removeWord:_this.planinfo_removeWord,
 	   				   fromDate:document.getElementById("theDate3").value+" "+document.getElementById("theTime3").value,
 	   				   toDate:document.getElementById("theDate4").value+" "+document.getElementById("theTime4").value
 	   				}
 	   			)
 	   			.then(function (response) {
 	   				  if(response.data=="ok"){
-	   					  layer.msg(Info.I0019);
+	   					  layer.msg(Info.I0029);
 	   					  _this.hide();
 	   				  	  _this.getAllFA();
 	   				  }
@@ -510,23 +536,23 @@ var ic_user_info = {  //$parent.updateUser
     	     '       <div class="cy_CMICBMS_addclose" v-on:click="hide()">X</div>'+
     	     '   </div>'+
     	      '  <div class="cy_CMICBMS_addtb">'+
-    	      '      <div class="cy_CMICBMS_addinput">用户角色：{{userData.urolename}}</div><br>'+
-    	      '      <div class="cy_CMICBMS_addinput">用户名：{{userData.uid}}</div><br>'+
-    	       '     <div class="cy_CMICBMS_addinput">姓名：{{userData.uname}}</div><br>'+
-    	      '      <div class="cy_CMICBMS_addinput">'+
-    	      '          <span>*</span>&nbsp;&nbsp;旧密码：<input type="password" placeholder="输入原密码" v-model="uPwd">'+
+    	      '   <div ><font color="black" size="3" > 用户角色：{{userData.urolename}}</font></div>'+
+    	      '     <div ><font color="black" size="3" >用户名：{{userData.uid}}</font></div>'+
+    	       '  <div ><font color="black" size="3" >姓名： {{userData.uname}}</font></div>'+
+    	      '      <div align="center">'+
+    	      '          <span>*</span>&nbsp;&nbsp;<font color="black" size="3" >旧密码：</font><input class="cy_CMICBMS_addinput" type="password" placeholder="输入原密码" v-model="uPwd" maxlength="32">'+
     	       '     </div>'+
-    	      '      <div class="cy_CMICBMS_addinput">'+
-    	       '         <span>*</span>设置密码：<input type="password" placeholder="设置密码"'+
-    	        '                v-model="changePwd"       >'+
+    	      '      <div align="center">'+
+    	       '         <span>*</span><font color="black" size="3">新密码：</font></span><input class="cy_CMICBMS_addinput" type="password" placeholder="设置密码"'+
+    	        '                v-model="changePwd" maxlength="32">'+
     	       '     </div>'+
-    	      '      <div  class="cy_CMICBMS_addinput">'+
-    	       '         <span>*</span>确认密码：<input type="password" placeholder="确认密码"'+
-    	       '                   v-model="checkPwd"     >'+
+    	      '      <div  align="center">'+
+    	       '         <span>*</span><font color="black" size="3">确认密码：</font><input class="cy_CMICBMS_addinput" type="password" placeholder="确认密码"'+
+    	       '                   v-model="checkPwd" maxlength="32">'+
     	        '    </div>'+
-    	        '    <div class="cy_CMICBMS_addinput">所属部门：{{userData.udep}}</div><br>'+
-    	        '    <div class="cy_CMICBMS_addinput">手机号码：{{userData.utel}}</div><br>'+
-    	        '    <div class="cy_CMICBMS_addinput">邮箱地址：{{userData.uemail}}</div><br>'+
+    	        '    <div ><font color="black" size="3" >所属部门：{{userData.udep}}</font></div>'+
+    	        '    <div ><font color="black" size="3" >手机号码：{{userData.utel}}</font></div>'+
+    	        '    <div ><font color="black" size="3" >邮箱地址：{{userData.uemail}}</font></div>'+
 
     	       '     <div style="float:right;margin: 20px 20px 0 0;">'+
     	        '        <input type="button" value="确定" class="cy_CMICBMS_schbtn"'+
@@ -614,7 +640,7 @@ var ic_user_info = {  //$parent.updateUser
         },
         mounted:function(){
         	var that = this;
-   			axios.get('../yhgl/user/thisUser')
+   			axios.get('../userfront/thisUser')
     			.then(function (response) {
 						that.userData = response.data;
     			})

@@ -32,8 +32,8 @@
 <head>
 <meta charset="UTF-8">
 <title>竞争情报分析系统</title>
-<link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style-1920_1080.css">
-<link type="text/css" rel="stylesheet" href="${ctx}/js/date/dhtmlgoodies_calendar/dhtmlgoodies_calendar.css" media="screen"></LINK>
+<link id="lnk" rel="stylesheet" type="text/css" href="">
+<link type="text/css" rel="stylesheet" href="${ctx}/js/date/dhtmlgoodies_calendar/dhtmlgoodies_calendar.css"></LINK>
 <script type="text/javascript" src="${ctx}/js/date/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js"></script>
 </head>
 
@@ -235,10 +235,12 @@
 <script type="text/javascript" src="${ctx}/js/polyfill.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/clipboard.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/laydate/laydate.js"></script>
-<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script type="text/javascript" src="${ctx}/js/comm.js"></script>
+<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 
 <script>
+
+AdaptationResolution('${ctx}');//分辨率适配
 
 var Info = {
 	  W0003:'${W0003}',
@@ -503,7 +505,7 @@ var app = new Vue({
 				  var arr = [];
 				  for(var i=this.checkedNames.length-1;i>=0;i--){
 	            		 var data = this.getDataById(this.checkedNames[i]);
-	            		 if(data.isearlywarning=='yes'){
+	            		 if(data.isearlywarning!='yes'){
 	            			 arr.push(this.checkedNames[i]);
 	            		 }
 	            	 }

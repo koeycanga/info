@@ -22,6 +22,12 @@ public class HotWordBean extends BaseBean {
 	/**
 	 * 热词云ID
 	 */
+	private String HotWord_ID;
+	
+	
+	private String Keyword_ID;
+	
+	
 	private int KeywordNo;
 	
 	/**
@@ -53,6 +59,31 @@ public class HotWordBean extends BaseBean {
 	 * 更新日時
 	 */
 	private String UpdateDateTime;
+	
+	/**
+	 * 标识位
+	 */
+	private String flag;
+	
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+	public String getKeyword_ID() {
+		return Keyword_ID;
+	}
+	public void setKeyword_ID(String keyword_ID) {
+		Keyword_ID = keyword_ID;
+	}
+	
+	public String getHotWord_ID() {
+		return HotWord_ID;
+	}
+	public void setHotWord_ID(String hotWord_ID) {
+		HotWord_ID = hotWord_ID;
+	}
 	
 	public String getCollectionField_ID() {
 		return CollectionField_ID;

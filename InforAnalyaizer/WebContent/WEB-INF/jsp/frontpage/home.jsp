@@ -16,8 +16,7 @@
 <meta charset="UTF-8">
 <title>竞争情报分析系统</title>
 <!--  <link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style.css"> -->
-<link rel ="stylesheet" type ="text/css" href ="${ctx}/css/cy_CIAS_style-1920_1080.css" media ="screen and (min-width: 1441px) and (max-width:1922px)" >
-<link rel ="stylesheet" type ="text/css" href ="${ctx}/css/cy_CIAS_style-1440_900.css" media ="screen and (min-width: 1367px) and (max-width:1440px)">
+<link id="lnk" rel="stylesheet" type="text/css" href="">
 </head>
 
 <body style="background-color: #15266b;">
@@ -73,12 +72,65 @@
 <div class="cy_CIASFE_body">
 	<div class="cy_CIASFE_homebox01">
 		<div class="cy_CIASFE_homeboxtit">即将发生</div>
-		<div class="cy_CIASFE_coming"><img src="../image/home-coming.png"></div>
+		<div class="cy_CIASFE_coming" id="jjfsdv">
+		  <!-- <img src="../image/home-coming.png"> -->
+		 <table v-if="jjfs_datas.length==10" width="341" height="268" border="0" cellpadding="0" cellspacing="0">
+			  <tbody>
+			    <tr >
+			     <td width="100%" >
+			      <table width="100%"  height="100%" cellpadding="0" cellspacing="0" border="1" bordercolor="#BBFFFF" style="border-bottom-style:none;">
+			      	  <tr style="border-bottom-style:none;">
+			      	     <td align="center" width="70%" style="border-bottom-style:none;cursor:pointer;" v-on:click="dealJJFS(jjfs_datas[0].keyword_ID)">{{jjfs_datas[0].hotWord}}</td>
+			      	     <td align="center" style="border-bottom-style:none;cursor:pointer;" v-on:click="dealJJFS(jjfs_datas[1].keyword_ID)">{{jjfs_datas[1].hotWord}}</td>
+			      	   </tr >
+			      </table>
+			      </td>
+			    </tr>
+			    <tr>
+			     <td>
+			     	 <table width="100%"  height="100%" cellpadding="0" bordercolor="#BBFFFF" cellspacing="0" border="1">
+			      	  <tr>
+			      	     <td align="center" width="40%" style="cursor:pointer;" v-on:click="dealJJFS(jjfs_datas[2].keyword_ID)">{{jjfs_datas[2].hotWord}}</td>
+			      	     <td align="center" rowspan="2" style="cursor:pointer;" v-on:click="dealJJFS(jjfs_datas[3].keyword_ID)">{{jjfs_datas[3].hotWord}}</td>	
+			      	     
+			      	   </tr>
+			      	  <tr>
+			      	     <td align="center" style="cursor:pointer;" v-on:click="dealJJFS(jjfs_datas[4].keyword_ID)">{{jjfs_datas[4].hotWord}}</td>
+			      	  </tr>
+			      </table>
+			     </td>
+			    </tr>
+			    <tr>
+			      <td >
+			      	  <table width="100%"  height="100%" cellpadding="0" bordercolor="#BBFFFF" cellspacing="0" border="1" style="border-top-style:none;">
+			      	    <tr>
+			      	    	<Td align="center" style="border-top-style:none;cursor:pointer;" v-on:click="dealJJFS(jjfs_datas[5].keyword_ID)">{{jjfs_datas[5].hotWord}}</Td>
+			      	    	<td align="center" width="70%" style="border-top-style:none;cursor:pointer;" v-on:click="dealJJFS(jjfs_datas[6].keyword_ID)">{{jjfs_datas[6].hotWord}}</td>
+			      	    </tr>
+					  </table>
+			      </td>
+			    </tr>
+			    <tr>
+			      <td>
+			      	 <table width="100%"  height="100%" cellpadding="0" bordercolor="#BBFFFF" cellspacing="0" border="1" style="border-top-style:none;">
+			      	    <tr>
+			      	    	<Td align="center" style="border-top-style:none;cursor:pointer;" v-on:click="dealJJFS(jjfs_datas[7].keyword_ID)">{{jjfs_datas[7].hotWord}}</Td>
+			      	    	<td align="center" width="46%" style="border-top-style:none;cursor:pointer;" v-on:click="dealJJFS(jjfs_datas[8].keyword_ID)">{{jjfs_datas[8].hotWord}}</td>
+			      	    	<td align="center" style="border-top-style:none;cursor:pointer;" v-on:click="dealJJFS(jjfs_datas[9].keyword_ID)">{{jjfs_datas[9].hotWord}}</td>
+			      	    </tr>
+					  </table>
+			      </td>
+			    </tr>
+			  </tbody>
+			</table> 
+		 </div>
 	</div>
 	<div class="cy_CIASFE_homebox02">
 		<div class="cy_CIASFE_homeboxtit">热词云</div>
 		<div style="text-align: center;">
-		    <div  align="center" id="wcdv1"  style="width:92%;height: 280px;margin:30px 0 0 30px;"></div>
+		    <div   align="center" id="wcdv1"  style="width:800px;height: 280px;margin:30px 0 0 30px;">
+		    
+		    </div>
 		</div>
 	</div>
 	
@@ -103,9 +155,11 @@
 <script type="text/javascript" src="${ctx}/js/vue.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/axios.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/polyfill.min.js"></script>
-<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script type="text/javascript" src="${ctx}/js/comm.js"></script>
+<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script>
+
+AdaptationResolution('${ctx}');//分辨率适配
 
 var Info = {
 		W0003:'${W0003}',
@@ -139,6 +193,8 @@ var Info = {
     			warning:''                  //预警
     		},
     		
+    		jjfs_datas:[],                 //即将发生
+    		
     		newest_datas:[],               //最新信息
     		
     		warn_datas:[],                 //预警信息top10
@@ -147,6 +203,21 @@ var Info = {
     		userData:{}			//用户信息
     	},
     	methods:{
+    		dealJJFS:function(id){
+    			window.location.href = "../front/tohotword?wordid="+id+"&flag=1";
+    		},
+    		getJJFSWord:function(){ //获得即将发生情报
+    			var _this = this;
+    			 axios.get('../front/getJJFSWord')
+      			.then(function (response) {
+      			     var data = JSON.parse(response.data);
+      				 _this.jjfs_datas = data;
+      			})
+      			.catch(function (error) {
+      			    console.log(error);
+      			});
+    			
+    		},
     	    getHotWord:function(){
     	    	 axios.get('../front/getHotWord')
      			.then(function (response) {
@@ -155,15 +226,14 @@ var Info = {
      				var str = '[';
      				for(var i=0;i<data.length;i++){
      					if(i==0){
-     						str+='{"name":"'+data[i].hotWord+'","value":"10"}';
+     						str+='{"name":"'+data[i].hotWord+'","value":"10","id":"'+data[i].hotWord_ID+'"}';
      					}else{
-     						str+=',{"name":"'+data[i].hotWord+'","value":"10"}';
+     						str+=',{"name":"'+data[i].hotWord+'","value":"10","id":"'+data[i].hotWord_ID+'"}';
      					}
      				}
      				str+=']';
      				option.series[0].data = JSON.parse(str);
      				chart1.setOption(option);
-     			
      				
      			})
      			.catch(function (error) {
@@ -199,36 +269,12 @@ var Info = {
     	    }
     	},
     	mounted:function(){
-
-    		this.getHomeDatas();
-    	
-    		
-   			//this.newest_datas = [{"name":"华帝“退全款”处处设限，消费者感觉被“套路”","href":"#"},{"name":"2条信息","href":"#"},{"name":"3条信息","href":"#"},{"name":"4条信息","href":"#"},{"name":"5条信息","href":"#"}];
-    	
-    	    /*this.warn_datas = [{"name":"中国太保跃升至《财富》世界500强第220","href":"#"},{"name":"中国石化加油站扫码引发爆炸致4死？回应：","href":"#"},
-			    	    	{"name":"上海地铁迎来第5000辆列车","href":"#"},{"name":"成渝间开行“深夜动车”方便两地市民高铁出行","href":"#"},
-			    	    	{"name":"日本新潜艇号称“领先中国十五年” 到底什么水平","href":"#"},{"name":"每人2亿韩元韩国法院就世越号遇难者家属索赔案...","href":"#"}];*/
-    	    
-    	    
-    	  /*  this.negative_datas = [
-    	    	{"name":"华帝“退全款”处处设限，消费者感觉被“套路”1","href":"#"},
-    	    	{"name":"华帝“退全款”处处设限，消费者感觉被“套路”2","href":"#"},
-    	    	{"name":"华帝“退全款”处处设限，消费者感觉被“套路”3","href":"#"},
-    	    	{"name":"华帝“退全款”处处设限，消费者感觉被“套路”4","href":"#"},
-    	    	{"name":"华帝“退全款”处处设限，消费者感觉被“套路”5","href":"#"},
-    	    	{"name":"华帝“退全款”处处设限，消费者感觉被“套路”6","href":"#"},
-    	    	{"name":"华帝“退全款”处处设限，消费者感觉被“套路”7","href":"#"},
-    	    	{"name":"华帝“退全款”处处设限，消费者感觉被“套路”8","href":"#"}
-    	    ];*/
-    	    
-    	    
+    	   chart1 = echarts.init(document.getElementById('wcdv1'));
+           this.getJJFSWord();
+    	   this.getHomeDatas();
     	   this.getHotWord();
     	}
     });
-    
-
-	  
-    var chart1 = echarts.init(document.getElementById('wcdv1'));
     
     var option = {
             tooltip: {},
@@ -256,27 +302,97 @@ var Info = {
                 data: []
             } ]
         };
-
-
-     /* option.series[0].data = [
-    	  {
-                name: '长江',
-                value: 10000
-            },
-            {
-                name: '跨越式',
-                value: 6181
-            }];*/
     
-        chart1.setOption(option);
-	  
-        chart1.on('click', function(param) {
-           // console.log(param.data.name);//重要的参数都在这里！
-            
-            var hotword = param.data.name ;
-            
-            window.location.href = "../front/tohotword?word="+hotword;
-        });
+    var chart1 = echarts.init(document.getElementById('wcdv1')); 
     
+    chart1.on('click', function(param) {
+        console.log(param.data);//重要的参数都在这里！
+        
+        var hotword_id = param.data.id ;
+        
+        window.location.href = "../front/tohotword?wordid="+hotword_id+"&flag=0";;
+    });
+
+   
+     /*   var jjfsChart = echarts.init(document.getElementById('jjfsdv'));  //即将发生矩形树图
+        
+        jjfs_option = {
+        		
+        		series: [{
+        		    toolbox: {
+        				show : false
+        			},
+        			textStyle:{
+        				normal:{
+        					color:'black'
+        				}
+        			},
+        			roam:false,
+        			colorAlpha:[0],
+        			nodeClick:'link',
+        		//	silent:true,
+        		    levels:[{
+        			    color:['#e0e0e0']
+        		    }],
+        			width:'100%',
+        			height:'100%',
+        			type: 'treemap',
+        			data: [
+        			
+        			{
+        				name: 'nodeA',          
+        				value: 100,
+        				children:[
+        			
+        				
+        				{
+        				   name:'nodeA1',
+        				   value:20,
+        				   children:[
+        				     {
+        					    name:'nodeA11',
+        						value:15
+        					 },
+        					 {
+        					    name:'nodeA12',
+        						value:5
+        					 }
+        				   ]
+        				},
+        				{
+        				   name:'nodeA2',
+        				   value:30,
+        				   children:[
+        				      {
+        					     name:'nodeA21',
+        						 value:30
+        					  },
+        				      {
+        					     name:'nodeA22',
+        						 value:15
+        					  },
+        					  {
+        					     name:'nodeA23',
+        						 value:15
+        					  }
+        				   ]
+        				},
+        				]
+        			}]
+        		}]
+        	};
+        
+        jjfsChart.setOption(jjfs_option);*/
+        
+       
+	     /* option.series[0].data = [
+	    	  {
+	                name: '长江',
+	                value: 10000
+	            },
+	            {
+	                name: '跨越式',
+	                value: 6181
+	            }];*/
 </script>
 </html>

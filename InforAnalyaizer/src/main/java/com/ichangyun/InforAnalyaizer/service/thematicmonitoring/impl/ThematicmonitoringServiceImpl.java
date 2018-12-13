@@ -386,6 +386,7 @@ public class ThematicmonitoringServiceImpl implements ThematicmonitoringService 
 	@Override
 	public boolean updatefa(String plan_id, String planinfo_name, String jcc_json, String planinfo_removeWord,HttpSession session,String fromDate, String toDate) {
 		try{
+			
 			User user = (User) session.getAttribute(CommBean.SESSION_NAME);
 			String userid = user.getUser_ID();
 			if(!fromDate.isEmpty()) {
@@ -454,8 +455,9 @@ public class ThematicmonitoringServiceImpl implements ThematicmonitoringService 
 
 
 	@Override
-	public boolean exist(String planinfo_name) {
-		int count = thematicmonitoringMapper.exist(planinfo_name);
+	public boolean exist(String planinfo_name,HttpSession session) {
+		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+		int count = thematicmonitoringMapper.exist(planinfo_name,u.getUser_ID());
 		if(count>=1) {
 			return true;
 		}
@@ -463,8 +465,9 @@ public class ThematicmonitoringServiceImpl implements ThematicmonitoringService 
 	}
 
 	@Override
-	public boolean existwithID(String plan_id, String planinfo_name) {
-		int count = thematicmonitoringMapper.existwithID(plan_id,planinfo_name);
+	public boolean existwithID(String plan_id, String planinfo_name,HttpSession session) {
+		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+		int count = thematicmonitoringMapper.existwithID(plan_id,planinfo_name,u.getUser_ID());
 		if(count>=1) {
 			return true;
 		}

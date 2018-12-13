@@ -31,7 +31,7 @@ import com.ichangyun.InforAnalyaizer.service.common.service.DBUpdateCheckService
 @RequestMapping("/qbgh/classifcationinfo")
 public class ClassificationInfoController {
 
-	
+	 
 	//分类体系service
 	@Autowired
 	private ClassificationInfoService classificationInfoService;
@@ -127,9 +127,7 @@ public class ClassificationInfoController {
 			if(!dbUpdateCheckService.DBUpdateCheck("3", paramList, cb.getUpdateDateTime())) {
 				res = "already update";
 			}else {
-				if(!classificationInfoService.updateData(cb)) {
-					res = "nok";
-				}
+				res = classificationInfoService.updateData(cb) ;
 			}
 		}
 		return res;

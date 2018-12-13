@@ -21,7 +21,7 @@
 <body >
 <div id="app" v-cloak>
 <div class="cy_CMICBMS_bodybg">
-		<p>情报规划 > <span>信息源绑定</span></p>
+		<p><b>情报规划</b> > <span><b>信息源绑定</b></span></p>
 	<div class="cy_CMICBMS_tablebox">
 		<div class="cy_CMICBMS_box07">
 			<select style="width:150px" v-model="isbinding">
@@ -30,7 +30,7 @@
 				<option value="2" >否</option>
 			</select>
 			<div class="cy_CMICBMS_schbox01">
-				<input type="text" v-model="search_key" placeholder="请输入关键词检索">
+				<input type="text" v-model="search_key" placeholder="输入关键词检索">
 			</div>
 			<input type="button" class="cy_CMICBMS_schbtn" v-on:click="btn_search()" value="检索">
 		</div>
@@ -149,8 +149,8 @@
 <script type="text/javascript" src="${ctx}/js/vue.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/axios.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/polyfill.min.js"></script>
-<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script type="text/javascript" src="${ctx}/js/comm.js"></script>
+<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
 <script>
 
 AdaptationResolution('${ctx}'); //分辨率适配
@@ -275,7 +275,7 @@ var ic_tree_dv_binding = {
 		props: ['model'],
 		data:function(){
 			return {
-				t_style : {padding: '10px 0px !important'} 
+				t_style : {padding: '11px 0px !important'} 
 			}
 		}
 };
@@ -290,7 +290,7 @@ var ic_tree_dv_num = {
 		props: ['model'],
 		data:function(){
 			return {
-				t_style : {padding: '10px 0px !important'} 
+				t_style : {padding: '11px 0px !important'} 
 			}
 		}
 };
@@ -305,7 +305,7 @@ var ic_tree_dv_updatetime = {
 		props: ['model'],
 		data:function(){
 			return {
-				t_style : {padding: '10px 0px !important'} 
+				t_style : {padding: '11px 0px !important'} 
 			}
 		}
 };

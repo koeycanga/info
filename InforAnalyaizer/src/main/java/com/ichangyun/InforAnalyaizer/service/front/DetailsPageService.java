@@ -27,7 +27,7 @@ public interface DetailsPageService {
 	 * @param article_id
 	 * @return
 	 */
-	public String getBDArticleByID(String article_id);
+	public String getBDArticleByID(String article_id,String userid);
 
 	/**
 	 * 获得相似文章
