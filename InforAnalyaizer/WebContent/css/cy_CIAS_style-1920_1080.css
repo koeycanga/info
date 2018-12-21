@@ -470,7 +470,7 @@ body{
 		-webkit-appearance:none;
 		select::-ms-expand { display: none; }
 		height: 25px !important;
-		width: 400px !important;
+		width: 375px !important;
 	}
 #cy_CMICBMS_status{
 	float: left;
@@ -1657,6 +1657,42 @@ input{
 	color: white;
 }
 
+#yjfs_0 + label{
+	padding: 7px 12px;
+	border-radius: 3px;
+	display: inline-block;
+	text-align: center;
+}
+
+#yjfs_0:checked + label{
+    background-color: #3598dc;
+	color: white;
+}
+
+#yjfs_1 + label{
+	padding: 7px 12px;
+	border-radius: 3px;
+	display: inline-block;
+	text-align: center;
+}
+
+#yjfs_1:checked + label{
+    background-color: #3598dc;
+	color: white;
+}
+
+#yjfs_2 + label{
+	padding: 7px 12px;
+	border-radius: 3px;
+	display: inline-block;
+	text-align: center;
+}
+
+#yjfs_2:checked + label{
+    background-color: #3598dc;
+	color: white;
+}
+
 .cy_CIASFE_condition input , .cy_CIASFE_condition label{
 	cursor:pointer;
 }
@@ -1737,6 +1773,7 @@ input{
 	position: absolute;
 	display: none;
 	text-align: left;
+	right:0px;
 }
 .cy_CIASFE_simartbox a{
 	line-height: 24px;
@@ -1756,7 +1793,7 @@ input{
 #cy_CMICBMS_infed{
 	position:absolute;
 	width:980px;
-	height:800px;
+	height:760px;
 	top:10px;
 	left:20%;
 	background-color:#f5f5f5;
@@ -1800,9 +1837,17 @@ input{
 	align-items: baseline;
 }
 .cy_CMICBMS_newfdip{
-	width: 70px;
+	width: 100%;
 	font-size: 14px;
 }
+
+.cy_CMICBMS_newfdip ul{
+	font-size: 14px;
+	padding: 0;
+	align-items: center;
+	list-style: none;
+}
+
 .cy_CMICBMS_newfdtb select{
 	border:1px solid #e0e0e0;
 	width: 380px;
@@ -1837,7 +1882,7 @@ input{
 }
 .cy_CMICBMS_infedtbbdL , .cy_CMICBMS_infedtbbdR{
 	width: 50%;
-	height: 600px;
+	height: 560px;
 	background-color: white;
 	border-radius: 5px;
 	padding: 15px;
@@ -1852,16 +1897,21 @@ input{
 	padding: 250px 0px;
 }
 .cy_CMICBMS_infedschbox{
-	border:1px #337ab7 solid;
+	border:1px solid #e0e0e0;
 	border-radius: 3px;
 	height: 30px;
-	width: 260px;
-	margin:0 5px;
-
+	width: 220px;
+	border-radius: 5px;
+	padding-left: 35px;
+	background: url(../image/usermana-sch.png) no-repeat 10px 10px;
+	outline:none;
+	font-size: 14px;
+	margin-left:5px;
+	margin-right: 5px;
 }
 .cy_CMICBMS_infedschbtn{
 	width: 58px;
-	background-color: #337ab7;
+	background-color: #2ea1f8;
 	color: white;
 	height: 36px;
 	border: 1px;
@@ -2775,4 +2825,60 @@ input{
 .cy_CIASFE_collectionTypeName{
 	width: 100%;
 	height: 5%;
+}
+/*12.15 弹出层样式修改 */
+.cy_CMICBMS_addtb_shelter{		/* 遮挡层（当文本框不可编辑时） */
+	position: absolute;
+	opacity:0.2;
+	background-color: #939193;
+	top:2%;
+	left:15.5%;
+	width: 80.5%;
+	height:92.5%
+
+}
+.cy_CMICBMS_addtb_username{
+	position: absolute;
+	top:18%;
+	left:6%;
+}
+.cy_CMICBMS_addtb_userother{
+	position: absolute;
+	top:26%;
+	left:6%;
+}
+.cy_CMICBMS_addtb_userrole{
+	position: absolute;
+	top:10%;
+	left:6%;
+}
+.cy_CMICBMS_addtb_roleselect{
+	width: 60%
+}
+.cy_CMICBMS_addtb_submit{
+	position: absolute;
+	top:105%;
+	left:80%;
+}
+#cy_CMICBMS_addtb_userStatus{
+	position: absolute;
+	top:109%;
+	left:5%;
+}
+.cy_CMICBMS_addcizu{
+	position: absolute;
+	top:19%;
+	left:2%;
+}
+.cy_CMICBMS_addcizutab{
+	position: absolute;
+	height: 50%;
+	width: 80%;
+	top:24%;
+	left:10%;
+}
+.cy_CMICBMS_addtb_submit_fw{/*过滤词管理的提交按钮  */
+	position: absolute;
+	top:74%;
+	left:80%;
 }

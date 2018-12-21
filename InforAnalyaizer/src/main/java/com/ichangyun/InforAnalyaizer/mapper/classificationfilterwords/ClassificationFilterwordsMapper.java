@@ -1,11 +1,18 @@
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ *  竞争情报系统
+ */
 package com.ichangyun.InforAnalyaizer.mapper.classificationfilterwords;
 
 
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.dao.DataAccessException;
 
+import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean;
 import com.ichangyun.InforAnalyaizer.model.classificationfilterwords.ClassificationFilterwordsWithBLOBs;
 import com.ichangyun.InforAnalyaizer.model.classificationfilterwords.FilterWordsVo;
 
@@ -13,7 +20,6 @@ public interface ClassificationFilterwordsMapper {
     List<String> queryParents();		//查询所有父节点
 
 	int deleteByPrimaryKey(String classificationId);		//通过id删除节点的过滤词信息
-
 
     int insertSelective(ClassificationFilterwordsWithBLOBs record);//按条件添加节点过滤词信息
 
@@ -33,7 +39,9 @@ public interface ClassificationFilterwordsMapper {
 
 	List<FilterWordsVo> queryByName(String names);			//通过名称查询节点
 
-	void insertMany(List<FilterWordsVo> createVo) throws DataAccessException;//批量新增
+	void insertMany(@Param("list")List<FilterWordsVo> createVo, @Param("userid")String userid) throws DataAccessException;//批量新增
 
-	void updateMany(List<FilterWordsVo> vos) throws DataAccessException;	//批量更新
+	void updateMany(@Param("list")List<FilterWordsVo> vos,  @Param("userid")String userid) throws DataAccessException;	//批量更新
+
+	List<ClassificationInfoBean> getAllClassificationNames();  //获得所有的分类体系名称
 }

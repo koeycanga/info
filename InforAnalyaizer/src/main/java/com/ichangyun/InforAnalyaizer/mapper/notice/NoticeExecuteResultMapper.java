@@ -1,3 +1,8 @@
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ *  竞争情报系统
+ */
 package com.ichangyun.InforAnalyaizer.mapper.notice;
 
 import java.util.List;
@@ -7,19 +12,19 @@ import com.ichangyun.InforAnalyaizer.model.notice.NoticeExecuteResult;
 import com.ichangyun.InforAnalyaizer.model.notice.NoticeResVo;
 
 public interface NoticeExecuteResultMapper {
-    int deleteByPrimaryKey(String noticeid);
+    public int deleteByPrimaryKey(String noticeid);
 
-    int insert(NoticeExecuteResult record);
+    public int insert(NoticeExecuteResult record);
 
-    int insertSelective(NoticeExecuteResult record);
+    public int insertSelective(NoticeExecuteResult record);
 
-    NoticeExecuteResult selectByPrimaryKey(String noticeid);
+    public NoticeExecuteResult selectByPrimaryKey(String noticeid);
 
-    int updateByPrimaryKeySelective(NoticeExecuteResult record);
+    public int updateByPrimaryKeySelective(NoticeExecuteResult record);
 
-    int updateByPrimaryKey(NoticeExecuteResult record);
+    public int updateByPrimaryKey(NoticeExecuteResult record);
 
-	List<NoticeResVo> queryAllRes(Map<String, Object> key);
+    public List<NoticeResVo> queryAllRes(Map<String, Object> key);
 
-	int queryCount();
+    public int queryCount();
 }

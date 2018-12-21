@@ -1,3 +1,8 @@
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ *  竞争情报系统
+ */
 package com.ichangyun.InforAnalyaizer.controller.collection;
 
 import java.util.ArrayList;
@@ -66,22 +71,12 @@ public class CollectionController {
 	@ResponseBody
 	public Map<String, Object>  queryAll(MyCollectionVo vo, BaseBean baseBean,SearchOptBean sob,HttpSession session){
 		User u = (User)session.getAttribute(CommBean.SESSION_NAME);
-		if(sob.getId()==1) {
-			List<MyCollectionVo> vos = this.collectionService.queryAll(vo,baseBean,u);
-			int count = this.collectionService.queryCount(vo,u);
+			List<MyCollectionVo> vos = this.collectionService.queryAll(vo,baseBean,u,sob);
+			int count = this.collectionService.queryCount(vo,u,sob);
 			Map<String, Object> map = new HashMap<>();
 			map.put("vos", vos);
 			map.put("rowCount", count);
 			return map;
-		}else if(sob.getId()==2) {
-			List<MyCollectionVo> vos = this.collectionService.queryAll(vo,baseBean,u);
-			int count = this.collectionService.queryCount(vo,u);
-			Map<String, Object> map = new HashMap<>();
-			map.put("vos", vos);
-			map.put("rowCount", count);
-			return map;
-		}
-		return null;
 	}
     /**
      * delete：批量删除收藏夹内的文章

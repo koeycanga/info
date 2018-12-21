@@ -15,6 +15,7 @@
 <fmt:message key="I0013" var="I0013" bundle="${sysInfo}"/>
 <fmt:message key="W0003" var="W0003" bundle="${sysInfo}"/>
 <fmt:message key="I0023" var="I0023" bundle="${sysInfo}"/>
+<fmt:message key="W0008" var="W0008" bundle="${sysInfo}" />
 <!doctype html>
 <html>
 <head>
@@ -65,14 +66,14 @@
 				</div>
 				<div style="background-color: #f3f3f3;padding:10px 30px;line-height: 33px;margin-top: 10px;">
 				<div class="cy_CIAFE_intmonsr">{{article_data.websiteName}}·{{article_data.releasetime}} <a target="_blank" v-bind:href="article_data.articleURL">原文链接</a>
-				<div v-on:mouseover="simcontent()" class="cy_CIASFE_desimart">相似文章：{{article_data.sim_cnt}}条
+				<!-- <div v-on:mouseover="simcontent()" class="cy_CIASFE_desimart">相似文章：{{article_data.sim_cnt}}条
 					<div class="cy_CIASFE_desimartbox">
 						<div v-for=" sdata in sim_datas"><a
 									v-bind:href="'../detailspage/toDetailsPage?from=${m_url}&article_id='+sdata.article_ID"
 									target="_blank">{{sdata.articleTitle}}</a>
 					    </div>
-					</div>
-					</div>
+					</div> 
+					</div>-->
 				</div>
 					<div>关键词：<span style="color: red">{{article_data.articleKeyWord}}</span>
 					</div>
@@ -138,7 +139,8 @@ var Info = {
 		E0025:'${E0025}',
 		I0013:'${I0013}',
 		W0003:'${W0003}',
-		I0023:'${I0023}'
+		I0023:'${I0023}',
+		W0008:'${W0008}'
 };
 
 var menu_datas = JSON.parse('${front_menu}');  //菜单数据来源于 classes/resources.properties
@@ -204,7 +206,7 @@ var app = new Vue({
             var _this = this;
             var arr = [];
             arr.push(article_ID);
-            layer.confirm(Info.W0002, {
+            layer.confirm(Info.W0008, {
                 btn: ['确定', '取消']//按钮
             }, function (index) {
                 layer.close(index);

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
+pageEncoding="utf-8"%>
 <%@ taglib prefix="ss" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:setBundle basename="resources" var="sysInfo" />
@@ -22,179 +22,221 @@
 <fmt:message key="E0055" var="E0055" bundle="${sysInfo}" />
 <fmt:message key="E0061" var="E0061" bundle="${sysInfo}" />
 <fmt:message key="E0062" var="E0062" bundle="${sysInfo}" />
-
+<fmt:message key="W0003" var="W0003" bundle="${sysInfo}" />
+<fmt:message key="W0012" var="W0012" bundle="${sysInfo}" />
+<fmt:message key="W0013" var="W0013" bundle="${sysInfo}" />
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>竞争情报分析系统</title>
-<link rel="stylesheet" type="text/css"
-	href="${ctx}/css/cy_CIAS_style-1920_1080.css">
-<style>
-[v-cloak] {
-	display: none;
-}
-</style>
+    <meta charset="UTF-8">
+    <title>竞争情报分析系统</title>
+    <link rel="stylesheet" type="text/css"
+          href="${ctx}/css/cy_CIAS_style-1920_1080.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
 </head>
 
 <body style="background-color: #f2f3f8;">
-	<div class="cy_hidebg" id="cy_hidebg"></div>
-	<!--头部-->
-	<div class="cy_CIASFE_top" id="head" v-cloak>
-		<div class="cy_CIASFE_logo">
-			<img src="${ctx}/image/fontend-logo.png">
-		</div>
-		<div class="cy_CIASFE_tit">国药器械-竞争情报分析系统</div>
-		<ic_top_menu></ic_top_menu>
-		<!-- 上部菜单栏 -->
-		<ic_user_info></ic_user_info>
-		<!-- 登录用户信息框 -->
-	</div>
+<div class="cy_hidebg" id="cy_hidebg"></div>
+<!--头部-->
+<div class="cy_CIASFE_top" id="head" v-cloak>
+    <div class="cy_CIASFE_logo">
+        <img src="${ctx}/image/fontend-logo.png">
+    </div>
+    <div class="cy_CIASFE_tit">国药器械-竞争情报分析系统</div>
+    <ic_top_menu></ic_top_menu>
+    <!-- 上部菜单栏 -->
+    <ic_user_info></ic_user_info>
+    <!-- 登录用户信息框 -->
+</div>
 
-	<div class="cy_CIAFE_main" >
-		<div class="cy_CIASFE_intmonbody">
-			<!--============左侧收藏夹=====================-->
-			<div class="cy_CIASFE_intmonbodyleft" id="collectionType" v-cloak>
-				<div class="cy_CIASFE_colletree">
-					<div class="cy_CIASFE_newfolder">
-						<input type="button" value="新建文件夹" v-on:click="btn_addType()">
-					</div>
-					<ul>
-						<li class="cy_CIASFE_colletree1st"><a><img
-								src="${ctx}/image/colle-arrow02.png"><img
-								src="${ctx}/image/colle-folder.png">我的收藏 </a></li>
-						<ul>
-							<div v-for="typeVo in typeVos">
-								<ic_tree_collect :model="typeVo"></ic_tree_collect>
-							</div>
-						</ul>
-					</ul>
-				</div>
-			</div>
-			<!--=========================================-->
-
-
-			<!--============右侧列表=====================-->
-			<div class="cy_CIASFE_intmonbodyright" id="collections" v-cloak>
-				<div class="cy_CIASFE_search">
-					<select v-model="searchOpt">
-						<option :value="opt.id" v-for="opt in opts">{{opt.name}}</option>
-					</select>
-					<div class="cy_CMICBMS_schbox02">
-						<input type="text" placeholder="请输入关键词检索…" style="cursor: text"
-							v-model="voSearch.articleTitle">
-					</div>
-					<input type="button" class="cy_CMICBMS_schbtn" value="检索"
-						v-on:click="btn_search">
-				</div>
-				<div class="cy_CIASFE_condition02">
-
-					<div class="cy_CIASFE_conbox13">
-						<input type="button" class="cy_CMICBMS_mvbtn" value="移动"
-							v-on:click="btn_move"> <input type="button"
-							class="cy_CMICBMS_dltbtn" value="删除" v-on:click="btn_delete">
-					</div>
-					<div class="cy_CIASFE_conbox13">
-						<table width="100%" border="0" class="cy_CIASFE_bttb"
-							cellspacing="0">
-							<tbody>
-								<tr>
-									<th scope="col" width="40px"><input type="checkbox"
-										v-model='isok' v-on:click='checkedAll' /></th>
-									<th>收藏夹名称</th>
-									<th>标题名称</th>
-									<th>发布时间</th>
-									<th style="text-align: center;" width="13%">操作</th>
-								</tr>
-								<tr class="cy_CMICBMS_treven" v-for="vo in vos">
-									<td><input type="checkbox" :value="vo.id"
-										v-model="checkedId"></td>
-									<td>{{vo.allparentname}}</td>
-									<td><a :href="pageUrl+vo.articleId">{{vo.articleTitle}}</a></td>
-									<td>{{vo.releasetime}}</td>
-									<td style="text-align: center;"><a
-										v-on:click="deleteOne(vo.id)"><img
-											src="${ctx}/image/usermana-dele.png"></a></td>
-								</tr>
-								<tr>
-									<td v-if="vos.length==0" colspan="5">{{info}}</td>
-								</tr>
-							</tbody>
-						</table>
-						<pager ref="pagecomponent"></pager>
-					</div>
-				</div>
-			</div>
-			<!--============================================-->
-		</div>
-
-	</div>
-
-	<div class="cy_CIASFE_footer02">
-		<a href="">使用手册</a>&nbsp;&nbsp;&nbsp;&nbsp;联系我们（电话：1648726161
-		邮箱：sales@ichangyun.com） Copyright&copy;2018-2021
-		&nbsp;&nbsp;&nbsp;&nbsp;湖北畅云时讯软件技术有限公司版权所有
-	</div>
-	<!--弹出层-->
-	<div id="cy_CMICBMS_newfd">
-		<div class="cy_CMICBMS_newbttop">
-			<div class="cy_CMICBMS_newbttit">{{title}}</div>
-			<div class="cy_CMICBMS_newtbclose" onClick="hide();">X</div>
-		</div>
-		<div class="cy_CMICBMS_newfdbd">
-			<div class="cy_CMICBMS_newfdtb" v-if="title!='移动文章'"
-				style="margin-bottom: 20px;">
-				<div class="cy_CMICBMS_newfdip">
-					<span>*</span>名称：
-				</div>
-				<input type="text" class="cy_CMICBMS_newbtinput" placeholder="请输入名称"
-					v-model="voForm.collectiontypename" maxlength="10">
-			</div>
-			<!--============点击移动文章时树状图出现============-->
-			<div class="cy_CMICBMS_newfdtb">
-				<div class="cy_CMICBMS_newfdip"
-					v-if="(title=='移动文章')">
-					父节点：{{voForm.collectiontypename}} <br>
-
-					<ul>
-						<li class="cy_CIASFE_colletree1st"><a><img
-								src="${ctx}/image/colle-arrow02.png"><img
-								src="${ctx}/image/colle-folder.png">
-								<span v-on:click="checkTop">我的收藏</span> </a></li>
-						<ul>
-							<div v-for="typeVo in typeVosForm">
-								<ic_tree_collect_form :model="typeVo"></ic_tree_collect_form>
-							</div>
-						</ul>
-					</ul>
-				</div>
-				<!--=====================================-->
-				<div class="cy_CMICBMS_infeddn">
-					<input type="button" value="确定" v-on:click="submit">
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-	<script type="text/javascript" src="${ctx}/layer/layer.js"></script>
-	<script type="text/javascript" src="${ctx}/layui/layui.js"></script>
-	<script src="${ctx}/js/vue.min.js"></script>
-	<script src="${ctx}/js/vue-resource.min.js"></script>
-	<script src="${ctx}/js/axios.min.js"></script>
-	<script src="//unpkg.com/iview/dist/iview.min.js"></script>
-	<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
-	<script type="text/javascript" src="${ctx}/js/comm.js"></script>
+<div class="cy_CIAFE_main" >
+    <div class="cy_CIASFE_intmonbody">
+        <!--============左侧收藏夹=====================-->
+        <div class="cy_CIASFE_intmonbodyleft" id="collectionType" v-cloak>
+            <div class="cy_CIASFE_colletree">
+                <div class="cy_CIASFE_newfolder">
+                    <input type="button" value="新建文件夹" v-on:click="btn_addType()">
+                </div>
+                <ul>
+                    <li class="cy_CIASFE_colletree1st"><a><img
+                            src="${ctx}/image/colle-arrow02.png"><img
+                            src="${ctx}/image/colle-folder.png">我的收藏 </a></li>
+                    <ul>
+                        <div>
+                            <ic_tree_collect  v-for="(typeVo,index) in typeVos" :model="typeVo" :index="index" :len="typeVos.length"></ic_tree_collect>
+                        </div>
+                    </ul>
+                </ul>
+            </div>
+        </div>
+        <!--=========================================-->
 
 
-	<script>
-	
-	var menu_datas = JSON.parse('${front_menu}') //菜单数据来源于 classes/resources.properties
-	var menu_url_data  = 'collection';
+        <!--============右侧列表=====================-->
+        <div class="cy_CIASFE_intmonbodyright" id="collections" v-cloak>
+            <div class="cy_CIASFE_search">
+                <select v-model="searchOpt">
+                    <option :value="opt.id" v-for="opt in opts">{{opt.name}}</option>
+                </select>
+                <div class="cy_CMICBMS_schbox02">
+                    <input type="text" placeholder="请输入关键词检索…" style="cursor: text"
+                           v-model="voSearch.articleTitle">
+                </div>
+                <input type="button" class="cy_CMICBMS_schbtn" value="检索"
+                       v-on:click="btn_search">
+            </div>
+            <div class="cy_CIASFE_condition02">
+
+                <div class="cy_CIASFE_conbox13">
+                    <input type="button" class="cy_CMICBMS_mvbtn" value="移动"
+                           v-on:click="btn_move"> <input type="button"
+                                                         class="cy_CMICBMS_dltbtn" value="删除" v-on:click="btn_delete">
+                </div>
+                <div class="cy_CIASFE_conbox13">
+                    <table width="100%" border="0" class="cy_CIASFE_bttb"
+                           cellspacing="0">
+                        <tbody>
+                        <tr>
+                            <th scope="col" width="40px"><input type="checkbox"
+                                                                v-model='isok' v-on:click='checkedAll' /></th>
+                            <th>收藏夹名称</th>
+                            <th>标题名称</th>
+                            <th>发布时间</th>
+                            <th style="text-align: center;" width="13%">操作</th>
+                        </tr>
+                        <tr class="cy_CMICBMS_treven" v-for="vo in vos">
+                            <td><input type="checkbox" :value="vo.id"
+                                       v-model="checkedId"></td>
+                            <td>{{vo.allparentname}}</td>
+                            <td><a :href="pageUrl+vo.articleId">{{vo.articleTitle}}</a></td>
+                            <td>{{vo.releasetime}}</td>
+                            <td style="text-align: center;"><a
+                                    v-on:click="deleteOne(vo.id)"><img
+                                    src="${ctx}/image/usermana-dele.png"></a></td>
+                        </tr>
+                        <tr>
+                            <td v-if="vos.length==0" colspan="5">{{info}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <pager ref="pagecomponent"></pager>
+                </div>
+            </div>
+        </div>
+        <!--============================================-->
+    </div>
+
+</div>
+
+<div class="cy_CIASFE_footer02">
+    <a href="">使用手册</a>&nbsp;&nbsp;&nbsp;&nbsp;联系我们（电话：1648726161
+    邮箱：sales@ichangyun.com） Copyright&copy;2018-2021
+    &nbsp;&nbsp;&nbsp;&nbsp;湖北畅云时讯软件技术有限公司版权所有
+</div>
+<!--弹出层-->
+<div id="cy_CMICBMS_newfd" v-bind:style="title=='移动文章'?'height:400px':''">
+    <div class="cy_CMICBMS_newbttop">
+        <div class="cy_CMICBMS_newbttit">{{title}}</div>
+        <div class="cy_CMICBMS_newtbclose" onClick="hide();">X</div>
+    </div>
+    <div class="cy_CMICBMS_newfdbd" >
+        <div class="cy_CMICBMS_newfdtb" v-if="title!='移动文章'"
+             style="margin-bottom: 20px;">
+            <div class="cy_CMICBMS_newfdip">
+                <span>*</span>名称：
+            </div>
+            <input type="text" class="cy_CMICBMS_newbtinput" placeholder="请输入名称"
+                   v-model="voForm.collectiontypename" maxlength="10">
+        </div>
+        <!--============点击移动文章时树状图出现============-->
+        <div class="cy_CMICBMS_newfdtb" v-bind:style="title=='移动文章'?'height:320px;overflow-y:scroll;':''">
+            <div class="cy_CMICBMS_newfdip"
+                 v-if="(title=='移动文章')">
+                父节点：{{voForm.collectiontypename}} <br>
+
+                <ul>
+                    <li class="cy_CIASFE_colletree1st"><a><img
+                            src="${ctx}/image/colle-arrow02.png"><img
+                            src="${ctx}/image/colle-folder.png">
+                        <span v-on:click="checkTop" style="color:black;">我的收藏</span> </a></li>
+                    <ul>
+                        <div v-for="typeVo in typeVosForm">
+                            <ic_tree_collect_form :model="typeVo"></ic_tree_collect_form>
+                        </div>
+                    </ul>
+                </ul>
+            </div>
+            <!--=====================================-->
+            <div class="cy_CMICBMS_infeddn">
+                <input type="button" value="确定" v-on:click="submit">
+            </div>
+        </div>
+    </div>
+</div>
+<!--移动文章弹出层-->
+<div id="cy_CMICBMS_newfd1" >
+    <div class="cy_CMICBMS_newbttop">
+        <div class="cy_CMICBMS_newbttit">{{title}}</div>
+        <div class="cy_CMICBMS_newtbclose" onClick="hide();">X</div>
+    </div>
+    <div class="cy_CMICBMS_newfdbd">
+        <div class="cy_CMICBMS_newfdtb" v-if="title!='移动文章'"
+             style="margin-bottom: 20px;">
+            <div class="cy_CMICBMS_newfdip">
+                <span>*</span>名称：
+            </div>
+            <input type="text" class="cy_CMICBMS_newbtinput" placeholder="请输入名称"
+                   v-model="voForm.collectiontypename" maxlength="10">
+        </div>
+        <!--============点击移动文章时树状图出现============-->
+        <div class="cy_CMICBMS_newfdtb">
+            <div class="cy_CMICBMS_newfdip"
+                 v-if="(title=='移动文章')">
+                父节点：{{voForm.collectiontypename}} <br>
+
+	                <ul>
+	                    <li class="cy_CIASFE_colletree1st">
+		                    <a>
+		                        <img src="${ctx}/image/colle-arrow02.png">
+		                        <img src="${ctx}/image/colle-folder.png">
+		                        <span v-on:click="checkTop" style="color:black;">我的收藏</span> 
+		                     </a>
+                        </li>
+                    <ul>
+                        <div v-for="typeVo in typeVosForm">
+                            <ic_tree_collect_form :model="typeVo"></ic_tree_collect_form>
+                        </div>
+                    </ul>
+                </ul>
+            </div>
+            <!--=====================================-->
+            <div class="cy_CMICBMS_infeddn">
+                <input type="button" value="确定" v-on:click="submit">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="${ctx}/layer/layer.js"></script>
+<script type="text/javascript" src="${ctx}/layui/layui.js"></script>
+<script src="${ctx}/js/vue.min.js"></script>
+<script src="${ctx}/js/vue-resource.min.js"></script>
+<script src="${ctx}/js/axios.min.js"></script>
+<script src="//unpkg.com/iview/dist/iview.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/ic_components.js"></script>
+<script type="text/javascript" src="${ctx}/js/comm.js"></script>
+<script>
+    var menu_datas = JSON.parse('${front_menu}') //菜单数据来源于 classes/resources.properties
+    var menu_url_data  = 'collection';
     Vue.component('ic_top_menu', ic_top_menu);   // ic_top_menu 引自 js/ic_component.js
     Vue.component('ic_user_info', ic_user_info);  // ic_user_info 引自 js/ic_component.js
     var hvm = new Vue({
-    	el:'#head'
+        el:'#head'
     });
     var Info = {
         E0006: '${E0006}',
@@ -213,8 +255,11 @@
         I0002: '${I0002}',
         E0055: '${E0055}',
         E0061: '${E0061}',
-        E0062:'${E0062}',
-        I0012: '${I0012}'
+        E0062: '${E0062}',
+        I0012: '${I0012}',
+        W0003: '${W0003}',
+        W0012: '${W0012}',
+        W0013: '${W0013}'
     };
 
     function show()  //显示隐藏层和弹出层
@@ -229,7 +274,18 @@
         document.getElementById("cy_hidebg").style.display = "none";
         document.getElementById("cy_CMICBMS_newfd").style.display = "none";
     }
+    function show1()  //显示隐藏层和弹出层
+    {
+        var hideobj = document.getElementById("cy_hidebg");
+        cy_hidebg.style.display = "block";  //显示隐藏层
+        document.getElementById("cy_CMICBMS_newfd1").style.display = "block";  //显示弹出层
+    }
 
+    function hide1()  //去除隐藏层和弹出层
+    {
+        document.getElementById("cy_hidebg").style.display = "none";
+        document.getElementById("cy_CMICBMS_newfd1").style.display = "none";
+    }
 
 
     var vm2 = new Vue({         //控制左侧树状菜单的vue对象
@@ -244,21 +300,21 @@
 
         methods: {
             moveType:function (id,targetId) {
-            	var _this = this;
-                axios.get('moveType',{ 
-                	params:{
-                    	collectiontypeId:id,
-                    	targetId:targetId
-                	}
+                var _this = this;
+                axios.get('moveType',{
+                    params:{
+                        collectiontypeId:id,
+                        targetId:targetId
+                    }
                 })
                     .then(function (res) {
                         if(res.data.msg=="ok"){
                             _this.getTypes();
                         }else if(res.data.msg=="overstep"){
-                        	var attrs=['4'];
+                            var attrs=['4'];
                             layer.msg(IC_GETINFOBYAttrs(Info.E0055,attrs));//超出最大层数
                         }else if(res.data.msg=="fault"){
-                        	
+
                             layer.msg(Info.E0062);//不可向子节点移动
                         }
                     })
@@ -330,24 +386,25 @@
             btn_updateType: function (model) {
                 vm3.title = "编辑节点";
                 var data = {"childrenNum":model.childrenNum,
-                        "collectionpath":model.collectionpath,
-                        "collectionstratum":model.collectionstratum,
-                        "collectiontypeId":model.collectiontypeId,
-                        "collectiontypename":model.collectiontypename,
-                        "displayorder":model.displayorder,
-                        "isParent":model.isParent,
-                        "is_show":model.is_show,
-                        "parentCollectiontypeId":model.parentCollectiontypeId,
-                        "ppath":model.ppath,
-                        "userId":model.userId,
-                        "validflag":model.validflag};
+                    "collectionpath":model.collectionpath,
+                    "collectionstratum":model.collectionstratum,
+                    "collectiontypeId":model.collectiontypeId,
+                    "collectiontypename":model.collectiontypename,
+                    "displayorder":model.displayorder,
+                    "isParent":model.isParent,
+                    "is_show":model.is_show,
+                    "parentCollectiontypeId":model.parentCollectiontypeId,
+                    "ppath":model.ppath,
+                    "userId":model.userId,
+                    "updatedatetime":model.updatedatetime,
+                    "validflag":model.validflag};
                 vm3.voForm = data;
                 vm3.url = "updateType";
                 window.show();
             },
             btn_deleteType: function (model) {
                 var _this = this;
-                var deleteLayer = layer.confirm(Info.W0002, {
+                var deleteLayer = layer.confirm(Info.W0013, {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     var url = "deleteType";
@@ -448,6 +505,7 @@
                         vm3.title = "移动文章"
                         vm3.url = "move"
                         vm3.voForm.parentCollectiontypeId = "";
+                        vm3.voForm.collectiontypename = "";
                         vm3.typeVosForm = vm2.typeVos;
                         window.show();
                     }
@@ -459,7 +517,7 @@
                     if (this.checkedId.length == 0) {
                         layer.msg(Info.E0019);
                     } else {
-                        var deleteLayer = layer.confirm(Info.W0002, {
+                        var deleteLayer = layer.confirm(Info.W0012, {
                             btn: ['确定', '取消'] //按钮
                         }, function () {
                             var url = "delete";
@@ -488,7 +546,7 @@
             deleteOne:                              //点击图标删除单个
                 function (id) {
                     var _this = this;
-                    var deleteLayer = layer.confirm(Info.W0002, {
+                    var deleteLayer = layer.confirm(Info.W0012, {
                         btn: ['确定', '取消'] //按钮
                     }, function () {
                         var url = "deleteOne";
@@ -546,14 +604,13 @@
                             _this.$refs.pagecomponent.dealAfterSearch(rowCount); //rowCount为总条目数  在ajax请求返回函数需调用该方法
                             _this.vos = allVos;
                             layer.close(l_index);
-                            if (rowCount == '0'&&_this.articleTitle!=null&&_this.articleTitle!="") {
+                            if (rowCount == '0'&&vo.articleTitle!=null&&vo.articleTitle!="") {
                                 layer.msg(Info.I0002);
                             }
                         })
                         .catch(function (error) {
                             console.log(error);
                         });
-
                 }
             }
         }
@@ -569,10 +626,11 @@
         '                                <img :id="model.collectiontypeId+\'|img3\'" src="${ctx}/image/colle-foldernw.png"  v-on:click.stop="btn_addType(model)">' +
         '                                <img :id="model.collectiontypeId+\'|img4\'" src="${ctx}/image/colle-foldered.png"  v-on:click.stop="btn_updateType(model)">' +
         '                                <img :id="model.collectiontypeId+\'|img5\'" src="${ctx}/image/colle-folderdl.png"  v-on:click.stop="btn_deleteType(model)"></span></div>' +
-        '                            <ul v-show="model.is_show"><ic_tree_collect :model="model"  v-for="model in model.children" ></ic_tree_collect></ul>' +
+        '<div :id="model.collectiontypeId+\'_bottom\'" v-if="index==len-1" ondragenter="dropEnter(event)"ondragleave="dropLeave(event)" ondragover="allowDrop(event)" ondrop="drop(event)" style="padding:2% 50%"></div>'+
+        '                            <ul v-show="model.is_show"><ic_tree_collect  v-for="(typeVo,index) in model.children"  :model="typeVo" :index="index" :len="model.children.length"></ic_tree_collect></ul>' +
         '                        </li>' +
         '                    </div>',
-        props: ['model',],
+        props: ['model','len','index'],
         methods: {
             opClose: function (model) {
                 this.$parent.opClose(model);
@@ -593,7 +651,7 @@
     }
     //鼠标拖动进行的方法
     function drag(ev) {
-    	var ids = ev.target.id.split("|");
+        var ids = ev.target.id.split("|");
         ev.dataTransfer.setData("Text", ids[0]);  //当开始拖动时，获取id
     }
 
@@ -602,31 +660,31 @@
 
     }
 
-    function dropEnter(ev) {        //拖动进入目标区域   
+    function dropEnter(ev) {        //拖动进入目标区域
         document.getElementById(ev.target.id.split("|")[0]).style.backgroundColor = '#2ea1f8'
-		
+
     }
 
     function dropLeave(ev) {        //拖动离开目标区域
 
-    	document.getElementById(ev.target.id.split("|")[0]).style.backgroundColor = '#ffffff'
-    	
+        document.getElementById(ev.target.id.split("|")[0]).style.backgroundColor = '#ffffff'
+
     }
 
     function drop(ev) {         //放下
         var data = ev.dataTransfer.getData("Text");
         document.getElementById(ev.target.id.split("|")[0]).style.backgroundColor = '#ffffff'
         if(ev.target.id.substring(0,10)==data){
-        	return false;
+            return false;
         }
         vm2.moveType(data,ev.target.id.split("|")[0]);
-		
+
     }
     //表单树状组件
     var ic_tree_collect_form = {
-        template: '         <div >\n' +
-        '                        <li class="cy_CIASFE_colletreefold"><a><img v-if="model.isParent==1"  :src="model.imgsrc" v-on:click="opClose(model)"><!--三角--><img src="${ctx}/image/colle-folder.png"><!--文件夹图标-->\n' +
-        '                            <span v-on:click="clickType(model)" onmouseover="this.style.cssText=\'color: white;background-color: #2ea1f8;\'"  onmouseout="this.style.cssText=\'color: black;background-color: #ffffff;\'">{{model.collectiontypename}}</span> <span class="cy_CIASFE_treefoldered">\n' +
+        template: '         <div style="margin-left:10px;">\n' +
+        '                        <li class="cy_CIASFE_colletreefold"><img v-if="model.isParent==1"  :src="model.imgsrc" v-on:click="opClose(model)"><!--三角--><img src="${ctx}/image/colle-folder.png"><!--文件夹图标-->\n' +
+        '                            <a style="cursor:pointer;"><span v-on:click="clickType(model)" style="color:black;" onmouseover="this.style.cssText=\'color: white;background-color: #2ea1f8;\'"  onmouseout="this.style.cssText=\'color: black;background-color: #ffffff;\'">{{model.collectiontypename}}</span> <span class="cy_CIASFE_treefoldered">\n' +
         '                            </a><ul v-show="model.is_show"><ic_tree_collect_form :model="model" v-for="model in model.children"></ic_tree_collect_form></ul></div>' +
         '                        </li>\n' +
         '                    </div>',
@@ -672,18 +730,18 @@
                     vm2.opClose(model);
                 },
             checkName:
-            	function(name,vos){
-            	var _this = this;
-                	vos.forEach(function (vo) {
-                		console.log(name.replace(/\s*/g,"")+"_"+vo.collectiontypename.replace(/\s*/g,""))
+                function(name,vos){
+                    var _this = this;
+                    var flag = true;
+                    vos.forEach(function (vo) {
+                        console.log(name.replace(/\s*/g,"")+"_"+vo.collectiontypename.replace(/\s*/g,""))
                         if(name.replace(/\s*/g,"")==vo.collectiontypename.replace(/\s*/g,"")){
-                        	console.log("test")
-                        	return false;
+                        	flag = false;
                         }else{
-                        	_this.checkName(name,vo.children)
+                            _this.checkName(name,vo.children)
                         }
                     }, this);
-                	return true;
+                    return flag;
                 },
             submit:
                 function () {
@@ -691,6 +749,7 @@
                     if (this.title == "移动文章") {
                         var checkedId = vm.checkedId;
                         var collectiontypeId = _this.voForm.parentCollectiontypeId;
+                        var name = _this.voForm.collectiontypename;
                         if (collectiontypeId == "") {
                             layer.msg(Info.E0040);
                             return false;
@@ -718,8 +777,8 @@
                             layer.msg(IC_GETINFOBYAttrs(Info.E0001,attrs));
                             return false;
                         }else if(!this.checkName(voForm.collectiontypename,vm2.typeVos)){//收藏夹名不能相同
-                        	layer.msg(Info.E0061)
-                        	return false;
+                            layer.msg(Info.E0061)
+                            return false;
                         }
                         axios.get(_this.url, {
                             params: {
@@ -740,7 +799,7 @@
                             } else if (response.data.msg == "checkFalse") {
                                 layer.msg(Info.W0004);
                             }else if (response.data.msg == "overstep") {//超出最大层数
-                            	var attrs=['4'];
+                                var attrs=['4'];
                                 layer.msg(IC_GETINFOBYAttrs(Info.E0055,attrs));
                             }
                         })

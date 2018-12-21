@@ -360,7 +360,7 @@
 		order by displayOrder DESC
 	</select>
 
-	<insert id="insertMany" parameterType="List">
+	<insert id="insertMany" >
 		insert into m_classificationfilterwords
 		(Classification_ID,
 		InformationTropism,
@@ -371,17 +371,26 @@
 		SummaryCorePhrases,
 		SummaryExcludePhrases,
 		TextCorePhrases,
-		TextExcludePhrases)
+		TextExcludePhrases,
+		CreateUser,
+		CreateDateTime,
+		UpdateUser,
+		UpdateDateTime)
 		VALUES
 		<foreach collection="list" item="vo" separator=",">
 			(#{vo.classificationId},#{vo.informationtropism},
 			#{vo.allcorephrases},#{vo.allexcludephrases},
 			#{vo.titlecorephrases},#{vo.titleexcludephrases},
 			#{vo.summarycorephrases},#{vo.summaryexcludephrases},
-			#{vo.textcorephrases},#{vo.textexcludephrases})
+			#{vo.textcorephrases},#{vo.textexcludephrases},
+			#{userid},
+			NOW(),
+			#{userid},
+			NOW()
+			)
 		</foreach>
 	</insert>
-	<update id="updateMany" parameterType="list">
+	<update id="updateMany" >
 		update m_classificationfilterwords
 		<trim prefix="set" suffixOverrides=",">
 			<trim prefix="InformationTropism =case" suffix="end,">
@@ -446,6 +455,20 @@
 					#{vo.textexcludephrases}
 				</foreach>
 			</trim>
+			<trim prefix="UpdateUser =case" suffix="end,">
+				<foreach collection="list" item="vo">
+					when
+					Classification_ID=#{vo.classificationId} then
+					#{userid}
+				</foreach>
+			</trim>
+					<trim prefix="UpdateDateTime =case" suffix="end,">
+				<foreach collection="list" item="vo">
+					when
+					Classification_ID=#{vo.classificationId} then
+					NOW()
+				</foreach>
+			</trim>
 		</trim>
 		where
 		<foreach collection="list" separator="or" item="vo"
@@ -453,4 +476,11 @@
 			Classification_ID=#{vo.classificationId}
 		</foreach>
 	</update>
+	
+	<select id="getAllClassificationNames" resultType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
+	   select ClassificationName,
+			(select count(1) from  m_classificationinfo where Parent_Classification_ID=a.Classification_ID) children_lg
+			 from m_classificationinfo a
+	</select>
+	
 </mapper>

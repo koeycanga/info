@@ -17,7 +17,10 @@
 <fmt:message key="E0019" var="E0019" bundle="${sysInfo}"/>
 <fmt:message key="E0022" var="E0022" bundle="${sysInfo}"/>
 <fmt:message key="E0033" var="E0033" bundle="${sysInfo}"/>
-
+<fmt:message key="W0008" var="W0008" bundle="${sysInfo}"/>
+<fmt:message key="W0009" var="W0009" bundle="${sysInfo}"/>
+<fmt:message key="UseManualFileName" var="UseManualFileName" bundle="${sysInfo}" />
+<fmt:message key="DownloadFileTemplatePath" var="DownloadFileTemplatePath" bundle="${sysInfo}" />
 <!doctype html>
 <html>
 <head>
@@ -251,9 +254,11 @@
         </div>
 
     </div>
-    <div class="cy_CIASFE_footer02"><a href="">使用手册</a>&nbsp;&nbsp;&nbsp;&nbsp;联系我们（电话：1648726161
+   <!--   <div class="cy_CIASFE_footer02"><a href="">使用手册</a>&nbsp;&nbsp;&nbsp;&nbsp;联系我们（电话：1648726161
         邮箱：sales@ichangyun.com） Copyright&copy;2018-2021 &nbsp;&nbsp;&nbsp;&nbsp;湖北畅云时讯软件技术有限公司版权所有
-    </div>
+    </div>  -->
+    <ic_sycc_template></ic_sycc_template>
+
 </div>
 </body>
 <script type="text/javascript" src="${ctx}/js/jquery-3.3.1.min.js"></script>
@@ -281,9 +286,20 @@
         W0002: '${W0002}',
         E0019: '${E0019}',
         E0022: '${E0022}',
-        E0033: '${E0033}'
+        E0033: '${E0033}',
+        W0008: '${W0008}',
+        W0009: '${W0009}',
+        syccurl:'${ctx }/${DownloadFileTemplatePath}/${UseManualFileName}'
     };
-
+    
+    
+    var ic_sycc_template = {
+    		          template:'  <div class="cy_CIASFE_footer02"><a v-bind:href="Info.syccurl">使用手册</a>&nbsp;&nbsp;&nbsp;&nbsp;联系我们（电话：1648726161'+
+       					'邮箱：sales@ichangyun.com） Copyright&copy;2018-2021 &nbsp;&nbsp;&nbsp;&nbsp;湖北畅云时讯软件技术有限公司版权所有'+
+        						'</div>'
+                            };
+    
+      Vue.component('ic_sycc_template', ic_sycc_template);   						
 
     function TreeNode(val, depth, children_lg) {
         this.val = val;
@@ -528,42 +544,47 @@
                 if (this.checkedNames.length == 0) {
                     layer.msg(Info.E0033);
                 } else {
-                    var _this = this;
-                    var arr = [];
-  				    for(var i=this.checkedNames.length-1;i>=0;i--){
-  	            		 var data = this.getDataById(this.checkedNames[i]);
-  	            		 if(data.isearlywarning!='yes'){
-  	            			 arr.push(this.checkedNames[i]);
-  	            		 }
-  	            	 }
-  				   var json = createJSON(arr);
-                    axios.post('../comprehensivemonitoring/toyj',  
-                        {
-                            json: json
-                        }
-                    )
-                        .then(function (response) {
-                            if (response.data == "ok") {
-                            	for(var i=_this.checkedNames.length-1;i>=0;i--){
-				            		 var data = _this.getDataById(_this.checkedNames[i]);
-				            		 data.isearlywarning = 'yes' ;
-			   					 }
-                                //_this.search(_this.$refs.pagecomponent.pageBean);
-                            }
-                            if (response.data == "nok") {
-                                layer.msg(Info.E0022);
-                            }
-                        })
-                        .catch(function (error) {
-                            layer.msg(Info.E0022);
-                        });
+                	 var _this = this;
+                	layer.confirm(Info.W0009, {
+                        btn: ['确定', '取消']//按钮
+                    }, function (index) {
+                        layer.close(index);
+	                    var arr = [];
+	  				    for(var i=_this.checkedNames.length-1;i>=0;i--){
+	  	            		 var data = _this.getDataById(_this.checkedNames[i]);
+	  	            		 if(data.isearlywarning!='yes'){
+	  	            			 arr.push(_this.checkedNames[i]);
+	  	            		 }
+	  	            	 }
+	  				   var json = createJSON(arr);
+	                    axios.post('../comprehensivemonitoring/toyj',  
+	                        {
+	                            json: json
+	                        }
+	                    )
+	                        .then(function (response) {
+	                            if (response.data == "ok") {
+	                            	for(var i=_this.checkedNames.length-1;i>=0;i--){
+					            		 var data = _this.getDataById(_this.checkedNames[i]);
+					            		 data.isearlywarning = 'yes' ;
+				   					 }
+	                                //_this.search(_this.$refs.pagecomponent.pageBean);
+	                            }
+	                            if (response.data == "nok") {
+	                                layer.msg(Info.E0022);
+	                            }
+	                        })
+	                        .catch(function (error) {
+	                            layer.msg(Info.E0022);
+	                        });
+                    });
                 }
             },
             del_a_article: function (article_ID) {
                 var _this = this;
                 var arr = [];
                 arr.push(article_ID);
-                layer.confirm(Info.W0002, {
+                layer.confirm(Info.W0008, {
                     btn: ['确定', '取消']//按钮
                 }, function (index) {
                     layer.close(index);
@@ -599,7 +620,7 @@
                     layer.msg(Info.E0019);
                 } else {
                     var _this = this;
-                    layer.confirm(Info.W0002, {
+                    layer.confirm(Info.W0008, {
                         btn: ['确定', '取消']//按钮
                     }, function (index) {
                         layer.close(index);
@@ -763,7 +784,6 @@
                 axios.get('../thematicmonitoring/getCollectionType')
                     .then(function (response) {
                         var data = JSON.parse(response.data);
-                        console.log(data);
                         for (var i = 0; i < data.length; i++) {
                             if (data[i].parent_CollectionType_ID == '' || data[i].parent_CollectionType_ID == 'C000000000') {  //根节点
                                 var ctnode = new CTreeNode(data[i], 0);
@@ -771,7 +791,6 @@
                                 _this.addCnodeChildren(ctnode, data);
                             }
                         }
-                        console.log(collect_datas);
                     })
                     .catch(function (error) {
                         console.log(error);

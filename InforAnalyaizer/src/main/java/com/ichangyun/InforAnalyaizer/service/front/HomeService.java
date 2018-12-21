@@ -68,6 +68,12 @@ public interface HomeService {
 	 */
 	public String getJJFSWord();
 
+	
+	/**
+	 * 获得首页的热词云信息JSON字面量
+	 * @param flag
+	 * @return
+	 */
 	public String getHotWordFromDetial(String flag);
 
 }

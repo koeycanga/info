@@ -1,3 +1,8 @@
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ *  竞争情报系统
+ */
 package com.ichangyun.InforAnalyaizer.model.classificationfilterwords;
 
 import java.util.ArrayList;
@@ -17,7 +22,25 @@ public class FilterWordsVo extends ClassificationFilterwordsWithBLOBs{
 	private boolean is_show=false;						//此节点是否显示
 	private List<FilterWordsVo> children = new ArrayList<>();
 	private String allParent_name;
+	private boolean ishavevisited = false ;      //是否已经访问过
+	private int row;    //所在excel中行数
 	
+	public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public boolean isIshavevisited() {
+		return ishavevisited;
+	}
+
+	public void setIshavevisited(boolean ishavevisited) {
+		this.ishavevisited = ishavevisited;
+	}
+
 	public String getAllParent_name() {
 		return allParent_name;
 	}

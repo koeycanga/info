@@ -89,7 +89,7 @@
          select count(1) From a_articlebasicinfo Where Article_ID In 
 		   (Select Max(dd.Article_ID) From 
 		   (
-		     select * from a_articlebasicinfo
+		     select Article_ID,SimilarArticlesNo from a_articlebasicinfo
 		      where 1=1 and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
              <if test="search_key!=null and search_key!=''">
                  <if test="search_type=='all'">
@@ -126,8 +126,10 @@
 			  (select m.WebsiteName from m_websiteinfo m where m.Website_ID = c.Website_ID) WebsiteName,
 			   (
 			     select count(1) from a_articlebasicinfo bb where c.SimilarArticlesNo=bb.SimilarArticlesNo and c.Article_ID!=bb.Article_ID
-			     and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end}
-         and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
+                 and not exists (select 1 from A_UserDeleteArticleInfo db where db.Article_ID=bb.Article_ID and db.User_ID=#{userid})
+                <if test="Plan_ID!=null and Plan_ID!=''">
+	              and exists (select 1 from a_articleplaninfo where Article_ID=bb.Article_ID and Plan_ID=#{Plan_ID})
+	           </if>
 			   ) sim_cnt,
 			   (select count(1) from m_mycollection cc where cc.Article_ID=c.Article_ID ) collcnt,
          IF(c.Article_ID in (SELECT k.Article_ID FROM a_userearlywarningarticleinfo as k where k.User_ID=#{userid}),"yes","no")  isearlywarning
@@ -137,7 +139,7 @@
 				c.Article_ID  IN 
 				 (
 				    Select Max(dd.Article_ID) From 
-				      (select * from a_articlebasicinfo
+				      (select Article_ID,SimilarArticlesNo from a_articlebasicinfo
 		     				 where 1=1 and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
 			             <if test="search_key!=null and search_key!=''">
                              <if test="search_type=='all'">
@@ -185,11 +187,13 @@
            select a.*,
            (select MonitoringWord from a_articleplaninfo where Article_ID=a.Article_ID and Plan_ID=#{Plan_ID}) MonitoringWord,
             (select m.WebsiteName from m_websiteinfo m where m.Website_ID = a.Website_ID) WebsiteName,
-            (
-               select count(1) from a_articlebasicinfo b where a.SimilarArticlesNo=b.SimilarArticlesNo and a.Article_ID!=b.Article_ID
-	              and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end}
-          and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
-            ) sim_cnt,
+             (
+			     select count(1) from a_articlebasicinfo bb where a.SimilarArticlesNo=bb.SimilarArticlesNo and a.Article_ID!=bb.Article_ID
+                 and not exists (select 1 from A_UserDeleteArticleInfo db where db.Article_ID=bb.Article_ID and db.User_ID=#{userid})
+                <if test="Plan_ID!=null and Plan_ID!=''">
+	             and exists (select 1 from a_articleplaninfo where Article_ID=bb.Article_ID and Plan_ID=#{Plan_ID})
+	           </if>
+			   ) sim_cnt,
             (select count(1) from m_mycollection c where c.Article_ID=a.Article_ID ) collcnt,
           IF(a.Article_ID in (SELECT k.Article_ID FROM a_userearlywarningarticleinfo as k where k.User_ID=#{userid}),"yes","no")  isearlywarning
           from a_articlebasicinfo a where
@@ -240,21 +244,12 @@
            limit 0,1
      </select>
      
-     <!--<update id="toyj">-->
-         <!--update a_articlebasicinfo set EarlyWarningState='1',UpdateUser=#{userid},UpdateDateTime=NOW()-->
-         <!--where Article_ID in -->
-          <!--<foreach item="item" index="index" collection="list" open="(" separator="," close=")">#{item}</foreach>  -->
-     <!--</update>-->
 
     <insert id="toyj">
         insert ignore into a_userearlywarningarticleinfo(User_ID,Article_ID,EarlyWarningMode,SensitiveWord_ID) VALUES
         <foreach item="item" index="index" collection="list" separator="," >(#{userid},#{item},"2",0)</foreach>
     </insert>
      
-     <!--<delete id="delarticle" parameterType="java.util.List">-->
-          <!--delete from a_articlebasicinfo where Article_ID in -->
-           <!--<foreach item="item" index="index" collection="list" open="(" separator="," close=")">#{item}</foreach>  -->
-     <!--</delete>-->
 
     <insert id="delarticle">
         INSERT INTO a_userdeletearticleinfo (User_ID,DeleteMode,Article_ID) VALUES
@@ -266,10 +261,12 @@
          
          select a.Article_ID,a.ArticleTitle,a.ArticleURL from a_articlebasicinfo a where a.SimilarArticlesNo=
 			(select b.SimilarArticlesNo from a_articlebasicinfo b where b.Article_ID=#{Article_ID}) and a.Article_ID!=#{Article_ID}
-			and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end}
-            and not exists (select 1 from A_UserDeleteArticleInfo b where b.Article_ID=a.Article_ID and b.User_ID=#{userid})
+			and not exists (select 1 from A_UserDeleteArticleInfo db where db.Article_ID=a.Article_ID and db.User_ID=#{userid})
+            <if test="Plan_ID!=null and Plan_ID!=''">
+             and exists (select 1 from a_articleplaninfo where Article_ID=a.Article_ID and Plan_ID=#{Plan_ID})
+           </if>
 	      order by Releasetime desc
-      
+         limit 0,#{rowSize}
      </select>
      
      
@@ -331,6 +328,10 @@
  			where m1.Plan_ID=m2.Plan_ID  and m1.Plan_ID=#{pl_id} and m1.User_ID=#{userid}
 	</select>
 	
+	<select id="getAllFa" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ThematicmonitoringBean">
+	   select User_ID,Plan_ID,PlanStartTime,PlanEndTime from M_PlanInfo
+	</select>
+	
 	<select id="getArticleRowCountWithPlanInfo" parameterType="java.lang.String" resultType="java.lang.Integer">
 	      select count(1) from a_articlebasicinfo where 1=1  ${sql}
 	</select>
@@ -368,5 +369,198 @@
 	<delete id="delArticleWithPlanInfo" parameterType="java.lang.String">
 	    delete from a_articleplaninfo where  Plan_ID=#{pl_id}
 	</delete>
+	
+	<delete id="delAllArticleWithPlanInfo">
+	     delete from a_articleplaninfo
+	</delete>
+	
+	<select id="getMTFBData" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+	    select count(a.Article_ID) cnt,SourceDivision,
+	    (select MasterValue from m_generalpurpose where MasterTypeID='F004' and MasterID='K005' and Description=a.SourceDivision) MasterValue
+	     from a_articlebasicinfo a,a_articleplaninfo b
+			where a.Article_ID=b.Article_ID and b.Plan_ID=#{Plan_ID}
+			and not EXISTS (
+			  select 1 from  a_userdeletearticleinfo c where c.Article_ID=a.Article_ID  and c.User_ID=#{userid}
+			)
+			and a.Releasetime>=#{montime_start} and a.Releasetime <![CDATA[<= ]]>#{montime_end}
+			<if test="search_key!=null and search_key!=''">
+                 <if test="search_type=='all'">
+                     and (ArticleText like CONCAT('%',#{search_key},'%') or ArticleTitle like CONCAT('%',#{search_key},'%') or ArticleAbstract like CONCAT('%',#{search_key},'%'))
+                 </if>
+                 <if test="search_type=='title'">
+                     and ArticleTitle like CONCAT('%',#{search_key},'%')
+                 </if>
+                 <if test="search_type=='abstract'">
+                     and ArticleAbstract like CONCAT('%',#{search_key},'%')
+                 </if>
+                 <if test="search_type=='text'">
+                     and ArticleText like CONCAT('%',#{search_key},'%')
+                 </if>
+             </if>
+              <if test="infsour!=-1">
+              and a.SourceDivision=#{infsour}
+             </if>
+			GROUP BY  a.SourceDivision
+	        ORDER BY a.SourceDivision asc
+	</select>
+	
+	<select id="getFZQSByHour" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+			SELECT
+				count(a.Article_ID) cnt,
+					SourceDivision,
+				(select MasterValue from m_generalpurpose where MasterTypeID='F004' and MasterID='K005' and Description=a.SourceDivision) MasterValue,
+				  DATE_FORMAT(a.Releasetime,'%Y/%m/%d') Releasetime,
+					CASE 
+				   WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 0 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 2 then '02'
+				   WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 2 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 4 then '04'
+				   WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 4 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 6 then '06'
+					 WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 6 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 8 then '08'
+					 WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 8 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 10 then '10'
+				   WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 10 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 12 then '12'
+				   WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 12 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 14 then '14'
+					 WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 14 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 16 then '16'
+				   WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 16 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 18 then '18'
+				   WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 18 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 20 then '20'
+					 WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 20 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 22 then '22'
+					 WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 22 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 24 then '24'
+				 END AS c_hour
+				from a_articlebasicinfo a,a_articleplaninfo b
+				where a.Article_ID=b.Article_ID and b.Plan_ID=#{Plan_ID}
+				and not EXISTS (
+				  select 1 from  a_userdeletearticleinfo c where c.Article_ID=a.Article_ID  and c.User_ID=#{userid}
+				)
+				and a.Releasetime>=#{montime_start} and a.Releasetime <![CDATA[<= ]]>#{montime_end}
+			<if test="search_key!=null and search_key!=''">
+                 <if test="search_type=='all'">
+                     and (ArticleText like CONCAT('%',#{search_key},'%') or ArticleTitle like CONCAT('%',#{search_key},'%') or ArticleAbstract like CONCAT('%',#{search_key},'%'))
+                 </if>
+                 <if test="search_type=='title'">
+                     and ArticleTitle like CONCAT('%',#{search_key},'%')
+                 </if>
+                 <if test="search_type=='abstract'">
+                     and ArticleAbstract like CONCAT('%',#{search_key},'%')
+                 </if>
+                 <if test="search_type=='text'">
+                     and ArticleText like CONCAT('%',#{search_key},'%')
+                 </if>
+             </if>
+              <if test="infsour!=-1">
+              and a.SourceDivision=#{infsour}
+             </if>
+		     GROUP BY c_hour
+	</select>
+	
+	<select id="getFZQSByHourDS" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+			SELECT
+				count(a.Article_ID) cnt,
+					SourceDivision,
+				(select MasterValue from m_generalpurpose where MasterTypeID='F004' and MasterID='K005' and Description=a.SourceDivision) MasterValue,
+				  DATE_FORMAT(a.Releasetime,'%Y/%m/%d') Releasetime,
+					CASE 
+				   WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 23  then '01'
+				   WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 1 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 3 then '03'
+				   WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 3 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 5 then '05'
+					 WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 5 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 7 then '07'
+					 WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 7 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 9 then '19'
+				   WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 9 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 11 then '11'
+				   WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 11 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 13 then '13'
+					 WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 13 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 15 then '15'
+				   WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 15 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 17 then '17'
+				   WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 17 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 19 then '19'
+					 WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 19 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 21 then '21'
+					 WHEN DATE_FORMAT(a.Releasetime ,'%H') >= 21 and DATE_FORMAT(a.Releasetime ,'%H') <![CDATA[< ]]> 23 then '23'
+				 END AS c_hour
+				from a_articlebasicinfo a,a_articleplaninfo b
+				where a.Article_ID=b.Article_ID and b.Plan_ID=#{Plan_ID}
+				and not EXISTS (
+				  select 1 from  a_userdeletearticleinfo c where c.Article_ID=a.Article_ID  and c.User_ID=#{userid}
+				)
+				and a.Releasetime>=#{montime_start} and a.Releasetime <![CDATA[<= ]]>#{montime_end}
+			<if test="search_key!=null and search_key!=''">
+                 <if test="search_type=='all'">
+                     and (ArticleText like CONCAT('%',#{search_key},'%') or ArticleTitle like CONCAT('%',#{search_key},'%') or ArticleAbstract like CONCAT('%',#{search_key},'%'))
+                 </if>
+                 <if test="search_type=='title'">
+                     and ArticleTitle like CONCAT('%',#{search_key},'%')
+                 </if>
+                 <if test="search_type=='abstract'">
+                     and ArticleAbstract like CONCAT('%',#{search_key},'%')
+                 </if>
+                 <if test="search_type=='text'">
+                     and ArticleText like CONCAT('%',#{search_key},'%')
+                 </if>
+             </if>
+              <if test="infsour!=-1">
+              and a.SourceDivision=#{infsour}
+             </if>
+		     GROUP BY c_hour
+	</select>
+	
+	<select id="getFZQSByDay" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+	   SELECT
+		count(a.Article_ID) cnt,
+			SourceDivision,
+		(select MasterValue from m_generalpurpose where MasterTypeID='F004' and MasterID='K005' and Description=a.SourceDivision) MasterValue,
+		  DATE_FORMAT(a.Releasetime,'%Y/%m/%d') Releasetime,'' c_hour
+		from a_articlebasicinfo a,a_articleplaninfo b
+		where a.Article_ID=b.Article_ID and b.Plan_ID=#{Plan_ID}
+		and not EXISTS (
+		  select 1 from  a_userdeletearticleinfo c where c.Article_ID=a.Article_ID and c.User_ID=#{userid}
+		)
+		and a.Releasetime>=#{montime_start} and a.Releasetime <![CDATA[<= ]]>#{montime_end}
+			<if test="search_key!=null and search_key!=''">
+                 <if test="search_type=='all'">
+                     and (ArticleText like CONCAT('%',#{search_key},'%') or ArticleTitle like CONCAT('%',#{search_key},'%') or ArticleAbstract like CONCAT('%',#{search_key},'%'))
+                 </if>
+                 <if test="search_type=='title'">
+                     and ArticleTitle like CONCAT('%',#{search_key},'%')
+                 </if>
+                 <if test="search_type=='abstract'">
+                     and ArticleAbstract like CONCAT('%',#{search_key},'%')
+                 </if>
+                 <if test="search_type=='text'">
+                     and ArticleText like CONCAT('%',#{search_key},'%')
+                 </if>
+             </if>
+              <if test="infsour!=-1">
+              and a.SourceDivision=#{infsour}
+             </if>
+		GROUP BY DATE_FORMAT(a.Releasetime,'%Y/%m/%d')
+	</select>
+	
+	<select id="getCBTHData" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
+	      SELECT
+			SourceDivision,
+			a.Article_ID,
+			a.ArticleTitle,
+			(select w.WebsiteName from m_websiteinfo w where a.Website_ID=w.Website_ID) WebsiteName ,
+			ReprintType,
+           ReprintSourceArticle_ID,
+		  DATE_FORMAT(a.Releasetime,'%Y/%m/%d') Releasetime
+		from a_articlebasicinfo a,a_articleplaninfo b
+		where a.Article_ID=b.Article_ID and b.Plan_ID=#{Plan_ID}
+		and not EXISTS (
+		  select 1 from  a_userdeletearticleinfo c where c.Article_ID=a.Article_ID and c.User_ID=#{userid}
+		)
+		and a.Releasetime>=#{montime_start} and a.Releasetime <![CDATA[<= ]]>#{montime_end}
+			<if test="search_key!=null and search_key!=''">
+                 <if test="search_type=='all'">
+                     and (ArticleText like CONCAT('%',#{search_key},'%') or ArticleTitle like CONCAT('%',#{search_key},'%') or ArticleAbstract like CONCAT('%',#{search_key},'%'))
+                 </if>
+                 <if test="search_type=='title'">
+                     and ArticleTitle like CONCAT('%',#{search_key},'%')
+                 </if>
+                 <if test="search_type=='abstract'">
+                     and ArticleAbstract like CONCAT('%',#{search_key},'%')
+                 </if>
+                 <if test="search_type=='text'">
+                     and ArticleText like CONCAT('%',#{search_key},'%')
+                 </if>
+             </if>
+              <if test="infsour!=-1">
+              and a.SourceDivision=#{infsour}
+             </if>
+        order by a.Releasetime asc
+	</select>
 	
 </mapper>

@@ -27,7 +27,7 @@
 <head>
 <meta charset="UTF-8">
 <title>竞争情报分析系统</title>
-<link rel="stylesheet" type="text/css" href="${ctx}/css/cy_CIAS_style-1920_1080.css">
+<link id="lnk" rel="stylesheet" type="text/css" href="">
 </head>
 
 <body onkeyup="enterlogin(event)">
@@ -58,8 +58,11 @@
 <script type="text/javascript" src="${ctx}/js/axios.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/polyfill.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/md5.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/comm.js"></script>
 <script type="text/javascript">
-   
+ 
+AdaptationResolution('${ctx}'); //分辨率适配
+ 
 function enterlogin(event){
 	 event.preventDefault();
 	 if(event.keyCode==13){

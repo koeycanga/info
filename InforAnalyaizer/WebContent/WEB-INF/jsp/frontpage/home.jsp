@@ -10,6 +10,8 @@
 <fmt:message key="E0025" var="E0025" bundle="${sysInfo}" />   
 <fmt:message key="I0012" var="I0012" bundle="${sysInfo}" />
 <fmt:message key="I0013" var="I0013" bundle="${sysInfo}" />
+<fmt:message key="UseManualFileName" var="UseManualFileName" bundle="${sysInfo}" />
+<fmt:message key="DownloadFileTemplatePath" var="DownloadFileTemplatePath" bundle="${sysInfo}" />
 <!doctype html>
 <html>
 <head>
@@ -138,13 +140,12 @@
 	<div class="cy_CIASFE_homebox03">
 		<div class="cy_CIASFE_homeboxtit">负面信息TOP10</div>
 			<div class="cy_CIASFE_ngtinfbox01">
-				<div v-for="(ndata,index) in negative_datas" class="cy_CIASFE_wrninfbox02"><span v-bind:class="index<=2?'cy_CIASFE_span03':'cy_CIASFE_span02'">{{index+1}}</span><a v-bind:href="'../detailspage/toDetailsPage?from=front&article_id='+ndata.article_ID">{{ndata.articleTitle}}</a></div>
+				<div v-for="(ndata,index) in negative_datas" class="cy_CIASFE_wrninfbox02"><span v-bind:class="index<=2?'cy_CIASFE_span03':'cy_CIASFE_span02'">{{index+1}}</span><a target="_blank" v-bind:href="'../detailspage/toDetailsPage?from=front&article_id='+ndata.article_ID">{{ndata.articleTitle}}</a></div>
 			</div>
 	</div>
 </div>
-<div class="cy_CIASFE_footer01">
-<a href="">使用手册</a>&nbsp;&nbsp;&nbsp;&nbsp;联系我们（电话：1648726161  邮箱：sales@ichangyun.com）    Copyright&copy;2018-2021 &nbsp;&nbsp;&nbsp;&nbsp;湖北畅云时讯软件技术有限公司版权所有
-</div>
+
+<%@include file="sycc.jsp" %>
 </div>
 
 </body>
@@ -266,7 +267,10 @@ var Info = {
 	      			.catch(function (error) {
 	      			    console.log(error);
 	      			});
-    	    }
+    	    },
+    	    from_child_search:function(){
+    	    	this.getHomeDatas();
+            }
     	},
     	mounted:function(){
     	   chart1 = echarts.init(document.getElementById('wcdv1'));

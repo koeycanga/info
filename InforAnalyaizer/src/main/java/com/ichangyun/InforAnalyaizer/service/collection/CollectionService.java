@@ -1,3 +1,8 @@
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ *  竞争情报系统
+ */
 package com.ichangyun.InforAnalyaizer.service.collection;
 
 import java.util.List;
@@ -10,24 +15,24 @@ import com.ichangyun.InforAnalyaizer.model.collection.MyCollectionVo;
 
 public interface CollectionService {
 
-	List<SearchOptBean> getOpts();
+	public List<SearchOptBean> getOpts();
 
-	List<MyCollectionVo> queryAll(MyCollectionVo vo, BaseBean baseBean,User u);
+	public List<MyCollectionVo> queryAll(MyCollectionVo vo, BaseBean baseBean,User u, SearchOptBean sob);
 
-	int queryCount(MyCollectionVo vo, User u);
+	public int queryCount(MyCollectionVo vo, User u, SearchOptBean sob);
 
-	String delete(String[] checkedId);
+	public String delete(String[] checkedId);
 
-	List<CollectionTypeVo> getTypes(User u);
+	public List<CollectionTypeVo> getTypes(User u);
 
-	String addType(CollectionTypeVo vo);
+	public String addType(CollectionTypeVo vo);
 
-	String updateType(CollectionTypeVo vo);
+	public String updateType(CollectionTypeVo vo);
 
-	String deleteType(CollectionTypeVo vo);
+	public String deleteType(CollectionTypeVo vo);
 
-	String move(String[] checkedId, String collectiontypeId);
+	public String move(String[] checkedId, String collectiontypeId);
 
-	String moveType(String collectiontypeId, String targetId);
+	public String moveType(String collectiontypeId, String targetId);
 
 }

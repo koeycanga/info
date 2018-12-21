@@ -201,7 +201,7 @@ var Info = {
 				  }
 				  if(iscontinue){
 					  var _this = this;
-					  layer.confirm(Info.W0002, {
+					  layer.confirm(IC_GETINFOBYAttrs(Info.W0002,['角色']), {
 				            btn : [ '确定', '取消' ]//按钮
 				        }, function(index) {
 				            layer.close(index);

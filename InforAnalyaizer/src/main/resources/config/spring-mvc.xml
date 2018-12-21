@@ -8,7 +8,16 @@
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context.xsd
     http://www.springframework.org/schema/mvc
-    http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task-3.0.xsd"
+    xmlns:task="http://www.springframework.org/schema/task"
+    >
+ 
+   <!-- 以下是spring 定时器相关配置 -->
+   <task:executor id="executor" pool-size="10"/> 
+   <task:annotation-driven scheduler="qbScheduler" mode="proxy"/>  
+   <task:scheduler id="qbScheduler" pool-size="10"/>
  
     <!--启用spring的一些annotation -->
     <context:annotation-config/>
@@ -39,7 +48,7 @@
     </mvc:annotation-driven>
     <!--<mvc:default-servlet-handler/>-->
     <!--  自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器  -->
-    <context:component-scan base-package="com.ichangyun.InforAnalyaizer.controller">
+    <context:component-scan base-package="com.ichangyun.InforAnalyaizer.controller,com.ichangyun.InforAnalyaizer.utils">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
  
@@ -90,7 +99,6 @@
     </bean>
 
 
- 
     <mvc:interceptors>
    
        <!-- 以下是验证用户是否登录拦截器 -->

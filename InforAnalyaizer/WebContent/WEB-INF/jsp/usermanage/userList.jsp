@@ -56,8 +56,8 @@
 	border-style: dashed;
 	overflow: hidden;
 	border-color: #666 transparent transparent transparent;
-	top: 12.5%;
-	right: 11%;
+	top: 43.5%;
+	right: 7%;
 	position: absolute;
 }
 input[disabled]{color:#fff;opacity:1}
@@ -80,7 +80,7 @@ input[disabled]{color:#fff;opacity:1}
 							<option value="0">停用</option>
 						</select>
 						<div class="cy_CMICBMS_schbox01">
-							<input type="text" placeholder="输入用户名检索..."
+							<input type="text" placeholder="请输入用户名进行检索..."
 								v-model="userInfoVo2.uid">
 						</div>
 						<input type="button" class="cy_CMICBMS_schbtn" value="检索"
@@ -141,21 +141,23 @@ input[disabled]{color:#fff;opacity:1}
 				<div class="cy_CMICBMS_addclose" onClick="hide();">X</div>
 			</div>
 			<div class="cy_CMICBMS_addtb">
-				<div>
-					<span>*</span>用户角色：<select v-model="userInfoVo.urole"
+				<div class="cy_CMICBMS_addtb_userrole">
+					<span>*</span>用户角色：<select class="cy_CMICBMS_addtb_roleselect" v-model="userInfoVo.urole"
 						v-if="userInfoVo.usuperuserflag==0">
 						<option value="0" selected="selected">输入用户角色</option>
 						<option :value="role.userRole_ID" v-for="role in roles">{{role.userRoleName}}</option>
-					</select> <i class="mark1"></i><span v-if="userInfoVo.usuperuserflag==1">该用户为超级管理员</span>
+					</select> <i v-if="userInfoVo.usuperuserflag==0" class="mark1"></i><span v-if="userInfoVo.usuperuserflag==1">该用户为超级管理员</span>
 				</div>
-				<div>
-					<span>*</span>用户名：<input type="text" placeholder="输入用户名"
+				<div class="cy_CMICBMS_addtb_username">
+					<span>*</span>用户名：&nbsp;&nbsp; <input type="text" placeholder="输入用户名"
 						class="cy_CMICBMS_addinput" v-model="userInfoVo.uid"
-						:disabled="is_disabled" @focus="uid_f" @blur="uid_b"
+						 @focus="uid_f" @blur="uid_b"
 						maxlength="10" >
 					<div class="cy_CMICBMS_errortip" v-if="userInfoVo.uid==''"
 						v-show="uidshow">输入用户名！</div>
+				<div v-if="is_disabled" class="cy_CMICBMS_addtb_shelter"></div>
 				</div>
+				<div class = "cy_CMICBMS_addtb_userother">
 				<div>
 					<span>*</span>设置密码：<input type="password" placeholder="设置密码"
 						class="cy_CMICBMS_addinput" v-model="userInfoVo.upwd"
@@ -171,7 +173,7 @@ input[disabled]{color:#fff;opacity:1}
 						v-show="checkPwdshow">确认密码！</div>
 				</div>
 				<div>
-					<span>*</span>姓名：<input type="text" placeholder="输入姓名"
+					<span>*</span>姓名：&nbsp; &nbsp;&nbsp;  <input type="text" placeholder="输入姓名"
 						class="cy_CMICBMS_addinput" v-model="userInfoVo.uname"
 						@focus="uname_f" @blur="uname_b" maxlength="20">
 					<div class="cy_CMICBMS_errortip" v-if="userInfoVo.uname==''"
@@ -191,15 +193,16 @@ input[disabled]{color:#fff;opacity:1}
 						class="cy_CMICBMS_addinput" v-model="userInfoVo.uemail"
 						maxlength="50">
 				</div>
-				<div id="cy_CMICBMS_status">
+				<div id="cy_CMICBMS_addtb_userStatus">
 					状态：<input type="radio" name="RadioGroup1" value="1"
 						id="RadioGroup1_0" v-model="userInfoVo.ustatus">启用 <input
 						type="radio" name="RadioGroup1" value="0" id="RadioGroup1_1"
 						v-model="userInfoVo.ustatus">停用
 				</div>
-				<div style="margin: 40px 20px 0 0;">
+				<div class="cy_CMICBMS_addtb_submit" style="margin: 40px 20px 0 0;">
 					<input type="button" value="确定" class="cy_CMICBMS_schbtn"
 						v-on:click="submit">
+				</div>
 				</div>
 			</div>
 		</div>
@@ -238,6 +241,7 @@ input[disabled]{color:#fff;opacity:1}
     var vm = new Vue({				//列表vue
         el: '#userInfo',
         data: {
+        	isfirstinjsp:true,   //是否第一次进入页面
             userInfoVo2: {ustatus:2},		//搜索条件vo
             users: [],						//用户信息集合
             isok: false,					//全选按钮状态，false==未选中
@@ -294,7 +298,6 @@ input[disabled]{color:#fff;opacity:1}
                         vm2.title="修改用户";			//修改标题、url
                         vm2.url="updateUser";
                         vm2.is_disabled = true;		//修改用户状态，不可修改用户名
-                        vm2.bgc_style = {'background-color': '#949494'};
                         axios.get("queryOne",{		//回显当前user信息
                             params: {
                                 unum:checkedId[0]
@@ -319,7 +322,7 @@ input[disabled]{color:#fff;opacity:1}
                     if(this.checkedId.length==0){		//如果没选中信息的提示——选择1至1条以上信息
                         layer.msg(Info.E0019);			
                     }else{
-                        var deleteLayer =layer.confirm(Info.W0002, {		//提示——确定删除？
+                        var deleteLayer =layer.confirm(IC_GETINFOBYAttrs(Info.W0002,['用户']), {		//提示——确定删除？
                             btn: ['确定', '取消'] //按钮
                         }, function () {
                             var url = "delete";				//更改url
@@ -355,7 +358,7 @@ input[disabled]{color:#fff;opacity:1}
         },
         watch: {				//全选按钮控制
             "checkedId": function() {
-                if (this.checkedId.length != this.users.length) {
+                if (this.checkedId.length != this.users.length||this.checkedId.length==0) {
                     this.isok = false
                 } else {
                     this.isok = true
@@ -388,12 +391,16 @@ input[disabled]{color:#fff;opacity:1}
                             _this.checkedId = [];		//检索完毕将复选框选择取消，防止点击分页等复选框仍然选取
                             _this.users =allUsers;
                             layer.close(l_index);	//关闭动画
-                            if(rowCount=='0'){
+                            if(rowCount=='0'&&!_this.isfirstinjsp){
       	    					 layer.msg(Info.I0002);
-      	    				  	}
-                            if(response.data.rowCount>parseInt(Info.MaxSearchCnt)){
-                            	layer.msg(Info.W0001)
+      	    				  }
+                            if(response.data.rowCount>parseInt(Info.MaxSearchCnt)&&!_this.isfirstinjsp){
+                            	layer.msg(Info.W0001);
+                            	 _this.users = [];
+                            	 _this.$refs.pagecomponent.dealAfterSearch(0); 
                             }
+                            
+                            _this.isfirstinjsp = false;
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -423,7 +430,6 @@ input[disabled]{color:#fff;opacity:1}
             uidshow:false,		//四个必填项的气泡控制
             upwdshow:false,		
             checkPwdshow:false,
-            bgc_style:{},
             unameshow:false		
         },
         created: function () {

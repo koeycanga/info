@@ -1,3 +1,8 @@
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ *  竞争情报系统
+ */
 package com.ichangyun.InforAnalyaizer.service.notice;
 
 import java.util.List;
@@ -9,16 +14,16 @@ import com.ichangyun.InforAnalyaizer.model.notice.NoticeVo;
 
 public interface NoticeService {
 
-	Map<String, Object> queryAll(int pageNow, int rowSize);
+	public Map<String, Object> queryAll(int pageNow, int rowSize);
 
-	List<NoticeType> getNoticeType();
+	public List<NoticeType> getNoticeType();
 
-	String addNotice(NoticeVo vo,User u);
+	public String addNotice(NoticeVo vo,User u);
 
-	NoticeVo queryOne(String id);
+	public NoticeVo queryOne(String id);
 
-	String updateNotice(NoticeVo vo, User u);
+	public String updateNotice(NoticeVo vo, User u);
 
-	String deleteNotice(String[] ids);
+	public String deleteNotice(String[] ids);
 	
 }

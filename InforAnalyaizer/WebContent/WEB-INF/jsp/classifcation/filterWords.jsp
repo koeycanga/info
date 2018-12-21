@@ -14,7 +14,15 @@
 <fmt:message key="I0024" var="I0024" bundle="${sysInfo}" />
 <fmt:message key="I0002" var="I0002" bundle="${sysInfo}" />
 <fmt:message key="E0043" var="E0043" bundle="${sysInfo}" />
-
+<fmt:message key="E0046" var="E0046" bundle="${sysInfo}" />
+<fmt:message key="E0047" var="E0047" bundle="${sysInfo}" />
+<fmt:message key="E0048" var="E0048" bundle="${sysInfo}" />
+<fmt:message key="I0016" var="I0016" bundle="${sysInfo}" />
+<fmt:message key="I0028" var="I0028" bundle="${sysInfo}" />
+<fmt:message key="E0064" var="E0064" bundle="${sysInfo}" />
+<fmt:message key="W0001" var="W0001" bundle="${sysInfo}" />
+<fmt:message key="MaxSearchCnt" var="MaxSearchCnt" bundle="${sysInfo}" />
+<fmt:message key="DownloadDataCount" var="DownloadDataCount" bundle="${sysInfo}" />
 <html xmlns:v-on="http://www.w3.org/1999/xhtml"
 	xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
@@ -35,14 +43,14 @@
 		<div class="cy_hidebg" id="cy_hidebg"></div>
 		<div class="cy_CMICBMS_bodybg">
 			<p>
-				情报规划 > <span>过滤词管理</span>
+				<b>情报规划</b> > <span><b>过滤词管理</b></span>
 			</p>
 			<!-- 条件检索表单 -->
 			<div class="cy_CMICBMS_tablebox">
 				<form @submit.prevent>
 					<div class="cy_CMICBMS_box07">
 						<div class="cy_CMICBMS_schbox01">
-							<input type="text" placeholder="输入关键词检索"
+							<input type="text" placeholder="请输入分类名称进行检索..."
 								v-model="fwVoForSearch.classificationName">
 						</div>
 						<input type="button" class="cy_CMICBMS_schbtn" value="检索"
@@ -50,8 +58,10 @@
 					</div>
 				</form>
 				<!-- 功能按钮 -->
+				<div class="cy_CMICBMS_box08">
 				<table>
 				<tr>
+				<td>&nbsp;&nbsp;</td>
 				<td><input type="button" class="cy_CMICBMS_edbtn" value="编辑"
 					v-on:click="btn_update">&nbsp;&nbsp;</td>
 				<td>			 <input type="button"
@@ -59,9 +69,12 @@
 					name="file" @mouseenter="show_import_in" @mouseleave="show_import_out"></td>
 				<td>&nbsp;&nbsp;<input type="button" class="cy_CMICBMS_expbtn" value="导出"
 					v-on:click="btn_output">&nbsp;&nbsp;</td>
-					<td v-if="show_import"><font color="red" size="1">按照模板格式导入文件，最大不超过1M</font></td>
+					<td v-if="show_import"><font color="red" size="1"><!-- 按照模板格式导入文件，最大不超过1M-->注：导入时，节点名称相同的数据将被直接覆盖刷新，系统不存在的节点名称数据将不被导入。</font></td>
 				</tr>
 				</table>
+				<div v-if="eCheck==true"><span>&nbsp;&nbsp;</span><font color="red">导入文件出现错误，原因如下：</font></div>
+				<div v-if="eCheck==true" v-for="m in eMsg"><span>&nbsp;&nbsp;</span><font color="red">{{m}}</font></div>
+				</div>
 			</div>
 			<form action="output" ref="outputForm">
 				<div class="cy_CMICBMS_box08">
@@ -75,7 +88,7 @@
 									</th>
 									<th scope="col" width="40%">分类名称</th>
 									<th nowrap scope="col" width="10%">信息向性区分</th>
-									<th nowrap scope="col" width="30%">敏感词过滤范围</th>
+									<th nowrap scope="col" width="30%">过滤词过滤范围</th>
 									<th nowrap scope="col" width="auto">最近编辑时间</th>
 									<th nowrap scope="col" width="auto">最近编辑者</th>
 								</tr>
@@ -112,71 +125,69 @@
 				<div class="cy_CMICBMS_addtit">{{title}}</div>
 				<div class="cy_CMICBMS_addclose" onClick="hide();">X</div>
 			</div>
-			<span>所属分类：{{ssfl_msg}}</span>
+			<br>
+			<span>&nbsp;&nbsp;&nbsp;&nbsp;所属分类：{{ssfl_msg}}</span>
 			<div class="cy_CMICBMS_addtb">
 				<div id="cy_CMICBMS_status">
-					信息项区分：<input type="radio" name="RadioGroup1" value="1"
+					信息向性区分：<input type="radio" name="RadioGroup1" value="1"
 						id="RadioGroup1_0" v-model="fwVoForUpdate.informationtropism">区分
 					<input type="radio" name="RadioGroup1" value="0" id="RadioGroup1_1"
 						v-model="fwVoForUpdate.informationtropism">不区分
 				</div>
 				<br> <br>
 				<div class="cy_CMICBMS_addwords">
-					<div class="layui-tab">
+					<div class="layui-tab cy_CMICBMS_addcizutab layui-tab-card">
 						<ul class="layui-tab-title">
 							<li class="layui-this">全部</li>
 							<li>标题</li>
 							<li>摘要</li>
 							<li>正文</li>
 						</ul>
-						<div class="layui-tab-content" style="height: 100px;">
+						<div class="layui-tab-content cy_CMICBMS_addcizu">
 							<div class="layui-tab-item layui-show">
-
 								<div>
-									核心词组：<textarea  type="text" placeholder="输入词组"
+									核心词组：<br><textarea  type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
 										v-model="fwVoForUpdate.allcorephrases" maxlength="600"></textarea>
 								</div>
-
 								<div>
-
-									排除词组：<textarea  type="text" placeholder="输入词组"
+									排除词组：<br><textarea  type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
 										v-model="fwVoForUpdate.allexcludephrases" maxlength="600"></textarea>
 								</div>
 							</div>
 							<div class="layui-tab-item">
 								<div>
-									核心词组：<textarea  type="text" placeholder="输入词组"
+									核心词组：<br><textarea  type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
 										v-model="fwVoForUpdate.titlecorephrases" maxlength="600"></textarea>
 								</div>
 								<div>
-									排除词组：<textarea  type="text" placeholder="输入词组"
+									排除词组：<br><textarea  type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
 										v-model="fwVoForUpdate.titleexcludephrases" maxlength="600"></textarea>
 								</div>
 							</div>
 							<div class="layui-tab-item">
 								<div>
-									核心词组：<textarea  type="text" placeholder="输入词组"
+									核心词组：<br><textarea  type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
 										v-model="fwVoForUpdate.summarycorephrases" maxlength="600"></textarea>
 								</div>
 								<div>
-									排除词组：<textarea  type="text" placeholder="输入词组"
+									排除词组：<br><textarea  type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
 										v-model="fwVoForUpdate.summaryexcludephrases" maxlength="600"></textarea>
 								</div>
 							</div>
 							<div class="layui-tab-item">
 								<div>
-									核心词组：<textarea  type="text" placeholder="输入词组"
+									核心词组：<br><textarea  type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
 										v-model="fwVoForUpdate.textcorephrases" maxlength="600"></textarea>
 								</div>
 								<div>
-									排除词组：<textarea  type="text" placeholder="输入词组"
+									排除词组：<br><textarea  type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
 										v-model="fwVoForUpdate.textexcludephrases" maxlength="600"></textarea>
 								</div>
@@ -185,7 +196,7 @@
 					</div>
 
 				</div>
-				<div style="margin: 40px 20px 0 0;">
+				<div style="margin: 40px 20px 0 0;" class="cy_CMICBMS_addtb_submit_fw">
 					<input type="button" value="确定" class="cy_CMICBMS_schbtn"
 						v-on:click="submit">
 				</div>
@@ -213,23 +224,35 @@
         I0012: '${I0012}',
         I0013: '${I0013}',
         I0015: '${I0015}',
+        W0001: '${W0001}',
         W0004: '${W0004}',
         I0011: '${I0011}',
         I0024: '${I0024}',
         I0002: '${I0002}',
         E0043: '${E0043}',
-        I0016: '${I0016}'
+        E0046: '${E0046}',
+        E0047: '${E0047}',
+        E0048: '${E0048}',
+        I0028: '${I0028}',
+        DownloadDataCount: '${DownloadDataCount}',
+        E0064: '${E0064}',
+        I0016: '${I0016}',
+        MaxSearchCnt:'${MaxSearchCnt}'
     };
     //右侧主体控制vm
     var vm = new Vue({
         el: '#filterWords',
         data: {
+        	is_flash:true,
+        	isfirstinjsp:true,   //是否第一次进入页面
             fwVoForSearch: {},    //携带搜索条件的vo对象
             fwVos: [],            //返回的节点列表
             isok: false,          //全选判定
             info: Info.I0024,    //提示信息：搜索结果为空
             checkedId: [],
             show_import:false,
+            eCheck:"false",
+            eMsg : [],
             ssfl_msg: ""			//所属分类
         },
 
@@ -271,7 +294,8 @@
                     }
                 },
             btn_search:   //搜索按钮点击事件
-                function () {
+                function (is_flash=true) {
+            	    this.is_flash = is_flash;
                     this.search(this.$refs.pagecomponent.pageBean);
                 },
             btn_output:
@@ -281,6 +305,11 @@
                     if (checkedId.length ==0) {
                         layer.msg(Info.E0043);      //提示：请选择要导出的数据
                     }else{
+                    	if(checkedId.length>Info.DownloadDataCount){
+                    		var arry = [Info.DownloadDataCount];
+                    		layer.msg(IC_GETINFOBYAttrs(Info.E0064,arry)); //提示，超出最大导出长度
+                    		return false;
+                    	}
                         this.$refs.outputForm.submit();
                     }
                 },
@@ -431,7 +460,7 @@
         },
         watch: {
             "checkedId": function () {
-                if (this.checkedId.length != this.fwVos.length) {
+                if (this.checkedId.length != this.fwVos.length||this.checkedId.length==0) {
                     this.isok = false
                 } else {
                     this.isok = true
@@ -445,6 +474,9 @@
                         icon: 16
                         , shade: 0.01
                     });
+                    if(this.is_flash){
+                    	this.eCheck = 'false';
+                    }
                     var _this = this;
                     var fwVo = this.fwVoForSearch;
                     var url = "../filterWords/queryAll";
@@ -471,12 +503,17 @@
                                 }
                             }
                             layer.close(l_index);	//关闭动画
-                            if (rowCount == '0') {
+                            if (rowCount == '0'&&!_this.isfirstinjsp) {
                                 layer.msg(Info.I0002);
                             }
-                            if(response.data.rowCount>parseInt(Info.MaxSearchCnt)){
-                            	layer.msg(Info.W0001)
+                            if(response.data.rowCount>parseInt(Info.MaxSearchCnt)&&!_this.isfirstinjsp){
+                            	layer.msg(Info.W0001);
+                            	_this.fwVos = [];
+                            	_this.$refs.pagecomponent.dealAfterSearch(0);
                             }
+                            
+                            _this.isfirstinjsp = false;
+                            _this.is_flash = true;
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -552,8 +589,8 @@
     var ic_tree_dv_checkbox = {
         template: '<div><div v-bind:style="t_style" v-show="model.is_al_show">' +
 
-        '<input type="checkbox" :disabled="model.isParent==1" v-bind:value="model.classificationId"  v-model="vm.checkedId" class="cy_CMICBMS_checkbox" name="ids">&nbsp;<label for="cy_CMICBMS_checkbox"></label></div>' +
-        '<div v-show="model.is_show" ><ic_tree_dv_checkbox  v-for="model in model.children"  v-bind:model="model"></ic_tree_dv_checkbox>&nbsp;</div></div>',
+        '<input type="checkbox" :disabled="model.isParent==1" v-bind:value="model.classificationId"  v-model="vm.checkedId" class="cy_CMICBMS_checkbox" name="ids"></div>' +
+        '<div v-show="model.is_show" ><ic_tree_dv_checkbox  v-for="model in model.children"  v-bind:model="model"></ic_tree_dv_checkbox></div>&nbsp;</div>',
         props: ['model'],
         data: function () {
             return {
@@ -567,7 +604,7 @@
         template: '<div><div v-bind:style="t_style" v-bind:title="model.classificationName" class="cy_tree_node_hover" v-show="model.is_al_show">' +
         '<img v-if="model.isParent==1" v-bind:src="model.imgsrc" style="cursor:pointer" v-on:click="opClose(model.classificationId)">' +
         '{{model.classificationName}}&nbsp;</div>' +
-        '<div v-show="model.is_show" ><ic_tree_dv_name  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_name></div></div>'
+        '<div v-show="model.is_show" ><ic_tree_dv_name  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_name></div>&nbsp;</div>'
         ,
         props: ['model'],
 
@@ -588,8 +625,8 @@
     //区分列组件
     var ic_tree_dv_tropism = {
         template: '<div><div v-bind:style="t_style" v-show="model.is_al_show">' +
-        '{{model.informationtropism==1?\'区分\':\'\'}}&nbsp;</div>' +
-        '<div v-show="model.is_show" ><span></span><span> </span><ic_tree_dv_tropism  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_tropism></div></div>'
+        '{{model.informationtropism==1?\'区分\':\'不区分\'}}&nbsp;</div>' +
+        '<div v-show="model.is_show" ><span></span><span> </span><ic_tree_dv_tropism  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_tropism></div>&nbsp;</div>'
         ,
         props: ['model'],
         data: function () {
@@ -606,7 +643,7 @@
         '{{model.titlecorephrases!=""||model.titleexcludephrases!=""?\'标题；\':\'\'}}' +
         '{{model.summarycorephrases!=""||model.summaryexcludephrases!=""?\'摘要；\':\'\'}}' +
         '{{model.textcorephrases!=""||model.textexcludephrases!=""?\'正文；\':\'\'}}&nbsp;</div>' +
-        '<div v-if="model.is_show" ><span> </span><span> </span><ic_tree_dv_all  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_all></div></div>'
+        '<div v-if="model.is_show" ><span> </span><span> </span><ic_tree_dv_all  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_all></div>&nbsp;</div>'
         ,
         props: ['model'],
         data: function () {
@@ -620,7 +657,7 @@
         template: '<div ><div v-bind:style="t_style" v-show="model.is_al_show">' +
 
         '{{model.updatedatetime}}&nbsp;</div>' +
-        '<div v-show="model.is_show" ><span> </span><span> </span><ic_tree_dv_time  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_time></div></div>'
+        '<div v-show="model.is_show" ><span> </span><span> </span><ic_tree_dv_time  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_time></div>&nbsp;</div>'
         ,
         props: ['model'],
         data: function () {
@@ -634,7 +671,7 @@
         template: '<div ><div v-bind:style="t_style" v-show="model.is_al_show">' +
 
         '{{model.updateuser}}&nbsp;</div>' +
-        '<div v-show="model.is_show" ><span> </span><span> </span><ic_tree_dv_user  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_user></div></div>'
+        '<div v-show="model.is_show" ><span> </span><span> </span><ic_tree_dv_user  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_user></div>&nbsp;</div>'
         ,
         props: ['model'],
         data: function () {
@@ -660,18 +697,31 @@
         //执行实例
         upload.render({
             elem: '#impbtn' //绑定元素
-            ,size: 1024		//最大大小
+            ,size: 1024*1024		//最大大小
             , done: function (res) {
                 //上传完毕回调
                 if(res.msg=="ok"){
-	                vm.btn_search();
-	                layer.msg(Info.I0015);	
+	                var arry = [res.imputCount];
+	                layer.msg(IC_GETINFOBYAttrs(Info.I0028,arry));	
+	                vm.eCheck = res.eCheck;
+	                vm.eMsg = res.eMsg;
+	                //if(vm.eCheck=='false'){
+	                	
+	                	setTimeout(function(){
+	                		vm.btn_search(false);
+	                	},1500);
+	                //};
                 }else if(res.msg=="fault"){
                 	vm.btn_search();
 	                layer.msg(Info.I0016);
                 }else if(res.msg=="fileTypeException"){
                 	layer.msg(Info.E0046);
-                }   
+                }else if(res.msg.indexOf("maxLength")>=0){
+                	layer.msg(IC_GETINFOBYAttrs(Info.E0048,[res.msg.replace('maxLength','')]));
+                }else if(res.msg.indexOf("maxSize")>=0){
+                	layer.msg(IC_GETINFOBYAttrs(Info.E0047,[res.msg.replace('maxSize','')]));
+                }
+                	
             }
             , error: function () {
                 //请求异常回调

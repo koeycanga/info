@@ -6,9 +6,7 @@
 package com.ichangyun.InforAnalyaizer.mapper.thematicmonitoring;
 
 import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
-
 import com.ichangyun.InforAnalyaizer.model.front.HotWordBean;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.CollectionBean;
@@ -229,5 +227,19 @@ public interface ThematicmonitoringMapper {
 	 * @param num  ×éºÏÊý
 	 */
 	public void updatefa(@Param("plan_id")String plan_id, @Param("planinfo_name")String planinfo_name, @Param("fromDate")String fromDate, @Param("toDate")String toDate, @Param("num")int num,@Param("userid")String userid);
+
+	public List<ArticleInfoBean> getMTFBData(ArticleInfoBean ab);
+
+	public List<ArticleInfoBean> getFZQSByHour(ArticleInfoBean ab);
+
+	public List<ArticleInfoBean> getFZQSByDay(ArticleInfoBean ab);
+
+	public List<ArticleInfoBean> getCBTHData(ArticleInfoBean ab);
+
+	public List<ArticleInfoBean> getFZQSByHourDS(ArticleInfoBean ab);
+
+	public void delAllArticleWithPlanInfo();
+
+	public List<ThematicmonitoringBean> getAllFa();
 
 }

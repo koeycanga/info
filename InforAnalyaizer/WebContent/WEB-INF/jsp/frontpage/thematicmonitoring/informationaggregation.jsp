@@ -27,6 +27,10 @@
 <fmt:message key="I0023" var="I0023" bundle="${sysInfo}" />
 <fmt:message key="E0052" var="E0052" bundle="${sysInfo}" />
 <fmt:message key="I0029" var="I0029" bundle="${sysInfo}"/>
+<fmt:message key="W0008" var="W0008" bundle="${sysInfo}"/>
+<fmt:message key="W0009" var="W0009" bundle="${sysInfo}"/>
+<fmt:message key="UseManualFileName" var="UseManualFileName" bundle="${sysInfo}" />
+<fmt:message key="DownloadFileTemplatePath" var="DownloadFileTemplatePath" bundle="${sysInfo}" />
 <!doctype html>
 <html>
 <head>
@@ -194,14 +198,14 @@
 					<a v-bind:href="data.articleURL" target="_blank">{{data.releasetime}}
                                 {{data.websiteName}}</a>
                                 
-                   <span class="cy_CIASFE_simart" v-on:mouseover="simcontent(index)">
+                    <span class="cy_CIASFE_simart" v-on:mouseover="simcontent(index)">
                                                                相似文章：{{data.sim_cnt}}条
 					 <div class="cy_CIASFE_simartbox" >
 	                      <div v-for=" sdata in sim_datas[index]">
 	                      <a v-bind:href="'../detailspage/toDetailsPage?from=thematicmonitoring&article_id='+sdata.article_ID" 
 	                        target="_blank">{{sdata.articleTitle}}</a></div>
                       </div>
-				  </span>
+				  </span> 
 				</div>
 			    
 			</div>
@@ -264,7 +268,10 @@ var Info = {
 	  I0023:'${I0023}',
 	  E0019:'${E0019}',
 	  E0052:'${E0052}',
-	  I0029:'${I0029}'
+	  I0029:'${I0029}',
+	  W0008: '${W0008}',
+	  W0009: '${W0009}',
+      syccurl:'${ctx }/${DownloadFileTemplatePath}/${UseManualFileName}'
 };
 
 
@@ -389,7 +396,8 @@ var app = new Vue({
 				axios.get('../thematicmonitoring/getSimContent',{
 	    			params: {
 	    				   Article_ID:_this.datas[index].article_ID,
-	    				   montime:amontime
+	    				   montime:amontime,
+	    				   plan_ID:_this.plan_ID
 	    				}
 	    			})
 	    			.then(function (response) {
@@ -422,7 +430,7 @@ var app = new Vue({
 			  var _this = this;
 			  var arr = [];
 			  arr.push(article_ID);
-			  layer.confirm(Info.W0002, {
+			  layer.confirm(IC_GETINFOBYAttrs(Info.W0008,['<br/>']), {
 		            btn : [ '确定', '取消' ]//按钮
 		        }, function(index) {
 		            layer.close(index);
@@ -457,7 +465,7 @@ var app = new Vue({
 				  layer.msg(Info.E0019);
 			  }else{
 				  var _this = this;
-				  layer.confirm(Info.W0002, {
+				  layer.confirm(IC_GETINFOBYAttrs(Info.W0008,['<br/>']), {
 			            btn : [ '确定', '取消' ]//按钮
 			        }, function(index) {
 			            layer.close(index);
@@ -502,34 +510,39 @@ var app = new Vue({
 				  layer.msg(Info.E0033);
 			  }else{
 				  var _this = this;
-				  var arr = [];
-				  for(var i=this.checkedNames.length-1;i>=0;i--){
-	            		 var data = this.getDataById(this.checkedNames[i]);
-	            		 if(data.isearlywarning!='yes'){
-	            			 arr.push(this.checkedNames[i]);
-	            		 }
-	            	 }
-				  var json = createJSON(arr);
-				  axios.post('../thematicmonitoring/toyj',
-			   			    {
-					 			 json:json
-			   				}
-			   			)
-			   			.then(function (response) {
-			   				 if(response.data=="ok"){
-			   					 for(var i=_this.checkedNames.length-1;i>=0;i--){
-				            		 var data = _this.getDataById(_this.checkedNames[i]);
-				            		 data.isearlywarning = 'yes' ;
-			   					 }
-			   					//_this.search(_this.$refs.pagecomponent.pageBean);
-			   				 }
-			   				 if(response.data=="nok"){
-			   					layer.msg(Info.E0022);
-			   				 }
-			   			})
-			   			.catch(function (error) {
-			   				layer.msg(Info.E0022);
-			   			});
+				  layer.confirm(Info.W0009, {
+                      btn: ['确定', '取消']//按钮
+                  }, function (index) {
+                      layer.close(index);
+					  var arr = [];
+					  for(var i=_this.checkedNames.length-1;i>=0;i--){
+		            		 var data = _this.getDataById(_this.checkedNames[i]);
+		            		 if(data.isearlywarning!='yes'){
+		            			 arr.push(_this.checkedNames[i]);
+		            		 }
+		            	 }
+					  var json = createJSON(arr);
+					  axios.post('../thematicmonitoring/toyj',
+				   			    {
+						 			 json:json
+				   				}
+				   			)
+				   			.then(function (response) {
+				   				 if(response.data=="ok"){
+				   					 for(var i=_this.checkedNames.length-1;i>=0;i--){
+					            		 var data = _this.getDataById(_this.checkedNames[i]);
+					            		 data.isearlywarning = 'yes' ;
+				   					 }
+				   					//_this.search(_this.$refs.pagecomponent.pageBean);
+				   				 }
+				   				 if(response.data=="nok"){
+				   					layer.msg(Info.E0022);
+				   				 }
+				   			})
+				   			.catch(function (error) {
+				   				layer.msg(Info.E0022);
+				   			});
+                  });
 			  }
 		  },
 		  getlastestNews:function(){   //获得最新消息条目数

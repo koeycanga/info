@@ -1,3 +1,8 @@
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ *  竞争情报系统
+ */
 package com.ichangyun.InforAnalyaizer.service.classificationfilterwords.impl;
 
 import java.io.IOException;
@@ -11,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ichangyun.InforAnalyaizer.mapper.classificationfilterwords.ClassificationFilterwordsMapper;
+import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean;
 import com.ichangyun.InforAnalyaizer.model.classificationfilterwords.ClassificationFilterwordsWithBLOBs;
 import com.ichangyun.InforAnalyaizer.model.classificationfilterwords.FilterWordsVo;
 import com.ichangyun.InforAnalyaizer.model.userInfo.User;
@@ -104,7 +110,7 @@ public class FilterWordsServiceImpl implements FilterWordsService {
 	}
 
 	@Override
-	public String input(List<FilterWordsVo> vos) {
+	public String input(List<FilterWordsVo> vos,String userid) {
 		String msg = "ok";
 		StringBuilder names = new StringBuilder();
 		//通过名称查找这些节点的id
@@ -119,41 +125,49 @@ public class FilterWordsServiceImpl implements FilterWordsService {
 			}
 		}
 		//添加节点属性，并将需要新建还是更新的节点分类
-		List<FilterWordsVo> checkList = this.fwMapper.queryByName(names.toString());
-		List<FilterWordsVo> createVo = new ArrayList<>();
-		for (FilterWordsVo checkVo : checkList) {
-			for (int i = 0; i < vos.size(); i++) {
-				FilterWordsVo vo = vos.get(i);
-				if(vo.getAllParent_name().equals(checkVo.getAllParent_name())) {
-					vo.setClassificationId(checkVo.getClassificationId());
-					vo.setClassificationName(checkVo.getClassificationName());
-					if(checkVo.getInformationtropism()==null) {
-						createVo.add(vo);
-						vos.remove(i);
-						i--;
+		if(!names.toString().equals("'")) {
+			List<FilterWordsVo> checkList = this.fwMapper.queryByName(names.toString());
+			List<FilterWordsVo> createVo = new ArrayList<>();
+			for (FilterWordsVo checkVo : checkList) {
+				for (int i = 0; i < vos.size(); i++) {
+					FilterWordsVo vo = vos.get(i);
+					if(vo.getAllParent_name().equals(checkVo.getAllParent_name())) {
+						vo.setClassificationId(checkVo.getClassificationId());
+						vo.setClassificationName(checkVo.getClassificationName());
+						if(checkVo.getInformationtropism()==null) {
+							createVo.add(vo);
+							vos.remove(i);
+							i--;
+						}
 					}
 				}
 			}
-		}
-		//批量新增createVo
-		if(createVo.size()>0) {
-			
-			try {			
-				this.fwMapper.insertMany(createVo);
-			} catch (Exception e) {
-				e.printStackTrace();
-				msg="fault";
+			//批量新增createVo
+			if(createVo.size()>0) {
+				
+				try {			
+					this.fwMapper.insertMany(createVo,userid);
+				} catch (Exception e) {
+					e.printStackTrace();
+					msg="fault";
+				}
+			}
+			//批量更新vos
+			if(vos.size()>0) {
+				try {			
+					this.fwMapper.updateMany(vos,userid);
+				} catch (Exception e) {
+					e.printStackTrace();
+					msg="fault";
+				}	
 			}
 		}
-		//批量更新vos
-		if(vos.size()>0) {
-			try {			
-				this.fwMapper.updateMany(vos);
-			} catch (Exception e) {
-				e.printStackTrace();
-				msg="fault";
-			}	
-		}
 		return msg;
+	}
+
+	@Override
+	public List<ClassificationInfoBean> getAllClassificationNames() {
+		
+		return this.fwMapper.getAllClassificationNames();
 	}
 }

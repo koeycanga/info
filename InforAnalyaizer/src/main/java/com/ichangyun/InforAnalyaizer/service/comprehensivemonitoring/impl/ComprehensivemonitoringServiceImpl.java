@@ -134,6 +134,9 @@ public class ComprehensivemonitoringServiceImpl implements Comprehensivemonitori
 
 	@Override
 	public String getSimContent(ArticleInfoBean ab) {
+		
+		ab.setRowSize(CommBean.SIM_MAX_NUM);
+		
 	    List<ArticleInfoBean> list = comprehensivemonitoringMapper.getSimContent(ab);
 		
 		JSONArray listArray=(JSONArray) JSONArray.toJSON(list);

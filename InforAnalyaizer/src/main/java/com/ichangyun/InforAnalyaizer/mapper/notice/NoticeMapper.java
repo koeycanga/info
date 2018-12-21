@@ -1,3 +1,8 @@
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ *  竞争情报系统
+ */
 package com.ichangyun.InforAnalyaizer.mapper.notice;
 
 import java.util.List;
@@ -8,17 +13,17 @@ import com.ichangyun.InforAnalyaizer.model.notice.NoticeType;
 import com.ichangyun.InforAnalyaizer.model.notice.NoticeVo;
 
 public interface NoticeMapper {
-    int deleteByPrimaryKey(String noticeid);
+    public int deleteByPrimaryKey(String noticeid);
 
-    int insertSelective(Notice record);
+    public int insertSelective(Notice record);
 
-    int updateByPrimaryKey(Notice record);
+    public int updateByPrimaryKey(Notice record);
 
-	List<NoticeVo> queryAllNotice(Map<String, Object> key);
+    public List<NoticeVo> queryAllNotice(Map<String, Object> key);
 
-	int queryCount();
+    public int queryCount();
 
-	List<NoticeType> getNoticeType();
+    public List<NoticeType> getNoticeType();
 
-	NoticeVo queryById(String id);
+    public NoticeVo queryById(String id);
 }

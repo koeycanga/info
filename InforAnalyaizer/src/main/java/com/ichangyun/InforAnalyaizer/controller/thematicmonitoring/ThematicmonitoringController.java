@@ -308,13 +308,25 @@ public class ThematicmonitoringController {
      * @return
      */
 	@RequestMapping("/searchpropaga")
-	public Object searchpropaga(ArticleInfoBean ab) {
+	public Object searchpropaga(ArticleInfoBean ab,HttpSession session) {
 		
 		String[] montime = DateUtils.dealMontime(ab.getMontime());
 		ab.setMontime_start(montime[0]);
 		ab.setMontime_end(montime[1]);
 		
-		return "";
+		String[] time_datas = DateUtils.dealMontimeTimeDatas(ab.getMontime());  //日期数组   一天内按两小时间隔分隔   其他按天分隔
+		
+		String fzqs_data = thematicmonitoringService.getFZQS(ab,time_datas[0],time_datas[0],session);  //发展趋势所需信息双数小时JSON字面量
+		
+		//String fzqs_data_ds = thematicmonitoringService.getFZQS_DS(ab,time_datas[0],time_datas[0],session);  //发展趋势所需信息单数小时JSON字面量
+		
+		String mtfb_data = thematicmonitoringService.getMTFBData(ab,session);  // 媒体分布所需信息JSON字面量
+		
+		String cbtj_data = thematicmonitoringService.getCBTHData(ab,session);  //获得传播途径所需信息JSON字面量
+			
+		String res = "{\"mtfb\":"+mtfb_data+",\"time_datas\":\""+time_datas[1]+"\",\"fzqs_data\":"+fzqs_data+",\"cbtj_data\":"+cbtj_data+"}";
+		
+		return res;
 	}
 	
 	

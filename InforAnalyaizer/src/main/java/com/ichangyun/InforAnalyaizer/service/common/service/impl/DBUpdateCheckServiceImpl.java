@@ -128,7 +128,6 @@ public class DBUpdateCheckServiceImpl implements DBUpdateCheckService {
 		// [处理区分7:收藏夹编辑]的场合
 		if ("7".equals(checkKbn)) {
 			// TODO
-
 			CollectionTypeVo vo = this.collectionTypeMapper.queryOne(paramList.get(0).toString());
 			if (vo.getUpdatedatetime().equals(updateDateTime)) {
 				isExclusiveFlg = true;

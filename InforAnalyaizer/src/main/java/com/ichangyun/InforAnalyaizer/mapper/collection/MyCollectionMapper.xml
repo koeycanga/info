@@ -114,7 +114,29 @@
 		from m_generalpurpose
 		where MasterTypeID = "F008"
 	</select>
-	<select id="queryAll"
+
+	<delete id="delete" parameterType="hashmap">
+		delete from m_mycollection
+		<where>
+			User_ID = #{userid}
+			<if test="collectiontypeid!=null">
+				and CollectionType_ID = #{collectiontypeid}
+			</if>
+			<if test="articleId!=null">
+				and Article_ID in (${articleId})
+			</if>
+		</where>
+	</delete>
+	<update id="updateType" parameterType="hashmap">
+		update m_mycollection
+		<set>
+			CollectionType_ID = #{updateTypeId}
+		</set>
+		where User_ID = #{userid}
+		and Article_ID in
+		(${articleId})
+	</update>
+	<select id="queryAllO1"
 		resultType="com.ichangyun.InforAnalyaizer.model.collection.MyCollectionVo"
 		parameterType="hashmap">
 		SELECT a.Article_ID articleId,a.CollectionType_ID
@@ -123,12 +145,73 @@
 		a.UpdateDateTime
 		updatedatetime,a.UpdateUser updateuser,a.User_ID userId,b.ArticleTitle
 		articleTitle,b.Releasetime releasetime,
-				(select  GROUP_CONCAT(CollectionTypeName ORDER BY CollectionStratum asc SEPARATOR '>')
-				FROM m_collectiontype WHERE  LOCATE(CollectionType_ID,
-				(select DISTINCT getParentList_collectiontype(c.CollectionType_ID)  
-				from m_collectiontype))>0 ) allparentname
-		FROM (m_mycollection a INNER JOIN a_articlebasicinfo b ON a.Article_ID=b.Article_ID)
-		INNER JOIN m_collectiontype c ON a.CollectionType_ID = c.CollectionType_ID
+		(select GROUP_CONCAT(CollectionTypeName ORDER BY CollectionStratum asc
+		SEPARATOR '>')
+		FROM m_collectiontype WHERE LOCATE(CollectionType_ID,
+		(select DISTINCT getParentList_collectiontype(c.CollectionType_ID)
+		from m_collectiontype))>0 ) allparentname
+		FROM (m_mycollection a INNER JOIN
+		a_articlebasicinfo b ON a.Article_ID=b.Article_ID)
+		INNER JOIN
+		m_collectiontype c ON a.CollectionType_ID = c.CollectionType_ID
+		<where>
+			<if test="1==1">
+				and a.User_ID=#{userId}
+			</if>
+			<if test="collectiontypeId!=null and collectiontypeId!=''">
+				and a.CollectionType_ID = #{collectiontypeId}
+			</if>
+			<if test="articleTitle!=null">
+				and b.ArticleTitle like concat("%",#{articleTitle},"%")
+				or b.ArticleAbstract like concat("%",#{articleTitle},"%")
+				or
+				b.ArticleText like concat("%",#{articleTitle},"%")
+			</if>
+		</where>
+		ORDER BY c.CollectionStratum,c.CollectionPath,a.DisplayOrder ASC limit
+		#{l_pre},#{rowSize}
+	</select>
+
+	<select id="queryCountO1" resultType="Integer"
+		parameterType="hashmap">
+		SELECT count(1) FROM m_mycollection a INNER
+		JOIN
+		a_articlebasicinfo b ON
+		a.Article_ID=b.Article_ID
+		<where>
+			<if test="1==1">
+				and a.User_ID=#{userId}
+			</if>
+			<if test="collectiontypeId!=null">
+				and a.CollectionType_ID = #{collectiontypeId}
+			</if>
+			<if test="articleTitle!=null">
+				and b.ArticleTitle like concat("%",#{articleTitle},"%")
+				or b.ArticleAbstract like concat("%",#{articleTitle},"%")
+				or
+				b.ArticleText like concat("%",#{articleTitle},"%")
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryAllO2"
+		resultType="com.ichangyun.InforAnalyaizer.model.collection.MyCollectionVo"
+		parameterType="hashmap">
+		SELECT a.Article_ID articleId,a.CollectionType_ID
+		collectiontypeId,a.DisplayOrder displayorder,a.CreateDateTime
+		createdatetime,a.CreateUser createuser,
+		a.UpdateDateTime
+		updatedatetime,a.UpdateUser updateuser,a.User_ID userId,b.ArticleTitle
+		articleTitle,b.Releasetime releasetime,
+		(select GROUP_CONCAT(CollectionTypeName ORDER BY CollectionStratum asc
+		SEPARATOR '>')
+		FROM m_collectiontype WHERE LOCATE(CollectionType_ID,
+		(select DISTINCT getParentList_collectiontype(c.CollectionType_ID)
+		from m_collectiontype))>0 ) allparentname
+		FROM (m_mycollection a INNER JOIN
+		a_articlebasicinfo b ON a.Article_ID=b.Article_ID)
+		INNER JOIN
+		m_collectiontype c ON a.CollectionType_ID = c.CollectionType_ID
 		<where>
 			<if test="1==1">
 				and a.User_ID=#{userId}
@@ -140,10 +223,11 @@
 				and b.ArticleTitle like concat("%",#{articleTitle},"%")
 			</if>
 		</where>
-		ORDER BY c.CollectionStratum,c.CollectionPath,a.DisplayOrder ASC limit #{l_pre},#{rowSize}
+		ORDER BY c.CollectionStratum,c.CollectionPath,a.DisplayOrder ASC limit
+		#{l_pre},#{rowSize}
 	</select>
 
-	<select id="queryCount" resultType="Integer"
+	<select id="queryCountO2" resultType="Integer"
 		parameterType="hashmap">
 		SELECT count(1) FROM m_mycollection a INNER
 		JOIN
@@ -161,20 +245,108 @@
 			</if>
 		</where>
 	</select>
-	<delete id="delete" parameterType="hashmap">
-		delete from m_mycollection
-		where User_ID = #{userid}
-		and CollectionType_ID = #{collectiontypeid}
-		and Article_ID in (${articleId})
-	</delete>
-	<update id="updateType"
+	
+		<select id="queryAllO3"
+		resultType="com.ichangyun.InforAnalyaizer.model.collection.MyCollectionVo"
 		parameterType="hashmap">
-		update m_mycollection
-		<set>
-			CollectionType_ID = #{updateTypeId}
-		</set>
-		where User_ID = #{userid}
-		and Article_ID in
-		(${articleId})
-	</update>
+		SELECT a.Article_ID articleId,a.CollectionType_ID
+		collectiontypeId,a.DisplayOrder displayorder,a.CreateDateTime
+		createdatetime,a.CreateUser createuser,
+		a.UpdateDateTime
+		updatedatetime,a.UpdateUser updateuser,a.User_ID userId,b.ArticleTitle
+		articleTitle,b.Releasetime releasetime,
+		(select GROUP_CONCAT(CollectionTypeName ORDER BY CollectionStratum asc
+		SEPARATOR '>')
+		FROM m_collectiontype WHERE LOCATE(CollectionType_ID,
+		(select DISTINCT getParentList_collectiontype(c.CollectionType_ID)
+		from m_collectiontype))>0 ) allparentname
+		FROM (m_mycollection a INNER JOIN
+		a_articlebasicinfo b ON a.Article_ID=b.Article_ID)
+		INNER JOIN
+		m_collectiontype c ON a.CollectionType_ID = c.CollectionType_ID
+		<where>
+			<if test="1==1">
+				and a.User_ID=#{userId}
+			</if>
+			<if test="collectiontypeId!=null and collectiontypeId!=''">
+				and a.CollectionType_ID = #{collectiontypeId}
+			</if>
+			<if test="articleTitle!=null">
+				and b.ArticleAbstract like concat("%",#{articleTitle},"%")
+			</if>
+		</where>
+		ORDER BY c.CollectionStratum,c.CollectionPath,a.DisplayOrder ASC limit
+		#{l_pre},#{rowSize}
+	</select>
+
+	<select id="queryCountO3" resultType="Integer"
+		parameterType="hashmap">
+		SELECT count(1) FROM m_mycollection a INNER
+		JOIN
+		a_articlebasicinfo b ON
+		a.Article_ID=b.Article_ID
+		<where>
+			<if test="1==1">
+				and a.User_ID=#{userId}
+			</if>
+			<if test="collectiontypeId!=null">
+				and a.CollectionType_ID = #{collectiontypeId}
+			</if>
+			<if test="articleTitle!=null">
+				and b.ArticleAbstract like concat("%",#{articleTitle},"%")
+			</if>
+		</where>
+	</select>
+	
+		<select id="queryAllO4"
+		resultType="com.ichangyun.InforAnalyaizer.model.collection.MyCollectionVo"
+		parameterType="hashmap">
+		SELECT a.Article_ID articleId,a.CollectionType_ID
+		collectiontypeId,a.DisplayOrder displayorder,a.CreateDateTime
+		createdatetime,a.CreateUser createuser,
+		a.UpdateDateTime
+		updatedatetime,a.UpdateUser updateuser,a.User_ID userId,b.ArticleTitle
+		articleTitle,b.Releasetime releasetime,
+		(select GROUP_CONCAT(CollectionTypeName ORDER BY CollectionStratum asc
+		SEPARATOR '>')
+		FROM m_collectiontype WHERE LOCATE(CollectionType_ID,
+		(select DISTINCT getParentList_collectiontype(c.CollectionType_ID)
+		from m_collectiontype))>0 ) allparentname
+		FROM (m_mycollection a INNER JOIN
+		a_articlebasicinfo b ON a.Article_ID=b.Article_ID)
+		INNER JOIN
+		m_collectiontype c ON a.CollectionType_ID = c.CollectionType_ID
+		<where>
+			<if test="1==1">
+				and a.User_ID=#{userId}
+			</if>
+			<if test="collectiontypeId!=null and collectiontypeId!=''">
+				and a.CollectionType_ID = #{collectiontypeId}
+			</if>
+			<if test="articleTitle!=null">
+				and b.ArticleText like concat("%",#{articleTitle},"%")
+			</if>
+		</where>
+		ORDER BY c.CollectionStratum,c.CollectionPath,a.DisplayOrder ASC limit
+		#{l_pre},#{rowSize}
+	</select>
+
+	<select id="queryCountO4" resultType="Integer"
+		parameterType="hashmap">
+		SELECT count(1) FROM m_mycollection a INNER
+		JOIN
+		a_articlebasicinfo b ON
+		a.Article_ID=b.Article_ID
+		<where>
+			<if test="1==1">
+				and a.User_ID=#{userId}
+			</if>
+			<if test="collectiontypeId!=null">
+				and a.CollectionType_ID = #{collectiontypeId}
+			</if>
+			<if test="articleTitle!=null">
+				and b.ArticleText like concat("%",#{articleTitle},"%")
+			</if>
+		</where>
+	</select>
 </mapper>

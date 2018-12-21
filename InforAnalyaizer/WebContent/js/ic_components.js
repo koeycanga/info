@@ -16,6 +16,7 @@ ic_user_info    E0004  E0014  I0012  E0025  I0013 W0003
  */
 
 
+
 //我的收藏用到的节点类
 function CTreeNode(val,depth){
 	this.val = val;

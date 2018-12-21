@@ -22,7 +22,7 @@
 <fmt:message key="I0013" var="I0013" bundle="${sysInfo}" />
 <fmt:message key="W0004" var="W0004" bundle="${sysInfo}" />
 <fmt:message key="I0002" var="I0002" bundle="${sysInfo}" />
-
+<fmt:message key="W0011" var="W0011" bundle="${sysInfo}" />
 <html>
 <head>
 <meta charset="UTF-8">
@@ -166,8 +166,8 @@
 		W0004:'${W0004}',
 		I0012:'${I0012}',
         I0002:'${I0002}',
-		I0013:'${I0013}'
-
+		I0013:'${I0013}',
+		W0011:'${W0011}'
     };
 	var mailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;//邮箱验证
 
@@ -266,7 +266,7 @@
                     if (this.checkedId == null) {
                         layer.msg(Info.E0019);
                     } else {
-                        var deleteLayer = layer.confirm('确定要删除吗？', {
+                        var deleteLayer = layer.confirm(Info.W0011, {
                             btn: ['确定', '取消'] //按钮
                         }, function () {
                             var url = "deleteNotice";

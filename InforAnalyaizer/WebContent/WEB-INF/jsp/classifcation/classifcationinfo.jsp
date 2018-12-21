@@ -21,6 +21,8 @@
 <fmt:message key="W0004" var="W0004" bundle="${sysInfo}" />
 <fmt:message key="E0038" var="E0038" bundle="${sysInfo}" />
 <fmt:message key="I0024" var="I0024" bundle="${sysInfo}" />
+<fmt:message key="MaxSearchCnt" var="MaxSearchCnt" bundle="${sysInfo}" />
+<fmt:message key="W0001" var="W0001" bundle="${sysInfo}" />
 <!doctype html>
 <html>
 <head>
@@ -38,7 +40,7 @@
 		<div class="cy_CMICBMS_tablebox">
 		<div class="cy_CMICBMS_box07">
 			<div class="cy_CMICBMS_schbox01">
-				<input type="text" v-model="search_key" placeholder="输入分类名称检索">
+				<input type="text" v-model="search_key" placeholder="请输入分类名称检索">
 			</div>
 			<input type="button" class="cy_CMICBMS_schbtn" v-on:click="btn_search()" value="检索">
 		</div>
@@ -153,7 +155,9 @@ var Info = {
 		I0011:'${I0011}',
 		W0004:'${W0004}',
 		E0038:'${E0038}',
-		I0024:'${I0024}'
+		I0024:'${I0024}',
+		MaxSearchCnt:'${MaxSearchCnt}',
+		W0001:'${W0001}'
 	};
 
 //树形结构用到的节点类
@@ -518,6 +522,7 @@ var app = new Vue({
 			 if(checkedNames.length!=1){
 				 layer.msg(Info.E0006);
 			 }else{
+				 $(".cy_hidebg").css("height",($(document).height()+document.body.scrollHeight));
 				 this.isnew = false;
 				 this.tcc_title = Info.I0010;
 				 $("#cy_CMICBMS_add").css("height","300px");
@@ -534,7 +539,7 @@ var app = new Vue({
 			  if(checkedNames.length>0){
 				  
 				  var _this = this;
-				  layer.confirm(Info.W0002, {
+				  layer.confirm(IC_GETINFOBYAttrs(Info.W0002,['分类体系']), {
 			            btn : [ '确定', '取消' ]//按钮
 			        }, function(index) {
 			            layer.close(index);
@@ -630,6 +635,7 @@ var app = new Vue({
 			  if(checkedNames.length>1){
 				  layer.msg(Info.E0020);
 			  }else{
+				  $(".cy_hidebg").css("height",($(document).height()+document.body.scrollHeight));
 				  this.tcc_title = Info.I0009;
 				  this.isnew = true;
 				  if(checkedNames.length==1){
@@ -677,6 +683,7 @@ var app = new Vue({
 			    					click_node.val.updateDateTime = response.data.replace("success","");
 			    					_this.updateJsonData(root_node);
 			    					_this.hideTcc();
+			    					checkedNames = [];
 			    				}
 			    				if(response.data=="exist"){    //该分类名称已存在
 			    					layer.msg(Info.E0021);
@@ -724,15 +731,15 @@ var app = new Vue({
 		    				}
 		    			})
 		    			.then(function (response) {
-		    				if(response.data=="exist"){
+		    				if(response.data=="exist"){       //分类名称已存在
 		    					layer.msg(Info.E0023);
-		    				}else if(response.data=="nok"){
+		    				}else if(response.data=="nok"){   //出现异常错误
 		    					layer.msg(Info.E0022);
-		    				}else{
+		    				}else{                            //添加成功
 		    					layer.msg(Info.I0008);
-		    					if(_this.father_node_id==''){
+		    					if(_this.father_node_id==''){     //如果是添加根节点  刷新页面
 		    						_this.search_after_update(_this.$refs.pagecomponent.pageBean,false);
-		    					}else{
+		    					}else{                            //如果添加的不是根节点   则打开其父节点
 		    					    var click_node = _this.getClickNode(checkedNames[0],_this.datas)[1];
 		    					    var root_node = _this.getRootNodeByid(click_node);
 		    						if(!click_node.i_have_ajax){                         //还未ajax请求
@@ -759,6 +766,7 @@ var app = new Vue({
 		    							        _this.dealDigui(click_node,true);
 
 		    							        _this.updateJsonData(root_node);
+		    							        
 	
 		    				    			})
 		    				    			.catch(function (error) {
@@ -766,7 +774,6 @@ var app = new Vue({
 		    				    			});
 		    				        }else{
 		    				        	var json = JSON.parse(response.data);
-		    				        	console.log(json);
 			    						var tn = new TreeNode(json,click_node.depth+1,json.children_lg,uuid(),click_node);
 			    						click_node.children.unshift(tn);
 			    						click_node.children_lg = click_node.children.length;
@@ -775,6 +782,7 @@ var app = new Vue({
 			    						_this.dealDigui(click_node,true);
 			    						_this.updateJsonData(root_node);
 		    				        }
+		    						checkedNames = [];
 		    					}
 		    					_this.hideTcc();
 		    				}
@@ -969,69 +977,72 @@ var app = new Vue({
 			    			.then(function (response) {
 			    				
 			    				 checkedNames = [];
-			    				 var data = JSON.parse(response.data);
-			    				 if(data.resdata.length==0&&pageBean.pageNow>1){
-			    					 pageBean.pageNow-=1;
-			    					 _this.search(pageBean,ismsg);
-			    					 return;
-			    				 }
 			    				 _this.datas = [];
-			    				 var temp = data.resdata;
-			    				 for(var i=0;i<temp.length;i++){
-			    					 var tn = new TreeNode(temp[i],0,temp[i].children_lg,uuid(),null);   
-			    					 _this.datas.push(tn);
-			    					 _this.updateJsonData(tn);
-			    			
-			    				 }
-			    				 if(_this.search_key.trim()!=''){  //如果查询词不 为空，则打开所有的子节点
-				    				 for(var i=0;i<_this.datas.length;i++){
-				    					  _this.dealopClose(_this.datas[i].val.classification_ID);
+			    				 var data = JSON.parse(response.data);
+			    				 if(data.rowCount>parseInt(Info.MaxSearchCnt)&&!_this.isfirstinjsp){
+		                            	layer.msg(Info.W0001);
+		                            	_this.$refs.pagecomponent.dealAfterSearch(0);  //查询完成后回调分页组件的函数,处理分页组件的相关参数
+		                          }else{
+				    				 if(data.resdata.length==0&&pageBean.pageNow>1){
+				    					 pageBean.pageNow-=1;
+				    					 _this.search(pageBean,ismsg);
+				    					 return;
 				    				 }
-			    				 }
-			    				 checkedArr = [];
-			    				  for(var i=0;i<data.resdata.length;i++){    //将查询到的数据放入到checkedArr  用于之后全选\反选的判断
-			    					  checkedArr.push(data.resdata[i].classification_ID);
-			    				  }
-			    				  
-			    				  if(data.rowCount=='0'&&!_this.isfirstinjsp){
-			    					 layer.msg(Info.I0002);
-			    					 
-			    				  }
-			    				  _this.isfirstinjsp = false;
-			    				  
-			    				 _this.$refs.pagecomponent.dealAfterSearch(data.rowCount);  //查询完成后回调分页组件的函数,处理分页组件的相关参数
-			    				
-			    				  
-			    				  if(_this.btn_wy_disabled){   //如果是位移发生的分页查询
-			    					  
-			    					  var firstNode = _this.datas[0].val;
-			    					  var lastNode = _this.datas[_this.datas.length-1].val ;
-			    					  var targetNode;
-			    					  if(_this.tempNode.val.displayOrder<lastNode.displayOrder){  //上移
-			    						  targetNode = lastNode;
-			    						  _this.datas[_this.datas.length-1] = _this.tempNode;
-			    						  checkedArr[checkedArr.length-1] = _this.tempNode.val.classification_ID;
-			    					  }
-			    					  if(_this.tempNode.val.displayOrder>firstNode.displayOrder){  //下移
-			    						  targetNode = firstNode;
-			    						  _this.datas[0] = _this.tempNode;
-			    						  checkedArr[0] = _this.tempNode.val.classification_ID;
-			    					  }
-			    					  /*以下是交换前后两个节点的displayOrder*/
-			    					  var temp_order = _this.tempNode.val.displayOrder ;
-			  					      _this.tempNode.val.displayOrder = targetNode.displayOrder;
-			  					      targetNode.displayOrder = temp_order;
-			  						  /*以下是更新节点的displayOrder到数据库*/
-			  					      _this.updateOrder(_this.tempNode.val.classification_ID,_this.tempNode.val.displayOrder,
-			  					    		  targetNode.classification_ID,targetNode.displayOrder,-1,-1,_this.datas);
-			
-		  
-			    					  checkedNames.push(_this.tempNode.val.classification_ID);
-			    					  
-			    				  }
-			    				  
+				    				 var temp = data.resdata;
+				    				 for(var i=0;i<temp.length;i++){
+				    					 var tn = new TreeNode(temp[i],0,temp[i].children_lg,uuid(),null);   
+				    					 _this.datas.push(tn);
+				    					 _this.updateJsonData(tn);
+				    				 }
+				    				 if(_this.search_key.trim()!=''){  //如果查询词不 为空，则打开所有的子节点
+					    				 for(var i=0;i<_this.datas.length;i++){
+					    					  _this.dealopClose(_this.datas[i].val.classification_ID);
+					    				 }
+				    				 }
+				    				 checkedArr = [];
+				    				  for(var i=0;i<data.resdata.length;i++){    //将查询到的数据放入到checkedArr  用于之后全选\反选的判断
+				    					  checkedArr.push(data.resdata[i].classification_ID);
+				    				  }
+				    				  
+				    				  if(data.rowCount=='0'&&!_this.isfirstinjsp){
+				    					 layer.msg(Info.I0002);
+				    				  }
+				    				
+				    				  _this.isfirstinjsp = false;
+				    				  
+				    				 _this.$refs.pagecomponent.dealAfterSearch(data.rowCount);  //查询完成后回调分页组件的函数,处理分页组件的相关参数
+				    				
+				    				  
+				    				  if(_this.btn_wy_disabled){   //如果是位移发生的分页查询
+				    					  
+				    					  var firstNode = _this.datas[0].val;
+				    					  var lastNode = _this.datas[_this.datas.length-1].val ;
+				    					  var targetNode;
+				    					  if(_this.tempNode.val.displayOrder<lastNode.displayOrder){  //上移
+				    						  targetNode = lastNode;
+				    						  _this.datas[_this.datas.length-1] = _this.tempNode;
+				    						  checkedArr[checkedArr.length-1] = _this.tempNode.val.classification_ID;
+				    					  }
+				    					  if(_this.tempNode.val.displayOrder>firstNode.displayOrder){  //下移
+				    						  targetNode = firstNode;
+				    						  _this.datas[0] = _this.tempNode;
+				    						  checkedArr[0] = _this.tempNode.val.classification_ID;
+				    					  }
+				    					  /*以下是交换前后两个节点的displayOrder*/
+				    					  var temp_order = _this.tempNode.val.displayOrder ;
+				  					      _this.tempNode.val.displayOrder = targetNode.displayOrder;
+				  					      targetNode.displayOrder = temp_order;
+				  						  /*以下是更新节点的displayOrder到数据库*/
+				  					      _this.updateOrder(_this.tempNode.val.classification_ID,_this.tempNode.val.displayOrder,
+				  					    		  targetNode.classification_ID,targetNode.displayOrder,-1,-1,_this.datas);
+				
+			  
+				    					  checkedNames.push(_this.tempNode.val.classification_ID);
+				    					  
+				    				  }
+		                          }
 			    				 if(ismsg){
-			    				  layer.close(l_index);
+			    				    layer.close(l_index);
 			    				 }
 			    			})
 			    			.catch(function (error) {

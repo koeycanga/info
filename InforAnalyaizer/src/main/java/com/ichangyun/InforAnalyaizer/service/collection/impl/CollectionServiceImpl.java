@@ -1,6 +1,13 @@
+/**
+ * Copyright 2018 畅云 http://www.ichangyun.cn
+ * <p>
+ *  竞争情报系统
+ */
 package com.ichangyun.InforAnalyaizer.service.collection.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +60,7 @@ public class CollectionServiceImpl implements CollectionService {
      * @return list
      */
 	@Override
-	public List<MyCollectionVo> queryAll(MyCollectionVo vo, BaseBean bb, User u) {
+	public List<MyCollectionVo> queryAll(MyCollectionVo vo, BaseBean bb, User u,SearchOptBean sob) {
 		vo.setUserId(u.getUser_ID());
 		Map<String, Object> key = new HashMap<>();
 		key = Obj2Map.object2Map(vo);
@@ -61,7 +68,17 @@ public class CollectionServiceImpl implements CollectionService {
 		// 查询条件的map参数
 		key.put("l_pre", l_pre);
 		key.put("rowSize", bb.getRowSize());
-		return this.collectionMapper.queryAll(key);
+		List<MyCollectionVo> list = new ArrayList<>();
+		if(sob.getId()==1) {
+			list = this.collectionMapper.queryAllO1(key);
+		}else if(sob.getId()==2) {
+			list = this.collectionMapper.queryAllO2(key);
+		}else if(sob.getId()==2) {
+			list = this.collectionMapper.queryAllO3(key);
+		}else if(sob.getId()==2) {
+			list = this.collectionMapper.queryAllO4(key);
+		}
+		return list;
 	}
     /**
      * queryCount：返回查询收藏文章的数量
@@ -71,11 +88,21 @@ public class CollectionServiceImpl implements CollectionService {
      * @return int
      */
 	@Override
-	public int queryCount(MyCollectionVo vo, User u) {
+	public int queryCount(MyCollectionVo vo, User u,SearchOptBean sob) {
 		vo.setUserId(u.getUser_ID());
 		Map<String, Object> key = new HashMap<>();
 		key = Obj2Map.object2Map(vo);
-		return this.collectionMapper.queryCount(key);
+		int count = 0;
+		if(sob.getId()==1) {
+			count = this.collectionMapper.queryCountO1(key);
+		}else if(sob.getId()==2) {
+			count = this.collectionMapper.queryCountO2(key);
+		}else if(sob.getId()==2) {
+			count = this.collectionMapper.queryCountO3(key);
+		}else if(sob.getId()==2) {
+			count = this.collectionMapper.queryCountO4(key);
+		}
+		return count;
 	}
     /**
      * delete：删除收藏文章
@@ -157,10 +184,9 @@ public class CollectionServiceImpl implements CollectionService {
 		}
 		vo.setValidflag("1");
 		vo.setDisplayorder(this.typeMapper.queryCount(vo.getParentCollectiontypeId()));
-		
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		vo.setUpdatedatetime(df.format(new Date()));
 		try {
-			
-			
 			this.typeMapper.insertSelective(vo);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -241,6 +267,10 @@ public class CollectionServiceImpl implements CollectionService {
 		try {
 			this.typeMapper.deleteByPrimaryKey(vo);
 			this.typeMapper.beforeOrder(vo);
+			Map<String, String>key = new HashMap<>();
+			key.put("userid", vo.getUserId());
+			key.put("collectiontypeid", vo.getCollectiontypeId());
+			this.collectionMapper.delete(key);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "fault";
@@ -267,6 +297,37 @@ public class CollectionServiceImpl implements CollectionService {
 		if(tpath.indexOf(cpath)!=-1) {
 			return "fault";
 		}
+		if(ids.length>1&&ids[1].equals("bottom")) {		//移到目标节点下方
+			if(vo.getParentCollectiontypeId().equals(pvo.getParentCollectiontypeId())) {//同文件夹移动到最后一位
+				int oldDisplayOrder = vo.getDisplayorder();			//原始表示顺序——在同文件夹下移动使用
+				vo.setDisplayorder(pvo.getDisplayorder());
+				Map<String, Object> map = Obj2Map.object2Map(vo);
+				map.put("oldDisplayOrder", oldDisplayOrder);
+				this.typeMapper.changeOrder2(map);
+				try {
+					this.typeMapper.updateByPrimaryKeySelective(vo);
+				} catch (Exception e) {
+					msg = "fault";
+					e.printStackTrace();
+				}
+			}else {		//不同文件夹下、相当于直接移动到目标父文件夹里面
+				this.typeMapper.beforeOrder(vo);//修改自身收藏夹的顺序，自此节点后的节点都减1
+				vo.setParentCollectiontypeId(pvo.getParentCollectiontypeId());
+				vo.setCollectionpath(pvo.getCollectionpath().substring(0, pvo.getCollectionpath().length()-10)+vo.getCollectiontypeId());
+				vo.setCollectionstratum(vo.getCollectionpath().length()/10);
+				vo.setDisplayorder(pvo.getDisplayorder()+1);
+				try {
+					//此时应该修改目标收藏夹的顺序，但默认添加结尾所以不做修改	
+					
+					this.typeMapper.updateByPrimaryKeySelective(vo);
+				} catch (Exception e) {
+					msg = "fault";
+					e.printStackTrace();
+				}
+			}
+			return msg;
+		}
+		
 		if(ids.length==1&&!ids[0].equals(collectiontypeId)) {		//移动到目标文件夹内	
 			if(pvo.getCollectionstratum()==4) {
 				return "overstep";

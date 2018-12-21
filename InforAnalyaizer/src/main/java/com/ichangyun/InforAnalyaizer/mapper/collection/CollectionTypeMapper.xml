@@ -20,7 +20,7 @@
   </sql>
 
   <delete id="deleteByPrimaryKey" parameterType="com.ichangyun.InforAnalyaizer.model.collection.CollectionTypeKey" >
-      delete m_mycollection,m_collectiontype from m_collectiontype a left join m_mycollection b on a.CollectionType_ID=b.CollectionType_ID  where a.User_ID = #{userId} and locate(
+      delete from m_collectiontype  where User_ID = #{userId} and locate(
    		CollectionType_ID,
   		(select DISTINCT getChildList_collectiontype(#{collectiontypeId}) from m_collectiontype)
 		)>0 
@@ -52,6 +52,9 @@
       </if>
       <if test="createdatetime != null" >
         CreateDateTime,
+      </if>
+      <if test="updatedatetime != null" >
+        UpdateDateTime,
       </if>
       <if test="updateuser != null" >
         UpdateUser,
@@ -87,6 +90,9 @@
       </if>
       <if test="createdatetime != null" >
         #{createdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedatetime != null" >
+         #{updatedatetime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateuser != null" >
         #{updateuser,jdbcType=VARCHAR},
@@ -177,7 +183,7 @@
    	set DisplayOrder = DisplayOrder+1
     where User_ID = #{userId,jdbcType=CHAR}
       and Parent_CollectionType_ID = #{parentCollectiontypeId,jdbcType=CHAR}
-      and DisplayOrder &lt; #{oldDisplayOrder} and DisplayOrder &gt;= #{displayorder}
+      and DisplayOrder <![CDATA[<]]> #{oldDisplayOrder} and DisplayOrder <![CDATA[>=]]> #{displayorder}
   </update>
      <update id="changeOrder2" parameterType="hashmap" >
     update m_collectiontype

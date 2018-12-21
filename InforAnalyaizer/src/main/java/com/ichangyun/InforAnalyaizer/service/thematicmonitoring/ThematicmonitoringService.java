@@ -172,4 +172,47 @@ public interface ThematicmonitoringService {
 	 */
 	public String getSJMLJSON(List<ArticleInfoBean> list);
 
+	/**
+	 * 获得媒体分布JSON字面量
+	 * @param ab
+	 * @param session 
+	 * @return
+	 */
+	public String getMTFBData(ArticleInfoBean ab, HttpSession session);
+
+	/**
+	 * 获得发展趋势JSON字面量(双数时间段   如 00:00  02:00)
+	 * @param ab
+	 * @param flag 
+	 * @param time_datas 
+	 * @param session 
+	 * @return
+	 */
+	public String getFZQS(ArticleInfoBean ab, String flag, String time_datas, HttpSession session);
+
+
+	/**
+	 * 获得发展趋势JSON字面量(单数时间段   如 23:00  01:00)
+	 * @param ab
+	 * @param string
+	 * @param string2
+	 * @param session
+	 * @return
+	 */
+	public String getFZQS_DS(ArticleInfoBean ab, String string, String string2, HttpSession session);
+	
+	/**
+	 * 获得传播途径JSON字面量
+	 * @param ab
+	 * @param session 
+	 * @return
+	 */
+	public String getCBTHData(ArticleInfoBean ab, HttpSession session);
+
+
+	/**
+	 * 根据专题监测方案刷新数据库专题监测对应文章表
+	 */
+	public void FlashThematicmonitoringDB();
+
 }

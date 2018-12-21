@@ -293,6 +293,36 @@ public class ArticleInfoBean extends BaseBean {
 	
 	private String HotWord;
 	
+	private String c_hour;
+	
+	private String ReprintType;
+	
+	private String ReprintSourceArticle_ID;
+	
+	public String getReprintType() {
+		return ReprintType;
+	}
+
+	public void setReprintType(String reprintType) {
+		ReprintType = reprintType;
+	}
+
+	public String getReprintSourceArticle_ID() {
+		return ReprintSourceArticle_ID;
+	}
+
+	public void setReprintSourceArticle_ID(String reprintSourceArticle_ID) {
+		ReprintSourceArticle_ID = reprintSourceArticle_ID;
+	}
+
+	public String getC_hour() {
+		return c_hour;
+	}
+
+	public void setC_hour(String c_hour) {
+		this.c_hour = c_hour;
+	}
+
 	public String getKeyword_ID() {
 		return Keyword_ID;
 	}

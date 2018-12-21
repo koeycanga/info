@@ -121,7 +121,9 @@
 				</div>
 				<div class="cy_CIASFE_conanabox02">
 					<p>热词云</p>
-					<div id="cy_CIASFE_hotword"><div align="center" id="wcdv1" style="width:92%;height: 350px;margin:20px 0 0 20px;"></div></div>
+					<div id="cy_CIASFE_hotword">
+					    <div align="center" id="wcdv1" style="width:500px;height: 350px;margin:20px 0 0 20px;"></div>
+					</div>
 				</div>
 			</div>
 			<div class="cy_CIASFE_conanabox03">
@@ -245,13 +247,14 @@ var app = new Vue({
                 });
 			 
 		 },
-		searchByFA:function(plan_ID){
+		searchByFA:function(plan_ID){  //根据方案ID查询对应文章信息
 			 this.plan_ID = plan_ID;
 			 this.btn_search();
 		},
-		btn_search:function(){
+		btn_search:function(){               //检索按钮相关
+			var amontime = this.montime;
 			if(this.montime=='10'){
-        		this.montime = $("#fromdate").val()+"-"+$("#todate").val();
+				amontime = $("#fromdate").val()+"-"+$("#todate").val();
         	}
 			var _this = this;
         	layer.msg(Info.I0011, {
@@ -262,7 +265,7 @@ var app = new Vue({
     			params: {
 	    				search_key:_this.search_key.trim(),
 	    				Plan_ID:_this.plan_ID,
-	    				montime:_this.montime,
+	    				montime:amontime,
 	    				infsour:_this.infsour,
 	                    search_type:_this.search_type
     				}
@@ -296,7 +299,7 @@ var app = new Vue({
     			    console.log(error);
     			});
 		},
-		createGDFX:function(){
+		createGDFX:function(){  //生成观点分析
 			var dom = document.getElementById("cy_CIASFE_anaopt");
 			var myChart = echarts.init(dom);
 			var app = {};
@@ -355,7 +358,7 @@ var app = new Vue({
 				myChart.setOption(option, true);
 			}
 		},
-		createQGSX:function(sdata){  // 情感属性
+		createQGSX:function(sdata){  // 情感属性环形图
 			var _this = this;
 			var dom = document.getElementById("cy_CIASFE_emoana");
 			var myChart = echarts.init(dom);
@@ -405,7 +408,7 @@ var app = new Vue({
 				myChart.setOption(option, true);
 			}
 		},
-		getHotWord: function () {
+		getHotWord: function () {       //获得热词云相关信息
             axios.get('../thematicmonitoring/gethotwords')
                 .then(function (response) {
                     var data = JSON.parse(response.data);

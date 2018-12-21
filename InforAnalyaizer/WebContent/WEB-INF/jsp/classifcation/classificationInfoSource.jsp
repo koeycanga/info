@@ -9,7 +9,9 @@
 <fmt:message key="I0011" var="I0011" bundle="${sysInfo}" />
 <fmt:message key="I0002" var="I0002" bundle="${sysInfo}" />
 <fmt:message key="I0024" var="I0024" bundle="${sysInfo}" />
-<!doctype html>
+<fmt:message key="MaxSearchCnt" var="MaxSearchCnt" bundle="${sysInfo}" />
+<fmt:message key="W0001" var="W0001" bundle="${sysInfo}" />
+<!doctype html> 
 <html>
 <head>
 <meta charset="UTF-8">
@@ -30,7 +32,7 @@
 				<option value="2" >否</option>
 			</select>
 			<div class="cy_CMICBMS_schbox01">
-				<input type="text" v-model="search_key" placeholder="输入关键词检索">
+				<input type="text" v-model="search_key" placeholder="请输入分类名称进行检索...">
 			</div>
 			<input type="button" class="cy_CMICBMS_schbtn" v-on:click="btn_search()" value="检索">
 		</div>
@@ -83,12 +85,16 @@
 		<div class="cy_CMICBMS_infedtbtit">{{ssfl_msg}}</div>
 		<div class="cy_CMICBMS_infedtbbd">
 			<div class="cy_CMICBMS_infedtbbdL">
-				<div class="cy_CMICBMS_infedLbox">可选网站:<input type="text" v-model="search_key_webinfo" class="cy_CMICBMS_infedschbox"><input type="button" v-on:click="btn_web_search()" class="cy_CMICBMS_infedschbtn" value="检索"></div>
+				<div class="cy_CMICBMS_infedLbox">
+				可选网站:<input type="text" v-model="search_key_webinfo" placeholder="请输入网站名称进行检索..." class="cy_CMICBMS_infedschbox">
+				      <input type="button" v-on:click="btn_web_search()" class="cy_CMICBMS_infedschbtn" value="检索">
+				</div>
+				<div style="height:3px;">&nbsp;</div>
 				<div class="cy_CMICBMS_infedLbox">
 					<table width="100%" border="0" cellspacing="0">
 						<tbody>
 						<tr>
-						  <th style="width: 20px;"><input type="checkbox" id="left_sel" name="l_boxs" v-model="web_checked" v-on:click="left_sel()"></th>
+						  <th style="width: 20px;"><input type="checkbox" id="left_sel" name="l_boxs"  v-model="web_checked" v-on:click="left_sel()"></th>
 						  <td style="width: auto;font-weight: 700;">网站名称</td>
 						</tr>
 						<tr v-for="(wdata,index) in webinfo_datas">
@@ -112,7 +118,6 @@
 				<input type="button" id="cy_CMICBMS_bindbtn" v-on:click="joingright()" value=">>">
 				<input type="button" id="cy_CMICBMS_releabtn" v-on:click="joingleft()" value="<<">
 			</div>
-			
 			
 			<div class="cy_CMICBMS_infedtbbdR">
 				<div class="cy_CMICBMS_infedRbox">已绑定网站:</div>
@@ -162,7 +167,9 @@ var Info = {
 	I0011:'${I0011}',
 	I0002:'${I0002}',
 	I0024:'${I0024}',
-	E0039:'${E0039}'
+	E0039:'${E0039}',    
+	MaxSearchCnt:'${MaxSearchCnt}',
+	W0001:'${W0001}'
 };
 
 //某个复选框被点击后，判断全选/反选情况
@@ -598,7 +605,7 @@ var app = new Vue({
 			if(checkedNames.length!=1){
 				layer.msg(Info.E0006);
 			}else{
-				
+				$(".cy_hidebg").css("height",($(document).height()+document.body.scrollHeight));
 				this.ssfl_msg = '所属分类：';
 				
 				var clicknode = this.getClickNode(checkedNames[0],this.datas)[1];
@@ -743,17 +750,15 @@ var app = new Vue({
 		    			.then(function (response) {
 
 		    				 var data = JSON.parse(response.data);
-		    					 
-		    				 _this.webinfo_al_datas = data.resdata;
-		    			     
-		    				web_al_checkedArr = [];
-		    				 for(var i=0;i<data.resdata.length;i++){
-		    					 web_al_checkedArr.push(data.resdata[i].website_ID);
-		    				 }
-		    				 
-		    				 _this.$refs.right_pagecomponent.dealAfterSearch(data.rowCount); 
-		    				 
-		    				  layer.close(l_index);
+	    				   _this.webinfo_al_datas = data.resdata;
+	    				   web_al_checkedArr = [];
+	    				   for(var i=0;i<data.resdata.length;i++){
+	    					 web_al_checkedArr.push(data.resdata[i].website_ID);
+	    				   }
+	    				 
+	    				 _this.$refs.right_pagecomponent.dealAfterSearch(data.rowCount); 
+
+		    		      layer.close(l_index);
 		    				  
 		    			})
 		    			.catch(function (error) {
@@ -823,44 +828,47 @@ var app = new Vue({
 	    			.then(function (response) {
 	    				
 	    				 checkedNames = [];
-	    				 var data = JSON.parse(response.data);
-
 	    				 _this.datas = [];
-	    				 
-	    				 var temp = data.resdata;
-	    				 for(var i=0;i<temp.length;i++){                              //查询到的数据存放到this.datas集合中
-	    					 var tn = new TreeNode(temp[i],0,temp[i].children_lg,null);  
-	    					 if(temp[i].children_lg==0){
-	    						 if(temp[i].binding_lg==0){
-	    							 tn.binding = "否";
-	    						 }else{
-	    							 tn.binding = "是";
-	    						 }
-	    						 tn.bindingnum = temp[i].binding_lg;
-	    					 }
-	    					 checked = false;
-	    					 _this.datas.push(tn);
-	    				 }
-	    				
-	    				 checkedArr = [];
-	    				  for(var i=0;i<data.resdata.length;i++){          //将查询结果放入到checkedArr用于全选/反选的判断
-	    					  checkedArr.push(data.resdata[i].classification_ID);
-	    				  }
-	    			
-	    				  if(data.rowCount=='0'&&!_this.isfirstinjsp){
-	    					 layer.msg(Info.I0002);
-	    				  }
-	    				  
-	    				  _this.isfirstinjsp = false;
-	    				  
-	    				 _this.$refs.pagecomponent.dealAfterSearch(data.rowCount); 
-	    				
-	    				 if(_this.search_key.trim()!=''||_this.isbinding!=''){    //如果查询词不为空，则递归打开所有节点
-	    					 for(var i=0;i<_this.datas.length;i++){
-	    						 _this.dealopClose(_this.datas[i].val.classification_ID,_this.search_key.trim(),_this.isbinding);
-	    					 }
-	    				 }
-	    				 
+	    				 var data = JSON.parse(response.data);
+	    				 if(data.rowCount>parseInt(Info.MaxSearchCnt)&&!_this.isfirstinjsp){
+                        	 layer.msg(Info.W0001);
+                        	_this.$refs.pagecomponent.dealAfterSearch(0);  //查询完成后回调分页组件的函数,处理分页组件的相关参数
+                         }else{
+		    				 
+		    				 var temp = data.resdata;
+		    				 for(var i=0;i<temp.length;i++){                              //查询到的数据存放到this.datas集合中
+		    					 var tn = new TreeNode(temp[i],0,temp[i].children_lg,null);  
+		    					 if(temp[i].children_lg==0){
+		    						 if(temp[i].binding_lg==0){
+		    							 tn.binding = "否";
+		    						 }else{
+		    							 tn.binding = "是";
+		    						 }
+		    						 tn.bindingnum = temp[i].binding_lg;
+		    					 }
+		    					 checked = false;
+		    					 _this.datas.push(tn);
+		    				 }
+		    				
+		    				 checkedArr = [];
+		    
+		    				  for(var i=0;i<data.resdata.length;i++){          //将查询结果放入到checkedArr用于全选/反选的判断
+		    					  checkedArr.push(data.resdata[i].classification_ID);
+		    				  }
+		    			
+		    				  if(data.rowCount=='0'&&!_this.isfirstinjsp){
+		    					 layer.msg(Info.I0002);
+		    				  }
+		    				  
+		    				 _this.$refs.pagecomponent.dealAfterSearch(data.rowCount); 
+		    				
+		    				 if(_this.search_key.trim()!=''||_this.isbinding!=''){    //如果查询词不为空，则递归打开所有节点
+		    					 for(var i=0;i<_this.datas.length;i++){
+		    						 _this.dealopClose(_this.datas[i].val.classification_ID,_this.search_key.trim(),_this.isbinding);
+		    					 }
+		    				 }
+                         }
+	    				 _this.isfirstinjsp = false;
 	    				  layer.close(l_index);
 	    				  
 	    			})

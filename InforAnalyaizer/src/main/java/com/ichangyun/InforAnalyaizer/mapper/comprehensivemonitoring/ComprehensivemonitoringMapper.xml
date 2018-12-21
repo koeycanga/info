@@ -41,7 +41,7 @@
 		   (Select Max(dd.Article_ID) From 
 		   (
 		     
-		     select * from a_articlebasicinfo
+		     select Article_ID,SimilarArticlesNo from a_articlebasicinfo
 		      where 1=1 and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
               <if test="Classification_ID!=''">
                  and locate(#{Classification_ID},ClassificationPath)>0
@@ -75,13 +75,12 @@
     <select id="getArticleWithHB" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
         SELECT
 				c.*,
-			  (select m.WebsiteName from m_websiteinfo m where m.Website_ID = c.Website_ID) WebsiteName,
+			  (select m.WebsiteName from m_websiteinfo m where m.Website_ID = c.Website_ID) WebsiteName,<!-- 取得来源网站名称-->
 			   (
 			     select count(1) from a_articlebasicinfo bb where c.SimilarArticlesNo=bb.SimilarArticlesNo and c.Article_ID!=bb.Article_ID
-			     and bb.Releasetime>=#{montime_start} and bb.Releasetime <![CDATA[<= ]]>#{montime_end}
-        and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
-			   ) sim_cnt,
-			   (select count(1) from m_mycollection cc where cc.Article_ID=c.Article_ID ) collcnt,
+                  and not exists (select 1 from A_UserDeleteArticleInfo b where b.Article_ID=bb.Article_ID and b.User_ID=#{userid})
+			   ) sim_cnt,<!-- 取得相似文章数目 -->
+			   (select count(1) from m_mycollection cc where cc.Article_ID=c.Article_ID ) collcnt, <!-- 收藏文章数目 -->
         IF(c.Article_ID in (SELECT k.Article_ID FROM a_userearlywarningarticleinfo as k where k.User_ID=#{userid}),"yes","no")  isearlywarning
             FROM
 				a_articlebasicinfo c
@@ -90,7 +89,7 @@
 				 (
 				    Select Max(dd.Article_ID) From 
 				      
-				      (select * from a_articlebasicinfo
+				      (select Article_ID,SimilarArticlesNo from a_articlebasicinfo
 		     				 where 1=1 and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
 			              <if test="Classification_ID!=''">
 				               and locate(#{Classification_ID},ClassificationPath)>0
@@ -133,8 +132,7 @@
             (select m.WebsiteName from m_websiteinfo m where m.Website_ID = a.Website_ID) WebsiteName,
             (
               select count(1) from a_articlebasicinfo b where a.SimilarArticlesNo=b.SimilarArticlesNo and a.Article_ID!=b.Article_ID
-              and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end}
-         and Article_ID not in (select Article_ID from A_UserDeleteArticleInfo where User_ID=#{userid})
+              and not exists (select 1 from A_UserDeleteArticleInfo  where Article_ID=b.Article_ID and User_ID=#{userid})
             ) sim_cnt,
             (select count(1) from m_mycollection c where c.Article_ID=a.Article_ID ) collcnt,
          IF(a.Article_ID in (SELECT k.Article_ID FROM a_userearlywarningarticleinfo as k where k.User_ID=#{userid}),"yes","no")  isearlywarning
@@ -218,10 +216,9 @@
          
          select a.Article_ID,a.ArticleTitle,a.ArticleURL from a_articlebasicinfo a where a.SimilarArticlesNo=
 			(select b.SimilarArticlesNo from a_articlebasicinfo b where b.Article_ID=#{Article_ID}) and a.Article_ID!=#{Article_ID}
-			and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end}
 			and not exists (select 1 from A_UserDeleteArticleInfo b where b.Article_ID=a.Article_ID and b.User_ID=#{userid})
 	      order by Releasetime desc 
-      
+          limit 0,#{rowSize}
      </select>
      
 </mapper>

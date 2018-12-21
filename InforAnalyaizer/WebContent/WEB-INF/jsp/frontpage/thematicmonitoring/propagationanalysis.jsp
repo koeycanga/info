@@ -120,7 +120,7 @@
 					</div>
 				</div>
 				<div class="cy_CIASFE_conanabox02">
-					<p>媒体分布</p>
+					<p>信息来源分布</p>
 					<div id="cy_CIASFE_meddis">
 
 					</div>
@@ -195,12 +195,107 @@ Vue.component('ic_user_info',ic_user_info);  // ic_user_info 引自 js/ic_compon
 
 Vue.component('ic_jcfa',ic_jcfa);  // ic_jcfa 引自 js/ic_component.js
 
+var option_MTFB ; //媒体分布饼图option
+var myChart_MTFB; //媒体分布饼图dom
+
+var option_FZQS ;  //发展趋势折线图option
+var myChart_FZQS ; //发展趋势折线图dom
+
+var option_CBTJ ;// 传播途径option
+var myChart_CBTJ; //传播途径dom
+
+option_CBTJ ={
+        tooltip: {
+            trigger: 'item',
+            triggerOn: 'mousemove'
+        },
+        series: [
+            {
+                type: 'tree',
+                expandAndCollapse:true,
+                data: [], //{"name": "flare", "children": [{"name": "cluster"}]}
+
+                top: '1%',
+                left: '7%',
+                bottom: '1%',
+                right: '20%',
+
+                symbolSize: 7,
+
+                label: {
+                    normal: {
+                        position: 'left',
+                        verticalAlign: 'middle',
+                        align: 'right',
+                        fontSize: 15
+                    }
+                },
+
+                leaves: {
+                    label: {
+                        normal: {
+                            position: 'right',
+                            verticalAlign: 'middle',
+                            align: 'left'
+                        }
+                    }
+                },
+
+                expandAndCollapse: true,
+                initialTreeDepth:10,
+                animationDuration: 550,
+                animationDurationUpdate: 750
+            }
+        ]
+    };
+
+option_FZQS = {
+		title: {
+			text: ''
+		},
+		tooltip: {
+			trigger: 'axis'
+		},
+		legend: {
+			data:[]
+		},
+		grid: {
+			left: '3%',
+			right: '4%',
+			bottom: '3%',
+			containLabel: true
+		},
+		toolbox: {
+			feature: {
+				saveAsImage: {}
+			}
+		},
+		xAxis: {
+			type: 'category',
+			boundaryGap: false,
+			data: [],
+			axisLabel: {  
+				   interval:0,  
+				   rotate:40  
+			} 
+		},
+		yAxis: {
+			type: 'value'
+		},
+		series: []
+	};
+
+
+
 var app = new Vue({
 	el:"#app",
 	data:{
+		isfirstInJSP:true,  //是否第一次进入jsp
+		isHaveSearch:false, //是否已经搜索过
 		search_key:'',
 		montime:'0',  //监测时间
 		infsour:'-1',  //信息来源
+		 plan_ID:'',   //方案ID
 		  /****************以下是顶部搜索条件相关参数**********************************/
 		search_type:'',
 	    options: [],
@@ -213,7 +308,7 @@ var app = new Vue({
         /****************以上是顶部搜索条件相关参数**********************************/
 	},
 	methods:{
-		getGeneralPurpose:function(){  //获得顶部筛选条件
+		getGeneralPurpose:function(tdata){  //获得顶部筛选条件
 			 var _this = this;
 			 axios.get('../GeneralPurpose/getSearchPropaOps')
                .then(function (response) {
@@ -228,19 +323,40 @@ var app = new Vue({
                    _this.infsour_datas = data.infsour ;
                    _this.infsour_name = data.infsour[0].controlName;
             
-                   _this.btn_search();
+                   if(_this.isfirstInJSP){
+                	 var ins = [];
+                	 for(var i=1;i<data.infsour.length;i++){
+                		 ins[i-1] = data.infsour[i].masterValue;
+                	 }
+   					_this.createMTFB();
+   					option_MTFB.legend.data = ins ;
+   					myChart_MTFB.setOption(option_MTFB, true);
+   					
+   					_this.createFZQS();
+   					option_FZQS.legend.data = ins ;
+   					myChart_FZQS.setOption(option_FZQS, true);
+   					
+   					_this.createCBTJ();
+   					
+   					_this.dealSearchForChart(tdata);
+   					
+   					_this.isfirstInJSP = false;
+   				}
                })
                .catch(function (error) {
                    console.log(error);
                });
 			 
 		 },
-		searchByFA:function(plan_ID){
-			
+		searchByFA:function(plan_ID){    //根据方案ID查询对应的文章信息
+			 this.plan_ID  = plan_ID;
+			 this.isHaveSearch = true;
+    		 this.btn_search();
 		 },
-		btn_search:function(){
+		btn_search:function(){         //检索按钮相关
+			var amontime = this.montime;
 			if(this.montime=='10'){
-        		this.montime = $("#fromdate").val()+"-"+$("#todate").val();
+				amontime = $("#fromdate").val()+"-"+$("#todate").val();
         	}
 			var _this = this;
         	layer.msg(Info.I0011, {
@@ -250,103 +366,96 @@ var app = new Vue({
     		axios.get('../thematicmonitoring/searchpropaga',{
     			params: {
 	    				search_key:_this.search_key.trim(),
-	    				montime:_this.montime,
+	    				montime:amontime,
 	    				infsour:_this.infsour,
+	    				Plan_ID:_this.plan_ID,
                     	search_type:_this.search_type, //检索类型
     				}
     			})
     			.then(function (response) {
     				
+    				var data = JSON.parse(response.data);
     				
+    				if(_this.isfirstInJSP){
+    					_this.getGeneralPurpose(data);
+    				}else{
+    				    _this.dealSearchForChart(data);
+    				}
     				layer.closeAll();
     			})
     			.catch(function (error) {
     			    console.log(error);
     			});
 		},
-		createFZQS:function(){
-			var dom = document.getElementById("cy_CIASFE_devtre");
-			var myChart = echarts.init(dom);
-			var app = {};
-			option = null;
-			option = {
-				title: {
-					text: '折线图堆叠'
-				},
-				tooltip: {
-					trigger: 'axis'
-				},
-				legend: {
-					data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
-				},
-				grid: {
-					left: '3%',
-					right: '4%',
-					bottom: '3%',
-					containLabel: true
-				},
-				toolbox: {
-					feature: {
-						saveAsImage: {}
-					}
-				},
-				xAxis: {
-					type: 'category',
-					boundaryGap: false,
-					data: ['周一','周二','周三','周四','周五','周六','周日']
-				},
-				yAxis: {
-					type: 'value'
-				},
-				series: [
-					{
-						name:'邮件营销',
-						type:'line',
-						stack: '总量',
-						data:[120, 132, 101, 134, 90, 230, 210]
-					},
-					{
-						name:'联盟广告',
-						type:'line',
-						stack: '总量',
-						data:[220, 182, 191, 234, 290, 330, 310]
-					},
-					{
-						name:'视频广告',
-						type:'line',
-						stack: '总量',
-						data:[150, 232, 201, 154, 190, 330, 410]
-					},
-					{
-						name:'直接访问',
-						type:'line',
-						stack: '总量',
-						data:[320, 332, 301, 334, 390, 330, 320]
-					},
-					{
-						name:'搜索引擎',
-						type:'line',
-						stack: '总量',
-						data:[820, 932, 901, 934, 1290, 1330, 1320]
-					}
-				]
-			};
-			;
-			if (option && typeof option === "object") {
-				myChart.setOption(option, true);
+		dealSearchForChart:function(data){   //查询图表所需的data
+			
+			option_MTFB.series[0].data = data.mtfb;      //处理媒体分布的data
+			myChart_MTFB.setOption(option_MTFB, true);
+			
+			/*********************以下是处理发展趋势***************************************************************/
+			var arr = [];  //存放折线图横轴所需数据的数组
+			var tss  = data.time_datas.split(",");
+			for(var i=0;i<tss.length;i++){
+				arr[i] = tss[i];
 			}
+			option_FZQS.xAxis.data = arr;
+			
+			var xw_fzqs_series = [];
+			var map = new Map();
+            /************************以下for循环的作用是生成各信息来源对应折线图的option**************/
+			for(var i=0;i<data.fzqs_data.length;i++){
+				if(map.get(data.fzqs_data[i].masterValue)==null){
+					var tdata = [];
+					for(var j=0;j<arr.length;j++){ //每个信息来源的option的data初始设定为[0,0,0,0........]这样的数组
+						tdata[j] = 0;
+					}
+					var fadata = {
+							name:data.fzqs_data[i].masterValue,
+							type:'line',
+							stack: '总量',
+							data:tdata
+						}
+					xw_fzqs_series.push(fadata);
+					map.set(data.fzqs_data[i].masterValue,data.fzqs_data[i].masterValue);
+				}
+			}
+			 /************************以上for循环的作用是生成各信息来源对应折线图的option**************/
+			 
+		   /************************以下for循环的作用是设置各信息来源对应折线图的option的data值***************/
+			//var isds = true;
+			for(var i=0;i<data.fzqs_data.length;i++){
+				var name = data.fzqs_data[i].masterValue;
+				for(var j=0;j<xw_fzqs_series.length;j++){
+					if(xw_fzqs_series[j].name==name){
+						for(var n=0;n<arr.length;n++){
+							if(arr[n]==(data.fzqs_data[i].c_hour+":00")||
+								arr[n]==(data.fzqs_data[i].releasetime+" "+data.fzqs_data[i].c_hour+":00")||
+								arr[n]==data.fzqs_data[i].releasetime){
+								//isds = false;
+								xw_fzqs_series[j].data[n]+=data.fzqs_data[i].cnt;
+								break;
+							}
+						}
+						break;
+					}
+				}
+			}
+			option_FZQS.series = xw_fzqs_series;
+			myChart_FZQS.setOption(option_FZQS, true);
+			/**********************以上是处理发展趋势**********************************************************************************/
+			
+			/**********************以下是处理传播途径**************************************************/
+			//console.log(data.cbtj_data);
+			option_CBTJ.series[0].data = [data.cbtj_data];//data.cbtj_data;
+			myChart_CBTJ.setOption(option_CBTJ, true);
+			
 		},
-		createMTFB:function(){
+		createMTFB:function(){   //创建媒体分布饼图
 			var dom = document.getElementById("cy_CIASFE_meddis");
-			var myChart = echarts.init(dom);
-			var app = {};
-			option = null;
-			var data = genData(50);
-
-			option = {
+			myChart_MTFB = echarts.init(dom);
+			option_MTFB = {
 				title : {
-					text: '同名数量统计',
-					subtext: '纯属虚构',
+					text: '',
 					x:'center'
 				},
 				tooltip : {
@@ -359,16 +468,15 @@ var app = new Vue({
 					right: 10,
 					top: 20,
 					bottom: 20,
-					data: data.legendData,
-					selected: data.selected
+					data: []  
 				},
 				series : [
 					{
-						name: '姓名',
+						name: '媒体',
 						type: 'pie',
 						radius : '50%',//饼状图大小
 						center: ['35%', '50%'], //饼状图位置
-						data: data.seriesData,
+						data:  [],
 						itemStyle: {
 							emphasis: {
 								shadowBlur: 10,
@@ -379,113 +487,36 @@ var app = new Vue({
 					}
 				]
 			};
-			function genData(count) {
-				var nameList = [
-					'赵', '钱', '孙', '李', '周', '吴', '郑', '王', '冯', '陈', '褚', '卫', '蒋', '沈', '韩', '杨', '朱', '秦', '尤', '许', '何', '吕', '施', '张', '孔', '曹', 
-				];
-				var legendData = [];
-				var seriesData = [];
-				var selected = {};
-				for (var i = 0; i < 50; i++) {
-					name = Math.random() > 0.65
-						? makeWord(4, 1) + '·' + makeWord(3, 0)
-						: makeWord(2, 1);
-					legendData.push(name);
-					seriesData.push({
-						name: name,
-						value: Math.round(Math.random() * 100000)
-					});
-					selected[name] = i < 6;
-				}
 
-				return {
-					legendData: legendData,
-					seriesData: seriesData,
-					selected: selected
-				};
-
-				function makeWord(max, min) {
-					var nameLen = Math.ceil(Math.random() * max + min);
-					var name = [];
-					for (var i = 0; i < nameLen; i++) {
-						name.push(nameList[Math.round(Math.random() * nameList.length - 1)]);
-					}
-					return name.join('');
-				}
+			if (option_MTFB && typeof option_MTFB === "object") {
+				myChart_MTFB.setOption(option_MTFB, true);
 			}
-			;
-			if (option && typeof option === "object") {
-				myChart.setOption(option, true);
+			
+		},
+		createFZQS:function(){   // 发展趋势
+			var dom = document.getElementById("cy_CIASFE_devtre");
+			myChart_FZQS = echarts.init(dom);
+			
+			if (option_FZQS && typeof option_FZQS === "object") {
+				myChart_FZQS.setOption(option_FZQS, true);
 			}
 		},
-		
-		createCBTJ:function(){
+		createCBTJ:function(){  //传播途径
 			var dom = document.getElementById("cy_CIASFE_sprway");
-			var myChart = echarts.init(dom);
-			var app = {};
-			option = null;
-			myChart.showLoading();
-			$.get('data/asset/data/flare.json', function (data) {
-				myChart.hideLoading();
-
-				echarts.util.each(data.children, function (datum, index) {
-					index % 2 === 0 && (datum.collapsed = true);
-				});
-
-				myChart.setOption(option = {
-					tooltip: {
-						trigger: 'item',
-						triggerOn: 'mousemove'
-					},
-					series: [
-						{
-							type: 'tree',
-
-							data: [data],
-
-							top: '1%',
-							left: '7%',
-							bottom: '1%',
-							right: '20%',
-
-							symbolSize: 7,
-
-							label: {
-								normal: {
-									position: 'left',
-									verticalAlign: 'middle',
-									align: 'right',
-									fontSize: 9
-								}
-							},
-
-							leaves: {
-								label: {
-									normal: {
-										position: 'right',
-										verticalAlign: 'middle',
-										align: 'left'
-									}
-								}
-							},
-
-							expandAndCollapse: true,
-							animationDuration: 550,
-							animationDurationUpdate: 750
-						}
-					]
-				});
-			});;
-			if (option && typeof option === "object") {
-				myChart.setOption(option, true);
+		    myChart_CBTJ = echarts.init(dom);
+		
+		    if (option_CBTJ && typeof option_CBTJ === "object") {
+				myChart_CBTJ.setOption(option_CBTJ, true);
 			}
 		}
 	},
 	mounted:function(){
-		this.getGeneralPurpose();
-		this.createFZQS();
-		this.createMTFB();
-		this.createCBTJ();
+		//this.getGeneralPurpose();
+		//this.createFZQS();
+		//this.createCBTJ();
+		if(!this.isHaveSearch){
+			this.getGeneralPurpose();
+		}
 	}
 });
 

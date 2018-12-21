@@ -137,10 +137,7 @@ public class ClassificationInfoServiceImpl implements ClassificationInfoService 
 	@Override
 	public String updateData(ClassificationInfoBean cb) {
 		
-		
 		int count = classificationInfoMapper.updateData(cb);
-		
-	
 		
 		if(count==1) {
 			String updateTime = classificationInfoMapper.getUpdateTime(cb);
@@ -271,10 +268,6 @@ public class ClassificationInfoServiceImpl implements ClassificationInfoService 
 	private void dealCntCB(ClassificationInfoBean cb, List<ClassificationInfoBean> list, String yesterday,String today) {
 		
 		if(cb.getReleasetime()!=null&&!cb.getReleasetime().equals("")&&cb.getCnt()>0) {
-			
-			for(ClassificationInfoBean ccb:list) {
-				System.out.println(ccb.getClassificationName());
-			}
 			
 			ClassificationInfoBean root = getRootNode(cb,list);
             

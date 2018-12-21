@@ -26,6 +26,7 @@
 <fmt:message key="I0019" var="I0019" bundle="${sysInfo}" />  
 <fmt:message key="I0023" var="I0023" bundle="${sysInfo}" />
 <fmt:message key="I0024" var="I0024" bundle="${sysInfo}" />
+<fmt:message key="W0008" var="W0008" bundle="${sysInfo}" />
 <!doctype html>
 <html>
 <head>
@@ -81,7 +82,7 @@
 				<div v-if="data.emotionDivision=='2'" class="cy_CIASFE_contpassta01">负</div>
 				<div v-if="data.yj_cnt>0" class="cy_CIASFE_contpassta01">已预警</div>
 				<div class="cy_CIASFE_contpascol">
-					<ic_collectiont v-bind:aid="data.article_ID" v-bind:collcnt="data.collcnt"></ic_collectiont>
+					<ic_collectiont v-bind:aid="data.article_ID" v-bind:collect_datas="collect_datas" v-bind:collcnt="data.collcnt"></ic_collectiont>
 					<div class="cy_CIASFE_share" v-bind:data-clipboard-text="data.articleURL" v-bind:id="'sharedv'+index" v-on:click="share(index)"></div>
 					<div v-on:click="del_a_article(data.article_ID)" class="cy_CIASFE_dele"></div>
 				</div>
@@ -94,13 +95,13 @@
 			    <div class="cy_CIASFE_footbox02" >
 			        <a target="_blank" v-bind:href="data.articleURL">{{data.releasetime}} {{data.websiteName}}</a>
 			        
-			        <span class="cy_CIASFE_simart" v-on:mouseover="simcontent(index)">
+			       <!--  <span class="cy_CIASFE_simart" v-on:mouseover="simcontent(index)">
 			                              相似文章：{{data.sim_cnt}}条
 			          <div class="cy_CIASFE_simartbox">
 			             <div v-for=" sdata in sim_datas[index]" ><a v-bind:href="'../detailspage/toDetailsPage?from=comprehensivemonitoring&article_id='+sdata.article_ID" target="_blank" >{{sdata.articleTitle}}</a></div>
 			          </div>
 			        </span>
-			    
+			     -->
 			    </div>
 			</div>
 		</div>
@@ -157,8 +158,11 @@ var Info = {
 		  E0031:'${E0033}',
 		  I0019:'${I0019}',
 		  I0023:'${I0023}',
-		  I0024:'${I0024}'
+		  I0024:'${I0024}',
+		  W0008:'${W0008}'
 	};
+
+    var collect_datas = [];  //我的收藏模块对应的数据集合
 
 	var menu_datas = JSON.parse('${front_menu}');  //菜单数据来源于 classes/resources.properties
 	
@@ -223,7 +227,7 @@ var Info = {
 				 var _this = this;
 				  var arr = [];
 				  arr.push(article_ID);
-				  layer.confirm(Info.W0002, {
+				  layer.confirm(Info.W0008, {
 			            btn : [ '确定', '取消' ]//按钮
 			        }, function(index) {
 			            layer.close(index);
@@ -274,7 +278,34 @@ var Info = {
      			.catch(function (error) {
      			    console.log(error);
      			});
-    	    }
+    	    },
+    	    addCnodeChildren: function (ctnode, data) {
+                for (var i = 0; i < data.length; i++) {
+                    if (ctnode.val.collectionType_ID == data[i].parent_CollectionType_ID) {
+                        var acnode = new CTreeNode(data[i], ctnode.depth + 1);
+                        collect_datas.push(acnode);
+                        this.addCnodeChildren(acnode, data);
+                    }
+                }
+            },
+            getCollect: function () {
+                var _this = this;
+                axios.get('../thematicmonitoring/getCollectionType')
+                    .then(function (response) {
+                        var data = JSON.parse(response.data);
+                        console.log(data);
+                        for (var i = 0; i < data.length; i++) {
+                            if (data[i].parent_CollectionType_ID == '' || data[i].parent_CollectionType_ID == 'C000000000') {  //根节点
+                                var ctnode = new CTreeNode(data[i], 0);
+                                collect_datas.push(ctnode);
+                                _this.addCnodeChildren(ctnode, data);
+                            }
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
 		},
 		computed:{
 			search:function(){
@@ -319,6 +350,8 @@ var Info = {
 		mounted:function(){
 			
 			this.getHotWord();
+			
+			this.getCollect();
 			
 			this.search(this.$refs.pagecomponent.pageBean);
 		}
