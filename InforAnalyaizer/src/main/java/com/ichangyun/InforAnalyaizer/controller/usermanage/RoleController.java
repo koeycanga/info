@@ -63,11 +63,11 @@ public class RoleController {
      * Date:2018-11-9
      */
     @RequestMapping("/search")
-    public Object search(int pageNow,int rowSize) {
+    public Object search(int pageNow,int rowSize,HttpSession session) {
 
-        int rowCount = roleService.getRoleCount();
+        int rowCount = roleService.getRoleCount(session);
 
-        String json_res = roleService.getRole(pageNow,rowSize);
+        String json_res = roleService.getRole(pageNow,rowSize,session);
 
         String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
 
@@ -91,11 +91,11 @@ public class RoleController {
 			}*/
             res = "nok";
         }else {
-            if(roleService.exist(ub.getUserRoleName())) {
+            if(roleService.exist(ub.getUserRoleName(),session)) {
                 res = "exist";
             }else {
                 User user = (User) session.getAttribute(CommBean.SESSION_NAME);
-                if(!roleService.AddNewRole(ub.getUserRoleName(),ub.getDescription(),user.getUser_ID(),ub.getAuthority())) {
+                if(!roleService.AddNewRole(ub.getUserRoleName(),ub.getDescription(),user.getUser_ID(),ub.getAuthority(),session)) {
                     res = "nok";
                 }
             }
@@ -120,10 +120,13 @@ public class RoleController {
             ub.setUpdateUser(user.getUser_ID());
             List<String> paramList = new ArrayList<String>();
         	paramList.add(ub.getUserRole_ID());
-        	if(!dbUpdateCheckService.DBUpdateCheck("2", paramList, ub.getUpdateDateTime())) {
+        	if(!dbUpdateCheckService.DBUpdateCheck("2", paramList, ub.getUpdateDateTime(),session)) {
         		res = "already update";
         	}else {
-	            if(!roleService.updateRole(ub)) {
+        		if(roleService.existWithOutSelf(ub,session)) {
+                    res = "exist";
+                }
+        		else if(!roleService.updateRole(ub)) {
 	                res = "nok";
 	            }
         	}

@@ -1,11 +1,13 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.service.common.service.impl;
 
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,122 +20,132 @@ import com.ichangyun.InforAnalyaizer.mapper.collection.CollectionTypeMapper;
 import com.ichangyun.InforAnalyaizer.mapper.notice.NoticeMapper;
 import com.ichangyun.InforAnalyaizer.mapper.userInfoMapper.UserInfoMapper;
 import com.ichangyun.InforAnalyaizer.mapper.usermanage.RoleMapper;
+import com.ichangyun.InforAnalyaizer.model.CommBean;
 import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean;
 import com.ichangyun.InforAnalyaizer.model.classificationfilterwords.FilterWordsVo;
 import com.ichangyun.InforAnalyaizer.model.collection.CollectionTypeVo;
 import com.ichangyun.InforAnalyaizer.model.notice.NoticeVo;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfo;
 import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoKey;
 import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoVo;
 import com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean;
 import com.ichangyun.InforAnalyaizer.service.common.service.DBUpdateCheckService;
-import com.ichangyun.InforAnalyaizer.utils.DateUtils;
 
+/**
+ * æ’ä»–CheckService
+ *
+ * @author ichangyun
+ * @date 2018/11/19
+ */
 @Service
 public class DBUpdateCheckServiceImpl implements DBUpdateCheckService {
-	Logger log = Logger.getLogger(UserController.class);
+    Logger log = Logger.getLogger(UserController.class);
 
-	// ÕËºÅ¹ÜÀímapper
-	@Autowired
-	private UserInfoMapper userInfoMapper;
+    // è´¦å·ç®¡ç†mapper
+    @Autowired
+    private UserInfoMapper userInfoMapper;
 
-	// ½ÇÉ«¹ÜÀímapper
-	@Autowired
-	private RoleMapper roleMapper;
+    // è§’è‰²ç®¡ç†mapper
+    @Autowired
+    private RoleMapper roleMapper;
 
-	// ·ÖÀàÌåÏµmapper
-	@Autowired
-	private ClassificationInfoMapper classificationInfoMapper;
+    // åˆ†ç±»ä½“ç³»mapper
+    @Autowired
+    private ClassificationInfoMapper classificationInfoMapper;
 
-	// ·ÖÀà¹ıÂË´Êmapper
-	@Autowired
-	private ClassificationFilterwordsMapper filterwordsMapper;
+    // åˆ†ç±»è¿‡æ»¤è¯mapper
+    @Autowired
+    private ClassificationFilterwordsMapper filterwordsMapper;
 
-	// ¼ò±¨ÈÎÎñmapper
-	@Autowired
-	private NoticeMapper noticeMapper;
+    // ç®€æŠ¥ä»»åŠ¡mapper
+    @Autowired
+    private NoticeMapper noticeMapper;
 
-	// ÊÕ²Ø¼Ğmapper
-	@Autowired
-	private CollectionTypeMapper collectionTypeMapper;
-	/**
-	 * ÅÅËûCheck
-	 * 
-	 * @param checkKbn       ´¦ÀíÇø·Ö(1:ÕËºÅ±à¼­/2:½ÇÉ«±à¼­/3:·ÖÀàÌåÏµ±à¼­/4:·ÖÀà¹ıÂË´Ê±à¼­/5:ĞÅÏ¢Ô´±à¼­/6:¼ò±¨ÈÎÎñ/7:ÊÕ²Ø¼Ğ±à¼­)
-	 * @param paramList      PK
-	 * @param updateDateTime ¸üĞÂÈÕÊ±
-	 * @return
-	 */
-	@Override
-	public boolean DBUpdateCheck(String checkKbn, List<String> paramList, String updateDateTime) {
+    // æ”¶è—å¤¹mapper
+    @Autowired
+    private CollectionTypeMapper collectionTypeMapper;
 
-		// ÅÅËûcheck
-		boolean isExclusiveFlg = false;
-		String dateTimeTemp = "";
+    /**
+     * æ’ä»–Check
+     *
+     * @param checkKbn  å¤„ç†åŒºåˆ†(1:è´¦å·ç¼–è¾‘/2:è§’è‰²ç¼–è¾‘/3:åˆ†ç±»ä½“ç³»ç¼–è¾‘/4:åˆ†ç±»è¿‡æ»¤è¯ç¼–è¾‘/5:ä¿¡æ¯æºç¼–è¾‘/6:ç®€æŠ¥ä»»åŠ¡/7:æ”¶è—å¤¹ç¼–è¾‘)
+     * @param paramList PK
+     * @param updateDateTime æ›´æ–°æ—¥æ—¶
+     * @return
+     */
+    @Override
+    public boolean DBUpdateCheck(String checkKbn, List<String> paramList, String updateDateTime,HttpSession session) {
 
-		// [´¦ÀíÇø·Ö1:ÕËºÅ±à¼­]µÄ³¡ºÏ
-		if ("1".equals(checkKbn)) {
-			// ÉèÖÃ¼ìË÷Ìõ¼ş
-			UserInfoKey key = new UserInfoKey();
-			key.setUserId(paramList.get(0).toString());
-			// ¸ù¾İ¼ìË÷Ìõ¼ş£¬È¡µÃÊı¾İ¿â×îĞÂµÄÊı¾İ
-			UserInfo info = this.userInfoMapper.selectByPrimaryKey(key);
-			UserInfoVo vo = new UserInfoVo();
-			vo.loading(info);
-			dateTimeTemp = vo.getUupdatedatetime();
-			if (updateDateTime.equals(dateTimeTemp)) {
-				isExclusiveFlg = true;
-			}
-		}
+        // æ’ä»–check
+        boolean isExclusiveFlg = false;
+        String dateTimeTemp = "";
 
-		// [´¦ÀíÇø·Ö2:½ÇÉ«±à¼­]µÄ³¡ºÏ
-		if ("2".equals(checkKbn)) {
-			// ¸ù¾İ¼ìË÷Ìõ¼ş£¬È¡µÃÊı¾İ¿â×îĞÂµÄÊı¾İ
-			RoleManageBean dataBean = roleMapper.queryById(paramList.get(0).toString());
-			dateTimeTemp = dataBean.getUpdateDateTime();
-			if (updateDateTime.equals(dateTimeTemp)) {
-				isExclusiveFlg = true;
-			}
-		}
-		// [´¦ÀíÇø·Ö3:·ÖÀàÌåÏµ±à¼­]µÄ³¡ºÏ
-		if ("3".equals(checkKbn)) {
-			ClassificationInfoBean cb = new ClassificationInfoBean();
-			cb.setClassification_ID(paramList.get(0).toString());
-			ClassificationInfoBean infoBean = classificationInfoMapper.getInfoByID(cb);
-			if (infoBean.getUpdateDateTime().equals(updateDateTime)) {
-				isExclusiveFlg = true;
-			}
-		}
-		// [´¦ÀíÇø·Ö4:·ÖÀà¹ıÂË´Ê±à¼­]µÄ³¡ºÏ
-		if ("4".equals(checkKbn)) {
-			// TODO
-			FilterWordsVo vo = this.filterwordsMapper.queryOne(paramList.get(0).toString());
-			if (vo.getUpdatedatetime().equals(updateDateTime)) {
-				isExclusiveFlg = true;
-			}
-		}
-		// [´¦ÀíÇø·Ö5:ĞÅÏ¢Ô´±à¼­µÄ³¡ºÏ
-		if ("5".equals(checkKbn)) {
-			// TODO
+        // [å¤„ç†åŒºåˆ†1:è´¦å·ç¼–è¾‘]çš„åœºåˆ
+        if ("1".equals(checkKbn)) {
+            // è®¾ç½®æ£€ç´¢æ¡ä»¶
+            UserInfoKey key = new UserInfoKey();
+            key.setUserId(paramList.get(0).toString());
+            // æ ¹æ®æ£€ç´¢æ¡ä»¶ï¼Œå–å¾—æ•°æ®åº“æœ€æ–°çš„æ•°æ®
+            UserInfo info = this.userInfoMapper.selectByPrimaryKey(key);
+            UserInfoVo vo = new UserInfoVo();
+            vo.loading(info);
+            dateTimeTemp = vo.getUupdatedatetime();
+            if (updateDateTime.equals(dateTimeTemp)) {
+                isExclusiveFlg = true;
+            }
+        }
 
-		}
-		// [´¦ÀíÇø·Ö6:¼ò±¨ÈÎÎñ]µÄ³¡ºÏ
-		if ("6".equals(checkKbn)) {
-			// TODO
-			NoticeVo vo = this.noticeMapper.queryById(paramList.get(0).toString());
-			if (vo.getUpdatedatetime().equals(updateDateTime)) {
-				isExclusiveFlg = true;
-			}
-		}
-		// [´¦ÀíÇø·Ö7:ÊÕ²Ø¼Ğ±à¼­]µÄ³¡ºÏ
-		if ("7".equals(checkKbn)) {
-			// TODO
-			CollectionTypeVo vo = this.collectionTypeMapper.queryOne(paramList.get(0).toString());
-			if (vo.getUpdatedatetime().equals(updateDateTime)) {
-				isExclusiveFlg = true;
-			}
-		}
-		return isExclusiveFlg;
-	}
+        // [å¤„ç†åŒºåˆ†2:è§’è‰²ç¼–è¾‘]çš„åœºåˆ
+        if ("2".equals(checkKbn)) {
+            // æ ¹æ®æ£€ç´¢æ¡ä»¶ï¼Œå–å¾—æ•°æ®åº“æœ€æ–°çš„æ•°æ®
+        	RoleManageBean rb = new RoleManageBean();
+        	User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+        	rb.setUserRole_ID(paramList.get(0).toString());
+            rb.setCollectionField_ID(u.getCollectionField_ID());
+            rb.setCustomer_ID(u.getCustomer_ID());
+            RoleManageBean dataBean = roleMapper.queryById(rb);
+            dateTimeTemp = dataBean.getUpdateDateTime();
+            if (updateDateTime.equals(dateTimeTemp)) {
+                isExclusiveFlg = true;
+            }
+        }
+        // [å¤„ç†åŒºåˆ†3:åˆ†ç±»ä½“ç³»ç¼–è¾‘]çš„åœºåˆ
+        if ("3".equals(checkKbn)) {
+            ClassificationInfoBean cb = new ClassificationInfoBean();
+            cb.setClassification_ID(paramList.get(0).toString());
+            ClassificationInfoBean infoBean = classificationInfoMapper.getInfoByID(cb);
+            if (infoBean.getUpdateDateTime().equals(updateDateTime)) {
+                isExclusiveFlg = true;
+            }
+        }
+        // [å¤„ç†åŒºåˆ†4:åˆ†ç±»è¿‡æ»¤è¯ç¼–è¾‘]çš„åœºåˆ
+        if ("4".equals(checkKbn)) {
+            FilterWordsVo vo = this.filterwordsMapper.queryOne(paramList.get(0).toString());
+            if (vo.getUpdatedatetime().equals(updateDateTime)) {
+                isExclusiveFlg = true;
+            }
+        }
+        // [å¤„ç†åŒºåˆ†5:ä¿¡æ¯æºç¼–è¾‘çš„åœºåˆ
+        if ("5".equals(checkKbn)) {
+            // TODO
+
+        }
+        // [å¤„ç†åŒºåˆ†6:ç®€æŠ¥ä»»åŠ¡]çš„åœºåˆ
+        if ("6".equals(checkKbn)) {
+            NoticeVo vo = this.noticeMapper.queryById(paramList.get(0).toString());
+            if (vo.getUpdatedatetime().equals(updateDateTime)) {
+                isExclusiveFlg = true;
+            }
+        }
+        // [å¤„ç†åŒºåˆ†7:æ”¶è—å¤¹ç¼–è¾‘]çš„åœºåˆ
+        if ("7".equals(checkKbn)) {
+            CollectionTypeVo vo = this.collectionTypeMapper.queryOne(paramList.get(0).toString());
+            if (vo.getUpdatedatetime().equals(updateDateTime)) {
+                isExclusiveFlg = true;
+            }
+        }
+        return isExclusiveFlg;
+    }
 
 }

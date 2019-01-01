@@ -8,13 +8,25 @@
  *
  * 组件用到的信息提示Info  在引入组件时需在页面引入相关信息
  * 
-ic_collectiont   I0023   E0022
+ * 
+
+ic_sycc_template   syccurl
+
+ic_collectiont   I0023   E0022  E0054
 
 ic_jcfa          I0017  I0018  E0029  I0012  E0030  E0022  I0008  E0030  I0014 E0052  I0029
 
 ic_user_info    E0004  E0014  I0012  E0025  I0013 W0003
  */
 
+
+
+//底部使用手册工具栏组件
+var ic_sycc_template = {
+    template:'  <div class="cy_CIASFE_footer02"><a v-bind:href="Info.syccurl">使用手册</a>&nbsp;&nbsp;&nbsp;&nbsp;联系我们（电话：1648726161'+
+			'邮箱：sales@ichangyun.com） Copyright&copy;2018-2021 &nbsp;&nbsp;&nbsp;&nbsp;湖北畅云时讯软件技术有限公司版权所有'+
+				'</div>'
+          };
 
 
 //我的收藏用到的节点类
@@ -30,7 +42,7 @@ var ic_collectiont = {
 					'<div class="cy_CIASFE_decollebox">'+
 						'<div>我的收藏</div>'+
 						 '<a v-for="data in collect_datas" v-on:click="conllect(data.val.collectionType_ID,$event)" href="#" style="text-align: left">'+
-                         '{{data.val.collectionTypeName}}</a>'+ //<span v-for="n in data.depth+1">&emsp;</span>
+                         '<span v-for="n in data.depth+1">&emsp;</span>{{data.val.collectionTypeName}}</a>'+ //<span v-for="n in data.depth+1">&emsp;</span>
 					'</div>'+
 				'</div>',
 	    props:['aid','collcnt','collect_datas'],
@@ -45,7 +57,7 @@ var ic_collectiont = {
 				event.preventDefault();
 				
 				if(this.collcnt!=0){
-					layer.msg("该文章已经被收藏，详情请到我的收藏模块查看");
+					layer.msg(Info.E0054);
 					return;
 				}
 				var _this = this;
@@ -87,7 +99,7 @@ var ic_jcfa  = {
 	'<div class="cy_CIASFE_intmonbodyleft">'+
 		'<div class="cy_CIASFE_monpltop">监测方案<a href="#"><img src="../image/monplan-plus.png" v-on:click="NewJCFA()"></a></div>'+
 		'<div v-for="(fndata,index) in fa_name_datas" class="cy_CIASFE_monplan" v-bind:style="sel_index==index?\'background-color: #86c1ea;\':\'\'">'+
-		    '<div class="cy_CIASFE_monplantit" style="cursor:pointer;"  v-on:click="searchByFA(fndata.plan_ID,index)">{{fndata.planName}}</div><a href="#"><img v-on:click="editFa(index)" src="../image/monplan-edit.png"></a><a href="#"><img v-on:click="delFA(fndata.plan_ID)" src="../image/monplan-dele.png"></a>'+
+		    '<div class="cy_CIASFE_monplantit" style="cursor:pointer;"  v-on:click="searchByFA(fndata.plan_ID,index)">{{fndata.planName}}</div><a href="#"><img v-on:click="editFa(index)" src="../image/monplan-edit.png"></a><a href="#"><img v-on:click="delFA(fndata.plan_ID,index)" src="../image/monplan-dele.png"></a>'+
 		'</div>'+
 	'</div>'+
 		'<div id="newfadv" class="cy_CIASFE_addmonpl" style="display:none;">'+
@@ -95,7 +107,7 @@ var ic_jcfa  = {
 			'<div class="cy_CIASFE_addmonplbd">'+
 			'<div class="cy_CIASFE_addmonplbox"><div class="cy_CIASFE_addmonplbox02">监测时间</div>&nbsp;<input type="text" value=""  style="width:70px;" placeholder="请选择日期" readonly  id="theDate3">&nbsp;<select id="theTime3"><option v-for="tdata in time_ops" v-bind:value="tdata">{{tdata}}</option></select>&nbsp;——&nbsp;<input type="text" value="" style="width:70px;" placeholder="请选择日期" readonly id="theDate4">&nbsp;<select id="theTime4"><option v-for="tdata in time_ops" v-bind:value="tdata">{{tdata}}</option></select></div>'+
 				'<div class="cy_CIASFE_addmonplbox">'+
-			    '<div class="cy_CIASFE_addmonplbox02">方案名称：</div><input v-model="planinfo_name" type="text" class="cy_CMICBMS_addmonplipbox" placeholder="请输入方案名称"></div>'+
+			    '<div class="cy_CIASFE_addmonplbox02">方案名称：</div><input v-model="planinfo_name" type="text" class="cy_CMICBMS_addmonplipbox" maxlength="64" placeholder="请输入方案名称"></div>'+
 				'<div v-for="(fadata,fi) in fa_datas" class="cy_CIASFE_addmonplbox">'+
 				'	<div  class="cy_CIASFE_addmonplbox02">{{fadata.val}}：</div>'+
 				'	<div v-for="(wdata,index) in fadata.words" class="cy_CIASFE_addmonplkwed" v-on:click="delglc(fi,index,$event)" v-bind:style="index==0?\'margin-left: 0\':\'\'">{{wdata}}</div>'+
@@ -106,7 +118,7 @@ var ic_jcfa  = {
 				'		<input type="button" value="+添加监测词" v-on:click="addjcc()" class="cy_CIASFE_editkw" style="margin-left: 0;">'+
 				'	</div>'+
 				'</div>'+
-				'<div class="cy_CIASFE_addmonplbox"><div class="cy_CIASFE_addmonplbox02">排除词：</div><input v-model="planinfo_removeWord" type="text" class="cy_CMICBMS_addmonplipbox" placeholder="请输入排除词，词之间用逗号分隔"></div>'+
+				'<div class="cy_CIASFE_addmonplbox"><div class="cy_CIASFE_addmonplbox02">排除词：</div><input v-model="planinfo_removeWord" type="text" class="cy_CMICBMS_addmonplipbox" maxlength="100" placeholder="请输入排除词，词之间用逗号分隔"></div>'+
 				'<div class="cy_CIASFE_addmonplbtnbox"><input type="button" class="cy_CIASFE_addmonplcance" v-on:click="hide()" value="取消">'+
 				'<input v-if="isnew" type="button" class="cy_CIASFE_addmonpldeter" v-on:click="SaveNewFA()" value="确定"><input v-else type="button" class="cy_CIASFE_addmonpldeter" v-on:click="UpdateFA()" value="确定"></div>'+
 			'</div>'+
@@ -124,6 +136,7 @@ var ic_jcfa  = {
 		     fa_datas:[],                   //新增&编辑 监测词方案组合
 		     fa_name_datas:[],
 		     jccnum:1,
+		     update_index:-1,
 		     time_ops:['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23']
 		}
 	},
@@ -145,7 +158,7 @@ var ic_jcfa  = {
 				}
 			}
 		},
-		NewJCFA:function(){              
+		NewJCFA:function(){              //弹出新增方案对话层
 			 this.title = Info.I0017;
 			 this.isnew = true;
 			 this.jccnum = 1;
@@ -155,9 +168,10 @@ var ic_jcfa  = {
 		     $("#cy_hidebg").css("display","block");
 
 		},
-		editFa:function(index){
+		editFa:function(index){              //编辑方案
 			 this.title = Info.I0018;
 			 this.isnew = false;
+			 this.update_index = index;
 			 this.planinfo_name = this.fa_name_datas[index].planName;
 			 this.edit_id  = this.fa_name_datas[index].plan_ID;
 			 var startdate = this.fa_name_datas[index].planStartTime.split(" ");
@@ -214,6 +228,7 @@ var ic_jcfa  = {
 			
 			var fds_date = fds[0].split("\/");
 			var tds_date = tds[0].split("\/");
+
 			if(fds_date[0]>tds_date[0]){
 				return true;
 			}
@@ -265,11 +280,13 @@ var ic_jcfa  = {
 				 layer.msg('请输入监测词或排除词');
 				 return;
 			 }
+			 var t_fromDate = document.getElementById("theDate3").value;
+			 var t_toDate = document.getElementById("theDate4").value;
 			 var fromDate = document.getElementById("theDate3").value+" "+document.getElementById("theTime3").value;
 			 var toDate = document.getElementById("theDate4").value+" "+document.getElementById("theTime4").value;
              if(document.getElementById("theDate3").value==''){fromDate='';}
              if(document.getElementById("theDate4").value==''){toDate='';}
-			 if(fromDate!=''&&toDate!=''&&this.compareDate(fromDate,toDate)){
+			 if(t_fromDate!=''&&t_toDate!=''&&this.compareDate(fromDate,toDate)){
 				 layer.msg(Info.E0052);
 				 return;
 			 }
@@ -288,7 +305,7 @@ var ic_jcfa  = {
 		   				  if(response.data=="ok"){
 		   					  layer.msg(Info.I0029);
 		   					  _this.hide();
-		   				  	  _this.getAllFA();
+		   				  	  _this.getAllFA(1,_this.update_index);
 		   				  }
 		   				  if(response.data=="exist"){
 		   					layer.msg(Info.E0030);
@@ -329,11 +346,13 @@ var ic_jcfa  = {
 	    	   layer.msg('请输入监测词或排除词');
 	    	   return;
 	       }
+	       var t_fromDate = document.getElementById("theDate3").value;
+		   var t_toDate = document.getElementById("theDate4").value;
 	       var fromDate = document.getElementById("theDate3").value+" "+document.getElementById("theTime3").value;
 		   var toDate = document.getElementById("theDate4").value+" "+document.getElementById("theTime4").value;
            if(document.getElementById("theDate3").value==''){fromDate='';}
            if(document.getElementById("theDate4").value==''){toDate='';}
-			 if(fromDate!=''&&toDate!=''&&this.compareDate(fromDate,toDate)){
+			 if(t_fromDate!=''&&t_toDate!=''&&this.compareDate(fromDate,toDate)){
 				 layer.msg(Info.E0052);
 				 return;
 			 }
@@ -351,7 +370,7 @@ var ic_jcfa  = {
 	   				  if(response.data=="ok"){
 	   					  layer.msg(Info.I0029);
 	   					  _this.hide();
-	   				  	  _this.getAllFA();
+	   				  	  _this.getAllFA(0);
 	   				  }
 	   				  if(response.data=="exist"){
 	   					layer.msg(Info.E0030);
@@ -364,9 +383,9 @@ var ic_jcfa  = {
 
 	   			});
 		},
-		delFA:function(planid){
+		delFA:function(planid,d_index){   //删除方案
 			  var _this = this;
-			  layer.confirm(Info.W0002, {
+			  layer.confirm(IC_GETINFOBYAttrs(Info.W0002,['选中的方案']), {
 		            btn : [ '确定', '取消' ]//按钮
 		        }, function(index) {
 					 axios.get('../thematicmonitoring/delfa',{
@@ -377,6 +396,12 @@ var ic_jcfa  = {
 		    			.then(function (response) {
 		    				if(response.data=='ok'){
 		    					layer.msg(Info.I0014);
+		    					if(_this.sel_index==d_index){
+		    						_this.sel_index = 0;
+		    				    }
+		    					if(_this.sel_index>d_index){
+		    						_this.sel_index--;
+		    					}
 		    					_this.getAllFA();
 		    				}
 		    				if(response.data=='nok'){
@@ -433,7 +458,7 @@ var ic_jcfa  = {
 
 			        content: ' <div class="row" style="width: 180px;  margin-left:7px; margin-top:10px;">'
 			            +'<div class="col-sm-12">'
-			            +'<input id="firstpwd" type="text" class="form-control" placeholder="请输入关联词 ">'
+			            +'<input id="firstpwd" type="text" maxlength="20" class="form-control" placeholder="请输入关联词 ">'
 			            +'</div>'
 			              +'</div>'
 			        ,
@@ -453,7 +478,7 @@ var ic_jcfa  = {
 
 			    });
 		},
-		getAllFA:function(){
+		getAllFA:function(flag=-1,index){
 			this.fa_name_datas = [];
 			var _this = this;
 	    	axios.get('../thematicmonitoring/getallfa')
@@ -466,6 +491,27 @@ var ic_jcfa  = {
 					  }
 					  if(_this.isfirst&&data.length>0){
 						  _this.searchByFA(data[0].plan_ID,0);
+					  }
+					  
+					  if(!_this.isfirst&&flag==-1&&data.length>0){  
+						  _this.searchByFA(data[_this.sel_index].plan_ID,0);
+					  }
+					  if(flag==0&data.length>0){  //新增方案
+						  var wz = data.length-1;
+						  _this.sel_index = wz;
+						  setTimeout(function(){
+							  _this.searchByFA(data[wz].plan_ID,wz);
+						  },1800);
+						 
+					  }
+					  if(flag==1&data.length>0){ //更新方案
+						  _this.sel_index = index;
+						  setTimeout(function(){
+							  _this.searchByFA(data[index].plan_ID,index);
+						  },1800);
+					  }
+					  if(data.length==0){
+						  _this.searchByFA('-1',-1);
 					  }
 					  _this.isfirst = false;
 				})
@@ -523,7 +569,7 @@ var ic_top_menu = {
 			}
 		}
 };
-
+var pwdReg = /(?![0-9A-Z]+$)(?![0-9a-z]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,32}$/;
 //前台页面上部登录用户信息框组件
 var ic_user_info = {  //$parent.updateUser
     	template:
@@ -537,25 +583,34 @@ var ic_user_info = {  //$parent.updateUser
     	     '       <div class="cy_CMICBMS_addclose" v-on:click="hide()">X</div>'+
     	     '   </div>'+
     	      '  <div class="cy_CMICBMS_addtb">'+
-    	      '   <div ><font color="black" size="3" > 用户角色：{{userData.urolename}}</font></div>'+
-    	      '     <div ><font color="black" size="3" >用户名：{{userData.uid}}</font></div>'+
-    	       '  <div ><font color="black" size="3" >姓名： {{userData.uname}}</font></div>'+
+    	      '   <div ><font color="black" size="3" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户角色：{{userData.urolename}}</font></div><br>'+
+    	      '     <div ><font color="black" size="3" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户名：{{userData.uid}}</font></div><br>'+
+    	       ' <div ><font color="black" size="3" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;姓名： {{userData.uname}}</font></div><br>'+
     	      '      <div align="center">'+
-    	      '          <span>*</span>&nbsp;&nbsp;<font color="black" size="3" >旧密码：</font><input class="cy_CMICBMS_addinput" type="password" placeholder="输入原密码" v-model="uPwd" maxlength="32">'+
-    	       '     </div>'+
+    	      '          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>*</span><font color="black" size="3" >旧密码：</font><input autocomplete="off" class="cy_CMICBMS_addinput" type="password" placeholder="输入原密码" v-model="uPwd" maxlength="32">'+
+    	       '     </div><br>'+
+				'<!-- 密码验证提示 -->'+
+				'<div class = "cy_CMICBMS_addtb_pwdCheck3" v-if="upwdshow2">'+
+				'<div style="color:red; border: 2px black soli;" v-if="!pwdCheck" >{{Info.E0075}}</div>'+
+					'</div>'+
+				'<div class = "cy_CMICBMS_addtb_pwdCheck4" v-if="upwdshow3">'+
+				'<img src="../image/pwdCheck2.png" v-if="!pwdCheck">'+
+					'<img src="../image/pwdCheck1.png" v-if="pwdCheck">'+
+					'</div>'+
+				'<!-- ======== -->'+
     	      '      <div align="center">'+
-    	       '         <span>*</span><font color="black" size="3">新密码：</font></span><input class="cy_CMICBMS_addinput" type="password" placeholder="设置密码"'+
+    	       '         <span>&nbsp;&nbsp;&nbsp;*</span><font color="black" size="3">新密码：</font></span><input @focus="upwd_f" @blur="upwd_b" class="cy_CMICBMS_addinput" autocomplete="off" type="password" placeholder="设置密码"'+
     	        '                v-model="changePwd" maxlength="32">'+
-    	       '     </div>'+
+    	       '     </div><br>'+
     	      '      <div  align="center">'+
-    	       '         <span>*</span><font color="black" size="3">确认密码：</font><input class="cy_CMICBMS_addinput" type="password" placeholder="确认密码"'+
+    	       '         <span>&nbsp;&nbsp;&nbsp;*</span><font color="black" size="3">确认密码：</font><input autocomplete="off" class="cy_CMICBMS_addinput" type="password" placeholder="确认密码"'+
     	       '                   v-model="checkPwd" maxlength="32">'+
-    	        '    </div>'+
-    	        '    <div ><font color="black" size="3" >所属部门：{{userData.udep}}</font></div>'+
-    	        '    <div ><font color="black" size="3" >手机号码：{{userData.utel}}</font></div>'+
-    	        '    <div ><font color="black" size="3" >邮箱地址：{{userData.uemail}}</font></div>'+
+    	        '    </div><br>'+
+    	        '    <div ><font color="black" size="3" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所属部门：{{userData.udep}}</font></div><br>'+
+    	        '   <div ><font color="black" size="3" >&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;手机号码：{{userData.utel}}</font></div><br>'+
+    	        '   <div ><font color="black" size="3" >&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;邮箱地址：{{userData.uemail}}</font></div><br>'+
 
-    	       '     <div style="float:right;margin: 20px 20px 0 0;">'+
+    	       '     <div  style="float:right;margin: 20px 20px 0 0;">'+
     	        '        <input type="button" value="确定" class="cy_CMICBMS_schbtn"'+
     	       '               v-on:click="submit()" >'+
     	        '    </div>'+
@@ -569,10 +624,22 @@ var ic_user_info = {  //$parent.updateUser
         		userData:{},
         		changePwd:'',
         	    checkPwd:'',
+        	    upwdshow2:false,
+                upwdshow3:false,
+                pwdCheck:false,
         	    uPwd:''
         	}
         },
         methods:{
+        	 upwd_f:function () {
+                 this.upwdshow = false;
+                 this.upwdshow2 = true;
+                 this.upwdshow3 = true;
+             },
+             upwd_b:function () {
+                 this.upwdshow = true;
+                 this.upwdshow2 = false;
+             },
         	updateUser:function(){
         		console.log(document.getElementById("cy_hidebg_temple").style);
         		document.getElementById("cy_hidebg_temple").style.display="block";  //显示隐藏层
@@ -607,6 +674,9 @@ var ic_user_info = {  //$parent.updateUser
                     return false;
                 }else if(_this.changePwd.trim()==""){
                     layer.msg(Info.E0014);
+                    return false;
+                }else if(!pwdReg.test(_this.changePwd)&&_this.changePwd!=''){
+                    // 密码格式输入不对时
                     return false;
                 }
                 var user = _this.userData;
@@ -648,6 +718,15 @@ var ic_user_info = {  //$parent.updateUser
     			.catch(function (error) {
     			    console.log(error);
     			});
+        },
+        watch:{	
+        	"changePwd":function(){
+        		if(pwdReg.test(this.changePwd)){
+        			this.pwdCheck = true;
+        		}else{
+        			this.pwdCheck = false;
+        		}
+        	}
         }
     };
 

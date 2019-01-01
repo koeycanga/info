@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«žäº‰æƒ…æŠ¥åˆ†æžç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.controller.comprehensivemonitoring;
 
@@ -9,7 +9,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,13 +18,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ichangyun.InforAnalyaizer.model.CommBean;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.service.classification.ClassificationInfoService;
 import com.ichangyun.InforAnalyaizer.service.comprehensivemonitoring.ComprehensivemonitoringService;
 import com.ichangyun.InforAnalyaizer.utils.DateUtils;
 
 /**
- * 
- * ×ÛºÏ¼à²â¿ØÖÆÆ÷
+ *
+ * ç»¼åˆç›‘æµ‹æŽ§åˆ¶å™¨
  * @author renhao
  * Date:2018-11-12
  */
@@ -33,141 +33,146 @@ import com.ichangyun.InforAnalyaizer.utils.DateUtils;
 @RequestMapping("/comprehensivemonitoring")
 public class ComprehensivemonitoringController {
 
-	@Autowired
-	private ComprehensivemonitoringService comprehensivemonitoringService; //×ÛºÏ¼à²âservice
-	
-	@Autowired
-	private ClassificationInfoService classificationInfoService; //·ÖÀàÌåÏµservice
-	
-	/**
-	 * ½øÈë×ÛºÏ¼à²âÒ³Ãæ
-	 * @return
-	 */
-	@RequestMapping("/index")
-	@ResponseBody
-	public Object index() {
-		
-		return new ModelAndView("frontpage/comprehensivemonitoring");
-	}
-	
-	/**
-	 * Ö´ÐÐÒ³Ãæ²éÑ¯ÇëÇó
-	 * @param ab
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping("/search")
-	public Object search(ArticleInfoBean ab,HttpSession session) {
-		
-		String[] montime = DateUtils.dealMontime(ab.getMontime());
-		
-		ab.setMontime_start(montime[0]);
-		ab.setMontime_end(montime[1]);
+    @Autowired
+    private ComprehensivemonitoringService comprehensivemonitoringService; //ç»¼åˆç›‘æµ‹service
 
-		User user = (User) session.getAttribute(CommBean.SESSION_NAME);
-		String userid = user.getUser_ID();
-		ab.setUserid(userid);
+    @Autowired
+    private ClassificationInfoService classificationInfoService; //åˆ†ç±»ä½“ç³»service
 
-		String lastest_relsetime = comprehensivemonitoringService.getSearchLaestRelsetime(ab);
-		
-		session.setAttribute(CommBean.LAST_CONTENT_SEARCH_TIME_ZHJC,lastest_relsetime);
-		
-		int rowCount = comprehensivemonitoringService.getArticleRowCount(ab);
-		
-		String json_res = comprehensivemonitoringService.getArticleJSON(ab);
-		
-		String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
-		
-		return res;
-	}
-	
-	/**
-	 * É¾³ýÎÄÕÂ
-	 * @param map
-	 * @return
-	 */
-	@RequestMapping("/delarticle")
-	public Object delarticle(@RequestBody Map map,HttpSession session) {
-		String res = "ok";
+    /**
+     * è¿›å…¥ç»¼åˆç›‘æµ‹é¡µé¢
+     * @return
+     */
+    @RequestMapping("/index")
+    @ResponseBody
+    public Object index() {
 
-		String json = (String) map.get("json");
-		String deletemode = (String) map.get("deletemode");
-		User user = (User) session.getAttribute(CommBean.SESSION_NAME);
-		String userid = user.getUser_ID();
+        return new ModelAndView("frontpage/comprehensivemonitoring");
+    }
 
-		if(!comprehensivemonitoringService.delarticle(json,userid,deletemode)) {
-			res = "nok";
-		}
-		
-		return res;
-	}
-	
-	/**
-	 * Ô¤¾¯ÎÄÕÂ
-	 * @param map
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping("/toyj")
-	public Object toyj(@RequestBody Map map,HttpSession session) {
-		String res = "ok";
-		
-		String json = (String) map.get("json");
-		
-		if(!comprehensivemonitoringService.toyj(json,session)) {
-			res = "nok"; 
-		}
-		
-		return res;
-	}
-	
-	/**
-	 * »ñµÃ×îÐÂÏûÏ¢ÌõÄ¿Êý
-	 * @param ab
-	 * @return
-	 */
-	@RequestMapping("/getlastestNews")
-	public Object getlastestNews(ArticleInfoBean ab,HttpSession session) {
-		
-		String last_time = (String) session.getAttribute(CommBean.LAST_CONTENT_SEARCH_TIME_ZHJC);
-		
-		ab.setReleasetime(last_time);
-		
-		int count = comprehensivemonitoringService.getlastestNews(ab);
-		
-		return count;
-	}
-	
-	/**
-	 * »ñµÃÏàËÆÎÄÕÂ
-	 * @return
-	 */
-	@RequestMapping("/getSimContent")
-	public Object getSimContent(ArticleInfoBean ab,HttpSession session) {
-		   
-		String[] montime = DateUtils.dealMontime(ab.getMontime());
-		
-		ab.setMontime_start(montime[0]);
-		ab.setMontime_end(montime[1]);
+    /**
+     * æ‰§è¡Œé¡µé¢æŸ¥è¯¢è¯·æ±‚
+     * @param ab
+     * @param session
+     * @return
+     */
+    @RequestMapping("/search")
+    public Object search(ArticleInfoBean ab,HttpSession session) {
 
-		User user = (User) session.getAttribute(CommBean.SESSION_NAME);
-		String userid = user.getUser_ID();
-		ab.setUserid(userid);
-		
-		String json = comprehensivemonitoringService.getSimContent(ab);
-		    
-		return json;
-	}
-	
-	/**
-	 * »ñµÃ´¦ÔÚ¸ù½ÚµãµÄ·ÖÀàÌåÏµ
-	 * @return
-	 */
-	@RequestMapping("/getAllClassification")
-	public Object getAllClassification() {
-		
-		String json = classificationInfoService.getAllClassification();
-		
-		return json;
-	}
+        String[] montime = DateUtils.dealMontime(ab.getMontime());
+
+        ab.setMontime_start(montime[0]);
+        ab.setMontime_end(montime[1]);
+
+        ab.setMontime(ab.getMontime_bak());
+
+        User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+        ab.setUserid(user.getUser_ID());
+        ab.setCollectionField_ID(user.getCollectionField_ID());
+        
+        String lastest_relsetime = comprehensivemonitoringService.getSearchLaestRelsetime(ab);
+
+        session.setAttribute(CommBean.LAST_CONTENT_SEARCH_TIME_ZHJC,lastest_relsetime);
+
+        int rowCount = comprehensivemonitoringService.getArticleRowCount(ab);
+
+        String json_res = comprehensivemonitoringService.getArticleJSON(ab);
+
+        String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
+
+        return res;
+    }
+
+    /**
+     * åˆ é™¤æ–‡ç« 
+     * @param map
+     * @return
+     */
+    @RequestMapping("/delarticle")
+    public Object delarticle(@RequestBody Map map,HttpSession session) {
+        String res = "ok";
+
+        String json = (String) map.get("json");
+        String deletemode = (String) map.get("deletemode");
+        User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+        String userid = user.getUser_ID();
+
+        if(!comprehensivemonitoringService.delarticle(json,userid,deletemode)) {
+            res = "nok";
+        }
+
+        return res;
+    }
+
+    /**
+     * é¢„è­¦æ–‡ç« 
+     * @param map
+     * @param session
+     * @return
+     */
+    @RequestMapping("/toyj")
+    public Object toyj(@RequestBody Map map,HttpSession session) {
+        String res = "ok";
+
+        String json = (String) map.get("json");
+
+        if(!comprehensivemonitoringService.toyj(json,session)) {
+            res = "nok";
+        }
+
+        return res;
+    }
+
+    /**
+     * èŽ·å¾—æœ€æ–°æ¶ˆæ¯æ¡ç›®æ•°
+     * @param ab
+     * @return
+     */
+    @RequestMapping("/getlastestNews")
+    public Object getlastestNews(ArticleInfoBean ab,HttpSession session) {
+
+        String last_time = (String) session.getAttribute(CommBean.LAST_CONTENT_SEARCH_TIME_ZHJC);
+        User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+        ab.setReleasetime(last_time);
+        ab.setCollectionField_ID(user.getCollectionField_ID());
+        int count = comprehensivemonitoringService.getlastestNews(ab);
+        return count;
+    }
+
+    /**
+     * èŽ·å¾—ç›¸ä¼¼æ–‡ç« 
+     * @return
+     */
+    @RequestMapping("/getSimContent")
+    public Object getSimContent(ArticleInfoBean ab,HttpSession session) {
+
+        String[] montime = DateUtils.dealMontime(ab.getMontime());
+
+        ab.setMontime_start(montime[0]);
+        ab.setMontime_end(montime[1]);
+
+        if(ab.getMontime().length()>5) {
+            ab.setMontime("10");
+        }
+
+        User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+        String userid = user.getUser_ID();
+        ab.setUserid(userid);
+
+        String json = comprehensivemonitoringService.getSimContent(ab);
+
+        return json;
+    }
+
+    /**
+     * èŽ·å¾—å¤„åœ¨æ ¹èŠ‚ç‚¹çš„åˆ†ç±»ä½“ç³»
+     * @return
+     */
+    @RequestMapping("/getAllClassification")
+    public Object getAllClassification(HttpSession session) {
+
+        String json = classificationInfoService.getAllClassification(session);
+
+        return json;
+    }
 }

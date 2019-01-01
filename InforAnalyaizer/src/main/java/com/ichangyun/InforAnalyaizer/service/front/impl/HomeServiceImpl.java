@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ≥©‘∆ http://www.ichangyun.cn
+ * Copyright 2018 ÁïÖ‰∫ë http://www.ichangyun.cn
  * <p>
- * æ∫’˘«È±®∑÷ŒˆœµÕ≥
+ * Á´û‰∫âÊÉÖÊä•ÂàÜÊûêÁ≥ªÁªü
  */
 package com.ichangyun.InforAnalyaizer.service.front.impl;
 
@@ -9,15 +9,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.alibaba.fastjson.JSONArray;
 import com.ichangyun.InforAnalyaizer.mapper.front.HomeMapper;
 import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.front.HotWordBean;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.service.front.HomeService;
 import com.ichangyun.InforAnalyaizer.utils.DateUtils;
 
@@ -29,148 +32,158 @@ import com.ichangyun.InforAnalyaizer.utils.DateUtils;
 @Service
 public class HomeServiceImpl implements HomeService {
 
-	@Autowired
-	private HomeMapper homeMapper;
+    @Autowired
+    private HomeMapper homeMapper;
 
-	@Override
-	public String getHotWord() {
-		
-		List<HotWordBean> list = homeMapper.getHotWord();
-		
-		JSONArray ja = (JSONArray) JSONArray.toJSON(list);
-		
-		return ja.toJSONString();
-		
-	}
+    @Override
+    public String getHotWord(HttpSession session) {
 
-	@Override
-	public int getArticleCountByHotWord(HotWordBean hb) {
-	    if(hb.getFlag().equals("0")) {   // »»¥ ‘∆
-	    	return homeMapper.getArticleCountByHotWord(hb);
-	    }
-		if(hb.getFlag().equals("1")) {   //º¥Ω´∑¢…˙
-			return homeMapper.getArticleCountByJJFSWord(hb);
-		}
-	    return 0;
-	}
+    	User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+    	
+    	String CollectionField_ID = user.getCollectionField_ID();
+    	
+        List<HotWordBean> list = homeMapper.getHotWord(CollectionField_ID);
 
-	@Override
-	public String getArticleByHotWord(HotWordBean hb) {
-		
-		hb.setL_pre((hb.getPageNow()-1)*hb.getRowSize());
-		
-		List<ArticleInfoBean> list = null;
-		
-		if(hb.getFlag().equals("0")) {  // »»¥ ‘∆
-			list = homeMapper.getArticleByHotWord(hb);
-		}
-	    
-		if(hb.getFlag().equals("1")) {  //º¥Ω´∑¢…˙
-			list = homeMapper.getArticleByJJFSWord(hb);
-		}
-		
-		return ((JSONArray) JSONArray.toJSON(list)).toJSONString();
-	}
+        JSONArray ja = (JSONArray) JSONArray.toJSON(list);
 
-	@Override
-	public String getSimContent(ArticleInfoBean ab) {
-		
-	    List<ArticleInfoBean> list = homeMapper.getSimContent(ab);
-		
-		JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
+        return ja.toJSONString();
 
-	    return listArray.toJSONString();
-	}
+    }
 
-	@Override
-	public String getJJFSWord() {
-		
-		List<HotWordBean> list = homeMapper.getJJFSWord();
-		
-		int yz = 10 - list.size();
-		
-		for(int i=0;i<yz;i++) {
-			HotWordBean ab = new HotWordBean();
-			ab.setKeyword_ID("");
-			ab.setHotWord("");
-			list.add(ab);
-		}
-		
-		JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
+    @Override
+    public int getArticleCountByHotWord(HotWordBean hb) {
+        if(hb.getFlag().equals("0")) {   // ÁÉ≠ËØç‰∫ë
+            return homeMapper.getArticleCountByHotWord(hb);
+        }
+        if(hb.getFlag().equals("1")) {   //Âç≥Â∞ÜÂèëÁîü
+            return homeMapper.getArticleCountByJJFSWord(hb);
+        }
+        return 0;
+    }
 
-	    return listArray.toJSONString();
-	}
+    @Override
+    public String getArticleByHotWord(HotWordBean hb) {
 
-	@Override
-	public String getHotWordFromDetial(String flag) {  //flag  0:»»¥    1 º¥Ω´∑¢…˙     
-		if(flag.equals("0")) {
-			return getHotWord();
-		}
-		if(flag.equals("1")) {
-			return getJJFSWord();
-		}
-		return null;
-	}
-	
-	@Override
-	public String[] getTopTenDatas(HttpSession session) {
-		
-		User user = (User) session.getAttribute(CommBean.SESSION_NAME);
-		
-		String userid = user.getUser_ID();
-		
-		List<ArticleInfoBean> allist = homeMapper.getTopTenDatas(userid);
-		
-		List<ArticleInfoBean> newlist = new ArrayList<ArticleInfoBean> ();
-		
-		List<ArticleInfoBean> warnlist = new ArrayList<ArticleInfoBean> ();
-		
-		List<ArticleInfoBean> negativelist = new ArrayList<ArticleInfoBean> ();
-		
-		for(ArticleInfoBean ab:allist) {
-			if(ab.getFlag().equals("1")) { //◊Ó–¬œ˚œ¢top10
-				newlist.add(ab);
-			}
-			if(ab.getFlag().equals("2")) { //‘§æØ–≈œ¢top10
-				warnlist.add(ab);
-			}
-			if(ab.getFlag().equals("3")) { //∏∫√Ê–≈œ¢top10
-				negativelist.add(ab);
-			}
-		}
-		
-		String[] res = new String[3];
-		res[0] = ((JSONArray) JSONArray.toJSON(newlist)).toJSONString();
-		res[1] = ((JSONArray) JSONArray.toJSON(warnlist)).toJSONString();
-		res[2] = ((JSONArray) JSONArray.toJSON(negativelist)).toJSONString();
-		return res;
-	}
-	
+        hb.setL_pre((hb.getPageNow()-1)*hb.getRowSize());
 
-	@Override
-	public String getJCMsg(HttpSession session) {
-		
-		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
-		
-		String userid = u.getUser_ID();
-		
-		String today = DateUtils.format(new Date(), DateUtils.DATE_PATTERN);
-		String yesterday = DateUtils.format(DateUtils.addDateDays(new Date(),-1), DateUtils.DATE_PATTERN);
-		
-		Map map = homeMapper.getJCMsg(today,yesterday,userid);
-		
-		String res = "\"t_total\":\""+map.get("t_total")+"\","+
-					  "\"t_ztjc\":\""+map.get("t_ztjc")+"\","+
-					  "\"t_fmxx\":\""+map.get("t_fmxx")+"\","+
-					   "\"t_yjxx\":\""+map.get("t_yjxx")+"\","+
-					   "\"y_total\":\""+map.get("y_total")+"\","+
-					   "\"y_ztjc\":\""+map.get("y_ztjc")+"\","+
-					  "\"y_fmxx\":\""+map.get("y_fmxx")+"\","+
-					 "\"y_yjxx\":\""+map.get("y_yjxx")+"\"";
-		
-		return res;
-	}
+        List<ArticleInfoBean> list = null;
 
-	
+        if(hb.getFlag().equals("0")) {  // ÁÉ≠ËØç‰∫ë
+            list = homeMapper.getArticleByHotWord(hb);
+        }
+
+        if(hb.getFlag().equals("1")) {  //Âç≥Â∞ÜÂèëÁîü
+            list = homeMapper.getArticleByJJFSWord(hb);
+        }
+
+        return ((JSONArray) JSONArray.toJSON(list)).toJSONString();
+    }
+
+    @Override
+    public String getSimContent(ArticleInfoBean ab) {
+
+        List<ArticleInfoBean> list = homeMapper.getSimContent(ab);
+
+        JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
+
+        return listArray.toJSONString();
+    }
+
+    
+    @Override
+    public String getJJFSWord(HttpSession session) {
+
+    	User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+    	
+    	String CollectionField_ID = user.getCollectionField_ID();
+    	
+        List<HotWordBean> list = homeMapper.getJJFSWord(CollectionField_ID);
+
+        int yz = 10 - list.size();
+
+        for(int i=0;i<yz;i++) {
+            HotWordBean ab = new HotWordBean();
+            ab.setKeyword_ID("");
+            ab.setHotWord("");
+            list.add(ab);
+        }
+
+        JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
+
+        return listArray.toJSONString();
+    }
+
+    @Override
+    public String getHotWordFromDetial(String flag,HttpSession session) {  //flag  0:ÁÉ≠ËØç   1 Âç≥Â∞ÜÂèëÁîü
+        if(flag.equals("0")) {
+            return getHotWord(session);
+        }
+        if(flag.equals("1")) {
+            return getJJFSWord(session);
+        }
+        return null;
+    }
+
+    @Override
+    public String[] getTopTenDatas(HttpSession session) {
+
+        User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+
+        String userid = user.getUser_ID();
+        
+        String CollectionField_ID = user.getCollectionField_ID();
+
+        List<ArticleInfoBean> allist = homeMapper.getTopTenDatas(userid,CollectionField_ID);
+
+        List<ArticleInfoBean> newlist = new ArrayList<ArticleInfoBean> ();
+
+        List<ArticleInfoBean> warnlist = new ArrayList<ArticleInfoBean> ();
+
+        List<ArticleInfoBean> negativelist = new ArrayList<ArticleInfoBean> ();
+
+        for(ArticleInfoBean ab:allist) {
+            if(ab.getFlag().equals("1")) { //ÊúÄÊñ∞Ê∂àÊÅØtop10
+                newlist.add(ab);
+            }
+            if(ab.getFlag().equals("2")) { //È¢ÑË≠¶‰ø°ÊÅØtop10
+                warnlist.add(ab);
+            }
+            if(ab.getFlag().equals("3")) { //Ë¥üÈù¢‰ø°ÊÅØtop10
+                negativelist.add(ab);
+            }
+        }
+
+        String[] res = new String[3];
+        res[0] = ((JSONArray) JSONArray.toJSON(newlist)).toJSONString();
+        res[1] = ((JSONArray) JSONArray.toJSON(warnlist)).toJSONString();
+        res[2] = ((JSONArray) JSONArray.toJSON(negativelist)).toJSONString();
+        return res;
+    }
+
+
+    @Override
+    public String getJCMsg(HttpSession session) {
+
+        User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+
+        String userid = u.getUser_ID();
+        String CollectionField_ID = u.getCollectionField_ID();
+        
+        String today = DateUtils.format(new Date(), DateUtils.DATE_PATTERN);
+        String yesterday = DateUtils.format(DateUtils.addDateDays(new Date(),-1), DateUtils.DATE_PATTERN);
+
+        Map map = homeMapper.getJCMsg(today,yesterday,userid,CollectionField_ID);
+
+        String res = "\"t_total\":\""+map.get("t_total")+"\","+
+                "\"t_ztjc\":\""+map.get("t_ztjc")+"\","+
+                "\"t_fmxx\":\""+map.get("t_fmxx")+"\","+
+                "\"t_yjxx\":\""+map.get("t_yjxx")+"\","+
+                "\"y_total\":\""+map.get("y_total")+"\","+
+                "\"y_ztjc\":\""+map.get("y_ztjc")+"\","+
+                "\"y_fmxx\":\""+map.get("y_fmxx")+"\","+
+                "\"y_yjxx\":\""+map.get("y_yjxx")+"\"";
+
+        return res;
+    }
 
 }

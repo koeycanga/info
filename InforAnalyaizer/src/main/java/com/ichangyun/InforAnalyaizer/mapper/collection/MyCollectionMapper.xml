@@ -44,15 +44,11 @@
 			<if test="createuser != null">
 				CreateUser,
 			</if>
-			<if test="createdatetime != null">
 				CreateDateTime,
-			</if>
 			<if test="updateuser != null">
 				UpdateUser,
 			</if>
-			<if test="updatedatetime != null">
 				UpdateDateTime,
-			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="userId != null">
@@ -70,15 +66,11 @@
 			<if test="createuser != null">
 				#{createuser,jdbcType=VARCHAR},
 			</if>
-			<if test="createdatetime != null">
-				#{createdatetime,jdbcType=TIMESTAMP},
-			</if>
+			now(),
 			<if test="updateuser != null">
 				#{updateuser,jdbcType=VARCHAR},
 			</if>
-			<if test="updatedatetime != null">
-				#{updatedatetime,jdbcType=TIMESTAMP},
-			</if>
+				now()
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective"
@@ -97,9 +89,9 @@
 			<if test="updateuser != null">
 				UpdateUser = #{updateuser,jdbcType=VARCHAR},
 			</if>
-			<if test="updatedatetime != null">
-				UpdateDateTime = #{updatedatetime,jdbcType=TIMESTAMP},
-			</if>
+			
+				UpdateDateTime =now()
+			
 		</set>
 		where User_ID = #{userId,jdbcType=CHAR}
 		and CollectionType_ID =
@@ -110,9 +102,9 @@
 	<select id="getOpts"
 		resultType="com.ichangyun.InforAnalyaizer.model.SearchOptBean">
 		select
-		DisplayOrder id,MasterValue name
+		MasterID id,MasterValue name
 		from m_generalpurpose
-		where MasterTypeID = "F008"
+		where MasterTypeID = "F008" order by DisplayOrder
 	</select>
 
 	<delete id="delete" parameterType="hashmap">
@@ -130,7 +122,8 @@
 	<update id="updateType" parameterType="hashmap">
 		update m_mycollection
 		<set>
-			CollectionType_ID = #{updateTypeId}
+			CollectionType_ID = #{updateTypeId},
+			UpdateDateTime=now()
 		</set>
 		where User_ID = #{userid}
 		and Article_ID in
@@ -159,16 +152,20 @@
 				and a.User_ID=#{userId}
 			</if>
 			<if test="collectiontypeId!=null and collectiontypeId!=''">
-				and a.CollectionType_ID = #{collectiontypeId}
+				and LOCATE(a.CollectionType_ID ,(select DISTINCT getChildList_collectiontype(#{collectiontypeId})
+		from m_collectiontype))>0 
 			</if>
-			<if test="articleTitle!=null">
-				and b.ArticleTitle like concat("%",#{articleTitle},"%")
+			<if test="articleTitle!=null and articleTitle!=''">
+				and (b.ArticleTitle like concat("%",#{articleTitle},"%")
 				or b.ArticleAbstract like concat("%",#{articleTitle},"%")
 				or
-				b.ArticleText like concat("%",#{articleTitle},"%")
+				b.ArticleText like concat("%",#{articleTitle},"%"))
 			</if>
+			and not exists (
+			   select 1 from a_userdeletearticleinfo where User_ID=#{userId} and Article_ID=a.Article_ID
+			)
 		</where>
-		ORDER BY c.CollectionStratum,c.CollectionPath,a.DisplayOrder ASC limit
+		ORDER BY c.CollectionStratum,c.CollectionPath ASC ,a.UpdateDateTime desc limit
 		#{l_pre},#{rowSize}
 	</select>
 
@@ -182,15 +179,19 @@
 			<if test="1==1">
 				and a.User_ID=#{userId}
 			</if>
-			<if test="collectiontypeId!=null">
-				and a.CollectionType_ID = #{collectiontypeId}
+			<if test="collectiontypeId!=null and collectiontypeId!=''">
+				and LOCATE(a.CollectionType_ID ,(select DISTINCT getChildList_collectiontype(#{collectiontypeId})
+		from m_collectiontype))>0 
 			</if>
-			<if test="articleTitle!=null">
-				and b.ArticleTitle like concat("%",#{articleTitle},"%")
+			<if test="articleTitle!=null and articleTitle!=''">
+				and (b.ArticleTitle like concat("%",#{articleTitle},"%")
 				or b.ArticleAbstract like concat("%",#{articleTitle},"%")
 				or
-				b.ArticleText like concat("%",#{articleTitle},"%")
+				b.ArticleText like concat("%",#{articleTitle},"%"))
 			</if>
+			and not exists (
+			   select 1 from a_userdeletearticleinfo where User_ID=#{userId} and Article_ID=a.Article_ID
+			)
 		</where>
 	</select>
 	
@@ -217,13 +218,17 @@
 				and a.User_ID=#{userId}
 			</if>
 			<if test="collectiontypeId!=null and collectiontypeId!=''">
-				and a.CollectionType_ID = #{collectiontypeId}
+				and LOCATE(a.CollectionType_ID ,(select DISTINCT getChildList_collectiontype(#{collectiontypeId})
+		from m_collectiontype))>0 
 			</if>
-			<if test="articleTitle!=null">
+			<if test="articleTitle!=null and articleTitle!=''">
 				and b.ArticleTitle like concat("%",#{articleTitle},"%")
 			</if>
+			and not exists (
+			   select 1 from a_userdeletearticleinfo where User_ID=#{userId} and Article_ID=a.Article_ID
+			)
 		</where>
-		ORDER BY c.CollectionStratum,c.CollectionPath,a.DisplayOrder ASC limit
+		ORDER BY c.CollectionStratum,c.CollectionPath ASC,a.UpdateDateTime desc limit
 		#{l_pre},#{rowSize}
 	</select>
 
@@ -237,12 +242,16 @@
 			<if test="1==1">
 				and a.User_ID=#{userId}
 			</if>
-			<if test="collectiontypeId!=null">
-				and a.CollectionType_ID = #{collectiontypeId}
+			<if test="collectiontypeId!=null and collectiontypeId!=''">
+				and LOCATE(a.CollectionType_ID ,(select DISTINCT getChildList_collectiontype(#{collectiontypeId})
+		from m_collectiontype))>0 
 			</if>
-			<if test="articleTitle!=null">
+			<if test="articleTitle!=null and articleTitle!=''">
 				and b.ArticleTitle like concat("%",#{articleTitle},"%")
 			</if>
+			and not exists (
+			   select 1 from a_userdeletearticleinfo where User_ID=#{userId} and Article_ID=a.Article_ID
+			)
 		</where>
 	</select>
 	
@@ -269,13 +278,17 @@
 				and a.User_ID=#{userId}
 			</if>
 			<if test="collectiontypeId!=null and collectiontypeId!=''">
-				and a.CollectionType_ID = #{collectiontypeId}
+				and LOCATE(a.CollectionType_ID ,(select DISTINCT getChildList_collectiontype(#{collectiontypeId})
+		from m_collectiontype))>0 
 			</if>
-			<if test="articleTitle!=null">
+			<if test="articleTitle!=null and articleTitle!=''">
 				and b.ArticleAbstract like concat("%",#{articleTitle},"%")
 			</if>
+			and not exists (
+			   select 1 from a_userdeletearticleinfo where User_ID=#{userId} and Article_ID=a.Article_ID
+			)
 		</where>
-		ORDER BY c.CollectionStratum,c.CollectionPath,a.DisplayOrder ASC limit
+		ORDER BY c.CollectionStratum,c.CollectionPath ASC,a.UpdateDateTime desc limit
 		#{l_pre},#{rowSize}
 	</select>
 
@@ -289,12 +302,16 @@
 			<if test="1==1">
 				and a.User_ID=#{userId}
 			</if>
-			<if test="collectiontypeId!=null">
-				and a.CollectionType_ID = #{collectiontypeId}
+			<if test="collectiontypeId!=null and collectiontypeId!=''">
+				and LOCATE(a.CollectionType_ID ,(select DISTINCT getChildList_collectiontype(#{collectiontypeId})
+		from m_collectiontype))>0 
 			</if>
-			<if test="articleTitle!=null">
+			<if test="articleTitle!=null and articleTitle!=''">
 				and b.ArticleAbstract like concat("%",#{articleTitle},"%")
 			</if>
+			and not exists (
+			   select 1 from a_userdeletearticleinfo where User_ID=#{userId} and Article_ID=a.Article_ID
+			)
 		</where>
 	</select>
 	
@@ -321,13 +338,17 @@
 				and a.User_ID=#{userId}
 			</if>
 			<if test="collectiontypeId!=null and collectiontypeId!=''">
-				and a.CollectionType_ID = #{collectiontypeId}
+				and LOCATE(a.CollectionType_ID ,(select DISTINCT getChildList_collectiontype(#{collectiontypeId})
+		from m_collectiontype))>0 
 			</if>
-			<if test="articleTitle!=null">
+			<if test="articleTitle!=null and articleTitle!=''">
 				and b.ArticleText like concat("%",#{articleTitle},"%")
 			</if>
+			and not exists (
+			   select 1 from a_userdeletearticleinfo where User_ID=#{userId} and Article_ID=a.Article_ID
+			)
 		</where>
-		ORDER BY c.CollectionStratum,c.CollectionPath,a.DisplayOrder ASC limit
+		ORDER BY c.CollectionStratum,c.CollectionPath ASC,a.UpdateDateTime desc limit
 		#{l_pre},#{rowSize}
 	</select>
 
@@ -341,12 +362,15 @@
 			<if test="1==1">
 				and a.User_ID=#{userId}
 			</if>
-			<if test="collectiontypeId!=null">
-				and a.CollectionType_ID = #{collectiontypeId}
+			<if test="collectiontypeId!=null and collectiontypeId!=''">
+			and LOCATE(a.CollectionType_ID ,(select DISTINCT getChildList_collectiontype(#{collectiontypeId})
+		from m_collectiontype))>0 
 			</if>
-			<if test="articleTitle!=null">
+			<if test="articleTitle!=null and articleTitle!=''">
 				and b.ArticleText like concat("%",#{articleTitle},"%")
 			</if>
+			and not exists (
+			   select 1 from a_userdeletearticleinfo where User_ID=#{userId} and Article_ID=a.Article_ID)
 		</where>
 	</select>
 </mapper>

@@ -37,7 +37,7 @@
 	</sql>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
 		delete from m_notice
-		where NoticeID = #{noticeid,jdbcType=VARCHAR}
+		where NoticeID in (${value})
 	</delete>
 	<insert id="insertSelective"
 		parameterType="com.ichangyun.InforAnalyaizer.model.notice.Notice">
@@ -79,13 +79,18 @@
 			<if test="createuser != null">
 				CreateUser,
 			</if>
-			<if test="createdatetime != null">
-				CreateDateTime,
-			</if>
+				
 			<if test="updateuser != null">
 				UpdateUser,
 			</if>
-
+				
+			<if test="CollectionField_ID != null">
+				CollectionField_ID,
+			</if><if test="Customer_ID != null">
+				Customer_ID,
+			</if>
+			CreateDateTime,
+			UpdateDateTime,
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="noticeid != null">
@@ -124,13 +129,18 @@
 			<if test="createuser != null">
 				#{createuser,jdbcType=VARCHAR},
 			</if>
-			<if test="createdatetime != null">
-				#{createdatetime,jdbcType=TIMESTAMP},
-			</if>
+				
 			<if test="updateuser != null">
 				#{updateuser,jdbcType=VARCHAR},
 			</if>
-
+				
+			<if test="CollectionField_ID != null">
+				#{CollectionField_ID},
+			</if>
+			<if test="Customer_ID != null">
+				#{Customer_ID},
+			</if>
+			now(),now()
 		</trim>
 	</insert>
 	
@@ -147,9 +157,8 @@
 		SendTime = #{sendtime,jdbcType=CHAR},
 		EMail = #{email,jdbcType=VARCHAR},
 		ValidFlag = #{validflag,jdbcType=CHAR},
-		CreateUser = #{createuser,jdbcType=VARCHAR},
-		CreateDateTime = #{createdatetime,jdbcType=TIMESTAMP},
 		UpdateUser = #{updateuser,jdbcType=VARCHAR},
+		UpdateDateTime = now()
 		where NoticeID = #{noticeid,jdbcType=VARCHAR}
 	</update>
 	<select id="queryAllNotice"
@@ -164,17 +173,20 @@
 		a.UpdateUser updateuser,DATE_FORMAT(a.UpdateDateTime,'%Y/%m/%d %H:%i:%s') updatedatetime,b.MasterValue typename
 		from m_notice a INNER JOIN m_generalpurpose b on
 		a.NoticeType=b.DisplayOrder where b.MasterTypeID='F006'
+		and a.CollectionField_ID=#{CollectionField_ID} and a.Customer_ID=#{Customer_ID} and a.CreateUser=#{userId}
 		order by
 		a.CreateDateTime DESC
 		LIMIT
 		#{l_pre},#{rowSize}
 	</select>
 
-	<select id="queryCount" resultType="Integer">
+	<select id="queryCount" resultType="Integer" parameterType="hashmap">
 		select
 		count(1)
 		from
 		m_notice
+		where CollectionField_ID=#{CollectionField_ID} and Customer_ID=#{Customer_ID} and CreateUser=#{userId}
+		
 	</select>
 
 	<select id="getNoticeType"
@@ -198,6 +210,15 @@
 		a.CreateDateTime createdatetime,
 		a.UpdateUser updateuser, DATE_FORMAT(a.UpdateDateTime,'%Y/%m/%d %H:%i:%s') updatedatetime,b.MasterValue typename
 		from m_notice a INNER JOIN m_generalpurpose b on
-		a.NoticeType=b.DisplayOrder where b.MasterTypeID='F006' and a.NoticeID=#{value}
+		a.NoticeType=b.DisplayOrder where b.MasterTypeID='F006' and a.NoticeID=#{value} 
+	</select>
+	
+		<select id="checkName"
+		resultType="Integer"
+		parameterType="com.ichangyun.InforAnalyaizer.model.notice.Notice">
+		SELECT count(1)
+		from m_notice a INNER JOIN m_generalpurpose b on
+		a.NoticeType=b.DisplayOrder where b.MasterTypeID='F006' and a.Title=#{title} and a.CreateUser=#{createuser} 
+		and a.NoticeID != #{noticeid}
 	</select>
 </mapper>

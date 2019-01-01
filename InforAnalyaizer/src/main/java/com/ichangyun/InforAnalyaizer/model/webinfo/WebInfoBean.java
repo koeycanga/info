@@ -1,105 +1,117 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ * ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model.webinfo;
 
 import com.ichangyun.InforAnalyaizer.model.BaseBean;
 
 /**
- * ÍøÕ¾ĞÅÏ¢ÊµÌåÀà
- * ¶ÔÓ¦Êı¾İ±ím_websiteinfoµÄÊµÌåÀà
+ * ç½‘ç«™ä¿¡æ¯å®ä½“ç±»
+ * å¯¹åº”æ•°æ®è¡¨ï¼šm_websiteinfo
  * @author renhao
- * Date:2018-11-12
+ * @Date:2018-11-12
  */
 public class WebInfoBean extends BaseBean {
-	/**
-	 * ÍøÕ¾ID
-	 */
-	private String Website_ID;
-	
-	/**
-	 * ÍøÕ¾Ãû³Æ
-	 */
-	private String WebsiteName;
-	
-	/**
-	 * ÍøÕ¾µØÖ·
-	 */
-	private String Website;
-	
-	/**
-	 * ÑéÖ¤±êÊ¾Î»
-	 */
-	private String ValidFlag;
-	
-	/**
-	 * °ó¶¨µÄ·ÖÀàÌåÏµID
-	 */
-	private String Classification_ID;
-	
-	/**
-	 * ÍøÕ¾NO
-	 */
-	private int Website_No;
-	
-	/**
-	 * ´´½¨Õß
-	 */
-	private String CreateUser;
-	
-	/**
-	 * ´´½¨Ê±¼ä
-	 */
-	private String CreateDateTime;
-	
+
+    /**
+     * ç½‘ç«™ID
+     */
+    private String Website_ID;
+
+    /**
+     * ç½‘ç«™åç§°
+     */
+    private String WebsiteName;
+
+    /**
+     * ç½‘ç«™åœ°å€
+     */
+    private String Website;
+
+    /**
+     * éªŒè¯æ ‡ç¤ºä½
+     */
+    private String ValidFlag;
+
+    /**
+     * ç»‘å®šçš„åˆ†ç±»ä½“ç³»ID
+     */
+    private String Classification_ID;
+
+    /**
+     * ç½‘ç«™NO
+     */
+    private int Website_No;
+
+    /**
+     * åˆ›å»ºè€…
+     */
+    private String CreateUser;
+
+    /**
+     * åˆ›å»ºæ—¶é—´
+     */
+    private String CreateDateTime;
+
+    /**
+     * é‡‡é›†é¢†åŸŸID
+     */
+    private String CollectionField_ID;
+    
+    public String getCollectionField_ID() {
+		return CollectionField_ID;
+	}
+	public void setCollectionField_ID(String collectionField_ID) {
+		CollectionField_ID = collectionField_ID;
+	}
 	public String getCreateUser() {
-		return CreateUser;
-	}
-	public void setCreateUser(String createUser) {
-		CreateUser = createUser;
-	}
-	public String getCreateDateTime() {
-		return CreateDateTime;
-	}
-	public void setCreateDateTime(String createDateTime) {
-		CreateDateTime = createDateTime;
-	}
-	public int getWebsite_No() {
-		return Website_No;
-	}
-	public void setWebsite_No(int website_No) {
-		Website_No = website_No;
-	}
-	public String getClassification_ID() {
-		return Classification_ID;
-	}
-	public void setClassification_ID(String classification_ID) {
-		Classification_ID = classification_ID;
-	}
-	public String getWebsite_ID() {
-		return Website_ID;
-	}
-	public void setWebsite_ID(String website_ID) {
-		Website_ID = website_ID;
-	}
-	public String getWebsiteName() {
-		return WebsiteName;
-	}
-	public void setWebsiteName(String websiteName) {
-		WebsiteName = websiteName;
-	}
-	public String getWebsite() {
-		return Website;
-	}
-	public void setWebsite(String website) {
-		Website = website;
-	}
-	public String getValidFlag() {
-		return ValidFlag;
-	}
-	public void setValidFlag(String validFlag) {
-		ValidFlag = validFlag;
-	}
+        return CreateUser;
+    }
+    public void setCreateUser(String createUser) {
+        CreateUser = createUser;
+    }
+    public String getCreateDateTime() {
+        return CreateDateTime;
+    }
+    public void setCreateDateTime(String createDateTime) {
+        CreateDateTime = createDateTime;
+    }
+    public int getWebsite_No() {
+        return Website_No;
+    }
+    public void setWebsite_No(int website_No) {
+        Website_No = website_No;
+    }
+    public String getClassification_ID() {
+        return Classification_ID;
+    }
+    public void setClassification_ID(String classification_ID) {
+        Classification_ID = classification_ID;
+    }
+    public String getWebsite_ID() {
+        return Website_ID;
+    }
+    public void setWebsite_ID(String website_ID) {
+        Website_ID = website_ID;
+    }
+    public String getWebsiteName() {
+        return WebsiteName;
+    }
+    public void setWebsiteName(String websiteName) {
+        WebsiteName = websiteName;
+    }
+    public String getWebsite() {
+        return Website;
+    }
+    public void setWebsite(String website) {
+        Website = website;
+    }
+    public String getValidFlag() {
+        return ValidFlag;
+    }
+    public void setValidFlag(String validFlag) {
+        ValidFlag = validFlag;
+    }
 }

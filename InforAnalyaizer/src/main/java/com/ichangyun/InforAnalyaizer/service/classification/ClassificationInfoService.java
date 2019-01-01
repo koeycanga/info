@@ -1,117 +1,119 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ * ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.service.classification;
 
 
+import javax.servlet.http.HttpSession;
+
 import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean;
 
 /**
- * ·ÖÀàÌåÏµService
+ * åˆ†ç±»ä½“ç³»Service
  * @author renhao
- * Date:2018-11-12
+ * @Date:2018-11-12
  */
 public interface ClassificationInfoService {
 
-	/**
-	 * »ñµÃÒª²éÑ¯µÄ·ÖÀàÌåÏµ×ÜÊı
-	 * @param cb  ²éÑ¯²ÎÊı
-	 * @return  Òª²éÑ¯µÄ·ÖÀàÌåÏµ×ÜÊı
-	 * Date:2018-11-12
-	 */
-	public int getClassifcInfoCount(ClassificationInfoBean cb);
-
-	
-	/**
-	 * »ñµÃÒª²éÑ¯µÄ·ÖÀàÌåÏµĞÅÏ¢µÄJSON×ÖÃæÁ¿
-	 * @param cb  ²éÑ¯²ÎÊı
-	 * @return Òª²éÑ¯µÄ·ÖÀàÌåÏµĞÅÏ¢µÄJSON×ÖÃæÁ¿
-	 * Date:2018-11-12
-	 */
-	public String getClassifcInfo(ClassificationInfoBean cb);
-
-	/**
-	 * ¸ù¾İID²éÑ¯·ÖÀàÌåÏµĞÅÏ¢
-	 * @return  Òª²éÑ¯µÄ²éÑ¯·ÖÀàÌåÏµĞÅÏ¢JSON×ÖÃæÁ¿
-	 * Date:2018-11-12
-	 */
-	public String getClassificationInfoID();
-
-	/**
-	 * ĞÂÔö·ÖÀàÌåÏµĞÅÏ¢
-	 * @param cb  ĞÂÔö·ÖÀàÌåÏµĞÅÏ¢µÄ¸÷²ÎÊı
-	 * @return  true ĞÂÔö³É¹¦   false  Òì³£
-	 * Date:2018-11-12
-	 */
-	public boolean AddNew(ClassificationInfoBean cb);
-
-	/**
-	 * ²éÑ¯·ÖÀàÌåÏµÃû³ÆÊÇ·ñÒÑ´æÔÚ
-	 * @param cb  Òª²éÑ¯µÄ·ÖÀàÌåÏµÃû³Æ²ÎÊı
-	 * @return  true ÒÑ´æÔÚ   false ²»´æÔÚ
-	 * Date:2018-11-12
-	 */
-	public boolean exist(ClassificationInfoBean cb);
-
-	/**
-	 * ĞŞ¸Ä·ÖÀàÌåÏµĞÅÏ¢
-	 * @param cb  ÒªĞŞ¸ÄµÄ·ÖÀàÌåÏµ²ÎÊı
-	 * @return  true ĞŞ¸Ä³É¹¦¡¡¡¡false¡¡Òì³£
-	 * Date:2018-11-12
-	 */
-	public String updateData(ClassificationInfoBean cb);
-
-	/**
-	 * ²éÑ¯³ıÄ³£É£ÄÒÔÍâµÄ·ÖÀàÌåÏµÃû³ÆÊÇ·ñÒÑ´æÔÚ
-	 * @param cb¡¡¡¡Òª²éÑ¯µÄ·ÖÀàÌåÏµÃû³ÆºÍ£É£Ä²ÎÊı
-	 * @return¡¡true ÒÑ´æÔÚ   false ²»´æÔÚ
-	 * Date:2018-11-12
-	 */
-	public boolean existExceptID(ClassificationInfoBean cb);
-
-	/**
-	 * É¾³ı·ÖÀàÌåÏµĞÅÏ¢
-	 * @param json¡¡ÒªÉ¾³ıµÄ·ÖÀàĞÅÏ¢£É£ÄµÄ£ê£ó£ï£î×ÖÃæÁ¿
-	 * @return¡¡£ô£ò£õ£å¡¡É¾³ı³É¹¦¡¡¡¡£æ£á£ì£ó£å¡¡Òì³£
-	 * Date:2018-11-12
-	 */
-	public boolean delDSata(String json);
-
-	
-	/**
-	 * ¸ü¸Ä·ÖÀàÌåÏµÅÅÎ»Ë³Ğò
-	 * @param cur_Classification_ID   Òª½»»»µÄ·ÖÀàÌåÏµID 1
-	 * @param cur_displayOrder        Òª½»»»µÄ·ÖÀàÌåÏµÅÅÎ»Ë³Ğò 1
-	 * @param ch_Classification_ID    Òª½»»»µÄ·ÖÀàÌåÏµID 2
-	 * @param ch_displayOrder         Òª½»»»µÄ·ÖÀàÌåÏµÅÅÎ»Ë³Ğò 2
-	 * Date:2018-11-12
-	 */
-	public void updateOrder(String cur_Classification_ID, int cur_displayOrder, String ch_Classification_ID,int ch_displayOrder);
-
-	/**
-	 * ¸ù¾İID »ñµÃ·ÖÀàÌåÏµµÄ×Ó½Úµã
-	 * @param cb   Òª»ñµÃ×Ó½ÚµãµÄ·ÖÀàÌåÏµID²ÎÊı
-	 * @return   ·ÖÀàÌåÏµ×Ó½ÚµãĞÅÏ¢µÄJSON ×ÖÃæÁ¿
-	 * Date:2018-11-12
-	 */
-	public String getChildernByID(ClassificationInfoBean cb);
-
-	
-	/**
-	 * ¸ù¾İ£É£Ä»ñµÃ·ÖÀàÌåÏµĞÅÏ¢
-	 * @param cb¡¡¡¡Òª²éÑ¯µÄ·ÖÀàÌåÏµĞÅÏ¢£É£Ä²ÎÊı
-	 * @return¡¡¡¡Òª²éÑ¯µÄ·ÖÀàÌåÏµĞÅÏ¢
-	 * Date:2018-11-12
-	 */
-	public String getInfoByID(ClassificationInfoBean cb);
+    /**
+     * è·å¾—è¦æŸ¥è¯¢çš„åˆ†ç±»ä½“ç³»æ€»æ•°
+     * @param cb  æŸ¥è¯¢å‚æ•°
+     * @return  è¦æŸ¥è¯¢çš„åˆ†ç±»ä½“ç³»æ€»æ•°
+     * Date:2018-11-12
+     */
+    public int getClassifcInfoCount(ClassificationInfoBean cb);
 
 
-	/**
-	 * »ñµÃËùÓĞ´¦ÓÚ¸ù½ÚµãµÄ·ÖÀàÌåÏµ
-	 * @return
-	 */
-	public String getAllClassification();
+    /**
+     * è·å¾—è¦æŸ¥è¯¢çš„åˆ†ç±»ä½“ç³»ä¿¡æ¯çš„JSONå­—é¢é‡
+     * @param cb  æŸ¥è¯¢å‚æ•°
+     * @return è¦æŸ¥è¯¢çš„åˆ†ç±»ä½“ç³»ä¿¡æ¯çš„JSONå­—é¢é‡
+     * Date:2018-11-12
+     */
+    public String getClassifcInfo(ClassificationInfoBean cb);
+
+    /**
+     * æ ¹æ®IDæŸ¥è¯¢åˆ†ç±»ä½“ç³»ä¿¡æ¯
+     * @return  è¦æŸ¥è¯¢çš„æŸ¥è¯¢åˆ†ç±»ä½“ç³»ä¿¡æ¯JSONå­—é¢é‡
+     * Date:2018-11-12
+     */
+    public String getClassificationInfoID();
+
+    /**
+     * æ–°å¢åˆ†ç±»ä½“ç³»ä¿¡æ¯
+     * @param cb  æ–°å¢åˆ†ç±»ä½“ç³»ä¿¡æ¯çš„å„å‚æ•°
+     * @return  true æ–°å¢æˆåŠŸ   false  å¼‚å¸¸
+     * Date:2018-11-12
+     */
+    public boolean AddNew(ClassificationInfoBean cb);
+
+    /**
+     * æŸ¥è¯¢åˆ†ç±»ä½“ç³»åç§°æ˜¯å¦å·²å­˜åœ¨
+     * @param cb  è¦æŸ¥è¯¢çš„åˆ†ç±»ä½“ç³»åç§°å‚æ•°
+     * @return  true å·²å­˜åœ¨   false ä¸å­˜åœ¨
+     * Date:2018-11-12
+     */
+    public boolean exist(ClassificationInfoBean cb);
+
+    /**
+     * ä¿®æ”¹åˆ†ç±»ä½“ç³»ä¿¡æ¯
+     * @param cb  è¦ä¿®æ”¹çš„åˆ†ç±»ä½“ç³»å‚æ•°
+     * @return  true ä¿®æ”¹æˆåŠŸã€€ã€€falseã€€å¼‚å¸¸
+     * Date:2018-11-12
+     */
+    public String updateData(ClassificationInfoBean cb);
+
+    /**
+     * æŸ¥è¯¢é™¤æŸï¼©ï¼¤ä»¥å¤–çš„åˆ†ç±»ä½“ç³»åç§°æ˜¯å¦å·²å­˜åœ¨
+     * @param cbã€€ã€€è¦æŸ¥è¯¢çš„åˆ†ç±»ä½“ç³»åç§°å’Œï¼©ï¼¤å‚æ•°
+     * @returnã€€true å·²å­˜åœ¨   false ä¸å­˜åœ¨
+     * Date:2018-11-12
+     */
+    public boolean existExceptID(ClassificationInfoBean cb);
+
+    /**
+     * åˆ é™¤åˆ†ç±»ä½“ç³»ä¿¡æ¯
+     * @param jsonã€€è¦åˆ é™¤çš„åˆ†ç±»ä¿¡æ¯ï¼©ï¼¤çš„ï½Šï½“ï½ï½å­—é¢é‡
+     * @returnã€€ï½”ï½’ï½•ï½…ã€€åˆ é™¤æˆåŠŸã€€ã€€ï½†ï½ï½Œï½“ï½…ã€€å¼‚å¸¸
+     * Date:2018-11-12
+     */
+    public boolean delDSata(String json);
+
+
+    /**
+     * æ›´æ”¹åˆ†ç±»ä½“ç³»æ’ä½é¡ºåº
+     * @param cur_Classification_ID   è¦äº¤æ¢çš„åˆ†ç±»ä½“ç³»ID 1
+     * @param cur_displayOrder        è¦äº¤æ¢çš„åˆ†ç±»ä½“ç³»æ’ä½é¡ºåº 1
+     * @param ch_Classification_ID    è¦äº¤æ¢çš„åˆ†ç±»ä½“ç³»ID 2
+     * @param ch_displayOrder         è¦äº¤æ¢çš„åˆ†ç±»ä½“ç³»æ’ä½é¡ºåº 2
+     * Date:2018-11-12
+     */
+    public void updateOrder(String cur_Classification_ID, int cur_displayOrder, String ch_Classification_ID,int ch_displayOrder);
+
+    /**
+     * æ ¹æ®ID è·å¾—åˆ†ç±»ä½“ç³»çš„å­èŠ‚ç‚¹
+     * @param cb   è¦è·å¾—å­èŠ‚ç‚¹çš„åˆ†ç±»ä½“ç³»IDå‚æ•°
+     * @return   åˆ†ç±»ä½“ç³»å­èŠ‚ç‚¹ä¿¡æ¯çš„JSON å­—é¢é‡
+     * Date:2018-11-12
+     */
+    public String getChildernByID(ClassificationInfoBean cb);
+
+
+    /**
+     * æ ¹æ®ï¼©ï¼¤è·å¾—åˆ†ç±»ä½“ç³»ä¿¡æ¯
+     * @param cbã€€ã€€è¦æŸ¥è¯¢çš„åˆ†ç±»ä½“ç³»ä¿¡æ¯ï¼©ï¼¤å‚æ•°
+     * @returnã€€ã€€è¦æŸ¥è¯¢çš„åˆ†ç±»ä½“ç³»ä¿¡æ¯
+     * Date:2018-11-12
+     */
+    public String getInfoByID(ClassificationInfoBean cb);
+
+
+    /**
+     * è·å¾—æ‰€æœ‰å¤„äºæ ¹èŠ‚ç‚¹çš„åˆ†ç±»ä½“ç³»
+     * @return
+     */
+    public String getAllClassification(HttpSession session);
 
 }

@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.service.front;
 
@@ -11,7 +11,7 @@ import com.ichangyun.InforAnalyaizer.model.front.HotWordBean;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
 
 /**
- * Ê×Ò³¶ÔÓ¦µÄService
+ * é¦–é¡µå¯¹åº”çš„Service
  * @author renhao
  * 2018-11-16 10:18
  */
@@ -19,61 +19,61 @@ import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
 
 public interface HomeService {
 
-	/**
-	 * »ñµÃÈÈ´ÊÔÆµÄjson×ÖÃæÁ¿
-	 * @return
-	 */
-	public String getHotWord();
+    /**
+     * è·å¾—çƒ­è¯äº‘çš„jsonå­—é¢é‡
+     * @return
+     */
+    public String getHotWord(HttpSession session);
 
-	/**
-	 * ¸ù¾İÈÈ´Ê»ñµÃÎÄÕÂÔÚÃ½ÌåÉÏµÄ³öÏÖ´ÎÊı
-	 * @param hb
-	 * @return
-	 */
-	public int getArticleCountByHotWord(HotWordBean hb);
+    /**
+     * æ ¹æ®çƒ­è¯è·å¾—æ–‡ç« åœ¨åª’ä½“ä¸Šçš„å‡ºç°æ¬¡æ•°
+     * @param hb
+     * @return
+     */
+    public int getArticleCountByHotWord(HotWordBean hb);
 
-	/**
-	 * ¸ù¾İÈÈ´Ê»ñµÃÏà¹ØÎÄÕÂĞÅÏ¢µÄjson×ÖÃæÁ¿
-	 * @param hb
-	 * @return
-	 */
-	public String getArticleByHotWord(HotWordBean hb);
+    /**
+     * æ ¹æ®çƒ­è¯è·å¾—ç›¸å…³æ–‡ç« ä¿¡æ¯çš„jsonå­—é¢é‡
+     * @param hb
+     * @return
+     */
+    public String getArticleByHotWord(HotWordBean hb);
 
-	/**
-	 * »ñµÃÏàËÆÎÄÕÂµÄjson×ÖÃæÁ¿
-	 * @param ab
-	 * @return
-	 */
-	public String getSimContent(ArticleInfoBean ab);
+    /**
+     * è·å¾—ç›¸ä¼¼æ–‡ç« çš„jsonå­—é¢é‡
+     * @param ab
+     * @return
+     */
+    public String getSimContent(ArticleInfoBean ab);
 
 
-	
-	/**
-	 * »ñµÃÊ×Ò³¼à²âÏà¹ØµÄĞÅÏ¢
-	 * @param session
-	 * @return
-	 */
-	public String getJCMsg(HttpSession session);
 
-	/**
-	 * »ñµÃÊ×Ò³top10Ïà¹ØÎÄÕÂĞÅÏ¢
-	 * @param session
-	 * @return
-	 */
-	public String[] getTopTenDatas(HttpSession session);
+    /**
+     * è·å¾—é¦–é¡µç›‘æµ‹ç›¸å…³çš„ä¿¡æ¯
+     * @param session
+     * @return
+     */
+    public String getJCMsg(HttpSession session);
 
-	/**
-	 * »ñµÃ¼´½«·¢ÉúÏà¹ØĞÅÏ¢
-	 * @return
-	 */
-	public String getJJFSWord();
+    /**
+     * è·å¾—é¦–é¡µtop10ç›¸å…³æ–‡ç« ä¿¡æ¯
+     * @param session
+     * @return
+     */
+    public String[] getTopTenDatas(HttpSession session);
 
-	
-	/**
-	 * »ñµÃÊ×Ò³µÄÈÈ´ÊÔÆĞÅÏ¢JSON×ÖÃæÁ¿
-	 * @param flag
-	 * @return
-	 */
-	public String getHotWordFromDetial(String flag);
+    /**
+     * è·å¾—å³å°†å‘ç”Ÿç›¸å…³ä¿¡æ¯
+     * @return
+     */
+    public String getJJFSWord(HttpSession session);
+
+
+    /**
+     * è·å¾—é¦–é¡µçš„çƒ­è¯äº‘ä¿¡æ¯JSONå­—é¢é‡
+     * @param flag
+     * @return
+     */
+    public String getHotWordFromDetial(String flag,HttpSession session);
 
 }

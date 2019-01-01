@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 畅云 http://www.ichangyun.cn
+ * Copyright 2018 鐣呬簯 http://www.ichangyun.cn
  * <p>
- *  竞争情报系统
+ *  绔炰簤鎯呮姤绯荤粺
  */
 package com.ichangyun.InforAnalyaizer.mapper.front;
 
@@ -19,43 +19,52 @@ import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
  */
 public interface HomeMapper {
 
-	/**
-	 * 获得热词信息集合
-	 * @return
-	 */
-	public List<HotWordBean> getHotWord();
+    /**
+     * 鑾峰緱鐑瘝淇℃伅闆嗗悎
+     * @param collectionField_ID 
+     * @return
+     */
+    public List<HotWordBean> getHotWord(@Param("collectionField_ID")String collectionField_ID);
 
-	/**
-	 * 获得属于某热词的文章信息总数
-	 * @param hb
-	 * @return
-	 */
-	public int getArticleCountByHotWord(HotWordBean hb);
+    /**
+     * 鑾峰緱灞炰簬鏌愮儹璇嶇殑鏂囩珷淇℃伅鎬绘暟
+     * @param hb
+     * @return
+     */
+    public int getArticleCountByHotWord(HotWordBean hb);
 
-	/**
-	 * 获得属于某热词的文章信息集合
-	 * @param hb
-	 * @return
-	 */
-	public List<ArticleInfoBean> getArticleByHotWord(HotWordBean hb);
+    /**
+     * 鑾峰緱灞炰簬鏌愮儹璇嶇殑鏂囩珷淇℃伅闆嗗悎
+     * @param hb
+     * @return
+     */
+    public List<ArticleInfoBean> getArticleByHotWord(HotWordBean hb);
 
-	/**
-	 * 获得相似文章信息集合
-	 * @param ab
-	 * @return
-	 */
-	public List<ArticleInfoBean> getSimContent(ArticleInfoBean ab);
+    /**
+     * 鑾峰緱鐩镐技鏂囩珷淇℃伅闆嗗悎
+     * @param ab
+     * @return
+     */
+    public List<ArticleInfoBean> getSimContent(ArticleInfoBean ab);
 
+    /**
+     * 鑾峰緱棣栭〉浠婃棩鏄ㄦ棩鐩戞祴鏁伴噺淇℃伅
+     * @param today
+     * @param yesterday
+     * @param userid
+     * @param collectionField_ID
+     * @return
+     */
+    public Map getJCMsg(@Param("today")String today, @Param("yesterday")String yesterday, @Param("userid")String userid, @Param("collectionField_ID")String collectionField_ID);
 
-	public Map getJCMsg(@Param("today")String today, @Param("yesterday")String yesterday, @Param("userid")String userid);
+    public List<ArticleInfoBean> getTopTenDatas(@Param("userid")String userid);
 
-	
-	public List<ArticleInfoBean> getTopTenDatas(@Param("userid")String userid);
+    public List<HotWordBean> getJJFSWord(@Param("collectionField_ID")String collectionField_ID);
 
-	public List<HotWordBean> getJJFSWord();
+    public int getArticleCountByJJFSWord(HotWordBean hb);
 
-	public int getArticleCountByJJFSWord(HotWordBean hb);
+    public List<ArticleInfoBean> getArticleByJJFSWord(HotWordBean hb);
 
-	public List<ArticleInfoBean> getArticleByJJFSWord(HotWordBean hb);
+	public List<ArticleInfoBean> getTopTenDatas(@Param("userid")String userid, @Param("collectionField_ID")String collectionField_ID);
 
 }

@@ -1,136 +1,134 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model.front;
 
 import com.ichangyun.InforAnalyaizer.model.BaseBean;
 
 /**
- * ÈÈ´ÊÔÆÏà¹ØÊµÌåÀà  ¶ÔÓ¦Êı¾İ±ía_hotwordsbasicinfoºÍa_articlehotwordsinfo
+ * çƒ­è¯äº‘ç›¸å…³å®ä½“ç±»  å¯¹åº”æ•°æ®è¡¨a_hotwordsbasicinfoå’Œa_articlehotwordsinfo
  * @author renhao
  * 2018-11-16 10:03
  */
 public class HotWordBean extends BaseBean {
-  
-	/**
-	 * ²É¼¯ÁìÓò£É£Ä
-	 */
-	private String CollectionField_ID;
-	
-	/**
-	 * ÈÈ´ÊÔÆID
-	 */
-	private String HotWord_ID;
-	
-	
-	private String Keyword_ID;
-	
-	
-	private int KeywordNo;
-	
-	/**
-	 * ÈÈ´ÊÔÆ
-	 */
-	private String HotWord;
-	
-	/**
-	 * ÓĞĞ§flag  0£ºÎŞĞ§£¬1£ºÓĞĞ§
-	 */
-	private String ValidFlag;
-	
-	/**
-	 * ×÷³ÉÕß
-	 */
-	private String CreateUser;
-	
-	/**
-	 * ×÷³ÉÈÕ•r
-	 */
-	private String CreateDateTime;
-	
-	/**
-	 * ¸üĞÂÕß
-	 */
-	private String UpdateUser;
-	
-	/**
-	 * ¸üĞÂÈÕ•r
-	 */
-	private String UpdateDateTime;
-	
-	/**
-	 * ±êÊ¶Î»
-	 */
-	private String flag;
-	
-	public String getFlag() {
-		return flag;
-	}
-	public void setFlag(String flag) {
-		this.flag = flag;
-	}
-	public String getKeyword_ID() {
-		return Keyword_ID;
-	}
-	public void setKeyword_ID(String keyword_ID) {
-		Keyword_ID = keyword_ID;
-	}
-	
-	public String getHotWord_ID() {
-		return HotWord_ID;
-	}
-	public void setHotWord_ID(String hotWord_ID) {
-		HotWord_ID = hotWord_ID;
-	}
-	
-	public String getCollectionField_ID() {
-		return CollectionField_ID;
-	}
-	public void setCollectionField_ID(String collectionField_ID) {
-		CollectionField_ID = collectionField_ID;
-	}
-	public int getKeywordNo() {
-		return KeywordNo;
-	}
-	public void setKeywordNo(int keywordNo) {
-		KeywordNo = keywordNo;
-	}
-	public String getHotWord() {
-		return HotWord;
-	}
-	public void setHotWord(String hotWord) {
-		HotWord = hotWord;
-	}
-	public String getValidFlag() {
-		return ValidFlag;
-	}
-	public void setValidFlag(String validFlag) {
-		ValidFlag = validFlag;
-	}
-	public String getCreateUser() {
-		return CreateUser;
-	}
-	public void setCreateUser(String createUser) {
-		CreateUser = createUser;
-	}
-	public String getCreateDateTime() {
-		return CreateDateTime;
-	}
-	public void setCreateDateTime(String createDateTime) {
-		CreateDateTime = createDateTime;
-	}
-	public String getUpdateUser() {
-		return UpdateUser;
-	}
-	public void setUpdateUser(String updateUser) {
-		UpdateUser = updateUser;
-	}
-	public String getUpdateDateTime() {
-		return UpdateDateTime;
-	}
-	public void setUpdateDateTime(String updateDateTime) {
-		UpdateDateTime = updateDateTime;
-	}
+
+    /**
+     * é‡‡é›†é¢†åŸŸï¼©ï¼¤
+     */
+    private String CollectionField_ID;
+
+    /**
+     * çƒ­è¯äº‘ID
+     */
+    private String HotWord_ID;
+
+    private String Keyword_ID;
+
+    private int KeywordNo;
+
+    /**
+     * çƒ­è¯äº‘
+     */
+    private String HotWord;
+
+    /**
+     * æœ‰æ•ˆflag  0ï¼šæ— æ•ˆï¼Œ1ï¼šæœ‰æ•ˆ
+     */
+    private String ValidFlag;
+
+    /**
+     * ä½œæˆè€…
+     */
+    private String CreateUser;
+
+    /**
+     * ä½œæˆæ—¥æ™‚
+     */
+    private String CreateDateTime;
+
+    /**
+     * æ›´æ–°è€…
+     */
+    private String UpdateUser;
+
+    /**
+     * æ›´æ–°æ—¥æ™‚
+     */
+    private String UpdateDateTime;
+
+    /**
+     * æ ‡è¯†ä½
+     */
+    private String flag;
+
+    public String getFlag() {
+        return flag;
+    }
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+    public String getKeyword_ID() {
+        return Keyword_ID;
+    }
+    public void setKeyword_ID(String keyword_ID) {
+        Keyword_ID = keyword_ID;
+    }
+
+    public String getHotWord_ID() {
+        return HotWord_ID;
+    }
+    public void setHotWord_ID(String hotWord_ID) {
+        HotWord_ID = hotWord_ID;
+    }
+
+    public String getCollectionField_ID() {
+        return CollectionField_ID;
+    }
+    public void setCollectionField_ID(String collectionField_ID) {
+        CollectionField_ID = collectionField_ID;
+    }
+    public int getKeywordNo() {
+        return KeywordNo;
+    }
+    public void setKeywordNo(int keywordNo) {
+        KeywordNo = keywordNo;
+    }
+    public String getHotWord() {
+        return HotWord;
+    }
+    public void setHotWord(String hotWord) {
+        HotWord = hotWord;
+    }
+    public String getValidFlag() {
+        return ValidFlag;
+    }
+    public void setValidFlag(String validFlag) {
+        ValidFlag = validFlag;
+    }
+    public String getCreateUser() {
+        return CreateUser;
+    }
+    public void setCreateUser(String createUser) {
+        CreateUser = createUser;
+    }
+    public String getCreateDateTime() {
+        return CreateDateTime;
+    }
+    public void setCreateDateTime(String createDateTime) {
+        CreateDateTime = createDateTime;
+    }
+    public String getUpdateUser() {
+        return UpdateUser;
+    }
+    public void setUpdateUser(String updateUser) {
+        UpdateUser = updateUser;
+    }
+    public String getUpdateDateTime() {
+        return UpdateDateTime;
+    }
+    public void setUpdateDateTime(String updateDateTime) {
+        UpdateDateTime = updateDateTime;
+    }
 }

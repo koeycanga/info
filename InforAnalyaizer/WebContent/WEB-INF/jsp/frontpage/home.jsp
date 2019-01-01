@@ -10,6 +10,7 @@
 <fmt:message key="E0025" var="E0025" bundle="${sysInfo}" />   
 <fmt:message key="I0012" var="I0012" bundle="${sysInfo}" />
 <fmt:message key="I0013" var="I0013" bundle="${sysInfo}" />
+<fmt:message key="E0075" var="E0075" bundle="${sysInfo}" />
 <fmt:message key="UseManualFileName" var="UseManualFileName" bundle="${sysInfo}" />
 <fmt:message key="DownloadFileTemplatePath" var="DownloadFileTemplatePath" bundle="${sysInfo}" />
 <!doctype html>
@@ -74,9 +75,9 @@
 <div class="cy_CIASFE_body">
 	<div class="cy_CIASFE_homebox01">
 		<div class="cy_CIASFE_homeboxtit">即将发生</div>
-		<div class="cy_CIASFE_coming" id="jjfsdv">
+		<div class="cy_CIASFE_coming" id="jjfsdv" style="width:85%;height:85%;">
 		  <!-- <img src="../image/home-coming.png"> -->
-		 <table v-if="jjfs_datas.length==10" width="341" height="268" border="0" cellpadding="0" cellspacing="0">
+		 <table v-if="jjfs_datas.length==10" width="92%" height="88%" border="0" cellpadding="0" cellspacing="0">
 			  <tbody>
 			    <tr >
 			     <td width="100%" >
@@ -168,9 +169,11 @@ var Info = {
 		E0014:'${E0014}',
 		E0025:'${E0025}',
 		I0012:'${I0012}',
+		E0075:'${E0075}',
 		I0013:'${I0013}'
 };
-
+    
+    
     var menu_datas = JSON.parse('${front_menu}');  //菜单数据来源于 classes/resources.properties
     
     Vue.component('ic_top_menu',ic_top_menu);   // ic_top_menu 引自 js/ic_component.js

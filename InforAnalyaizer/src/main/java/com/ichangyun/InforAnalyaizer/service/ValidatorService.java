@@ -1,5 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
+ * <p>
+ * ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.service;
 
@@ -13,7 +15,8 @@ import org.springframework.validation.annotation.Validated;
 @Service
 public class ValidatorService {
 
-    public String checkUser(@NotEmpty(message = "ÓÃ»§Ãû²»ÄÜÎª¿Õ")  String username) throws ConstraintViolationException {
+    public String checkUser(@NotEmpty(message = "ç”¨æˆ·åä¸èƒ½ä¸ºç©º")  String username)
+            throws ConstraintViolationException {
         return "User [username=" + username + ", password= ]";
     }
 

@@ -1,173 +1,171 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.controller.front;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.front.HotWordBean;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.service.front.HomeService;
 
 /**
- * Ê×Ò³µÄ¿ØÖÆÆ÷
+ * é¦–é¡µçš„æ§åˆ¶å™¨
  * @author renhao
  * Date:2018-11-12
  */
-
 @RestController
 @RequestMapping("/front")
 public class HomeController {
 
-	@Autowired
-	private HomeService homeService;
-	
-	/**
-	 * ½øÈëÊ×Ò³
-	 * @return
-	 */
-	@RequestMapping("/index")
-	@ResponseBody
-	public Object index() {
-		
-		return new ModelAndView("frontpage/home");
-	}
-	
-	/**
-	 * ½øÈëµ½ÈÈ´ÊÔÆÏêÇéÒ³Ãæ
-	 * @return
-	 */
-	@RequestMapping("/tohotword")
-	public Object tohotword(String wordid,String flag,HttpServletRequest request) {
-		
-		String title = "";
-		
-		if(flag.equals("0")) {
-			title = "ÈÈ´ÊÔÆ";
-		}
-		
-		if(flag.equals("1")) {
-			title = "¼´½«·¢Éú";
-		}
-		
-		request.setAttribute("flag", flag);
-	
-		request.setAttribute("table_title",title);
-		
-		request.setAttribute("word",wordid);
-		
-		return new ModelAndView("frontpage/worddetail");
-	}
-	
-	/**
-	 * »ñµÃÊ×Ò³×îĞÂÏûÏ¢  Ô¤¾¯ĞÅÏ¢  ¸ºÃæĞÅÏ¢µÄJSON×ÖÃæÁ¿
-	 * @return
-	 */
-	@RequestMapping("/getHomeDatas")
-	public Object getHomeDatas(HttpSession session) {
-	    
-		String[] datas = homeService.getTopTenDatas(session);
-		
-		String jcmsg = homeService.getJCMsg(session);
-		
-		String res = "{\"newest_datas\":"+datas[0]+",\"warn_datas\":"+datas[1]+",\"negative_datas\":"+datas[2]+","+jcmsg+"}";
-		
-		return res;
-	}
-	
-	
-	/**
-	 * »ñµÃÈÈ´ÊÔÆĞÅÏ¢
-	 * @return
-	 */
-	@RequestMapping("/getHotWord")
-	public Object getHotWord() {
-		
-		String json_hotword = homeService.getHotWord();
-		
-		return json_hotword;
-	}
-	
-	@RequestMapping("/getHotWordFromDetial")
-	public Object getHotWordFromDetial(String flag) {
-		
-		String json_hotword = homeService.getHotWordFromDetial(flag);
-		
-		return json_hotword;
-	}
-	
-	@RequestMapping("/getJJFSWord")
-	public Object getJJFSWord() {
-		
-		String json_jjfsword = homeService. getJJFSWord();
-		
-		return json_jjfsword;
-	}
-	
-	
-	/**
-	 * ¸ù¾İÈÈ´Ê»ñµÃÊôÓÚ¸ÃÈÈ´ÊµÄÎÄÕÂĞÅÏ¢¼¯ºÏ
-	 * @param hb
-	 * @return
-	 */
-	@RequestMapping("/searchbyhotword")
-	public Object searchByHotWord(HotWordBean hb,HttpSession session) {
-		
-		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
-		
-		String Userid = u.getUser_ID();
-		
-		hb.setCreateUser(Userid);
-		
-		int rowCount = homeService.getArticleCountByHotWord(hb);
-		
-		String json_res = homeService.getArticleByHotWord(hb);
-		
-		String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
+    @Autowired
+    private HomeService homeService;
 
-	    return res;
-		
-	}
-	
-	@RequestMapping("/getSimContent")
-	public Object getSimContent(ArticleInfoBean ab) {
-		String json = homeService.getSimContent(ab);
-	    
-		return json;
-	}
-	
-	
-	/**
-	 * »ñµÃµÇÂ¼ÓÃ»§ĞÅÏ¢
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping("/getUser")
-	public Object getUser(HttpSession session) {
-		
-		User user = (User)session.getAttribute(CommBean.SESSION_NAME);
-	
-		
-		return user.getName();
-	}
-	
-	/**
-	 * ÓÃ»§ÍË³öÏµÍ³
-	 * @param session
-	 */
-	@RequestMapping("/logout")
-	public void logout(HttpSession session) {
-		
-		session.setAttribute(CommBean.SESSION_NAME,null);
-		
-	}
+    /**
+     * è¿›å…¥é¦–é¡µ
+     * @return
+     */
+    @RequestMapping("/index")
+    @ResponseBody
+    public Object index() {
+
+        return new ModelAndView("frontpage/home");
+    }
+
+    /**
+     * è¿›å…¥åˆ°çƒ­è¯äº‘è¯¦æƒ…é¡µé¢
+     * @return
+     */
+    @RequestMapping("/tohotword")
+    public Object tohotword(String wordid,String flag,HttpServletRequest request) {
+
+        String title = "";
+
+        if(flag.equals("0")) {
+            title = "çƒ­è¯äº‘";
+        }
+
+        if(flag.equals("1")) {
+            title = "å³å°†å‘ç”Ÿ";
+        }
+
+        request.setAttribute("flag", flag);
+
+        request.setAttribute("table_title",title);
+
+        request.setAttribute("word",wordid);
+
+        return new ModelAndView("frontpage/worddetail");
+    }
+
+    /**
+     * è·å¾—é¦–é¡µæœ€æ–°æ¶ˆæ¯  é¢„è­¦ä¿¡æ¯  è´Ÿé¢ä¿¡æ¯çš„JSONå­—é¢é‡
+     * @return
+     */
+    @RequestMapping("/getHomeDatas")
+    public Object getHomeDatas(HttpSession session) {
+
+        String[] datas = homeService.getTopTenDatas(session);
+
+        String jcmsg = homeService.getJCMsg(session);
+
+        String res = "{\"newest_datas\":"+datas[0]+",\"warn_datas\":"+datas[1]+",\"negative_datas\":"+datas[2]+","+jcmsg+"}";
+
+        return res;
+    }
+
+    /**
+     * è·å¾—çƒ­è¯äº‘ä¿¡æ¯
+     * @return
+     */
+    @RequestMapping("/getHotWord")
+    public Object getHotWord(HttpSession session) {
+
+        String json_hotword = homeService.getHotWord(session);
+
+        return json_hotword;
+    }
+
+    @RequestMapping("/getHotWordFromDetial")
+    public Object getHotWordFromDetial(String flag,HttpSession session) {
+
+        String json_hotword = homeService.getHotWordFromDetial(flag,session);
+
+        return json_hotword;
+    }
+
+    @RequestMapping("/getJJFSWord")
+    public Object getJJFSWord(HttpSession session) {
+
+        String json_jjfsword = homeService. getJJFSWord(session);
+
+        return json_jjfsword;
+    }
+
+    /**
+     * æ ¹æ®çƒ­è¯è·å¾—å±äºè¯¥çƒ­è¯çš„æ–‡ç« ä¿¡æ¯é›†åˆ
+     * @param hb
+     * @return
+     */
+    @RequestMapping("/searchbyhotword")
+    public Object searchByHotWord(HotWordBean hb,HttpSession session) {
+
+        User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+
+        String Userid = u.getUser_ID();
+        String CollectionField_ID = u.getCollectionField_ID();
+        hb.setCreateUser(Userid);
+        hb.setCollectionField_ID(CollectionField_ID);
+
+        int rowCount = homeService.getArticleCountByHotWord(hb);
+
+        String json_res = homeService.getArticleByHotWord(hb);
+
+        String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
+
+        return res;
+
+    }
+
+    @RequestMapping("/getSimContent")
+    public Object getSimContent(ArticleInfoBean ab) {
+        String json = homeService.getSimContent(ab);
+
+        return json;
+    }
+
+    /**
+     * è·å¾—ç™»å½•ç”¨æˆ·ä¿¡æ¯
+     * @param session
+     * @return
+     */
+    @RequestMapping("/getUser")
+    public Object getUser(HttpSession session) {
+
+        User user = (User)session.getAttribute(CommBean.SESSION_NAME);
+
+        return user.getName();
+    }
+
+    /**
+     * ç”¨æˆ·é€€å‡ºç³»ç»Ÿ
+     * @param session
+     */
+    @RequestMapping("/logout")
+    public void logout(HttpSession session) {
+
+        session.setAttribute(CommBean.SESSION_NAME,null);
+
+    }
 }

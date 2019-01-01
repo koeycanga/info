@@ -1,68 +1,90 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ * ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model.usermanage;
-
 
 import javax.validation.constraints.NotEmpty;
 
 /**
- * ½ÇÉ«ĞÅÏ¢ÊµÌåÀà    ¶ÔÓ¦Êı¾İ±í m_userrole
+ * è§’è‰²ä¿¡æ¯å®ä½“ç±»
+ * å¯¹åº”æ•°æ®è¡¨ï¼š m_userrole
  * @author renhao
- * Date:2018-11-9
+ * @Date:2018-11-9
  */
 public class RoleManageBean {
 
-	/**
-	 * ½ÇÉ«ĞÅÏ¢ID
-	 */
+    /**
+     * è§’è‰²ä¿¡æ¯ID
+     */
     private String UserRole_ID;
 
-    
     /**
-     * ½ÇÉ«Ãû³Æ
+     * è§’è‰²åç§°
      */
     @NotEmpty(message="{usermanagebean.rolename}")
     private String UserRoleName;
 
     /**
-     * ½ÇÉ«È¨ÏŞ
+     * è§’è‰²æƒé™
      */
     private String Authority;
 
     /**
-     * ½ÇÉ«ÃèÊö
+     * è§’è‰²æè¿°
      */
     private String Description;
 
     /**
-     * ´´½¨Õß
+     * åˆ›å»ºè€…
      */
     private String CreateUser;
-    
+
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private String CreateDateTime;
-    
+
     /**
-     * ĞŞ¸ÄÕß
+     * ä¿®æ”¹è€…
      */
     private String UpdateUser;
-    
+
     /**
-     * ĞŞ¸ÄÊ±¼ä
+     * ä¿®æ”¹æ—¶é—´
      */
     private String UpdateDateTime;
-    
-    
+
     /**
-     * ½ÇÉ«×´Ì¬  0:Î´Ê¹ÓÃ   1:Ê¹ÓÃÖĞ
+     * è§’è‰²çŠ¶æ€  0:æœªä½¿ç”¨   1:ä½¿ç”¨ä¸­
      */
     private String Status;
 
+    
+    //å®¢æˆ·ID
+    private String Customer_ID;
+    
+    //é‡‡é›†é¢†åŸŸID
+    private String CollectionField_ID;
+    
+    public String getCustomer_ID() {
+		return Customer_ID;
+	}
+
+	public void setCustomer_ID(String customer_ID) {
+		Customer_ID = customer_ID;
+	}
+
+	public String getCollectionField_ID() {
+		return CollectionField_ID;
+	}
+
+	public void setCollectionField_ID(String collectionField_ID) {
+		CollectionField_ID = collectionField_ID;
+	}
+    
+    
     public String getStatus() {
         return Status;
     }

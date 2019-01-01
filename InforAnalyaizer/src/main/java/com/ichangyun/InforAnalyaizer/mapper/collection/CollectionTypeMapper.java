@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.mapper.collection;
 
@@ -13,23 +13,24 @@ import com.ichangyun.InforAnalyaizer.model.collection.CollectionTypeKey;
 import com.ichangyun.InforAnalyaizer.model.collection.CollectionTypeVo;
 
 public interface CollectionTypeMapper {
-    int deleteByPrimaryKey(CollectionTypeKey key);//Ìõ¼şÉ¾³ı
-
-    int insertSelective(CollectionType record);//Ìí¼Ó
-
-    int updateByPrimaryKeySelective(CollectionType record);//¸üĞÂ
-
-	List<CollectionTypeVo> queryAllType(String user_ID);//²éÑ¯È«²¿
-
-	int queryCount(String parentCollectiontypeId);//²éÑ¯½á¹ûÊı
-
-	CollectionTypeVo queryOne(String string);//¸ù¾İid²éÑ¯
-
-	void beforeOrder(CollectionTypeVo vo);		//µ±Ç°½ÚµãºóµÄËùÓĞ½Úµã¼õÒ»
-	
-	void afterOrder(CollectionTypeVo vo);		//µ±Ç°½ÚµãºóµÄËùÓĞ½Úµã¼ÓÒ»
-	
-	void changeOrder1(Map<String, Object> map);	//ÍùÉÏÅÅĞò£¬Á½¸ö½ÚµãÖ®¼äµÄ½ÚµãÈ«²¿¼ÓÒ»
-
-	void changeOrder2(Map<String, Object> map);//ÍùÏÂÅÅĞò£¬Á½¸ö½ÚµãÖ®¼ä½ÚµãÈ«²¿¼õÒ»
+    //æ¡ä»¶åˆ é™¤
+    int deleteByPrimaryKey(CollectionTypeKey key);
+    //æ·»åŠ 
+    int insertSelective(CollectionType record);
+    //æ›´æ–°
+    int updateByPrimaryKeySelective(CollectionType record);
+    //æŸ¥è¯¢å…¨éƒ¨
+    List<CollectionTypeVo> queryAllType(String user_ID);
+    //æŸ¥è¯¢ç»“æœæ•°
+    int queryCount(String parentCollectiontypeId);
+    //æ ¹æ®idæŸ¥è¯¢
+    CollectionTypeVo queryOne(String string);
+    //å½“å‰èŠ‚ç‚¹åçš„æ‰€æœ‰èŠ‚ç‚¹å‡ä¸€
+    void beforeOrder(CollectionTypeVo vo);
+    //å½“å‰èŠ‚ç‚¹åçš„æ‰€æœ‰èŠ‚ç‚¹åŠ ä¸€
+    void afterOrder(CollectionTypeVo vo);
+    //å¾€ä¸Šæ’åºï¼Œä¸¤ä¸ªèŠ‚ç‚¹ä¹‹é—´çš„èŠ‚ç‚¹å…¨éƒ¨åŠ ä¸€
+    void changeOrder1(Map<String, Object> map);
+    //å¾€ä¸‹æ’åºï¼Œä¸¤ä¸ªèŠ‚ç‚¹ä¹‹é—´èŠ‚ç‚¹å…¨éƒ¨å‡ä¸€
+    void changeOrder2(Map<String, Object> map);
 }

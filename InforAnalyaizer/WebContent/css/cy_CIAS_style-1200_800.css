@@ -1158,10 +1158,10 @@ input{
 }
 .cy_CIASFE_2ndmenutab , .cy_CIASFE_2ndmenutabchk{
 	text-align: center;
-	padding:10px 0;
+	padding:10px;
 	border:1px solid #e0e0e0;
 	border-right: 0px;
-	width: 110px;
+	width: auto;
 	cursor: pointer;
 }
 .cy_CIASFE_2ndmenutabchk{
@@ -2828,4 +2828,157 @@ input{
 }
 .cy_CIASFE_colle:hover .cy_CIASFE_decollebox{
 	display: block;
+}
+.cy_CIASFE_footbox01{
+	width:50%;
+}
+.cy_CIASFE_footbox02{
+	width:50%;
+	position: relative;
+	right: 20px;
+	text-align: right;
+}
+.cy_CIASFE_contpastfoot{
+	width: auto;
+	margin:20px 0 20px 45px;
+	color: #999999;
+	display: flex;
+}
+.cy_CIASFE_contpastfoot a{
+	text-decoration: none;
+	color:#3598dc;
+	margin-left: 20px;
+}
+.cy_CIASFE_contpastfoot a:hover{
+	text-decoration:underline;
+}
+.cy_CIASFE_collectionTypeName{
+	width: 100%;
+	height: 5%;
+}
+.cy_CIASFE_collectionTypeName div:hover{
+	background-color: #2ea1f8;
+	color: white;
+}
+/*12.15 弹出层样式修改 */
+.cy_CMICBMS_addtb_shelter{		/* 遮挡层（当文本框不可编辑时） */
+	position: absolute;
+	opacity:0.2;
+	background-color: #939193;
+	top:2%;
+	left:16.0%;
+	width: 79.5%;
+	height:94.5%
+
+}
+.cy_CMICBMS_addtb_username{
+	position: absolute;
+	top:18%;
+	left:6%;
+}
+.cy_CMICBMS_addtb_userother{
+	position: absolute;
+	top:26%;
+	left:6%;
+
+}
+.cy_CMICBMS_addtb_userrole{
+	position: absolute;
+	top:10%;
+	left:6%;
+}
+.cy_CMICBMS_addtb_roleselect{
+	width: 60%
+}
+.cy_CMICBMS_addtb_submit{
+	position: absolute;
+	top:105%;
+	left:80%;
+}
+#cy_CMICBMS_addtb_userStatus{
+	position: absolute;
+	top:109%;
+	left:5%;
+}
+.cy_CMICBMS_addcizu{
+	position: absolute;
+	top:19%;
+	left:2%;
+}
+.cy_CMICBMS_addcizutab{
+	position: absolute;
+	height: 50%;
+	width: 80%;
+	top:24%;
+	left:10%;
+}
+.cy_CMICBMS_addtb_submit_fw{/*过滤词管理的提交按钮  */
+	position: absolute;
+	top:74%;
+	left:80%;
+}
+#cy_CMICBMS_newfd1{/* 我的收藏移动文章弹出层 */
+	position:absolute;
+	width:400px;
+	top:22%;
+	left:33%;
+	background-color:white;
+	border-radius: 5px;
+	z-index:21;
+	box-shadow: 0px 0px 10px 5px #a2a2a2;
+	display: none;
+}
+#cy_CMICBMS_addtb_submit_collection{
+	position:relative;
+	bottom:8%;
+	left:-7%;
+}
+#cy_CMICBMS_newfd1 .cy_CMICBMS_newfdbd1{
+	position:relative;
+	top:7%;
+	left:5%;
+}
+.cy_CMICBMS_newfdip1{
+	width: 14%;
+	font-size: 14px;
+}
+.cy_CMICBMS_newbtinput_collection{
+	width:300px;
+	height: 28px;
+	border:1px #e0e0e0 solid;
+	border-radius: 3px;
+	padding-left: 10px;
+	outline: none;
+}
+.cy_CMICBMS_collectTreeBorder{
+	border: 1px solid #c0c0c0;
+	width: 80%;
+	
+}
+.cy_CMICBMS_addtb_pwdCheck{	/* 用户管理中的密码提示层 */
+	position: absolute;
+	background-color: white; 
+	width:79%;
+	top: 17%;
+	left: 16.5%;
+	box-shadow: 0 0 3px 0px black; 
+	/* border:  1px solid #c0c0c0; */
+}
+.cy_CMICBMS_addtb_pwdCheck2{
+	position: absolute;
+	top: 6%;
+	left: 96.5%;
+}
+.cy_CMICBMS_addtb_pwdCheck3{	/* 个人信息中的密码提示层 */
+	position: absolute;
+	background-color: white; 
+	width:76%;
+	top: 43%;
+	left: 18%;
+	box-shadow: 0 0 3px 0px black; 
+}
+.cy_CMICBMS_addtb_pwdCheck4{
+	position: absolute;
+	top: 37.5%;
+	left: 94.5%;
 }

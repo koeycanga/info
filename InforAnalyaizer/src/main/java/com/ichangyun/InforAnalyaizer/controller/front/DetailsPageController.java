@@ -1,111 +1,131 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.controller.front;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.userInfo.User;
-import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ichangyun.InforAnalyaizer.model.CommBean;
+import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.service.front.DetailsPageService;
 
 /**
- * ÏêÇéÒ³ĞÅÏ¢ ¶ÔÓ¦Controller
+ * è¯¦æƒ…é¡µä¿¡æ¯ å¯¹åº”Controller
  * @author renhao
  * 2018-11-19
  */
-
 @RestController
 @RequestMapping("/detailspage")
 public class DetailsPageController {
 
-	@Autowired
-	private DetailsPageService detailsPageService;
-	
-	/**
-	 * ½øÈëµ½ÏêÇéÒ³
-	 * @param from
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping("/toDetailsPage")
-	@ResponseBody
-	public Object toDetailsPage(String from,String article_id,HttpServletRequest request) {
-		
-		 /*String path=request.getServletContext().getContextPath();
-		         System.out.println(path);
-		          String realPath=request.getServletContext().getRealPath("/templates");
-		          System.out.println(realPath);*/
-		
-		
-		String title = "";
-		
-		if(from.equals("front")) {
-			title = "Ê×Ò³";
-		}
-		
-		if(from.equals("comprehensivemonitoring")) {
-			title = "×ÛºÏ¼à²â";
-		}
-		
-		if(from.equals("thematicmonitoring")) {
-			title = "×¨Ìâ¼à²â";
-		}
-		
-		if(from.equals("earlywarning")) {
-			title = "Ô¤¾¯ÖĞĞÄ";
-		}
-		
-		request.setAttribute("m_title", title);
-		request.setAttribute("m_url", from);
-		request.setAttribute("m_article_id",article_id);
-		
-		return new ModelAndView("frontpage/detailspage");
-	}
-	
-	/**
-	 * ¸ù¾İID»ñµÃÎÄÕÂµÄÏêÏ¸ĞÅÏ¢
-	 * @param article_id  ÎÄÕÂid
-	 * @return ÎÄÕÂÏêÏ¸ĞÅÏ¢µÄjson×ÖÃæÁ¿
-	 */
-	@RequestMapping("/getArticleByID")
-	public Object getArticleByID(String article_id, HttpSession session) {
+    @Autowired
+    private DetailsPageService detailsPageService;
 
-		User user = (User) session.getAttribute(CommBean.SESSION_NAME);
-		String userid = user.getUser_ID();
-		
-		String article_data = detailsPageService.getArticleByID(article_id,userid);      //ÎÄÕÂĞÅÏ¢
-		
-		String bd_data = detailsPageService.getBDArticleByID(article_id,userid);          //ÎÄÕÂÔÚÃ½ÌåÉÏµÄ³öÏÖÇé¿ö
-		
-		String json = "{\"article_data\":"+article_data+",\"bd_data\":"+bd_data+"}";
-		
-		return json;
-	}
+    /**
+     * è¿›å…¥åˆ°è¯¦æƒ…é¡µ
+     * @param from
+     * @param request
+     * @return
+     */
+    @RequestMapping("/toDetailsPage")
+    @ResponseBody
+    public Object toDetailsPage(String from,String article_id,HttpServletRequest request) {
 
-	/**
-	 * »ñµÃÏàËÆÎÄÕÂ
-	 * @return
-	 */
-	@RequestMapping("/getSimContent")
-	public Object getSimContent(ArticleInfoBean ab, HttpSession session) {
+        /*String path=request.getServletContext().getContextPath();
+                 System.out.println(path);
+                  String realPath=request.getServletContext().getRealPath("/templates");
+                  System.out.println(realPath);*/
 
-		User user = (User) session.getAttribute(CommBean.SESSION_NAME);
-		String userid = user.getUser_ID();
-		ab.setUserid(userid);
 
-		String json = detailsPageService.getSimContent(ab);
+        String title = "";
 
-		return json;
-	}
+        if(from.equals("front")) {
+            title = "é¦–é¡µ";
+        }
+
+        if(from.equals("comprehensivemonitoring")) {
+            title = "ç»¼åˆç›‘æµ‹";
+        }
+
+        if(from.equals("thematicmonitoring")) {
+            title = "ä¸“é¢˜ç›‘æµ‹";
+        }
+
+        if(from.equals("earlywarning")) {
+            title = "é¢„è­¦ä¸­å¿ƒ";
+        }
+        
+        String classificationPath = detailsPageService.getClassificationPathById(article_id);
+
+        request.setAttribute("m_title", title);
+        request.setAttribute("m_url", from);
+        request.setAttribute("m_article_id",article_id);
+        request.setAttribute("classificationPath", classificationPath);
+
+        return new ModelAndView("frontpage/detailspage");
+    }
+
+    /**
+     * æ ¹æ®IDè·å¾—æ–‡ç« çš„è¯¦ç»†ä¿¡æ¯
+     * @param article_id  æ–‡ç« id
+     * @return æ–‡ç« è¯¦ç»†ä¿¡æ¯çš„jsonå­—é¢é‡
+     */
+    @RequestMapping("/getArticleByID")
+    public Object getArticleByID(String article_id, HttpSession session) {
+
+        User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+        String userid = user.getUser_ID();
+
+        String article_data = detailsPageService.getArticleByID(article_id,userid);      //æ–‡ç« ä¿¡æ¯
+
+        String bd_data = detailsPageService.getBDArticleByID(article_id,userid);          //æ–‡ç« åœ¨åª’ä½“ä¸Šçš„å‡ºç°æƒ…å†µ
+
+        String relate_data = detailsPageService.getRelateDataByID(article_id,userid);     //è·å¾—ç›¸å…³æ–‡ç« ä¿¡æ¯
+
+        String json = "{\"article_data\":"+article_data+",\"bd_data\":"+bd_data+",\"relate_data\":"+relate_data+"}";
+
+        return json;
+    }
+
+    
+    /**
+     * æ ¹æ®IDè·å¾—ç›¸å…³æ–‡ç« çš„é›†åˆä¿¡æ¯
+     * @param article_id
+     * @param session
+     * @return
+     */
+    @RequestMapping("/getRelArticleByID")
+    public Object getRelArticleByID(String article_id, HttpSession session) {
+    	User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+        String userid = user.getUser_ID();
+        String relate_data = detailsPageService.getRelateDataByID(article_id,userid);     //è·å¾—ç›¸å…³æ–‡ç« ä¿¡æ¯
+        return relate_data;
+    }
+    
+    /**
+     * è·å¾—ç›¸ä¼¼æ–‡ç« 
+     * @return
+     */
+    @RequestMapping("/getSimContent")
+    public Object getSimContent(ArticleInfoBean ab, HttpSession session) {
+
+        User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+        String userid = user.getUser_ID();
+        ab.setUserid(userid);
+
+        String json = detailsPageService.getSimContent(ab);
+
+        return json;
+    }
 
 }

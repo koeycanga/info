@@ -50,12 +50,8 @@
       <if test="createuser != null" >
         CreateUser,
       </if>
-      <if test="createdatetime != null" >
         CreateDateTime,
-      </if>
-      <if test="updatedatetime != null" >
         UpdateDateTime,
-      </if>
       <if test="updateuser != null" >
         UpdateUser,
       </if>
@@ -88,12 +84,8 @@
       <if test="createuser != null" >
         #{createuser,jdbcType=VARCHAR},
       </if>
-      <if test="createdatetime != null" >
-        #{createdatetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatedatetime != null" >
-         #{updatedatetime,jdbcType=TIMESTAMP},
-      </if>
+        now(),
+        now(),
       <if test="updateuser != null" >
         #{updateuser,jdbcType=VARCHAR},
       </if>
@@ -120,12 +112,6 @@
       <if test="validflag != null" >
         ValidFlag = #{validflag,jdbcType=CHAR},
       </if>
-      <if test="createuser != null" >
-        CreateUser = #{createuser,jdbcType=VARCHAR},
-      </if>
-      <if test="createdatetime != null" >
-        CreateDateTime = #{createdatetime,jdbcType=TIMESTAMP},
-      </if>
       <if test="updateuser != null" >
         UpdateUser = #{updateuser,jdbcType=VARCHAR},
       </if>
@@ -135,6 +121,7 @@
       	<if test="collectionstratum != null" >
         CollectionStratum = #{collectionstratum},
       </if>
+      UpdateDateTime=now()
     </set>
     where User_ID = #{userId,jdbcType=CHAR}
       and CollectionType_ID = #{collectiontypeId,jdbcType=CHAR}

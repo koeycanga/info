@@ -35,7 +35,12 @@ public class ClassificationInfoBean extends BaseBean{
 	 */
 	private String ClassificationPath;
 	
+	/**
+	 * 分类体系所在阶层
+	 */
+	private int ClassificationStratum;
 	
+
 	/**
 	 * 分类体系排位顺序
 	 */
@@ -111,6 +116,37 @@ public class ClassificationInfoBean extends BaseBean{
 	 * 前端是否点击
 	 */
 	private boolean isclick;
+	
+	 //客户ID
+    private String Customer_ID;
+    
+    //采集领域ID
+    private String CollectionField_ID;
+    
+    public String getCustomer_ID() {
+		return Customer_ID;
+	}
+
+	public void setCustomer_ID(String customer_ID) {
+		Customer_ID = customer_ID;
+	}
+
+	public String getCollectionField_ID() {
+		return CollectionField_ID;
+	}
+
+	public void setCollectionField_ID(String collectionField_ID) {
+		CollectionField_ID = collectionField_ID;
+	}
+
+	
+	public int getClassificationStratum() {
+		return ClassificationStratum;
+	}
+
+	public void setClassificationStratum(int classificationStratum) {
+		ClassificationStratum = classificationStratum;
+	}
 	
 	public String getClassificationPath() {
 		return ClassificationPath;

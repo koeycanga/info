@@ -1,17 +1,18 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«žäº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model;
 
 public class SearchOptBean {
-	private Integer id;		//1Ä£ºý£¬2È«ÎÄ£¬3´ý¶¨
-	private String name;
-	public Integer getId() {
+    //1æ¨¡ç³Šï¼Œ2å…¨æ–‡ï¼Œ3å¾…å®š
+    private String id;
+    private String name;
+	public String getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -20,5 +21,6 @@ public class SearchOptBean {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+
 }

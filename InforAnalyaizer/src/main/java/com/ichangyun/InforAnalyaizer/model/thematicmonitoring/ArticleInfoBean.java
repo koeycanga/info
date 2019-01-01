@@ -1,701 +1,722 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model.thematicmonitoring;
 
-/**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
- * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
- */
 import com.ichangyun.InforAnalyaizer.model.BaseBean;
 
-/** ÎÄ×ÖĞÅÏ¢ÊµÌåÀà,¶ÔÓ¦Êı¾İ±í A_ArticleBasicInfo
+/**
+ * æ–‡å­—ä¿¡æ¯å®ä½“ç±»
+ * å¯¹åº”æ•°æ®è¡¨ A_ArticleBasicInfo
  * @author renhao
- * 2018-11-13 16:19
+ * @date 2018-11-13 16:19
  */
 public class ArticleInfoBean extends BaseBean {
 
-	/**
-	 * ²É¼¯ÁìÓò£É£Ä
-	 */
-	private String CollectionField_ID;
-	
-	/**
-	 * ÎÄÕÂID
-	 */
-	private String Article_ID;
-	
-	/**
-	 * ·ÖÀàID
-	 */
-	private String Classification_ID;
-	
-	/**
-	 * ±êÌâ
-	 */
-	private String ArticleTitle;
-	
-	/**
-	 * ÕªÒª
-	 */
-	private String ArticleAbstract;
-	
-	/**
-	 * ÕıÎÄ
-	 */
-	private String ArticleText;
-	
-	/**
-	 * ×÷Õß
-	 */
-	private String ArticleAuthor;
-	
-	
-	/**
-	 * ·¢²¼Ê±¼ä
-	 */
-	private String Releasetime;
-	
-	
-	/**
-	 * ·¢²¼Ê±¼ä(±¸ÓÃ)
-	 */
-	private String Releasetime_bak;
-	
-	
-	/**
-	 * Ô­ÎÄÁ´½ÓURL
-	 */
-	private String ArticleURL;
-	
-	/**
-	 * ¹Ø¼ü´Ê
-	 */
-	private String ArticleKeyWord;
-	
-	
-	/**
-	 * Í¼Æ¬´æ·ÅÂ·¾¶
-	 */
-	private String PictureStoragePath;
-	
-	
-	/**
-	 * À´Ô´ÍøÕ¾ID
-	 */
-	private String Website_ID;
-	
-	/**
-	 * À´Ô´ÍøÕ¾Ãû³Æ
-	 */
-	private String WebsiteName;
-	
-	
-	/**
-	 * À´Ô´Çø·Ö
-	 */
-	private String SourceDivision;
-	
-	/**
-	 * Çé¸ĞÇø·Ö
-	 */
-	private String EmotionDivision;
-
-	
-	/**
-	 * ×÷³ÉÕß
-	 */
-	private String CreateUser;
-	
-	/**
-	 * ×÷³ÉÈÕ•r
-	 */
-	private String CreateDateTime;
-	
-	/**
-	 * ¸üĞÂÕß
-	 */
-	private String UpdateUser;
-	
-	/**
-	 * ¸üĞÂÈÕ•r
-	 */
-	private String UpdateDateTime;
-	
-	/**
-	 * ²éÑ¯²ÎÊı
-	 */
-	private String search_key;
-	
-	/**
-	 * ²éÑ¯Ê±¼ä²ÎÊı
-	 */
-	private String montime;
-	
-	/**
-	 * ²éÑ¯Çé¸ĞÊôĞÔ²ÎÊı
-	 */
-	private String emoana;
-	
-	/**
-	 * ÊÇ·ñºÏ²¢ÏàËÆÎÄÕÂ²ÎÊı
-	 */
-	private String simart;
-	
-	/**
-	 * ÅÅĞò²ÎÊı
-	 */
-	private String sort;
-	
-	/**
-	 * À´Ô´²ÎÊı
-	 */
-	private String infsour;
-	
-	/**
-	 * Ê±¼äÆğÊ¼
-	 */
-	private String montime_start;
-	
-	/**
-	 * Ê±¼ä½áÊø
-	 */
-	private String montime_end;
-	
-	/**
-	 * ÏàËÆÎÄÕÂ×ÜÊı
-	 */
-	private int sim_cnt;
-	
-	/**
-	 * count(*)×Ö¶Î±ğÃû
-	 */
-	private int cnt;
-	
-	/**
-	 * ÎÄÕÂ±»ÊÕ²ØµÄ´ÎÊı
-	 */
-	private int collcnt;
-
-	
-	/**
-	 * ·½°¸ID
-	 */
-	private String Plan_ID;
-	
-	/**
-	 * Ö»ÓĞÄêÔÂÈÕµÄÈÕÆÚ
-	 */
-	private String YMD_Date ;
-	
-	
-	/**
-	 * Ö»ÓĞÊ±¼äºÍ·ÖÖÓµÄÈÕÆÚ
-	 */
-	private String Hi_Date;
-	
-	
-	/**
-	 * ¼à²â´Ê
-	 */
-	private String MonitoringWord;
-	
-	
-	
-	/**
-	 * ÓÃ»§Ô¤¾¯¹æÔòÃô¸Ğ´ÊID
-	 */
-	private int SensitiveWord_ID;
-	
-	/**
-	 * Ãô¸Ğ´Ê
-	 */
-	private String SensitiveWord;
-	
-	
-	/**
-	 * ×òÌìÔ¤¾¯×ÜÊı
-	 */
-	private int yesterday_total;
-	
-	/**
-	 * ½ñÌìÔ¤¾¯×ÜÊı
-	 */
-	private int totday_total;
-	
-	/**
-	 * ËÑË÷ÀàĞÍ,all,title,text
-	 */
-	private String search_type;
-
-	/**
-	 * userid
-	 */
-	private String userid;
+    /**
+     * é‡‡é›†é¢†åŸŸï¼©ï¼¤
+     */
+    private String CollectionField_ID;
 
     /**
-     *  ÓÃ»§Ô¤¾¯µÄÎÄÕÂµÄÊıÁ¿
+     * æ–‡ç« ID
      */
-	private int yj_cnt;
+    private String Article_ID;
 
+    /**
+     * ç›¸å…³æ–‡ç« ID
+     */
+    private String Relate_Article_ID;
+
+    /**
+     * åˆ†ç±»ID
+     */
+    private String Classification_ID;
+
+    /**
+     * æ ‡é¢˜
+     */
+    private String ArticleTitle;
+
+    /**
+     * æ‘˜è¦
+     */
+    private String ArticleAbstract;
+
+    /**
+     * æ­£æ–‡
+     */
+    private String ArticleText;
+
+    /**
+     * ä½œè€…
+     */
+    private String ArticleAuthor;
+
+
+    /**
+     * å‘å¸ƒæ—¶é—´
+     */
+    private String Releasetime;
+
+
+    /**
+     * å‘å¸ƒæ—¶é—´(å¤‡ç”¨)
+     */
+    private String Releasetime_bak;
+
+    /**
+     * åŸæ–‡é“¾æ¥URL
+     */
+    private String ArticleURL;
+
+    /**
+     * å…³é”®è¯
+     */
+    private String ArticleKeyWord;
+
+    /**
+     * å›¾ç‰‡å­˜æ”¾è·¯å¾„
+     */
+    private String PictureStoragePath;
+    // ç½‘ç«™ç½‘å€
+    private String Website;
+
+    /**
+     * æ¥æºç½‘ç«™ID
+     */
+    private String Website_ID;
+
+    /**
+     * æ¥æºç½‘ç«™åç§°
+     */
+    private String WebsiteName;
+
+    /**
+     * æ¥æºåŒºåˆ†
+     */
+    private String SourceDivision;
+
+    /**
+     * æƒ…æ„ŸåŒºåˆ†
+     */
+    private String EmotionDivision;
+
+    /**
+     * ä½œæˆè€…
+     */
+    private String CreateUser;
+
+    /**
+     * ä½œæˆæ—¥æ™‚
+     */
+    private String CreateDateTime;
+
+    /**
+     * æ›´æ–°è€…
+     */
+    private String UpdateUser;
+
+    /**
+     * æ›´æ–°æ—¥æ™‚
+     */
+    private String UpdateDateTime;
+
+    /**
+     * æŸ¥è¯¢å‚æ•°
+     */
+    private String search_key;
+
+    /**
+     * æŸ¥è¯¢æ—¶é—´å‚æ•°
+     */
+    private String montime;
+    
+    /**
+     * æŸ¥è¯¢æ—¶é—´å‚æ•°
+     */
+    private String montime_bak;
+
+ 
 	/**
-	 * Ãô¸Ğ´ÊNO
-	 */
-	private int SensitiveWordNo;
+     * æŸ¥è¯¢æƒ…æ„Ÿå±æ€§å‚æ•°
+     */
+    private String emoana;
 
-	/**
-	 * ÍÆ¼öÃô¸Ğ´ÊÖÖÀàID
-	 */
-	private String MasterID;
-	
-	/**
-	 * ÍÆ¼öÃô¸Ğ´ÊÖÖÀàÃû³Æ
-	 */
-	private String ControlName ;
-	
-	/**
-	 * Ãô¸Ğ´ÊÃû³Æ
-	 */
-	private String MasterValue;
-	
-	/**
-	 * ÅÅÎ»Ë³Ğò
-	 */
-	private int DisplayOrder;
-	
-	
-	/**
-	 * ÊÇ·ñÔ¤¾¯
-	 */
-	private  String isearlywarning;
-	
-	/**
-	 * ÊÇ·ñÏÔÊ¾Ô¤¾¯´Ê
-	 */
-	private boolean isshowyjc;
-	
-	/**
-	 * Ãô¸Ğ´ÊÇø·ÖID
-	 */
-	private String SensitiveWordType_ID;
-	
-	/**
-	 *  ±êÊ¶Î»  ÓÃÀ´×ösqlÓï¾äÖĞµÄÒ»Ğ©±êÊ¾
-	 */
-	private String flag;
-	
-	
-	private String Keyword_ID;
-	
-	
-	private String HotWord;
-	
-	private String c_hour;
-	
-	private String ReprintType;
-	
-	private String ReprintSourceArticle_ID;
-	
-	public String getReprintType() {
-		return ReprintType;
-	}
+    /**
+     * æ˜¯å¦åˆå¹¶ç›¸ä¼¼æ–‡ç« å‚æ•°
+     */
+    private String simart;
 
-	public void setReprintType(String reprintType) {
-		ReprintType = reprintType;
-	}
+    /**
+     * æ’åºå‚æ•°
+     */
+    private String sort;
 
-	public String getReprintSourceArticle_ID() {
-		return ReprintSourceArticle_ID;
-	}
+    /**
+     * æ¥æºå‚æ•°
+     */
+    private String infsour;
 
-	public void setReprintSourceArticle_ID(String reprintSourceArticle_ID) {
-		ReprintSourceArticle_ID = reprintSourceArticle_ID;
-	}
+    /**
+     * æ—¶é—´èµ·å§‹
+     */
+    private String montime_start;
 
-	public String getC_hour() {
-		return c_hour;
-	}
+    /**
+     * æ—¶é—´ç»“æŸ
+     */
+    private String montime_end;
 
-	public void setC_hour(String c_hour) {
-		this.c_hour = c_hour;
-	}
+    /**
+     * ç›¸ä¼¼æ–‡ç« æ€»æ•°
+     */
+    private int sim_cnt;
 
-	public String getKeyword_ID() {
-		return Keyword_ID;
-	}
+    /**
+     * count(*)å­—æ®µåˆ«å
+     */
+    private int cnt;
 
-	public void setKeyword_ID(String keyword_ID) {
-		Keyword_ID = keyword_ID;
-	}
+    /**
+     * æ–‡ç« è¢«æ”¶è—çš„æ¬¡æ•°
+     */
+    private int collcnt;
 
-	public String getHotWord() {
-		return HotWord;
-	}
+    /**
+     * æ–¹æ¡ˆID
+     */
+    private String Plan_ID;
 
-	public void setHotWord(String hotWord) {
-		HotWord = hotWord;
-	}
+    /**
+     * åªæœ‰å¹´æœˆæ—¥çš„æ—¥æœŸ
+     */
+    private String YMD_Date ;
 
-	public String getFlag() {
-		return flag;
-	}
+    /**
+     * åªæœ‰æ—¶é—´å’Œåˆ†é’Ÿçš„æ—¥æœŸ
+     */
+    private String Hi_Date;
 
-	public void setFlag(String flag) {
-		this.flag = flag;
-	}
+    /**
+     * ç›‘æµ‹è¯
+     */
+    private String MonitoringWord;
 
-	public String getSensitiveWordType_ID() {
-		return SensitiveWordType_ID;
-	}
+    /**
+     * ç”¨æˆ·é¢„è­¦è§„åˆ™æ•æ„Ÿè¯ID
+     */
+    private int SensitiveWord_ID;
 
-	public void setSensitiveWordType_ID(String sensitiveWordType_ID) {
-		SensitiveWordType_ID = sensitiveWordType_ID;
-	}
+    /**
+     * æ•æ„Ÿè¯
+     */
+    private String SensitiveWord;
 
-	public boolean isIsshowyjc() {
-		return isshowyjc;
-	}
+    /**
+     * æ˜¨å¤©é¢„è­¦æ€»æ•°
+     */
+    private int yesterday_total;
 
-	public void setIsshowyjc(boolean isshowyjc) {
-		this.isshowyjc = isshowyjc;
-	}
+    /**
+     * ä»Šå¤©é¢„è­¦æ€»æ•°
+     */
+    private int totday_total;
 
-	public String getIsearlywarning() {
-		return isearlywarning;
-	}
+    /**
+     * æœç´¢ç±»å‹,all,title,text
+     */
+    private String search_type;
 
-	public void setIsearlywarning(String isearlywarning) {
-		this.isearlywarning = isearlywarning;
-	}
+    /**
+     * userid
+     */
+    private String userid;
 
-	private String yjfs;
-	
-	public String getYjfs() {
-		return yjfs;
-	}
+    /**
+     *  ç”¨æˆ·é¢„è­¦çš„æ–‡ç« çš„æ•°é‡
+     */
+    private int yj_cnt;
 
-	public void setYjfs(String yjfs) {
-		this.yjfs = yjfs;
-	}
+    /**
+     * æ•æ„Ÿè¯NO
+     */
+    private int SensitiveWordNo;
 
-	public int getSensitiveWord_ID() {
-		return SensitiveWord_ID;
-	}
+    /**
+     * æ¨èæ•æ„Ÿè¯ç§ç±»ID
+     */
+    private String MasterID;
 
-	public void setSensitiveWord_ID(int sensitiveWord_ID) {
-		SensitiveWord_ID = sensitiveWord_ID;
-	}
-	
-	public int getDisplayOrder() {
-		return DisplayOrder;
-	}
+    /**
+     * æ¨èæ•æ„Ÿè¯ç§ç±»åç§°
+     */
+    private String ControlName ;
 
-	public void setDisplayOrder(int displayOrder) {
-		DisplayOrder = displayOrder;
-	}
+    /**
+     * æ•æ„Ÿè¯åç§°
+     */
+    private String MasterValue;
 
-	public String getMasterValue() {
-		return MasterValue;
-	}
+    /**
+     * æ’ä½é¡ºåº
+     */
+    private int DisplayOrder;
 
-	public void setMasterValue(String masterValue) {
-		MasterValue = masterValue;
+    /**
+     * æ˜¯å¦é¢„è­¦
+     */
+    private  String isearlywarning;
+
+    /**
+     * æ˜¯å¦æ˜¾ç¤ºé¢„è­¦è¯
+     */
+    private boolean isshowyjc;
+
+    /**
+     * æ•æ„Ÿè¯åŒºåˆ†ID
+     */
+    private String SensitiveWordType_ID;
+
+    /**
+     *  æ ‡è¯†ä½  ç”¨æ¥åšsqlè¯­å¥ä¸­çš„ä¸€äº›æ ‡ç¤º
+     */
+    private String flag;
+
+    private String Keyword_ID;
+
+    private String HotWord;
+
+    private String c_hour;
+
+    private String ReprintType;
+
+    private String ReprintSourceArticle_ID;
+
+    
+    public String getMontime_bak() {
+		return montime_bak;
 	}
 
-	public String getMasterID() {
-		return MasterID;
+	public void setMontime_bak(String montime_bak) {
+		this.montime_bak = montime_bak;
 	}
+    
+    public String getRelate_Article_ID() {
+        return Relate_Article_ID;
+    }
 
-	public void setMasterID(String masterID) {
-		MasterID = masterID;
-	}
+    public void setRelate_Article_ID(String relate_Article_ID) {
+        Relate_Article_ID = relate_Article_ID;
+    }
 
-	public String getControlName() {
-		return ControlName;
-	}
+    public String getReprintType() {
+        return ReprintType;
+    }
 
-	public void setControlName(String controlName) {
-		ControlName = controlName;
-	}
+    public void setReprintType(String reprintType) {
+        ReprintType = reprintType;
+    }
 
-	public int getSensitiveWordNo() {
-		return SensitiveWordNo;
-	}
+    public String getReprintSourceArticle_ID() {
+        return ReprintSourceArticle_ID;
+    }
 
-	public void setSensitiveWordNo(int sensitiveWordNo) {
-		SensitiveWordNo = sensitiveWordNo;
-	}
+    public void setReprintSourceArticle_ID(String reprintSourceArticle_ID) {
+        ReprintSourceArticle_ID = reprintSourceArticle_ID;
+    }
 
-	public int getYesterday_total() {
-		return yesterday_total;
-	}
+    public String getC_hour() {
+        return c_hour;
+    }
 
-	public void setYesterday_total(int yesterday_total) {
-		this.yesterday_total = yesterday_total;
-	}
+    public void setC_hour(String c_hour) {
+        this.c_hour = c_hour;
+    }
 
-	public int getTotday_total() {
-		return totday_total;
-	}
+    public String getKeyword_ID() {
+        return Keyword_ID;
+    }
 
-	public void setTotday_total(int totday_total) {
-		this.totday_total = totday_total;
-	}
+    public void setKeyword_ID(String keyword_ID) {
+        Keyword_ID = keyword_ID;
+    }
 
-	public String getSensitiveWord() {
-		return SensitiveWord;
-	}
+    public String getHotWord() {
+        return HotWord;
+    }
 
-	public void setSensitiveWord(String sensitiveWord) {
-		SensitiveWord = sensitiveWord;
-	}
+    public void setHotWord(String hotWord) {
+        HotWord = hotWord;
+    }
 
-	public String getMonitoringWord() {
-		return MonitoringWord;
-	}
+    public String getFlag() {
+        return flag;
+    }
 
-	public void setMonitoringWord(String monitoringWord) {
-		MonitoringWord = monitoringWord;
-	}
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
 
-	public String getHi_Date() {
-		return Hi_Date;
-	}
+    public String getSensitiveWordType_ID() {
+        return SensitiveWordType_ID;
+    }
 
-	public void setHi_Date(String hi_Date) {
-		Hi_Date = hi_Date;
-	}
+    public void setSensitiveWordType_ID(String sensitiveWordType_ID) {
+        SensitiveWordType_ID = sensitiveWordType_ID;
+    }
 
-	public String getReleasetime_bak() {
-		return Releasetime_bak;
-	}
+    public boolean isIsshowyjc() {
+        return isshowyjc;
+    }
 
-	public void setReleasetime_bak(String releasetime_bak) {
-		Releasetime_bak = releasetime_bak;
-	}
-	
-	public String getYMD_Date() {
-		return YMD_Date;
-	}
+    public void setIsshowyjc(boolean isshowyjc) {
+        this.isshowyjc = isshowyjc;
+    }
 
-	public void setYMD_Date(String yMD_Date) {
-		YMD_Date = yMD_Date;
-	}
+    public String getIsearlywarning() {
+        return isearlywarning;
+    }
 
-	public String getPlan_ID() {
-		return Plan_ID;
-	}
+    public void setIsearlywarning(String isearlywarning) {
+        this.isearlywarning = isearlywarning;
+    }
 
-	public void setPlan_ID(String plan_ID) {
-		Plan_ID = plan_ID;
-	}
-	
-	public int getYj_cnt() {
-		return yj_cnt;
-	}
+    private String yjfs;
 
-	public void setYj_cnt(int yj_cnt) {
-		this.yj_cnt = yj_cnt;
-	}
+    public String getYjfs() {
+        return yjfs;
+    }
 
-	public String getSearch_type() {
-		return search_type;
-	}
+    public void setYjfs(String yjfs) {
+        this.yjfs = yjfs;
+    }
 
-	public void setSearch_type(String search_type) {
-		this.search_type = search_type;
-	}
+    public int getSensitiveWord_ID() {
+        return SensitiveWord_ID;
+    }
 
-	public int getCollcnt() {
-		return collcnt;
-	}
-	public void setCollcnt(int collcnt) {
-		this.collcnt = collcnt;
-	}
-	public int getCnt() {
-		return cnt;
-	}
-	public void setCnt(int cnt) {
-		this.cnt = cnt;
-	}
-	public int getSim_cnt() {
-		return sim_cnt;
-	}
-	public void setSim_cnt(int sim_cnt) {
-		this.sim_cnt = sim_cnt;
-	}
-	public String getWebsiteName() {
-		return WebsiteName;
-	}
-	public void setWebsiteName(String websiteName) {
-		WebsiteName = websiteName;
-	}
-	
-	public String getMontime_start() {
-		return montime_start;
-	}
-	public void setMontime_start(String montime_start) {
-		this.montime_start = montime_start;
-	}
-	public String getMontime_end() {
-		return montime_end;
-	}
-	public void setMontime_end(String montime_end) {
-		this.montime_end = montime_end;
-	}
-	public String getSearch_key() {
-		return search_key;
-	}
-	public void setSearch_key(String search_key) {
-		this.search_key = search_key;
-	}
-	public String getMontime() {
-		return montime;
-	}
-	public void setMontime(String montime) {
-		this.montime = montime;
-	}
-	public String getEmoana() {
-		return emoana;
-	}
-	public void setEmoana(String emoana) {
-		this.emoana = emoana;
-	}
-	public String getSimart() {
-		return simart;
-	}
-	public void setSimart(String simart) {
-		this.simart = simart;
-	}
-	public String getSort() {
-		return sort;
-	}
-	public void setSort(String sort) {
-		this.sort = sort;
-	}
-	public String getInfsour() {
-		return infsour;
-	}
-	public void setInfsour(String infsour) {
-		this.infsour = infsour;
-	}
-	public String getCollectionField_ID() {
-		return CollectionField_ID;
-	}
-	public void setCollectionField_ID(String collectionField_ID) {
-		CollectionField_ID = collectionField_ID;
-	}
-	public String getArticle_ID() {
-		return Article_ID;
-	}
-	public void setArticle_ID(String article_ID) {
-		Article_ID = article_ID;
-	}
-	public String getClassification_ID() {
-		return Classification_ID;
-	}
-	public void setClassification_ID(String classification_ID) {
-		Classification_ID = classification_ID;
-	}
-	public String getArticleTitle() {
-		return ArticleTitle;
-	}
-	public void setArticleTitle(String articleTitle) {
-		ArticleTitle = articleTitle;
-	}
-	public String getArticleAbstract() {
-		return ArticleAbstract;
-	}
-	public void setArticleAbstract(String articleAbstract) {
-		ArticleAbstract = articleAbstract;
-	}
-	public String getArticleText() {
-		return ArticleText;
-	}
-	public void setArticleText(String articleText) {
-		ArticleText = articleText;
-	}
-	public String getArticleAuthor() {
-		return ArticleAuthor;
-	}
-	public void setArticleAuthor(String articleAuthor) {
-		ArticleAuthor = articleAuthor;
-	}
-	public String getReleasetime() {
-		return Releasetime;
-	}
-	public void setReleasetime(String releasetime) {
-		Releasetime = releasetime;
-	}
-	public String getArticleURL() {
-		return ArticleURL;
-	}
-	public void setArticleURL(String articleURL) {
-		ArticleURL = articleURL;
-	}
-	public String getArticleKeyWord() {
-		return ArticleKeyWord;
-	}
-	public void setArticleKeyWord(String articleKeyWord) {
-		ArticleKeyWord = articleKeyWord;
-	}
-	public String getPictureStoragePath() {
-		return PictureStoragePath;
-	}
-	public void setPictureStoragePath(String pictureStoragePath) {
-		PictureStoragePath = pictureStoragePath;
-	}
-	public String getWebsite_ID() {
-		return Website_ID;
-	}
-	public void setWebsite_ID(String website_ID) {
-		Website_ID = website_ID;
-	}
-	public String getSourceDivision() {
-		return SourceDivision;
-	}
-	public void setSourceDivision(String sourceDivision) {
-		SourceDivision = sourceDivision;
-	}
-	public String getEmotionDivision() {
-		return EmotionDivision;
-	}
-	public void setEmotionDivision(String emotionDivision) {
-		EmotionDivision = emotionDivision;
-	}
-	public String getCreateUser() {
-		return CreateUser;
-	}
-	public void setCreateUser(String createUser) {
-		CreateUser = createUser;
-	}
-	public String getCreateDateTime() {
-		return CreateDateTime;
-	}
-	public void setCreateDateTime(String createDateTime) {
-		CreateDateTime = createDateTime;
-	}
-	public String getUpdateUser() {
-		return UpdateUser;
-	}
-	public void setUpdateUser(String updateUser) {
-		UpdateUser = updateUser;
-	}
-	public String getUpdateDateTime() {
-		return UpdateDateTime;
-	}
-	public void setUpdateDateTime(String updateDateTime) {
-		UpdateDateTime = updateDateTime;
-	}
+    public void setSensitiveWord_ID(int sensitiveWord_ID) {
+        SensitiveWord_ID = sensitiveWord_ID;
+    }
 
-	public String getUserid() {
-		return userid;
-	}
+    public int getDisplayOrder() {
+        return DisplayOrder;
+    }
 
-	public void setUserid(String userid) {
-		this.userid = userid;
-	}
+    public void setDisplayOrder(int displayOrder) {
+        DisplayOrder = displayOrder;
+    }
+
+    public String getMasterValue() {
+        return MasterValue;
+    }
+
+    public void setMasterValue(String masterValue) {
+        MasterValue = masterValue;
+    }
+
+    public String getMasterID() {
+        return MasterID;
+    }
+
+    public void setMasterID(String masterID) {
+        MasterID = masterID;
+    }
+
+    public String getControlName() {
+        return ControlName;
+    }
+
+    public void setControlName(String controlName) {
+        ControlName = controlName;
+    }
+
+    public int getSensitiveWordNo() {
+        return SensitiveWordNo;
+    }
+
+    public void setSensitiveWordNo(int sensitiveWordNo) {
+        SensitiveWordNo = sensitiveWordNo;
+    }
+
+    public int getYesterday_total() {
+        return yesterday_total;
+    }
+
+    public void setYesterday_total(int yesterday_total) {
+        this.yesterday_total = yesterday_total;
+    }
+
+    public int getTotday_total() {
+        return totday_total;
+    }
+
+    public void setTotday_total(int totday_total) {
+        this.totday_total = totday_total;
+    }
+
+    public String getSensitiveWord() {
+        return SensitiveWord;
+    }
+
+    public void setSensitiveWord(String sensitiveWord) {
+        SensitiveWord = sensitiveWord;
+    }
+
+    public String getMonitoringWord() {
+        return MonitoringWord;
+    }
+
+    public void setMonitoringWord(String monitoringWord) {
+        MonitoringWord = monitoringWord;
+    }
+
+    public String getHi_Date() {
+        return Hi_Date;
+    }
+
+    public void setHi_Date(String hi_Date) {
+        Hi_Date = hi_Date;
+    }
+
+    public String getReleasetime_bak() {
+        return Releasetime_bak;
+    }
+
+    public void setReleasetime_bak(String releasetime_bak) {
+        Releasetime_bak = releasetime_bak;
+    }
+
+    public String getYMD_Date() {
+        return YMD_Date;
+    }
+
+    public void setYMD_Date(String yMD_Date) {
+        YMD_Date = yMD_Date;
+    }
+
+    public String getPlan_ID() {
+        return Plan_ID;
+    }
+
+    public void setPlan_ID(String plan_ID) {
+        Plan_ID = plan_ID;
+    }
+
+    public int getYj_cnt() {
+        return yj_cnt;
+    }
+
+    public void setYj_cnt(int yj_cnt) {
+        this.yj_cnt = yj_cnt;
+    }
+
+    public String getSearch_type() {
+        return search_type;
+    }
+
+    public void setSearch_type(String search_type) {
+        this.search_type = search_type;
+    }
+
+    public int getCollcnt() {
+        return collcnt;
+    }
+    public void setCollcnt(int collcnt) {
+        this.collcnt = collcnt;
+    }
+    public int getCnt() {
+        return cnt;
+    }
+    public void setCnt(int cnt) {
+        this.cnt = cnt;
+    }
+    public int getSim_cnt() {
+        return sim_cnt;
+    }
+    public void setSim_cnt(int sim_cnt) {
+        this.sim_cnt = sim_cnt;
+    }
+    public String getWebsiteName() {
+        return WebsiteName;
+    }
+    public void setWebsiteName(String websiteName) {
+        WebsiteName = websiteName;
+    }
+
+    public String getMontime_start() {
+        return montime_start;
+    }
+    public void setMontime_start(String montime_start) {
+        this.montime_start = montime_start;
+    }
+    public String getMontime_end() {
+        return montime_end;
+    }
+    public void setMontime_end(String montime_end) {
+        this.montime_end = montime_end;
+    }
+    public String getSearch_key() {
+        return search_key;
+    }
+    public void setSearch_key(String search_key) {
+        this.search_key = search_key;
+    }
+    public String getMontime() {
+        return montime;
+    }
+    public void setMontime(String montime) {
+        this.montime = montime;
+    }
+    public String getEmoana() {
+        return emoana;
+    }
+    public void setEmoana(String emoana) {
+        this.emoana = emoana;
+    }
+    public String getSimart() {
+        return simart;
+    }
+    public void setSimart(String simart) {
+        this.simart = simart;
+    }
+    public String getSort() {
+        return sort;
+    }
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+    public String getInfsour() {
+        return infsour;
+    }
+    public void setInfsour(String infsour) {
+        this.infsour = infsour;
+    }
+    public String getCollectionField_ID() {
+        return CollectionField_ID;
+    }
+    public void setCollectionField_ID(String collectionField_ID) {
+        CollectionField_ID = collectionField_ID;
+    }
+    public String getArticle_ID() {
+        return Article_ID;
+    }
+    public void setArticle_ID(String article_ID) {
+        Article_ID = article_ID;
+    }
+    public String getClassification_ID() {
+        return Classification_ID;
+    }
+    public void setClassification_ID(String classification_ID) {
+        Classification_ID = classification_ID;
+    }
+    public String getArticleTitle() {
+        return ArticleTitle;
+    }
+    public void setArticleTitle(String articleTitle) {
+        ArticleTitle = articleTitle;
+    }
+    public String getArticleAbstract() {
+        return ArticleAbstract;
+    }
+    public void setArticleAbstract(String articleAbstract) {
+        ArticleAbstract = articleAbstract;
+    }
+    public String getArticleText() {
+        return ArticleText;
+    }
+    public void setArticleText(String articleText) {
+        ArticleText = articleText;
+    }
+    public String getArticleAuthor() {
+        return ArticleAuthor;
+    }
+    public void setArticleAuthor(String articleAuthor) {
+        ArticleAuthor = articleAuthor;
+    }
+    public String getReleasetime() {
+        return Releasetime;
+    }
+    public void setReleasetime(String releasetime) {
+        Releasetime = releasetime;
+    }
+    public String getArticleURL() {
+        return ArticleURL;
+    }
+    public void setArticleURL(String articleURL) {
+        ArticleURL = articleURL;
+    }
+    public String getArticleKeyWord() {
+        return ArticleKeyWord;
+    }
+    public void setArticleKeyWord(String articleKeyWord) {
+        ArticleKeyWord = articleKeyWord;
+    }
+    public String getPictureStoragePath() {
+        return PictureStoragePath;
+    }
+    public void setPictureStoragePath(String pictureStoragePath) {
+        PictureStoragePath = pictureStoragePath;
+    }
+    public String getWebsite_ID() {
+        return Website_ID;
+    }
+    public void setWebsite_ID(String website_ID) {
+        Website_ID = website_ID;
+    }
+    public String getSourceDivision() {
+        return SourceDivision;
+    }
+    public void setSourceDivision(String sourceDivision) {
+        SourceDivision = sourceDivision;
+    }
+    public String getEmotionDivision() {
+        return EmotionDivision;
+    }
+    public void setEmotionDivision(String emotionDivision) {
+        EmotionDivision = emotionDivision;
+    }
+    public String getCreateUser() {
+        return CreateUser;
+    }
+    public void setCreateUser(String createUser) {
+        CreateUser = createUser;
+    }
+    public String getCreateDateTime() {
+        return CreateDateTime;
+    }
+    public void setCreateDateTime(String createDateTime) {
+        CreateDateTime = createDateTime;
+    }
+    public String getUpdateUser() {
+        return UpdateUser;
+    }
+    public void setUpdateUser(String updateUser) {
+        UpdateUser = updateUser;
+    }
+    public String getUpdateDateTime() {
+        return UpdateDateTime;
+    }
+    public void setUpdateDateTime(String updateDateTime) {
+        UpdateDateTime = updateDateTime;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+    public String getWebsite() {
+        return Website;
+    }
+
+    public void setWebsite(String website) {
+        Website = website;
+    }
 }

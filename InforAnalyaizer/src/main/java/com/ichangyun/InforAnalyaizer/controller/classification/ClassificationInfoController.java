@@ -1,29 +1,31 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.controller.classification;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.service.classification.ClassificationInfoService;
 import com.ichangyun.InforAnalyaizer.service.common.service.DBUpdateCheckService;
 
-
 /**
- * ·ÖÀàÌåÏµController  
+ * åˆ†ç±»ä½“ç³»Controller
  * @author renhao
  * Date:2018-11-9
  */
@@ -31,158 +33,164 @@ import com.ichangyun.InforAnalyaizer.service.common.service.DBUpdateCheckService
 @RequestMapping("/qbgh/classifcationinfo")
 public class ClassificationInfoController {
 
-	 
-	//·ÖÀàÌåÏµservice
-	@Autowired
-	private ClassificationInfoService classificationInfoService;
-	
-	@Autowired
-	private DBUpdateCheckService dbUpdateCheckService;
-	
-	/**
-	 * ½øÈë·ÖÀàÌåÏµÒ³Ãæ
-	 * @return
-	 * Date:2018-11-9
-	 */
-	@RequestMapping("/index")
-	@ResponseBody
-	public Object index() {
-		return new ModelAndView("classifcation/classifcationinfo");
-	}
-	
-	/**
-	 * ¸ù¾İ²ÎÊı²éÑ¯·ÖÀàÌåÏµĞÅÏ¢
-	 * @param cb  ²éÑ¯²ÎÊı
-	 * @return  Òª²éÑ¯µÄ·ÖÀàÌåÏµĞÅÏ¢
-	 * Date:2018-11-12
-	 */
-	@RequestMapping("/search")
-	public Object search(ClassificationInfoBean cb) {
-		
-		int rowCount = classificationInfoService.getClassifcInfoCount(cb);
-		
-		String json_res = classificationInfoService.getClassifcInfo(cb);
-		
-		String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
-		
-		return res;
-	}
-	
-	
-	/**
-	 * ĞÂÔö·ÖÀàÌåÏµĞÅÏ¢
-	 * @param cb  ĞÂÔö·ÖÀàÌåÏµµÄ¸÷²ÎÊı
-	 * @param session  
-	 * @return  ok:³É¹¦   exist:·ÖÀàÃû³ÆÒÑ´æÔÚ     nok:Òì³£ 
-	 * Date:2018-11-12
-	 */
-	@RequestMapping("/addclassifcationinfo")
-	public Object addclassifcationinfo(ClassificationInfoBean cb,HttpSession session) {
-		
-		String res = "ok";
-		
-		if(cb.getParent_Classification_ID()==null||cb.getParent_Classification_ID().equals("")) {
-			cb.setParent_Classification_ID("0000000000");   //Èç¹ûÃ»ÓĞ¸¸½ÚµãID   ÔòËµÃ÷ĞÂÔöÒ»¸ö¸ù½Úµã
-		}
-		
-		if(classificationInfoService.exist(cb)) {
-			 res = "exist";
-		}else {
-		
-			User user = (User) session.getAttribute(CommBean.SESSION_NAME);
-	
-			cb.setCreateUser(user.getUser_ID());
+    //åˆ†ç±»ä½“ç³»service
+    @Autowired
+    private ClassificationInfoService classificationInfoService;
 
-		    if(!classificationInfoService.AddNew(cb)) {
-		    	res = "nok";
-	         }else {
-	        	 res = classificationInfoService.getInfoByID(cb);
-	         }
-		}
-		return res;
-	}
-	
-	
-	/**
-	 * ĞŞ¸Ä·ÖÀàÌåÏµĞÅÏ¢
-	 * @param cb  ÒªĞŞ¸ÄµÄ·ÖÀàÌåÏµ²ÎÊı
-	 * @param session
-	 * @return  ok£º³É¹¦   exist:·ÖÀàÌåÏµÃû³ÆÒÑ´æÔÚ  nok:Òì³£
-	 * Date:2018-11-12
-	 */
-	@RequestMapping("/updateclassifcationinfo")
-	public Object updateclassifcationinfo(ClassificationInfoBean cb,HttpSession session) {
-		
-		String res = "ok";
-		
-		if(classificationInfoService.existExceptID(cb)) {
-			 res = "exist";
-		}else {
-			User user = (User) session.getAttribute(CommBean.SESSION_NAME);
-			
-			cb.setUpdateUser(user.getUser_ID());
-			
-			List<String> paramList = new ArrayList<String>();
-			paramList.add(cb.getClassification_ID());
-			if(!dbUpdateCheckService.DBUpdateCheck("3", paramList, cb.getUpdateDateTime())) {
-				res = "already update";
-			}else {
-				res = classificationInfoService.updateData(cb) ;
-			}
-		}
-		return res;
-	}
-	
-	
-	/**
-	 * É¾³ı·ÖÀàÌåÏµĞÅÏ¢
-	 * @param map  ÒªÉ¾³ıµÄ·ÖÀàÌåÏµID  ¼¯ºÏ
-	 * @return  ok: ³É¹¦     nok:Òì³£
-	 * Date:2018-11-12
-	 */
-	@RequestMapping("/deldata")
-	public Object delData(@RequestBody Map map) {
-		String res = "ok";
-		String json = (String) map.get("json");
-		if(json==null||"".equals(json)) {
-			res = "nok";
-		}else {
-			if(!classificationInfoService.delDSata(json)) {
-				res = "nok";
-			}
-		}
-		return res;
-	}
-	
-	
-	/**
-	 * ¸ü¸Ä·ÖÀàÌåÏµÅÅÎ»Ë³Ğò
-	 * @param cur_Classification_ID   Òª½»»»µÄ·ÖÀàÌåÏµID 1
-	 * @param cur_displayOrder        Òª½»»»µÄ·ÖÀàÌåÏµÅÅÎ»Ë³Ğò 1
-	 * @param ch_Classification_ID    Òª½»»»µÄ·ÖÀàÌåÏµID 2
-	 * @param ch_displayOrder         Òª½»»»µÄ·ÖÀàÌåÏµÅÅÎ»Ë³Ğò 2
-	 * Date:2018-11-12
-	 */
-	@RequestMapping("/updateorder")
-	public void updateOrder(String cur_Classification_ID,int cur_displayOrder,String ch_Classification_ID,int ch_displayOrder) {
+    @Autowired
+    private DBUpdateCheckService dbUpdateCheckService;
 
-		classificationInfoService.updateOrder(cur_Classification_ID, cur_displayOrder, ch_Classification_ID, ch_displayOrder);
-	}
-	
-	
-	/**
-	 * ¸ù¾İID »ñµÃ·ÖÀàÌåÏµµÄ×Ó½Úµã
-	 * @param cb   Òª»ñµÃ×Ó½ÚµãµÄ·ÖÀàÌåÏµID²ÎÊı
-	 * @return   ·ÖÀàÌåÏµ×Ó½ÚµãĞÅÏ¢µÄJSON ×ÖÃæÁ¿
-	 * Date:2018-11-12
-	 */
-	@RequestMapping("/getchild")
-	public Object getchild(ClassificationInfoBean cb) {
-		
-		String json = classificationInfoService.getChildernByID(cb);
-		
-		return json;
-	}
-	
-	
+    /**
+     * è¿›å…¥åˆ†ç±»ä½“ç³»é¡µé¢
+     * @return
+     * Date:2018-11-9
+     */
+    @RequestMapping("/index")
+    @ResponseBody
+    public Object index() {
+        return new ModelAndView("classifcation/classifcationinfo");
+    }
+
+    /**
+     * æ ¹æ®å‚æ•°æŸ¥è¯¢åˆ†ç±»ä½“ç³»ä¿¡æ¯
+     * @param cb  æŸ¥è¯¢å‚æ•°
+     * @return  è¦æŸ¥è¯¢çš„åˆ†ç±»ä½“ç³»ä¿¡æ¯
+     * Date:2018-11-12
+     */
+    @RequestMapping("/search")
+    public Object search(ClassificationInfoBean cb,HttpSession session) {
+
+    	User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+    	cb.setCustomer_ID(u.getCustomer_ID());
+    	cb.setCollectionField_ID(u.getCollectionField_ID());
+    	
+        int rowCount = classificationInfoService.getClassifcInfoCount(cb);
+
+        String json_res = classificationInfoService.getClassifcInfo(cb);
+
+        String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
+
+        return res;
+    }
+
+    /**
+     * æ–°å¢åˆ†ç±»ä½“ç³»ä¿¡æ¯
+     * @param cb  æ–°å¢åˆ†ç±»ä½“ç³»çš„å„å‚æ•°
+     * @param session
+     * @return  ok:æˆåŠŸ   exist:åˆ†ç±»åç§°å·²å­˜åœ¨     nok:å¼‚å¸¸
+     * Date:2018-11-12
+     */
+    @RequestMapping("/addclassifcationinfo")
+    public Object addclassifcationinfo(ClassificationInfoBean cb,HttpSession session) {
+
+        String res = "ok";
+        
+        User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+    	cb.setCustomer_ID(u.getCustomer_ID());
+    	cb.setCollectionField_ID(u.getCollectionField_ID());
+        
+        if(cb.getParent_Classification_ID()==null||cb.getParent_Classification_ID().equals("")) {
+            cb.setParent_Classification_ID("0000000000");   //å¦‚æœæ²¡æœ‰çˆ¶èŠ‚ç‚¹ID   åˆ™è¯´æ˜æ–°å¢ä¸€ä¸ªæ ¹èŠ‚ç‚¹
+            cb.setClassificationStratum(0);
+        }
+
+        if(classificationInfoService.exist(cb)) {
+            res = "exist";
+        }else {
+
+            User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+
+            cb.setCreateUser(user.getUser_ID());
+
+            if(!classificationInfoService.AddNew(cb)) {
+                res = "nok";
+            }else {
+                res = classificationInfoService.getInfoByID(cb);
+            }
+        }
+        return res;
+    }
+
+    /**
+     * ä¿®æ”¹åˆ†ç±»ä½“ç³»ä¿¡æ¯
+     * @param cb  è¦ä¿®æ”¹çš„åˆ†ç±»ä½“ç³»å‚æ•°
+     * @param session
+     * @return  okï¼šæˆåŠŸ   exist:åˆ†ç±»ä½“ç³»åç§°å·²å­˜åœ¨  nok:å¼‚å¸¸
+     * Date:2018-11-12
+     */
+    @RequestMapping("/updateclassifcationinfo")
+    public Object updateclassifcationinfo(ClassificationInfoBean cb,HttpSession session) {
+
+        String res = "ok";
+       
+        User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+    	cb.setCustomer_ID(u.getCustomer_ID());
+    	cb.setCollectionField_ID(u.getCollectionField_ID());
+        
+        if(classificationInfoService.existExceptID(cb)) {
+            res = "exist";
+        }else {
+            User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+
+            cb.setUpdateUser(user.getUser_ID());
+
+            List<String> paramList = new ArrayList<String>();
+            paramList.add(cb.getClassification_ID());
+            if(!dbUpdateCheckService.DBUpdateCheck("3", paramList, cb.getUpdateDateTime(),session)) {
+                res = "already update";
+            }else {
+                res = classificationInfoService.updateData(cb) ;
+            }
+        }
+        return res;
+    }
+
+    /**
+     * åˆ é™¤åˆ†ç±»ä½“ç³»ä¿¡æ¯
+     * @param map  è¦åˆ é™¤çš„åˆ†ç±»ä½“ç³»ID  é›†åˆ
+     * @return  ok: æˆåŠŸ     nok:å¼‚å¸¸
+     * Date:2018-11-12
+     */
+    @RequestMapping("/deldata")
+    public Object delData(@RequestBody Map map) {
+        String res = "ok";
+        String json = (String) map.get("json");
+        if(json==null||"".equals(json)) {
+            res = "nok";
+        }else {
+            if(!classificationInfoService.delDSata(json)) {
+                res = "nok";
+            }
+        }
+        return res;
+    }
+
+    /**
+     * æ›´æ”¹åˆ†ç±»ä½“ç³»æ’ä½é¡ºåº
+     * @param cur_Classification_ID   è¦äº¤æ¢çš„åˆ†ç±»ä½“ç³»ID 1
+     * @param cur_displayOrder        è¦äº¤æ¢çš„åˆ†ç±»ä½“ç³»æ’ä½é¡ºåº 1
+     * @param ch_Classification_ID    è¦äº¤æ¢çš„åˆ†ç±»ä½“ç³»ID 2
+     * @param ch_displayOrder         è¦äº¤æ¢çš„åˆ†ç±»ä½“ç³»æ’ä½é¡ºåº 2
+     * Date:2018-11-12
+     */
+    @RequestMapping("/updateorder")
+    public void updateOrder(String cur_Classification_ID,int cur_displayOrder,String ch_Classification_ID,int ch_displayOrder) {
+
+        classificationInfoService.updateOrder(cur_Classification_ID, cur_displayOrder, ch_Classification_ID, ch_displayOrder);
+    }
+
+    /**
+     * æ ¹æ®ID è·å¾—åˆ†ç±»ä½“ç³»çš„å­èŠ‚ç‚¹
+     * @param cb   è¦è·å¾—å­èŠ‚ç‚¹çš„åˆ†ç±»ä½“ç³»IDå‚æ•°
+     * @return   åˆ†ç±»ä½“ç³»å­èŠ‚ç‚¹ä¿¡æ¯çš„JSON å­—é¢é‡
+     * Date:2018-11-12
+     */
+    @RequestMapping("/getchild")
+    public Object getchild(ClassificationInfoBean cb) {
+
+        String json = classificationInfoService.getChildernByID(cb);
+
+        return json;
+    }
+
 }

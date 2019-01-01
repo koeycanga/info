@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ * ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.service.classificationfilterwords;
 
@@ -10,23 +10,27 @@ import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
-import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean;
 import com.ichangyun.InforAnalyaizer.model.classificationfilterwords.FilterWordsVo;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 
 public interface FilterWordsService {
-	//Ìõ¼ş²éÑ¯ËùÓĞ½Úµã¹ıÂË´ÊĞÅÏ¢
-	public Map<String, Object> queryAllFilterWords(FilterWordsVo vo, int pageNow, int rowSize);
-	//¸ù¾İ½Úµãid²éÑ¯½Úµã¹ıÂË´Ê
-	public FilterWordsVo queryOne(String classificationId);
-	//¸üĞÂ½Úµã¹ıÂË´ÊĞÅÏ¢
-	public String updateFwVo(FilterWordsVo vo, User u);
-	//²éĞÂµ±Ç°½ÚµãµÄ×Ó½Úµã
-	public List<FilterWordsVo> queryChild(FilterWordsVo vo);
-	public HSSFWorkbook output(String[] ids, String realPath);
-	public String input(List<FilterWordsVo> vos, String userid);
-	
-	//»ñµÃËùÓĞµÄ·ÖÀàÌåÏµ
-	public List<ClassificationInfoBean> getAllClassificationNames();
+    //æ¡ä»¶æŸ¥è¯¢æ‰€æœ‰èŠ‚ç‚¹è¿‡æ»¤è¯ä¿¡æ¯
+    public Map<String, Object> queryAllFilterWords(FilterWordsVo vo, int pageNow, int rowSize);
+    //æ ¹æ®èŠ‚ç‚¹idæŸ¥è¯¢èŠ‚ç‚¹è¿‡æ»¤è¯
+    public FilterWordsVo queryOne(String classificationId);
+    //æ›´æ–°èŠ‚ç‚¹è¿‡æ»¤è¯ä¿¡æ¯
+    public String updateFwVo(FilterWordsVo vo, User u);
+    //æŸ¥æ–°å½“å‰èŠ‚ç‚¹çš„å­èŠ‚ç‚¹
+    public List<FilterWordsVo> queryChild(FilterWordsVo vo);
+    
+    
+    public Object[] output(String[] ids, String realPath);
+    
+    
+    public String input(List<FilterWordsVo> vos, String userid);
+
+    //è·å¾—æ‰€æœ‰çš„åˆ†ç±»ä½“ç³»
+    public List<ClassificationInfoBean> getAllClassificationNames();
 
 }

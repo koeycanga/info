@@ -1,70 +1,62 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model.collection;
 
 public class MyCollectionVo extends MyCollection{
-	/*¸¸ÊµÌåÀàĞÅÏ¢
-	 * private Integer displayorder; ±íÊ¾Ë³
-	 * 
-	 * private String userId;		ÓÃ»§Id
-	 * 
-	 * private String collectiontypeId;ËùÊô½ÚµãID
-	 * 
-	 * private String articleId;		ÎÄÕÂId
-	 * 
-	 * */
-	
-	//´ÓÎÄÕÂĞÅÏ¢±íÖĞ²éÑ¯ĞÅÏ¢
-	private String articleTitle;//ÎÄÕÂ±êÌâ
-	
-	private String releasetime;//·¢²¼Ê±¼ä
-	
-	private String id;			//´Ë¶ÔÏóid£¨ÓÃ»§id+½Úµãid+ÎÄÕÂid£©
-	
-	private String allparentname;
-	
-	
 
-	public String getAllparentname() {
-		return allparentname;
-	}
+    //ä»æ–‡ç« ä¿¡æ¯è¡¨ä¸­æŸ¥è¯¢ä¿¡æ¯
+    private String articleTitle;//æ–‡ç« æ ‡é¢˜
 
-	public void setAllparentname(String allparentname) {
-		this.allparentname = allparentname;
-	}
+    private String releasetime;//å‘å¸ƒæ—¶é—´
 
-	public String getId() {
-		if(null!=this.getUserId()&&null!=this.getCollectiontypeId()&&null!=this.getArticleId()) {
-			
-			this.id=this.getUserId()+"¡£"+this.getCollectiontypeId()+"¡£"+this.getArticleId();
-			return id;
-		}
-		return null;
-	}
+    private String id;          //æ­¤å¯¹è±¡idï¼ˆç”¨æˆ·id+èŠ‚ç‚¹id+æ–‡ç« idï¼‰
 
-	public String getArticleTitle() {
-		return articleTitle;
-	}
+    private String allparentname;
 
-	public void setArticleTitle(String articleTitle) {
-		this.articleTitle = articleTitle;
-	}
+    public String getAllparentname() {
+        return allparentname;
+    }
 
-	public String getReleasetime() {
-		return releasetime;
-	}
+    public void setAllparentname(String allparentname) {
+        this.allparentname = allparentname;
+    }
 
-	public void setReleasetime(String releasetime) {
-		this.releasetime = releasetime;
-	}
-	//Ê¹ÓÃidÎªÖ÷¼üÊôĞÔ¸³Öµ
-	public void setKey(String id) {
-		String[] ids = id.split("¡£");
-		this.setUserId(ids[0]);
-		this.setCollectiontypeId(ids[1]);
-		this.setArticleId(ids[2]);
-	}
+    public String getId() {
+        if(null!=this.getUserId()&&null!=this.getCollectiontypeId()&&null!=this.getArticleId()) {
+
+            this.id=this.getUserId()+"ã€‚"+this.getCollectiontypeId()+"ã€‚"+this.getArticleId();
+            return id;
+        }
+        return null;
+    }
+
+    public String getArticleTitle() {
+        return articleTitle;
+    }
+
+    public void setArticleTitle(String articleTitle) {
+        this.articleTitle = articleTitle;
+    }
+
+    public String getReleasetime() {
+        return releasetime;
+    }
+
+    public void setReleasetime(String releasetime) {
+        this.releasetime = releasetime;
+    }
+
+    /**
+     * ä½¿ç”¨idä¸ºä¸»é”®å±æ€§èµ‹å€¼
+     * @param id
+     */
+    public void setKey(String id) {
+        String[] ids = id.split("ã€‚");
+        this.setUserId(ids[0]);
+        this.setCollectiontypeId(ids[1]);
+        this.setArticleId(ids[2]);
+    }
 }

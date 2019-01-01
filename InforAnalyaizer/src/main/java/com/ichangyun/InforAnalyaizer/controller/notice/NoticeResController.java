@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.controller.notice;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ichangyun.InforAnalyaizer.model.BaseBean;
 import com.ichangyun.InforAnalyaizer.service.notice.NoticeResService;
 /**
- * Controller£º¼ò±¨½á¹û
+ * Controllerï¼šç®€æŠ¥ç»“æœ
  *
  * @author lan
  * @date 2018/11/19
@@ -23,28 +23,28 @@ import com.ichangyun.InforAnalyaizer.service.notice.NoticeResService;
 @Controller
 @RequestMapping("/noticeRes")
 public class NoticeResController {
-	@Autowired
-	private NoticeResService noticeResService;
+    @Autowired
+    private NoticeResService noticeResService;
     /**
-     * queryAll£º°´Ê±¼äÅÅĞò²éÑ¯ËùÓĞ¼ò±¨½á¹û
+     * queryAllï¼šæŒ‰æ—¶é—´æ’åºæŸ¥è¯¢æ‰€æœ‰ç®€æŠ¥ç»“æœ
      *
-     * @param BaseBean ·ÖÒ³¹¤¾ßÀà
+     * @param BaseBean åˆ†é¡µå·¥å…·ç±»
      * @return map
      */
-	@RequestMapping("/queryAll")
-	@ResponseBody
-	public Map<String, Object> queryAll(BaseBean baseBean){
-	   Map<String, Object> list = noticeResService.queryAll(baseBean.getPageNow(),baseBean.getRowSize());
-	       return list;
-	   }
+    @RequestMapping("/queryAll")
+    @ResponseBody
+    public Map<String, Object> queryAll(BaseBean baseBean){
+        Map<String, Object> list = noticeResService.queryAll(baseBean.getPageNow(),baseBean.getRowSize());
+        return list;
+    }
     /**
-     * toNoticeRes£ºÌø×ªµ½½á¹ûÒ³
+     * toNoticeResï¼šè·³è½¬åˆ°ç»“æœé¡µ
      *
      * @return String
      */
-	//Ìø×ª¼ò±¨½á¹ûÒ³Ãæ
-	@RequestMapping("/toNoticeRes")
-	public String toNoticeRes(){
-		return "frontpage/noticeRes";
-	}
+    //è·³è½¬ç®€æŠ¥ç»“æœé¡µé¢
+    @RequestMapping("/toNoticeRes")
+    public String toNoticeRes(){
+        return "frontpage/noticeRes";
+    }
 }

@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.service.userInfo.impl;
 
@@ -29,7 +29,7 @@ import com.ichangyun.InforAnalyaizer.utils.Obj2Map;
 import com.ichangyun.InforAnalyaizer.utils.PBKDF2;
 
 /**
- * UserInfoService£ºÕËºÅ¹ÜÀíserviceÊµÏÖÀà
+ * UserInfoServiceï¼šè´¦å·ç®¡ç†serviceå®ç°ç±»
  *
  * @author ichangyun
  * @Date 2018/11/09
@@ -38,103 +38,105 @@ import com.ichangyun.InforAnalyaizer.utils.PBKDF2;
 public class UserInfoServiceImpl implements UserInfoService{
     Logger log = Logger.getLogger(UserController.class);
 
-    // ÕËºÅ¹ÜÀímapper
+    // è´¦å·ç®¡ç†mapper
     @Autowired
     private UserInfoMapper userInfoMapper;
 
-    // ½ÇÉ«¹ÜÀímapper
+    // è§’è‰²ç®¡ç†mapper
     @Autowired
     private RoleMapper roleMapper;
 
     /**
-     * addUser£ºĞÂÔöÓÃ»§
-     * @param vo ÕËºÅÏêÏ¸»­ÃæµÄÏîÄ¿
+     * addUserï¼šæ–°å¢ç”¨æˆ·
+     * @param vo è´¦å·è¯¦ç»†ç”»é¢çš„é¡¹ç›®
      * @param u
-     * @throws InvalidKeySpecException 
-     * @throws NoSuchAlgorithmException 
+     * @throws InvalidKeySpecException
+     * @throws NoSuchAlgorithmException
      */
     @Override
     public String addUser(UserInfoVo vo, User u) throws NoSuchAlgorithmException, InvalidKeySpecException{
-        /* UserInfo×÷³É  */
+        /* UserInfoä½œæˆ  */
         UserInfo info = new UserInfo(
-                vo.getUpwd(),    // ÃÜÂë
-                vo.getUname(),   // ĞÕÃû
-                vo.getUdep(),    // ËùÊô²¿ÃÅ
-                vo.getUtel(),    // µç»°
-                vo.getUemail(),  // ÓÊÏä
-                vo.getUrole(),   // ÓÃ»§½ÇÉ«ID
-                vo.getUstatus(), // ×´Ì¬
-                u.getUser_ID(),  // ×÷³ÉÕß£ºÓÃ»§Çé±¨µÄÓÃ»§Ãû
-                u.getUser_ID(),  // ¸üĞÂÕß£ºÓÃ»§Çé±¨µÄÓÃ»§Ãû
-                vo.getUid(),     // ÓÃ»§Ãû
-                vo.getUnum());   // ÓÃ»§No
-        // ÃÜÂë¼ÓÃÜ
+                vo.getUpwd(),    // å¯†ç 
+                vo.getUname(),   // å§“å
+                vo.getUdep(),    // æ‰€å±éƒ¨é—¨
+                vo.getUtel(),    // ç”µè¯
+                vo.getUemail(),  // é‚®ç®±
+                vo.getUrole(),   // ç”¨æˆ·è§’è‰²ID
+                vo.getUstatus(), // çŠ¶æ€
+                u.getUser_ID(),  // ä½œæˆè€…ï¼šç”¨æˆ·æƒ…æŠ¥çš„ç”¨æˆ·å
+                u.getUser_ID(),  // æ›´æ–°è€…ï¼šç”¨æˆ·æƒ…æŠ¥çš„ç”¨æˆ·å
+                vo.getUid(),     // ç”¨æˆ·å
+                vo.getUnum());   // ç”¨æˆ·No
+        // å¯†ç åŠ å¯†
         String passwd  = PBKDF2.getPBKDF2(
                 info.getPassword(),
                 DatatypeConverter.printHexBinary(info.getUserId().getBytes()));
         info.setPassword(passwd);
         String msg = "ok";
-        // ÓÃ»§Çé±¨µÇÂ½
+        info.setCollectionFieldId(u.getCollectionField_ID());
+        info.setCustomerId(u.getCustomer_ID());
+        // ç”¨æˆ·æƒ…æŠ¥ç™»é™†
         try {
             this.userInfoMapper.insert(info);
 
-		} catch (Exception e) {
-			// TODO: handle exception
-			msg = "fault";
-		}
-        // ¸üĞÂÓÃ»§µÄ×´Ì¬Îª1£¨Ê¹ÓÃÖĞ£©
+        } catch (Exception e) {
+            // TODO: handle exception
+            msg = "fault";
+        }
+        // æ›´æ–°ç”¨æˆ·çš„çŠ¶æ€ä¸º1ï¼ˆä½¿ç”¨ä¸­ï¼‰
         this.userInfoMapper.updateRoleStatus(info);
         return msg;
     }
 
     /**
-     * updateUser:¸üĞÂÓÃ»§ĞÅÏ¢
+     * updateUser:æ›´æ–°ç”¨æˆ·ä¿¡æ¯
      * @param vo
      * @param u
      */
     @Override
     public String updateUser(UserInfoVo vo,User u)
-            throws NoSuchAlgorithmException, InvalidKeySpecException {	
-        /* UserInfo×÷³É  */
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
+        /* UserInfoä½œæˆ  */
         UserInfo info = new UserInfo(
-                vo.getUpwd(),    // ÃÜÂë
-                vo.getUname(),   // ĞÕÃû
-                vo.getUdep(),    // ËùÊô²¿ÃÅ
-                vo.getUtel(),    // µç»°
-                vo.getUemail(),  // ÓÊÏä
-                vo.getUrole(),   // ÓÃ»§½ÇÉ«ID
-                vo.getUstatus(), // ×´Ì¬
-                null,            // ×÷³ÉÕß£ºnull
-                u.getUser_ID(),  // ¸üĞÂÕß£ºÓÃ»§Çé±¨µÄÓÃ»§Ãû
-                vo.getUid(),     // ÓÃ»§Ãû
-                vo.getUnum());   // ÓÃ»§No
-        // Èç¹ûĞŞ¸ÄÁË½«ÃÜÂë¼ÓÃÜ
+                vo.getUpwd(),    // å¯†ç 
+                vo.getUname(),   // å§“å
+                vo.getUdep(),    // æ‰€å±éƒ¨é—¨
+                vo.getUtel(),    // ç”µè¯
+                vo.getUemail(),  // é‚®ç®±
+                vo.getUrole(),   // ç”¨æˆ·è§’è‰²ID
+                vo.getUstatus(), // çŠ¶æ€
+                null,            // ä½œæˆè€…ï¼šnull
+                u.getUser_ID(),  // æ›´æ–°è€…ï¼šç”¨æˆ·æƒ…æŠ¥çš„ç”¨æˆ·å
+                vo.getUid(),     // ç”¨æˆ·å
+                vo.getUnum());   // ç”¨æˆ·No
+        // å¦‚æœä¿®æ”¹äº†å°†å¯†ç åŠ å¯†
         if (!info.getPassword().equals("")) {
-        	String passwd  = PBKDF2.getPBKDF2(
-        			info.getPassword(),
-        			DatatypeConverter.printHexBinary(info.getUserId().getBytes()));		
-        	info.setPassword(passwd);
-		}else {
-			info.setPassword(null);
-		}
+            String passwd  = PBKDF2.getPBKDF2(
+                    info.getPassword(),
+                    DatatypeConverter.printHexBinary(info.getUserId().getBytes()));
+            info.setPassword(passwd);
+        }else {
+            info.setPassword(null);
+        }
 
-        // ¸üĞÂÓÃ»§Çé±¨
+        // æ›´æ–°ç”¨æˆ·æƒ…æŠ¥
         String msg = "ok";
         try {
-        	this.userInfoMapper.updateByPrimaryKeySelective(info);			
-        	this.userInfoMapper.updateRoleStatus(info);
-        	this.userInfoMapper.updateRoleStatusToZero();
-		} catch (Exception e) {
-			// TODO: handle exception
-			msg = "fault";
-		}
-        // ¸üĞÂÓÃ»§½ÇÉ«Çé±¨µÄ×´Ì¬Îª1£¨Ê¹ÓÃÖĞ£©    TODO
-        // ¸üĞÂÓÃ»§½ÇÉ«Çé±¨µÄ×´Ì¬Îª0£¨ÔİÎ´Ê¹ÓÃ£©  TODO
+            this.userInfoMapper.updateByPrimaryKeySelective(info);
+            this.userInfoMapper.updateRoleStatus(info);
+            this.userInfoMapper.updateRoleStatusToZero();
+        } catch (Exception e) {
+            // TODO: handle exception
+            msg = "fault";
+        }
+        // æ›´æ–°ç”¨æˆ·è§’è‰²æƒ…æŠ¥çš„çŠ¶æ€ä¸º1ï¼ˆä½¿ç”¨ä¸­ï¼‰    TODO
+        // æ›´æ–°ç”¨æˆ·è§’è‰²æƒ…æŠ¥çš„çŠ¶æ€ä¸º0ï¼ˆæš‚æœªä½¿ç”¨ï¼‰  TODO
         return msg;
     }
 
     /**
-     * updateUser2_byold£º¸üĞÂÓÃ»§Çé±¨
+     * updateUser2_byoldï¼šæ›´æ–°ç”¨æˆ·æƒ…æŠ¥
      * @param vo
      * @param u
      * @param changePwd
@@ -142,93 +144,95 @@ public class UserInfoServiceImpl implements UserInfoService{
     @Override
     public void updateUser2_byold(UserInfoVo vo, User u, String changePwd)
             throws Exception {
-        /* UserInfo×÷³É */
+        /* UserInfoä½œæˆ */
         UserInfo info = new UserInfo(
-                vo.getUpwd(),    // ÃÜÂë
-                vo.getUname(),   // ĞÕÃû
-                vo.getUdep(),    // ËùÊô²¿ÃÅ
-                vo.getUtel(),    // µç»°
-                vo.getUemail(),  // ÓÊÏä
-                vo.getUrole(),   // ÓÃ»§½ÇÉ«ID
-                vo.getUstatus(), // ×´Ì¬
-                null,            // ×÷³ÉÕß£ºnull
-                u.getUser_ID(),  // ¸üĞÂÕß£ºÓÃ»§Çé±¨µÄÓÃ»§Ãû
-                vo.getUid(),     // ÓÃ»§Ãû
-                vo.getUnum());   // ÓÃ»§No
+                vo.getUpwd(),    // å¯†ç 
+                vo.getUname(),   // å§“å
+                vo.getUdep(),    // æ‰€å±éƒ¨é—¨
+                vo.getUtel(),    // ç”µè¯
+                vo.getUemail(),  // é‚®ç®±
+                vo.getUrole(),   // ç”¨æˆ·è§’è‰²ID
+                vo.getUstatus(), // çŠ¶æ€
+                null,            // ä½œæˆè€…ï¼šnull
+                u.getUser_ID(),  // æ›´æ–°è€…ï¼šç”¨æˆ·æƒ…æŠ¥çš„ç”¨æˆ·å
+                vo.getUid(),     // ç”¨æˆ·å
+                vo.getUnum());   // ç”¨æˆ·No
 
-        // ÃÜÂë¼ÓÃÜ
+        // å¯†ç åŠ å¯†
         String passwd  = PBKDF2.getPBKDF2(
                 changePwd,
                 DatatypeConverter.printHexBinary(info.getUserId().getBytes()));
         info.setPassword(passwd);
 
-        // ¸üĞÂÓÃ»§Çé±¨
-        log.info("updateUser2_byold:" + "ÓÃ»§Ãû[" + info.getUserId() +"]ÓÃ»§No[" + info.getUserno() + "]");
+        // æ›´æ–°ç”¨æˆ·æƒ…æŠ¥
+        log.info("updateUser2_byold:" + "ç”¨æˆ·å[" + info.getUserId() +"]ç”¨æˆ·No[" + info.getUserno() + "]");
         this.userInfoMapper.updateByPrimaryKey(info);
     }
 
     /**
-     * deleteUser£ºÉ¾³ıµ±Ç°ÓÃ»§
+     * deleteUserï¼šåˆ é™¤å½“å‰ç”¨æˆ·
      * @param vo
      */
     @Override
     public void deleteUser(Integer[] ids) {
-    	StringBuilder id = new StringBuilder();
-    	for (int i = 0; i < ids.length; i++) {
-			if(i<ids.length-1) {
-				id.append(ids[i]+",");
-			}else {
-				id.append(ids[i]);
-			}
-		}
+        StringBuilder id = new StringBuilder();
+        for (int i = 0; i < ids.length; i++) {
+            if(i<ids.length-1) {
+                id.append(ids[i]+",");
+            }else {
+                id.append(ids[i]);
+            }
+        }
         this.userInfoMapper.deleteUser(id.toString());
-        
-     // ¸üĞÂÓÃ»§½ÇÉ«Çé±¨µÄ×´Ì¬Îª0£¨ÔİÎ´Ê¹ÓÃ£©
-     	this.updateRoleStatus();
+
+        // æ›´æ–°ç”¨æˆ·è§’è‰²æƒ…æŠ¥çš„çŠ¶æ€ä¸º0ï¼ˆæš‚æœªä½¿ç”¨ï¼‰
+        this.updateRoleStatus();
     }
 
     /**
-     * queryAllUser£ºÈ¡µÃµ±Ç°±íÊ¾ÓÃ»§Çé±¨
+     * queryAllUserï¼šå–å¾—å½“å‰è¡¨ç¤ºç”¨æˆ·æƒ…æŠ¥
      * @param vo
      * @param pageNow
      * @param rowSize
      */
     @Override
     public Map<String, Object> queryAllUser(UserInfoVo vo, int pageNow, int rowSize,User u) {
-    	
-        Map<String, Object> key = Obj2Map.object2Map(vo);   
+
+        Map<String, Object> key = Obj2Map.object2Map(vo);
         int l_pre = (pageNow-1)*rowSize;
-        // ²éÑ¯Ìõ¼şµÄmap²ÎÊı
+        // æŸ¥è¯¢æ¡ä»¶çš„mapå‚æ•°
         key.put("l_pre", l_pre);
         key.put("rowSize", rowSize);
+        key.put("collectionFieldId",u.getCollectionField_ID());
+        key.put("customerId",u.getCustomer_ID());
         Map<String, Object> res = new HashMap<>();
         if(u.getSuperUserFlag().equals("1")) {
-        	// È¡µÃÓÃ»§ĞÅÏ¢
-        	List<UserInfoVo> vos = this.userInfoMapper.queryAllUser(key);
-        	// È¡µÃÓÃ»§ĞÅÏ¢µÄ¼şÊı
-        	int count = this.userInfoMapper.queryCount(key);	
-        	res.put("users", vos);
-        	res.put("rowCount", count);
+            // å–å¾—ç”¨æˆ·ä¿¡æ¯
+            List<UserInfoVo> vos = this.userInfoMapper.queryAllUser(key);
+            // å–å¾—ç”¨æˆ·ä¿¡æ¯çš„ä»¶æ•°
+            int count = this.userInfoMapper.queryCount(key);
+            res.put("users", vos);
+            res.put("rowCount", count);
         }else {
-        	// È¡µÃÓÃ»§ĞÅÏ¢
-        	List<UserInfoVo> vos = this.userInfoMapper.queryAllUser2(key);
-        	// È¡µÃÓÃ»§ĞÅÏ¢µÄ¼şÊı
-        	int count = this.userInfoMapper.queryCount2(key);	
-        	res.put("users", vos);
-        	res.put("rowCount", count);
+            // å–å¾—ç”¨æˆ·ä¿¡æ¯
+            List<UserInfoVo> vos = this.userInfoMapper.queryAllUser2(key);
+            // å–å¾—ç”¨æˆ·ä¿¡æ¯çš„ä»¶æ•°
+            int count = this.userInfoMapper.queryCount2(key);
+            res.put("users", vos);
+            res.put("rowCount", count);
         }
-        
+
         return res;
     }
     /**
-     * queryUserByNum£º¸ù¾İÓÃ»§No²éÑ¯ÓÃ»§
-     * @param unum ÓÃ»§No
+     * queryUserByNumï¼šæ ¹æ®ç”¨æˆ·NoæŸ¥è¯¢ç”¨æˆ·
+     * @param unum ç”¨æˆ·No
      */
     @Override
     public UserInfoVo queryUserByNum(int unum) {
-        // ÉèÖÃ¼ìË÷Ìõ¼ş
+        // è®¾ç½®æ£€ç´¢æ¡ä»¶
         UserInfoKey key = new UserInfoKey(null, unum);
-        // ¸ù¾İ¼ìË÷Ìõ¼ş£¬È¡µÃÓÃ»§Çé±¨
+        // æ ¹æ®æ£€ç´¢æ¡ä»¶ï¼Œå–å¾—ç”¨æˆ·æƒ…æŠ¥
         UserInfo info = this.userInfoMapper.selectByPrimaryKey(key);
         UserInfoVo vo = new UserInfoVo();
         vo.loading(info);
@@ -236,26 +240,26 @@ public class UserInfoServiceImpl implements UserInfoService{
     }
 
     /**
-     * queryCountById£º¼ì²éÊÇ·ñ´æÔÚÓÃ»§
-     * @param uid ÓÃ»§Ãû
+     * queryCountByIdï¼šæ£€æŸ¥æ˜¯å¦å­˜åœ¨ç”¨æˆ·
+     * @param uid ç”¨æˆ·å
      */
     @Override
     public int queryCountById(String uid) {
-        // ¸ù¾İÓÃ»§Ãû£¬È¡µÃÓÃ»§Çé±¨µÄ¼şÊı
+        // æ ¹æ®ç”¨æˆ·åï¼Œå–å¾—ç”¨æˆ·æƒ…æŠ¥çš„ä»¶æ•°
         int cnt = this.userInfoMapper.queryCountById(uid);
         return cnt;
     }
 
     /**
-     * queryById£º¸ù¾İÓÃ»§id²éÑ¯ÓÃ»§ĞÅÏ¢
-     * @param user_ID ÓÃ»§Ãû
+     * queryByIdï¼šæ ¹æ®ç”¨æˆ·idæŸ¥è¯¢ç”¨æˆ·ä¿¡æ¯
+     * @param user_ID ç”¨æˆ·å
      */
     @Override
     public UserInfoVo queryById(String user_ID) {
-        // ÉèÖÃ¼ìË÷Ìõ¼ş
+        // è®¾ç½®æ£€ç´¢æ¡ä»¶
         UserInfoKey key = new UserInfoKey();
         key.setUserId(user_ID);
-        // ¸ù¾İ¼ìË÷Ìõ¼ş£¬È¡µÃÓÃ»§Çé±¨
+        // æ ¹æ®æ£€ç´¢æ¡ä»¶ï¼Œå–å¾—ç”¨æˆ·æƒ…æŠ¥
         UserInfo info = this.userInfoMapper.selectByPrimaryKey(key);
         UserInfoVo vo = new UserInfoVo();
         vo.loading(info);
@@ -263,16 +267,13 @@ public class UserInfoServiceImpl implements UserInfoService{
     }
 
     /**
-     * updateRoleStatus£º½«ÎŞÈËÊ¹ÓÃµÄÓÃ»§½ÇÉ«Çé±¨µÄ×´Ì¬ÉèÎª0
-     * @param user_ID ÓÃ»§Ãû
+     * updateRoleStatusï¼šå°†æ— äººä½¿ç”¨çš„ç”¨æˆ·è§’è‰²æƒ…æŠ¥çš„çŠ¶æ€è®¾ä¸º0
+     * @param user_ID ç”¨æˆ·å
      */
     @Override
     public void updateRoleStatus() {
-        // ¸üĞÂÓÃ»§½ÇÉ«Çé±¨µÄ×´Ì¬Îª0£¨ÔİÎ´Ê¹ÓÃ£©
+        // æ›´æ–°ç”¨æˆ·è§’è‰²æƒ…æŠ¥çš„çŠ¶æ€ä¸º0ï¼ˆæš‚æœªä½¿ç”¨ï¼‰
         this.userInfoMapper.updateRoleStatusToZero();
     }
-
-
-
 
 }

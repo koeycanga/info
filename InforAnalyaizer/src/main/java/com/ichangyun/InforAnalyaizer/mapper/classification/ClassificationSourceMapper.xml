@@ -12,6 +12,8 @@
 				a.Classification_ID
 			FROM m_classificationinfo a
 			WHERE 1 = 1
+			  and CollectionField_ID=#{CollectionField_ID} and Customer_ID=#{Customer_ID}
+		      and ValidFlag='1'
 			  <if test="(ClassificationName==null or ClassificationName=='') and isbinding==0">
 			       and Parent_Classification_ID = '0000000000'
 			  </if>
@@ -85,6 +87,8 @@
 			a.UpdateUser
 		from m_classificationinfo a 
 		where 1=1
+		      and CollectionField_ID=#{CollectionField_ID} and Customer_ID=#{Customer_ID}
+		      and ValidFlag='1'
 		      <if test="ClassificationName==null or ClassificationName=='' and isbinding==0">
 			       and Parent_Classification_ID = '0000000000'
 			  </if>
@@ -153,6 +157,8 @@
              <if test="WebsiteName!=null and WebsiteName!=''">
 			   and a.WebsiteName like  CONCAT('%',#{WebsiteName},'%') 
 			</if>
+			and CollectionField_ID=#{CollectionField_ID} 
+		    and ValidFlag='1'
     </select>
     
     <select id="getWebInfo" parameterType="com.ichangyun.InforAnalyaizer.model.webinfo.WebInfoBean"  resultType="com.ichangyun.InforAnalyaizer.model.webinfo.WebInfoBean">
@@ -161,6 +167,8 @@
              <if test="WebsiteName!=null and WebsiteName!=''">
 			   and a.WebsiteName like  CONCAT('%',#{WebsiteName},'%') 
 			</if>
+			and CollectionField_ID=#{CollectionField_ID} 
+		    and ValidFlag='1'
 			order by a.WebsiteName asc
 			limit #{l_pre},#{rowSize} 
     </select>
@@ -176,7 +184,8 @@
    </select>
    
    <select id="getAlWebInfoCount" parameterType="com.ichangyun.InforAnalyaizer.model.webinfo.WebInfoBean"  resultType="java.lang.Integer">
-       select count(DISTINCT b.Website_ID) from m_classificationinfosource a,m_websiteinfo b where a.Classification_ID=#{Classification_ID} and a.Website_ID=b.Website_ID
+       select count(DISTINCT b.Website_ID) from m_classificationinfosource a,m_websiteinfo b 
+       where a.Classification_ID=#{Classification_ID} and a.Website_ID=b.Website_ID
    </select>
    
    <select id="getAlWebInfo" parameterType="com.ichangyun.InforAnalyaizer.model.webinfo.WebInfoBean"  resultType="com.ichangyun.InforAnalyaizer.model.webinfo.WebInfoBean">

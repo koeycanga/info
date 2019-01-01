@@ -1,17 +1,15 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµ
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»
  */
 package com.ichangyun.InforAnalyaizer.mapper.userInfoMapper;
 
-import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
 import com.ichangyun.InforAnalyaizer.model.userInfo.User;
-import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean;
 
 /**
  * UserMapper
@@ -21,16 +19,16 @@ import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean
 public interface UserMapper {
 
     /**
-     * User´æÔÚĞÔCheck
-     * @param param SQLÎÄÓÃµÄparameter
-     * @return user ÓÃ»§Çé±¨
+     * Userå­˜åœ¨æ€§Check
+     * @param param SQLæ–‡ç”¨çš„parameter
+     * @return user ç”¨æˆ·æƒ…æŠ¥
      */
     User isUserExist(@Param("param")Map param);
 
     /**
-     * User_ID¶ÔÓ¦µÄĞÕÃûÈ¡µÃ
-     * @param param SQLÎÄÓÃµÄparameter
-     * @return user ÓÃ»§µÄĞÕÃû
+     * User_IDå¯¹åº”çš„å§“åå–å¾—
+     * @param param SQLæ–‡ç”¨çš„parameter
+     * @return user ç”¨æˆ·çš„å§“å
      */
     String getName(@Param("param")Map param);
 

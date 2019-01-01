@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 畅云 http://www.ichangyun.cn
+ * Copyright 2018 鐣呬簯 http://www.ichangyun.cn
  * <p>
- *  竞争情报系统
+ *  绔炰簤鎯呮姤绯荤粺
  */
 package com.ichangyun.InforAnalyaizer.model.classificationfilterwords;
 
@@ -17,11 +17,11 @@ public class ClassificationFilterwords {
     private String createuser;
     @JSONField(format="yyyy-MM-dd")
     private Date createdatetime;
-    
+
     private String updateuser;
     private String updatedatetime;
-    
-    
+
+
     public String getClassificationId() {
         return classificationId;
     }
@@ -70,19 +70,19 @@ public class ClassificationFilterwords {
         this.updatedatetime = updatedatetime;
     }
 
-	public ClassificationFilterwords(String classificationId, String informationtropism, String createuser,
-			Date createdatetime, String updateuser, String updatedatetime) {
+    public ClassificationFilterwords(String classificationId, String informationtropism, String createuser,
+            Date createdatetime, String updateuser, String updatedatetime) {
 
-		this.classificationId = classificationId;
-		this.informationtropism = informationtropism;
-		this.createuser = createuser;
-		this.createdatetime = createdatetime;
-		this.updateuser = updateuser;
-		this.updatedatetime = updatedatetime;
-	}
+        this.classificationId = classificationId;
+        this.informationtropism = informationtropism;
+        this.createuser = createuser;
+        this.createdatetime = createdatetime;
+        this.updateuser = updateuser;
+        this.updatedatetime = updatedatetime;
+    }
 
-	public ClassificationFilterwords() {
-		
-	}
-    
+    public ClassificationFilterwords() {
+
+    }
+
 }

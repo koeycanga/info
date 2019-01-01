@@ -1,154 +1,152 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ * ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model.thematicmonitoring;
 
 import com.ichangyun.InforAnalyaizer.model.BaseBean;
 
 /**
- * ÊÕ²ØĞÅÏ¢Ïà¹ØÊµÌåÀà    ¶ÔÓ¦Êı¾İ±í m_collectiontype ºÍ    m_collectionfield
+ * æ”¶è—ä¿¡æ¯ç›¸å…³å®ä½“ç±»
+ * å¯¹åº”æ•°æ®è¡¨ m_collectiontype å’Œ    m_collectionfield
  * @author renhao
- * 2018-11-14 10:29
+ * @Date:2018-11-14 10:29
  */
 public class CollectionBean extends BaseBean {
 
-	/**
-	 * ÓÃ»§ID
-	 */
-	private String User_ID;
-	
-	/**
-	 * ÊÕ²ØÇø·ÖID
-	 */
-	private String CollectionType_ID;
-	
-	
-	/**
-	 * ÊÕ²ØÇø·ÖÃû³Æ
-	 */
-	private String CollectionTypeName;
-	
-	/**
-	 * ¸¸ÊÕ²ØÇø·ÖID
-	 */
-	private String Parent_CollectionType_ID;
-	
-	/**
-	 * ±íÊ¾Ë³
-	 */
-	private int DisplayOrder;
-	
-	
-	/**
-	 * ÓĞĞ§flag 0ÎŞĞ§£¬1£ºÓĞĞ§
-	 */
-	private String ValidFlag;
-	
-	/**
-	 * ×÷³ÉÕß
-	 */
-	private String CreateUser;
-	
-	/**
-	 * ×÷³ÉÈÕ•r
-	 */
-	private String CreateDateTime;
-	
-	/**
-	 * ¸üĞÂÕß
-	 */
-	private String UpdateUser;
-	
-	
-	/**
-	 * ¸üĞÂÈÕ•r
-	 */
-	private String UpdateDateTime;
-	
-	/**
-	 * ×Ó½ÚµãÊıÄ¿
-	 */
-	private int children_lg;
+    /**
+     * ç”¨æˆ·ID
+     */
+    private String User_ID;
 
-	
-	/**
-	 * ÎÄÕÂID
-	 */
-	private String Article_ID;
+    /**
+     * æ”¶è—åŒºåˆ†ID
+     */
+    private String CollectionType_ID;
 
-	
-	public String getArticle_ID() {
-		return Article_ID;
-	}
-	public void setArticle_ID(String article_ID) {
-		Article_ID = article_ID;
-	}
-	public int getChildren_lg() {
-		return children_lg;
-	}
-	public void setChildren_lg(int children_lg) {
-		this.children_lg = children_lg;
-	}
-	public String getUser_ID() {
-		return User_ID;
-	}
-	public void setUser_ID(String user_ID) {
-		User_ID = user_ID;
-	}
-	public String getCollectionType_ID() {
-		return CollectionType_ID;
-	}
-	public void setCollectionType_ID(String collectionType_ID) {
-		CollectionType_ID = collectionType_ID;
-	}
-	public String getCollectionTypeName() {
-		return CollectionTypeName;
-	}
-	public void setCollectionTypeName(String collectionTypeName) {
-		CollectionTypeName = collectionTypeName;
-	}
-	public String getParent_CollectionType_ID() {
-		return Parent_CollectionType_ID;
-	}
-	public void setParent_CollectionType_ID(String parent_CollectionType_ID) {
-		Parent_CollectionType_ID = parent_CollectionType_ID;
-	}
-	public int getDisplayOrder() {
-		return DisplayOrder;
-	}
-	public void setDisplayOrder(int displayOrder) {
-		DisplayOrder = displayOrder;
-	}
-	public String getValidFlag() {
-		return ValidFlag;
-	}
-	public void setValidFlag(String validFlag) {
-		ValidFlag = validFlag;
-	}
-	public String getCreateUser() {
-		return CreateUser;
-	}
-	public void setCreateUser(String createUser) {
-		CreateUser = createUser;
-	}
-	public String getCreateDateTime() {
-		return CreateDateTime;
-	}
-	public void setCreateDateTime(String createDateTime) {
-		CreateDateTime = createDateTime;
-	}
-	public String getUpdateUser() {
-		return UpdateUser;
-	}
-	public void setUpdateUser(String updateUser) {
-		UpdateUser = updateUser;
-	}
-	public String getUpdateDateTime() {
-		return UpdateDateTime;
-	}
-	public void setUpdateDateTime(String updateDateTime) {
-		UpdateDateTime = updateDateTime;
-	}
+
+    /**
+     * æ”¶è—åŒºåˆ†åç§°
+     */
+    private String CollectionTypeName;
+
+    /**
+     * çˆ¶æ”¶è—åŒºåˆ†ID
+     */
+    private String Parent_CollectionType_ID;
+
+    /**
+     * è¡¨ç¤ºé¡º
+     */
+    private int DisplayOrder;
+
+
+    /**
+     * æœ‰æ•ˆflag 0æ— æ•ˆï¼Œ1ï¼šæœ‰æ•ˆ
+     */
+    private String ValidFlag;
+
+    /**
+     * ä½œæˆè€…
+     */
+    private String CreateUser;
+
+    /**
+     * ä½œæˆæ—¥æ™‚
+     */
+    private String CreateDateTime;
+
+    /**
+     * æ›´æ–°è€…
+     */
+    private String UpdateUser;
+
+    /**
+     * æ›´æ–°æ—¥æ™‚
+     */
+    private String UpdateDateTime;
+
+    /**
+     * å­èŠ‚ç‚¹æ•°ç›®
+     */
+    private int children_lg;
+
+    /**
+     * æ–‡ç« ID
+     */
+    private String Article_ID;
+
+    public String getArticle_ID() {
+        return Article_ID;
+    }
+    public void setArticle_ID(String article_ID) {
+        Article_ID = article_ID;
+    }
+    public int getChildren_lg() {
+        return children_lg;
+    }
+    public void setChildren_lg(int children_lg) {
+        this.children_lg = children_lg;
+    }
+    public String getUser_ID() {
+        return User_ID;
+    }
+    public void setUser_ID(String user_ID) {
+        User_ID = user_ID;
+    }
+    public String getCollectionType_ID() {
+        return CollectionType_ID;
+    }
+    public void setCollectionType_ID(String collectionType_ID) {
+        CollectionType_ID = collectionType_ID;
+    }
+    public String getCollectionTypeName() {
+        return CollectionTypeName;
+    }
+    public void setCollectionTypeName(String collectionTypeName) {
+        CollectionTypeName = collectionTypeName;
+    }
+    public String getParent_CollectionType_ID() {
+        return Parent_CollectionType_ID;
+    }
+    public void setParent_CollectionType_ID(String parent_CollectionType_ID) {
+        Parent_CollectionType_ID = parent_CollectionType_ID;
+    }
+    public int getDisplayOrder() {
+        return DisplayOrder;
+    }
+    public void setDisplayOrder(int displayOrder) {
+        DisplayOrder = displayOrder;
+    }
+    public String getValidFlag() {
+        return ValidFlag;
+    }
+    public void setValidFlag(String validFlag) {
+        ValidFlag = validFlag;
+    }
+    public String getCreateUser() {
+        return CreateUser;
+    }
+    public void setCreateUser(String createUser) {
+        CreateUser = createUser;
+    }
+    public String getCreateDateTime() {
+        return CreateDateTime;
+    }
+    public void setCreateDateTime(String createDateTime) {
+        CreateDateTime = createDateTime;
+    }
+    public String getUpdateUser() {
+        return UpdateUser;
+    }
+    public void setUpdateUser(String updateUser) {
+        UpdateUser = updateUser;
+    }
+    public String getUpdateDateTime() {
+        return UpdateDateTime;
+    }
+    public void setUpdateDateTime(String updateDateTime) {
+        UpdateDateTime = updateDateTime;
+    }
 }

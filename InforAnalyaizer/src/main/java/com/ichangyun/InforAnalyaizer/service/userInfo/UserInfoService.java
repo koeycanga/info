@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.service.userInfo;
 
@@ -13,29 +13,29 @@ import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoVo;
 
 /**
- * UserInfoService½Ó¿Ú
+ * UserInfoServiceæ¥å£
  *
  * @author ichangyun
  * @date 2018/11/09
  */
 public interface UserInfoService {
-    // Ìí¼ÓÓÃ»§
+    // æ·»åŠ ç”¨æˆ·
     String addUser(UserInfoVo record, User createUser)throws NoSuchAlgorithmException, InvalidKeySpecException;
-    // ±à¼­ÓÃ»§
+    // ç¼–è¾‘ç”¨æˆ·
     String updateUser(UserInfoVo record, User updateUser) throws NoSuchAlgorithmException, InvalidKeySpecException;
-    // É¾³ıÓÃ»§
+    // åˆ é™¤ç”¨æˆ·
     void deleteUser(Integer[] checkedId);
-    // ²éÑ¯ËùÓĞÓÃ»§
+    // æŸ¥è¯¢æ‰€æœ‰ç”¨æˆ·
     Map<String, Object> queryAllUser(UserInfoVo record, int pageNow, int rowSize, User u);
-    // ¸ù¾İÓÃ»§num²éÑ¯ÓÃ»§
+    // æ ¹æ®ç”¨æˆ·numæŸ¥è¯¢ç”¨æˆ·
     UserInfoVo queryUserByNum(int unum);
-    // ¸ù¾İÓÃ»§Ãû²éÑ¯ÓÃ»§ÊÇ·ñ´æÔÚ
+    // æ ¹æ®ç”¨æˆ·åæŸ¥è¯¢ç”¨æˆ·æ˜¯å¦å­˜åœ¨
     int queryCountById(String uid);
-    // ¸ù¾İÓÃ»§Ãû²éÑ¯ÓÃ»§
+    // æ ¹æ®ç”¨æˆ·åæŸ¥è¯¢ç”¨æˆ·
     UserInfoVo queryById(String user_ID);
-    // ½«ÓÃ»§µÄ½ÇÉ«ÉèÎª¿Õ
+    // å°†ç”¨æˆ·çš„è§’è‰²è®¾ä¸ºç©º
     void updateRoleStatus();
-    // ĞŞ¸ÄÓÃ»§ÃÜÂë
+    // ä¿®æ”¹ç”¨æˆ·å¯†ç 
     void updateUser2_byold(UserInfoVo vo, User u, String changePwd) throws Exception;
-   
+
 }

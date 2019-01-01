@@ -7,8 +7,27 @@
     
     <select id="getArticleRowCount" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="java.lang.Integer">
          
-          select count(1) from a_articlebasicinfo where 
-             Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
+          select count(1) from a_articlebasicinfo where 1=1
+            and CollectionField_ID = #{CollectionField_ID}
+            <if test="montime==0">
+              and  Date_Format(Releasetime,'%Y/%m/%d')=#{montime_start}
+            </if>
+             <if test="montime==-1">
+                <if test="montime_start!=''">
+                  and  Releasetime>=#{montime_start}
+                </if>
+                <if test="montime_end!=''">
+                	and Releasetime <![CDATA[<= ]]>#{montime_end}
+                </if>
+             </if>
+             <if test="montime!=0 and montime!=-1">
+                 <if test="montime_start!=''">
+	             	and  Date_Format(Releasetime,'%Y/%m/%d')>=#{montime_start} 
+	             </if>
+	             <if test="montime_end!=''">
+	             	and  Date_Format(Releasetime,'%Y/%m/%d') <![CDATA[<= ]]>#{montime_end} 
+	             </if>
+            </if>
               <if test="Classification_ID!=''">
                  and locate(#{Classification_ID},ClassificationPath)>0
               </if>
@@ -42,7 +61,27 @@
 		   (
 		     
 		     select Article_ID,SimilarArticlesNo from a_articlebasicinfo
-		      where 1=1 and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
+		      where 1=1  
+		      and CollectionField_ID = #{CollectionField_ID}
+		       <if test="montime==0">
+	               and  Date_Format(Releasetime,'%Y/%m/%d')=#{montime_start}
+	           </if>
+	            <if test="montime==-1">
+	                <if test="montime_start!=''">
+	                    and  Releasetime>=#{montime_start}
+	                </if>
+	                <if test="montime_end!=''">
+	                	and Releasetime <![CDATA[<= ]]>#{montime_end}
+	                </if>
+             </if>
+             <if test="montime!=0 and montime!=-1">
+                 <if test="montime_start!=''">
+	             	and  Date_Format(Releasetime,'%Y/%m/%d')>=#{montime_start} 
+	             </if>
+	             <if test="montime_end!=''">
+	             	and  Date_Format(Releasetime,'%Y/%m/%d') <![CDATA[<= ]]>#{montime_end} 
+	             </if>
+              </if>
               <if test="Classification_ID!=''">
                  and locate(#{Classification_ID},ClassificationPath)>0
               </if>
@@ -75,7 +114,8 @@
     <select id="getArticleWithHB" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
         SELECT
 				c.*,
-			  (select m.WebsiteName from m_websiteinfo m where m.Website_ID = c.Website_ID) WebsiteName,<!-- 取得来源网站名称-->
+			 m.WebsiteName,
+             m.Website ,
 			   (
 			     select count(1) from a_articlebasicinfo bb where c.SimilarArticlesNo=bb.SimilarArticlesNo and c.Article_ID!=bb.Article_ID
                   and not exists (select 1 from A_UserDeleteArticleInfo b where b.Article_ID=bb.Article_ID and b.User_ID=#{userid})
@@ -83,14 +123,34 @@
 			   (select count(1) from m_mycollection cc where cc.Article_ID=c.Article_ID ) collcnt, <!-- 收藏文章数目 -->
         IF(c.Article_ID in (SELECT k.Article_ID FROM a_userearlywarningarticleinfo as k where k.User_ID=#{userid}),"yes","no")  isearlywarning
             FROM
-				a_articlebasicinfo c
+				a_articlebasicinfo c,m_websiteinfo m
 			WHERE
+			    c.Website_ID=m.Website_ID and
 				c.Article_ID  IN 
 				 (
 				    Select Max(dd.Article_ID) From 
-				      
 				      (select Article_ID,SimilarArticlesNo from a_articlebasicinfo
-		     				 where 1=1 and Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
+		     				 where 1=1 
+		     				 and CollectionField_ID = #{CollectionField_ID}
+		     				  <if test="montime==0">
+					               and  Date_Format(Releasetime,'%Y/%m/%d')=#{montime_start}
+					          </if>
+					          <if test="montime==-1">
+				                <if test="montime_start!=''">
+				                  and  Releasetime>=#{montime_start}
+				                </if>
+				                <if test="montime_end!=''">
+				                	and Releasetime <![CDATA[<= ]]>#{montime_end}
+				                </if>
+				             </if>
+				             <if test="montime!=0 and montime!=-1">
+				                 <if test="montime_start!=''">
+					             	and  Date_Format(Releasetime,'%Y/%m/%d')>=#{montime_start} 
+					             </if>
+					             <if test="montime_end!=''">
+					             	and  Date_Format(Releasetime,'%Y/%m/%d') <![CDATA[<= ]]>#{montime_end} 
+					             </if>
+				            </if>
 			              <if test="Classification_ID!=''">
 				               and locate(#{Classification_ID},ClassificationPath)>0
 				          </if>
@@ -129,15 +189,36 @@
     
      <select id="getArticle" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
            select a.*,
-            (select m.WebsiteName from m_websiteinfo m where m.Website_ID = a.Website_ID) WebsiteName,
+            m.WebsiteName,
+             m.Website ,
             (
               select count(1) from a_articlebasicinfo b where a.SimilarArticlesNo=b.SimilarArticlesNo and a.Article_ID!=b.Article_ID
               and not exists (select 1 from A_UserDeleteArticleInfo  where Article_ID=b.Article_ID and User_ID=#{userid})
             ) sim_cnt,
             (select count(1) from m_mycollection c where c.Article_ID=a.Article_ID ) collcnt,
          IF(a.Article_ID in (SELECT k.Article_ID FROM a_userearlywarningarticleinfo as k where k.User_ID=#{userid}),"yes","no")  isearlywarning
-             from a_articlebasicinfo a where
-             Releasetime>=#{montime_start} and Releasetime <![CDATA[<= ]]>#{montime_end} 
+             from a_articlebasicinfo a,m_websiteinfo m where 1=1
+                and a.CollectionField_ID = #{CollectionField_ID}
+                and a.Website_ID=m.Website_ID
+               <if test="montime==0">
+                 and  Date_Format(Releasetime,'%Y/%m/%d')=#{montime_start}
+             </if>
+               <if test="montime==-1">
+                <if test="montime_start!=''">
+                  and  Releasetime>=#{montime_start}
+                </if>
+                <if test="montime_end!=''">
+                	and Releasetime <![CDATA[<= ]]>#{montime_end}
+                </if>
+             </if>
+             <if test="montime!=0 and montime!=-1">
+                 <if test="montime_start!=''">
+	             	and  Date_Format(Releasetime,'%Y/%m/%d')>=#{montime_start} 
+	             </if>
+	             <if test="montime_end!=''">
+	             	and  Date_Format(Releasetime,'%Y/%m/%d') <![CDATA[<= ]]>#{montime_end} 
+	             </if>
+            </if>
               <if test="Classification_ID!=''">
 	               and locate(#{Classification_ID},ClassificationPath)>0
 	          </if>
@@ -176,6 +257,7 @@
            <if test="Classification_ID!=''">
                and locate(#{Classification_ID},ClassificationPath)>0
            </if>
+           and CollectionField_ID = #{CollectionField_ID}
            ORDER BY Releasetime desc
            limit 0,1
      </select>
@@ -183,6 +265,7 @@
       <select id="getlastestNews" parameterType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean" resultType="java.lang.Integer">
            select count(1) from a_articlebasicinfo where 
              Releasetime>#{releasetime} 
+             and CollectionField_ID = #{CollectionField_ID}
               <if test="Classification_ID!=''">
                and locate(#{Classification_ID},ClassificationPath)>0
            </if>

@@ -9,13 +9,16 @@
 <fmt:message key="E0022" var="E0022" bundle="${sysInfo}"/>
 <fmt:message key="I0014" var="I0014" bundle="${sysInfo}"/>
 <fmt:message key="E0004" var="E0004" bundle="${sysInfo}"/>
+<fmt:message key="E0054" var="E0054" bundle="${sysInfo}"/>
 <fmt:message key="E0014" var="E0014" bundle="${sysInfo}"/>
 <fmt:message key="I0012" var="I0012" bundle="${sysInfo}"/>
 <fmt:message key="E0025" var="E0025" bundle="${sysInfo}"/>
 <fmt:message key="I0013" var="I0013" bundle="${sysInfo}"/>
 <fmt:message key="W0003" var="W0003" bundle="${sysInfo}"/>
 <fmt:message key="I0023" var="I0023" bundle="${sysInfo}"/>
-<fmt:message key="W0008" var="W0008" bundle="${sysInfo}" />
+<fmt:message key="W0008" var="W0008" bundle="${sysInfo}"/>
+<fmt:message key="E0070" var="E0070" bundle="${sysInfo}"/>
+<fmt:message key="E0075" var="E0075" bundle="${sysInfo}"/>
 <!doctype html>
 <html>
 <head>
@@ -39,7 +42,7 @@
 </div>
 
 <div class="cy_CIAFE_main">	
-	<div class="cy_CIAFE_intmonbox01">${m_title }> <span>${m_title }详情</span></div>
+	<div class="cy_CIAFE_intmonbox01"><!-- ${m_title }> <span>${m_title }详情</span>-->${classificationPath }</div>
 	<div class="cy_CIAFE_intmonbox02">
 		<div class="cy_CIAFE_intmonbox03">
 		<div class="cy_CIAFE_intmonbox04">
@@ -65,7 +68,10 @@
 					
 				</div>
 				<div style="background-color: #f3f3f3;padding:10px 30px;line-height: 33px;margin-top: 10px;">
-				<div class="cy_CIAFE_intmonsr">{{article_data.websiteName}}·{{article_data.releasetime}} <a target="_blank" v-bind:href="article_data.articleURL">原文链接</a>
+				<div class="cy_CIAFE_intmonsr">
+				<a target="_blank" v-bind:href="article_data.website">{{article_data.websiteName}}</a>
+				<b>·</b>{{article_data.releasetime}} 
+				<a target="_blank" v-bind:href="article_data.articleURL">原文链接</a>
 				<!-- <div v-on:mouseover="simcontent()" class="cy_CIASFE_desimart">相似文章：{{article_data.sim_cnt}}条
 					<div class="cy_CIASFE_desimartbox">
 						<div v-for=" sdata in sim_datas"><a
@@ -92,20 +98,21 @@
 							<div class="cy_CIASFE_intmonttmlnwr" v-for="(bdata,index) in bd_data" v-if="(index<5&&!is_open)||is_open" v-bind:style="((index==4&&!is_open)||index==bd_data.length-1)?{'padding-bottom':'0'}:{}">
 								<div class="cy_CIASFE_tmlncircle"></div>
 								<div class="cy_CIASFE_intmontime">{{bdata.releasetime}}</div>
-								<div class="cy_CIASFE_intmonsor"><a v-bind:href="bdata.articleURL" target="_blank">{{bdata.websiteName}}</a></div>
+								<div class="cy_CIASFE_intmonsor"><a v-bind:href="bdata.website" target="_blank">{{bdata.websiteName}}</a></div>
 							</div>
-							
 					</div>
 				<div v-if="bd_data.length>5" class="cy_CIASFE_tmlnps"><a v-on:click="open_mt()" href="#">{{is_open?'关闭':'展开'}}</a></div>
 			</div>
 			
 			<div class="cy_CIAFE_intmonbox08">
 				<div class="cy_CIAFE_intmonbox09">相关新闻</div>
-				<div class="cy_CIAFE_intmonbox11">中消协约谈华帝“夺冠退全款”构成合同邀约</div>
-				<div class="cy_CIAFE_intmonbox11">华帝用户退全款遇阻 中消协三度出马管用吗？</div>
-				<div class="cy_CIAFE_intmonbox11">华帝“法国队夺冠退款”变“退卡”</div>
-				<div class="cy_CIAFE_intmonbox11">华帝员工被欠薪 华帝停摆二十天老板被曝跑路</div>
-				<div class="cy_CIAFE_intmonbox11">华帝“夺冠退款”变“退卡” 品牌营销套路到你了吗</div>
+				<div v-for="rdata in relate_datas" class="cy_CIAFE_intmonbox11">
+				  <a style="text-decoration:none;color: #444;cursor:pointer;"  target="_blank"
+                 v-bind:href="'../detailspage/toDetailsPage?from=comprehensivemonitoring&article_id='+rdata.article_ID">
+                 	{{rdata.articleTitle}}
+                 </a>
+			    </div>
+				
 			</div>
 		</div>
 	</div>
@@ -134,13 +141,16 @@ var Info = {
 		I0014:'${I0014}',
 		E0022:'${E0022}',
 		E0004:'${E0004}',
+		E0054:'${E0054}',
 		E0014:'${E0014}',
 		I0012:'${I0012}',
 		E0025:'${E0025}',
 		I0013:'${I0013}',
 		W0003:'${W0003}',
 		I0023:'${I0023}',
-		W0008:'${W0008}'
+		W0008:'${W0008}',
+		E0070:'${E0070}',
+		E0075:'${E0075}'
 };
 
 var menu_datas = JSON.parse('${front_menu}');  //菜单数据来源于 classes/resources.properties
@@ -164,6 +174,7 @@ var app = new Vue({
 		article_data:'',//文章数据
 		bd_data:[],
         sim_datas: [],   //相似文章
+        relate_datas:[], //相关文章 
         montime: '0',  //监测时间
 		is_open:false
 	},
@@ -183,8 +194,10 @@ var app = new Vue({
 					
 					_this.bd_data = data.bd_data;
 					
+					_this.relate_datas = data.relate_data;
+					
 					if(_this.article_data==''){
-						 layer.msg("该文章已经被删除");
+						 layer.msg(Info.E0070);
                     	 setTimeout(function(){
                     		 open(location, '_self').close();
                     	 },1800);
@@ -201,6 +214,22 @@ var app = new Vue({
             clipboard.on('success', function (e) {
                 layer.msg(Info.I0019);
             });
+        },
+        from_child_search:function(){  //子页面关闭后需要刷新时执行此方法
+        	var _this = this;
+			axios.get('../detailspage/getRelArticleByID',{
+				params: {
+					   article_id:_this.m_article_id
+					}
+				})
+				.then(function (response) {
+					
+					_this.relate_datas = JSON.parse(response.data);
+					
+				})
+				.catch(function (error) {
+				    console.log(error);
+				});
         },
         del_a_article: function (article_ID) {
             var _this = this;

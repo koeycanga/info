@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model.userInfo;
 
@@ -10,38 +10,59 @@ import java.util.Date;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
- * UserInfo£ºÓÃ»§Çé±¨
+ * UserInfoï¼šç”¨æˆ·æƒ…æŠ¥
  *
  * @author ichangyun
  * @date 2018/11/09
  */
 public class UserInfo extends UserInfoKey {
 
-    // ÃÜÂë
+    // å¯†ç 
     private String password;
 
-    // ĞÕÃû
+    // å§“å
     private String name;
 
-    // ËùÊô²¿ÃÅ
+    // æ‰€å±éƒ¨é—¨
     private String department;
 
-    // µç»°ºÅÂë
+    // ç”µè¯å·ç 
     private String telephone;
 
-    // ÓÊÏä
+    // é‚®ç®±
     private String email;
 
-    // ÓÃ»§½ÇÉ«ID
+    // ç”¨æˆ·è§’è‰²ID
     private String userroleId;
 
-    // ×´Ì¬
+    // çŠ¶æ€
     private String status;
 
-    // ³¬¼¶¹ÜÀíÔ±Çø·Ö£¨0£º·Ç³¬¼¶¹ÜÀíÔ±£¬1£º³¬¼¶¹ÜÀíÔ±£©
+    // è¶…çº§ç®¡ç†å‘˜åŒºåˆ†ï¼ˆ0ï¼šéè¶…çº§ç®¡ç†å‘˜ï¼Œ1ï¼šè¶…çº§ç®¡ç†å‘˜ï¼‰
     private String superuserflag;
+    
+    private String customerId;
+    
+    private String collectionFieldId;
+    
 
-    public String getSuperuserflag() {
+    public String getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
+
+	public String getCollectionFieldId() {
+		return collectionFieldId;
+	}
+
+	public void setCollectionFieldId(String collectionFieldId) {
+		this.collectionFieldId = collectionFieldId;
+	}
+
+	public String getSuperuserflag() {
         return superuserflag;
     }
 
@@ -49,140 +70,140 @@ public class UserInfo extends UserInfoKey {
         this.superuserflag = superuserflag;
     }
 
-    // ×÷³ÉÕß
+    // ä½œæˆè€…
     private String createuser;
     @JSONField(format="yyyy-MM-dd")
     private Date createdatetime;
 
-    // ¸üĞÂÕß
+    // æ›´æ–°è€…
     private String updateuser;
     @JSONField(format="yyyy-MM-dd")
     private Date updatedatetime;
 
-    /** È¡µÃÃÜÂë  */
+    /** å–å¾—å¯†ç   */
     public String getPassword() {
         return password;
     }
 
-    /** ÉèÖÃÃÜÂë  */
+    /** è®¾ç½®å¯†ç   */
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
     }
 
-    /** È¡µÃÓÃ»§µÄĞÕÃû  */
+    /** å–å¾—ç”¨æˆ·çš„å§“å  */
     public String getName() {
         return name;
     }
 
-    /** ÉèÖÃÓÃ»§µÄĞÕÃû  */
+    /** è®¾ç½®ç”¨æˆ·çš„å§“å  */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
     }
 
-    /** È¡µÃÓÃ»§µÄËùÊô²¿ÃÅ  */
+    /** å–å¾—ç”¨æˆ·çš„æ‰€å±éƒ¨é—¨  */
     public String getDepartment() {
         return department;
     }
 
-    /** ÉèÖÃÓÃ»§µÄËùÊô²¿ÃÅ  */
+    /** è®¾ç½®ç”¨æˆ·çš„æ‰€å±éƒ¨é—¨  */
     public void setDepartment(String department) {
         this.department = department == null ? null : department.trim();
     }
 
-    /** È¡µÃÓÃ»§µÄµç»°  */
+    /** å–å¾—ç”¨æˆ·çš„ç”µè¯  */
     public String getTelephone() {
         return telephone;
     }
 
-    /** ÉèÖÃÓÃ»§µÄµç»°  */
+    /** è®¾ç½®ç”¨æˆ·çš„ç”µè¯  */
     public void setTelephone(String telephone) {
         this.telephone = telephone == null ? null : telephone.trim();
     }
 
-    /** È¡µÃÓÃ»§µÄÓÊÏä  */
+    /** å–å¾—ç”¨æˆ·çš„é‚®ç®±  */
     public String getEmail() {
         return email;
     }
 
-    /** ÉèÖÃÓÃ»§µÄÓÊÏä  */
+    /** è®¾ç½®ç”¨æˆ·çš„é‚®ç®±  */
     public void setEmail(String email) {
         this.email = email == null ? null : email.trim();
     }
 
-    /** È¡µÃÓÃ»§µÄ½ÇÉ«ID  */
+    /** å–å¾—ç”¨æˆ·çš„è§’è‰²ID  */
     public String getUserroleId() {
         return userroleId;
     }
 
-    /** ÉèÖÃÓÃ»§µÄ½ÇÉ«ID  */
+    /** è®¾ç½®ç”¨æˆ·çš„è§’è‰²ID  */
     public void setUserroleId(String userroleId) {
         this.userroleId = userroleId == null ? null : userroleId.trim();
     }
 
-    /** È¡µÃÓÃ»§µÄ×´Ì¬  */
+    /** å–å¾—ç”¨æˆ·çš„çŠ¶æ€  */
     public String getStatus() {
         return status;
     }
 
-    /** ÉèÖÃÓÃ»§µÄ×´Ì¬  */
+    /** è®¾ç½®ç”¨æˆ·çš„çŠ¶æ€  */
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
     }
 
-    /** È¡µÃ×÷³ÉÕß */
+    /** å–å¾—ä½œæˆè€… */
     public String getCreateuser() {
         return createuser;
     }
 
-    /** ÉèÖÃ×÷³ÉÕß */
+    /** è®¾ç½®ä½œæˆè€… */
     public void setCreateuser(String createuser) {
         this.createuser = createuser == null ? null : createuser.trim();
     }
 
-    /** È¡µÃ×÷³ÉÈÕÊ± */
+    /** å–å¾—ä½œæˆæ—¥æ—¶ */
     public Date getCreatedatetime() {
         return createdatetime;
     }
 
-    /** ÉèÖÃ×÷³ÉÈÕÊ± */
+    /** è®¾ç½®ä½œæˆæ—¥æ—¶ */
     public void setCreatedatetime(Date createdatetime) {
         this.createdatetime = createdatetime;
     }
 
-    /** È¡µÃ¸üĞÂÕß */
+    /** å–å¾—æ›´æ–°è€… */
     public String getUpdateuser() {
         return updateuser;
     }
 
-    /** ÉèÖÃ¸üĞÂÕß */
+    /** è®¾ç½®æ›´æ–°è€… */
     public void setUpdateuser(String updateuser) {
         this.updateuser = updateuser == null ? null : updateuser.trim();
     }
 
-    /** È¡µÃ¸üĞÂÈÕÊ± */
+    /** å–å¾—æ›´æ–°æ—¥æ—¶ */
     public Date getUpdatedatetime() {
         return updatedatetime;
     }
 
-    /** ÉèÖÃ¸üĞÂÈÕÊ± */
+    /** è®¾ç½®æ›´æ–°æ—¥æ—¶ */
     public void setUpdatedatetime(Date updatedatetime) {
         this.updatedatetime = updatedatetime;
     }
 
     /**
-     * UserInfo:×÷³ÉÓÃ»§Çé±¨
+     * UserInfo:ä½œæˆç”¨æˆ·æƒ…æŠ¥
      *
-     * @param password ÃÜÂë
-     * @param name ĞÕÃû
-     * @param department ËùÊô²¿ÃÅ
-     * @param telephone µç»°
-     * @param email ÓÊÏä
-     * @param userroleId ÓÃ»§½ÇÉ«ID
-     * @param status ×´Ì¬
-     * @param createuser ×÷³ÉÕß
-     * @param updateuser ¸üĞÂÕß
-     * @param uid ÓÃ»§Ãû
-     * @param unum ÓÃ»§No
+     * @param password å¯†ç 
+     * @param name å§“å
+     * @param department æ‰€å±éƒ¨é—¨
+     * @param telephone ç”µè¯
+     * @param email é‚®ç®±
+     * @param userroleId ç”¨æˆ·è§’è‰²ID
+     * @param status çŠ¶æ€
+     * @param createuser ä½œæˆè€…
+     * @param updateuser æ›´æ–°è€…
+     * @param uid ç”¨æˆ·å
+     * @param unum ç”¨æˆ·No
      */
     public UserInfo(String password, String name, String department, String telephone, String email, String userroleId,
             String status, String createuser, String updateuser, String uid, int unum) {

@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 畅云 http://www.ichangyun.cn
+ * Copyright 2018 鐣呬簯 http://www.ichangyun.cn
  * <p>
- *  竞争情报系统
+ *  绔炰簤鎯呮姤绯荤粺
  */
 package com.ichangyun.InforAnalyaizer.mapper.notice;
 
@@ -21,9 +21,11 @@ public interface NoticeMapper {
 
     public List<NoticeVo> queryAllNotice(Map<String, Object> key);
 
-    public int queryCount();
+    public int queryCount(Map<String, Object> key);
 
     public List<NoticeType> getNoticeType();
 
     public NoticeVo queryById(String id);
+    
+    public Integer checkName(Notice record);
 }

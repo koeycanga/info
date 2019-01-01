@@ -1,37 +1,51 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.service.front;
 
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
 
 /**
- * ÏêÇéÒ³¶ÔÓ¦service
+ * è¯¦æƒ…é¡µå¯¹åº”service
  * @author renhao
  * 2018-11-19 17:02
  */
 public interface DetailsPageService {
 
-	/**
-	 * ¸ù¾İÎÄÕÂID»ñµÃÎÄÕÂĞÅÏ¢
-	 * @param article_id  ÎÄÕÂid
-	 * @param userid
-	 * @return
-	 */
-	public String getArticleByID(String article_id, String userid);
+    /**
+     * æ ¹æ®æ–‡ç« IDè·å¾—æ–‡ç« ä¿¡æ¯
+     * @param article_id  æ–‡ç« id
+     * @param userid
+     * @return
+     */
+    public String getArticleByID(String article_id, String userid);
 
-	/**
-	 * ¸ù¾İÎÄÕÂID»ñµÃÎÄÕÂµÄÃ½Ìå±¨µÀĞÅÏ¢
-	 * @param article_id
-	 * @return
-	 */
-	public String getBDArticleByID(String article_id,String userid);
+    /**
+     * æ ¹æ®æ–‡ç« IDè·å¾—æ–‡ç« çš„åª’ä½“æŠ¥é“ä¿¡æ¯
+     * @param article_id
+     * @return
+     */
+    public String getBDArticleByID(String article_id,String userid);
 
-	/**
-	 * »ñµÃÏàËÆÎÄÕÂ
-	 * @return
-	 */
-	public String getSimContent(ArticleInfoBean ab);
+    /**
+     * è·å¾—ç›¸ä¼¼æ–‡ç« 
+     * @return
+     */
+    public String getSimContent(ArticleInfoBean ab);
+
+
+    /**
+     * è·å¾—ç›¸å…³æ–‡ç« 
+     * @return
+     */
+    public String getRelateDataByID(String article_id, String userid);
+
+    /**
+     * æ ¹æ®æ–‡ç« IDè·å¾—å…¶æ‰€åœ¨çš„åˆ†ç±»ä½“ç³»åç§°è·¯å¾„
+     * @param article_id
+     * @return
+     */
+	public String getClassificationPathById(String article_id);
 }

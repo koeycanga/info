@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ * ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.service.classification;
 
@@ -9,89 +9,89 @@ import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean
 import com.ichangyun.InforAnalyaizer.model.webinfo.WebInfoBean;
 
 /**
- * ĞÅÏ¢Ô´°ó¶¨service	
+ * ä¿¡æ¯æºç»‘å®šservice
  * @author renhao
- * Date:2018-11-12
+ * @Date:2018-11-12
  */
 public interface ClassificationSourceService {
 
-	/**
-	 * »ñµÃÒª²éÑ¯µÄ·ÖÀàÌåÏµ×ÜÊı
-	 * @param cb ²éÑ¯²ÎÊı
-	 * @return Òª²éÑ¯µÄ·ÖÀàÌåÏµ×ÜÊı
-	 * Date:2018-11-12
-	 */
-	public int getClassifcInfoCount(ClassificationInfoBean cb);
+    /**
+     * è·å¾—è¦æŸ¥è¯¢çš„åˆ†ç±»ä½“ç³»æ€»æ•°
+     * @param cb æŸ¥è¯¢å‚æ•°
+     * @return è¦æŸ¥è¯¢çš„åˆ†ç±»ä½“ç³»æ€»æ•°
+     * Date:2018-11-12
+     */
+    public int getClassifcInfoCount(ClassificationInfoBean cb);
 
-	/**
-	 * »ñµÃÒª²éÑ¯µÄ·ÖÀàÌåÏµĞÅÏ¢JSON×ÖÃæÁ¿
-	 * @param cb
-	 * @return Òª²éÑ¯µÄ·ÖÀàÌåÏµĞÅÏ¢JSON×ÖÃæÁ¿
-	 * Date:2018-11-12
-	 */
-	public String getClassifcInfo(ClassificationInfoBean cb);
+    /**
+     * è·å¾—è¦æŸ¥è¯¢çš„åˆ†ç±»ä½“ç³»ä¿¡æ¯JSONå­—é¢é‡
+     * @param cb
+     * @return è¦æŸ¥è¯¢çš„åˆ†ç±»ä½“ç³»ä¿¡æ¯JSONå­—é¢é‡
+     * Date:2018-11-12
+     */
+    public String getClassifcInfo(ClassificationInfoBean cb);
 
-	/**
-	 * »ñµÃ·ÖÀàÌåÏµµÄ×Ó½ÚµãĞÅÏ¢
-	 * @param cb  ²éÑ¯²ÎÊı
-	 * @return  ·ÖÀàÌåÏµµÄ×Ó½ÚµãĞÅÏ¢
-	 * Date:2018-11-12
-	 */
-	public String getchild(ClassificationInfoBean cb);
+    /**
+     * è·å¾—åˆ†ç±»ä½“ç³»çš„å­èŠ‚ç‚¹ä¿¡æ¯
+     * @param cb  æŸ¥è¯¢å‚æ•°
+     * @return  åˆ†ç±»ä½“ç³»çš„å­èŠ‚ç‚¹ä¿¡æ¯
+     * Date:2018-11-12
+     */
+    public String getchild(ClassificationInfoBean cb);
 
-	/**
-	 * »ñµÃÒª²éÑ¯µÄÍøÕ¾ĞÅÏ¢×ÜÊı
-	 * @param wb  ²éÑ¯²ÎÊı
-	 * @return ÍøÕ¾ĞÅÏ¢×ÜÊı
-	 * Date:2018-11-12
-	 */
-	public int getWebInfoCount(WebInfoBean wb);
+    /**
+     * è·å¾—è¦æŸ¥è¯¢çš„ç½‘ç«™ä¿¡æ¯æ€»æ•°
+     * @param wb  æŸ¥è¯¢å‚æ•°
+     * @return ç½‘ç«™ä¿¡æ¯æ€»æ•°
+     * Date:2018-11-12
+     */
+    public int getWebInfoCount(WebInfoBean wb);
 
-	/**
-	 * »ñµÃÒª²éÑ¯µÄÍøÕ¾ĞÅÏ¢JSON×ÖÃæÁ¿
-	 * @param wb ²éÑ¯²ÎÊı
-	 * @return  Òª²éÑ¯µÄÍøÕ¾ĞÅÏ¢JSON×ÖÃæÁ¿
-	 * Date:2018-11-12
-	 */
-	public String getWebInfo(WebInfoBean wb);
+    /**
+     * è·å¾—è¦æŸ¥è¯¢çš„ç½‘ç«™ä¿¡æ¯JSONå­—é¢é‡
+     * @param wb æŸ¥è¯¢å‚æ•°
+     * @return  è¦æŸ¥è¯¢çš„ç½‘ç«™ä¿¡æ¯JSONå­—é¢é‡
+     * Date:2018-11-12
+     */
+    public String getWebInfo(WebInfoBean wb);
 
-	/**
-	 * »ñµÃÒÑ°ó¶¨µÄÍøÕ¾ĞÅÏ¢×ÜÊı
-	 * @param wb ²éÑ¯²ÎÊı
-	 * @return ËùÓĞµÄÍøÕ¾ĞÅÏ¢×ÜÊı
-	 * Date:2018-11-12
-	 */
-	public int getAlWebInfoCount(WebInfoBean wb);
+    /**
+     * è·å¾—å·²ç»‘å®šçš„ç½‘ç«™ä¿¡æ¯æ€»æ•°
+     * @param wb æŸ¥è¯¢å‚æ•°
+     * @return æ‰€æœ‰çš„ç½‘ç«™ä¿¡æ¯æ€»æ•°
+     * Date:2018-11-12
+     */
+    public int getAlWebInfoCount(WebInfoBean wb);
 
-	/**
-	 * »ñµÃÒÑ°ó¶¨µÄÍøÕ¾ĞÅÏ¢JSON×ÖÃæÁ¿
-	 * @param wb ²éÑ¯²ÎÊı
-	 * @return ËùÓĞµÄÍøÕ¾ĞÅÏ¢JSON×ÖÃæÁ¿
-	 * Date:2018-11-12
-	 */
-	public String getAlWebInfo(WebInfoBean wb);
+    /**
+     * è·å¾—å·²ç»‘å®šçš„ç½‘ç«™ä¿¡æ¯JSONå­—é¢é‡
+     * @param wb æŸ¥è¯¢å‚æ•°
+     * @return æ‰€æœ‰çš„ç½‘ç«™ä¿¡æ¯JSONå­—é¢é‡
+     * Date:2018-11-12
+     */
+    public String getAlWebInfo(WebInfoBean wb);
 
-	/**
-	 * Ìí¼ÓĞÂµÄĞÅÏ¢Ô´°ó¶¨ĞÅÏ¢
-	 * @param classification_ID  ÒªÌí¼Ó°ó¶¨µÄ·ÖÀàÌåÏµID
-	 * @param json   ÒªÌí¼ÓµÄ°ó¶¨ĞÅÏ¢json×ÖÃæÁ¿
-	 * @param creater Ìí¼ÓÕß
-	 * Date:2018-11-12
-	 */
-	public void addNewSource(String classification_ID, String json, String creater);
+    /**
+     * æ·»åŠ æ–°çš„ä¿¡æ¯æºç»‘å®šä¿¡æ¯
+     * @param classification_ID  è¦æ·»åŠ ç»‘å®šçš„åˆ†ç±»ä½“ç³»ID
+     * @param json   è¦æ·»åŠ çš„ç»‘å®šä¿¡æ¯jsonå­—é¢é‡
+     * @param creater æ·»åŠ è€…
+     * Date:2018-11-12
+     */
+    public void addNewSource(String classification_ID, String json, String creater);
 
-	/**
-	 * É¾³ıÒÑ°ó¶¨µÄĞÅÏ¢Ô´
-	 * @param classification_ID ÒªÉ¾³ı°ó¶¨µÄ·ÖÀàÌåÏµID
-	 * @param json ÒªÉ¾³ıµÄ°ó¶¨ĞÅÏ¢JSON×ÖÃæÁ¿
-	 */
-	public void delteSource(String classification_ID, String json);
+    /**
+     * åˆ é™¤å·²ç»‘å®šçš„ä¿¡æ¯æº
+     * @param classification_ID è¦åˆ é™¤ç»‘å®šçš„åˆ†ç±»ä½“ç³»ID
+     * @param json è¦åˆ é™¤çš„ç»‘å®šä¿¡æ¯JSONå­—é¢é‡
+     */
+    public void delteSource(String classification_ID, String json);
 
-	/**
-	 * ĞŞ¸Ä·ÖÀàÌåÏµ°ó¶¨ĞÅÏ¢
-	 * @param Classification_ID ÒªĞŞ¸ÄµÄ·ÖÀàÌåÏµID
-	 * @param updater  ĞŞ¸ÄÕß
-	 */
-	public void updatesource(String Classification_ID,String updater);
+    /**
+     * ä¿®æ”¹åˆ†ç±»ä½“ç³»ç»‘å®šä¿¡æ¯
+     * @param Classification_ID è¦ä¿®æ”¹çš„åˆ†ç±»ä½“ç³»ID
+     * @param updater  ä¿®æ”¹è€…
+     */
+    public void updatesource(String Classification_ID,String updater);
 
 }

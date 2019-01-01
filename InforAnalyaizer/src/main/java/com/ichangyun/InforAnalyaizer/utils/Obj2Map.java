@@ -1,11 +1,10 @@
 /**
- * Copyright 2018 畅云 http://www.ichangyun.cn
+ * Copyright 2018 鐣呬簯 http://www.ichangyun.cn
  * <p>
- *  竞争情报系统
+ * 绔炰簤鎯呮姤绯荤粺
  */
 package com.ichangyun.InforAnalyaizer.utils;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,13 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 将对象转为map的工具类
+ * 灏嗗璞¤浆涓簃ap鐨勫伐鍏风被
  * @author Administrator
  *
  */
-
 public class Obj2Map {
-	public static Map<String, Object> object2Map(Object obj) {
+    public static Map<String, Object> object2Map(Object obj) {
         Map<String, Object> map = new HashMap<>();
         if (obj == null) {
             return map;
@@ -28,9 +26,9 @@ public class Obj2Map {
         List<Field> fs = new ArrayList<>();
         Class clazz = obj.getClass();
         while (null!=clazz) {
-        	Field[] fields = clazz.getDeclaredFields();
-        	fs.addAll(Arrays.asList(fields));
-        	clazz=clazz.getSuperclass();
+            Field[] fields = clazz.getDeclaredFields();
+            fs.addAll(Arrays.asList(fields));
+            clazz=clazz.getSuperclass();
         }
         try {
             for (Field field : fs) {

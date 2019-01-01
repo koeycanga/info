@@ -342,6 +342,9 @@ var Info = {
 		    					_this.checkedNames.push(_this.roleInfo.role_id.trim());
 		    					_this.hideTcc();
 		    				}
+		    				if(response.data=='exist'){
+		    					layer.msg(Info.E0018);
+		    				}
 		    				if(response.data=='nok'){
 		    					layer.msg(Info.E0022);
 		    				}
@@ -457,7 +460,8 @@ var Info = {
 		        	if(ismsg){
 			        	layer.msg(Info.I0011, {
 			        		  icon: 16
-			        		  ,shade: 0.01
+			        		  ,shade: 0.01,
+			        		  time:false
 			        		});
 		        	}
 		    		axios.get('../role/search',{
@@ -481,6 +485,7 @@ var Info = {
 		    				  }
 		    			})
 		    			.catch(function (error) {
+		    				layer.closeAll();
 		    			    console.log(error);
 		    			});
 					

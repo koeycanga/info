@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.service.comprehensivemonitoring;
 
@@ -9,67 +9,67 @@ import javax.servlet.http.HttpSession;
 
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
 
-/**×ÛºÏ¼à²â¶ÔÓ¦service
+/**ç»¼åˆç›‘æµ‹å¯¹åº”service
  * @author renhao
  * 2018-11-19 10:05
  */
 public interface ComprehensivemonitoringService {
 
-	/**
-	 * ²éÑ¯×ÛºÏ¼à²âÎÄÕÂ×ÜÊıÁ¿
-	 * @param ab 
-	 * @return
-	 */
-	public int getArticleRowCount(ArticleInfoBean ab);
-
-	
-	/**
-	 * ²éÑ¯×ÛºÏ¼à²âËùĞèÎÄÕÂÊı¾İ
-	 * @param ab
-	 * @return
-	 */
-	public String getArticleJSON(ArticleInfoBean ab);
+    /**
+     * æŸ¥è¯¢ç»¼åˆç›‘æµ‹æ–‡ç« æ€»æ•°é‡
+     * @param ab
+     * @return
+     */
+    public int getArticleRowCount(ArticleInfoBean ab);
 
 
-	/**
-	 * É¾³ıÎÄÕÂ
-	 * @param json ÒªÉ¾³ıµÄÎÄÕÂµÄid json×ÖÃæÁ¿
-	 * @param deletemode
-	 * @return
-	 */
-	public boolean delarticle(String json, String userid, String deletemode);
+    /**
+     * æŸ¥è¯¢ç»¼åˆç›‘æµ‹æ‰€éœ€æ–‡ç« æ•°æ®
+     * @param ab
+     * @return
+     */
+    public String getArticleJSON(ArticleInfoBean ab);
 
 
-	/**
-	 * Ô¤¾¯ÎÄÕÂ
-	 * @param json
-	 * @param session
-	 * @return
-	 */
-	public boolean toyj(String json, HttpSession session);
+    /**
+     * åˆ é™¤æ–‡ç« 
+     * @param json è¦åˆ é™¤çš„æ–‡ç« çš„id jsonå­—é¢é‡
+     * @param deletemode
+     * @return
+     */
+    public boolean delarticle(String json, String userid, String deletemode);
 
 
-	/**
-	 * »ñµÃÉÏ´Î²éÑ¯Ê±×îĞÂµÄÎÄÕÂÊ±¼ä
-	 * @param ab
-	 * @return
-	 */
-	public String getSearchLaestRelsetime(ArticleInfoBean ab);
+    /**
+     * é¢„è­¦æ–‡ç« 
+     * @param json
+     * @param session
+     * @return
+     */
+    public boolean toyj(String json, HttpSession session);
 
 
-	/**
-	 * »ñµÃ×îĞÂÎÄÕÂÌõÄ¿Êı
-	 * @param ab
-	 * @return
-	 */
-	public int getlastestNews(ArticleInfoBean ab);
+    /**
+     * è·å¾—ä¸Šæ¬¡æŸ¥è¯¢æ—¶æœ€æ–°çš„æ–‡ç« æ—¶é—´
+     * @param ab
+     * @return
+     */
+    public String getSearchLaestRelsetime(ArticleInfoBean ab);
 
 
-	/**
-	 * »ñµÃÏàËÆÎÄÕÂjson×ÖÃæÁ¿
-	 * @param ab
-	 * @return
-	 */
-	public String getSimContent(ArticleInfoBean ab);
+    /**
+     * è·å¾—æœ€æ–°æ–‡ç« æ¡ç›®æ•°
+     * @param ab
+     * @return
+     */
+    public int getlastestNews(ArticleInfoBean ab);
+
+
+    /**
+     * è·å¾—ç›¸ä¼¼æ–‡ç« jsonå­—é¢é‡
+     * @param ab
+     * @return
+     */
+    public String getSimContent(ArticleInfoBean ab);
 
 }

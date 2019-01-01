@@ -1,14 +1,16 @@
 /**
- * Copyright 2018 畅云 http://www.ichangyun.cn
+ * Copyright 2018 鐣呬簯 http://www.ichangyun.cn
  * <p>
- * 竞争情报分析系统
+ * 绔炰簤鎯呮姤鍒嗘瀽绯荤粺
  */
 package com.ichangyun.InforAnalyaizer.service.common.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 /**
- * 排他Check接口
+ * 鎺掍粬Check鎺ュ彛
  *
  * @author ichangyun
  * @date 2018/11/19
@@ -16,13 +18,13 @@ import java.util.List;
 public interface DBUpdateCheckService {
 
     /**
-     * 排他Check
-     * @param checkKbn 处理区分
+     * 鎺掍粬Check
+     * @param checkKbn 澶勭悊鍖哄垎
      * @param paramList PK
-     * @param updateDateTime 更新日时
+     * @param updateDateTime 鏇存柊鏃ユ椂
      * @return
      */
     public boolean DBUpdateCheck(String checkKbn,
             List<String> paramList,
-            String updateDateTime);
+            String updateDateTime,HttpSession session);
 }

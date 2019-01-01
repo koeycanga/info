@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model.collection;
 
@@ -9,55 +9,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CollectionTypeVo extends CollectionType{
-	private Integer isParent = 0;//ÊÇ·ñÎª¸¸½Úµã£¬1ÊÇ£¬0²»ÊÇ
-	private List<CollectionTypeVo> children = new ArrayList<>();//×Ó½Úµã¼¯ºÏ
-	private boolean is_show=false;			//ÊÇ·ñÏÔÊ¾
-	private String ppath = "";			//¸¸½Úµãpath
-	private String childrenNum;			//ÓĞ¶àÉÙ×Ó½Úµã£¬·½±ã¼Ó±íÊ¾Ë³Ğò
-/*	¸¸ÀàĞÅÏ¢
- * private String collectiontypename; 	½ÚµãÃû
+    private Integer isParent = 0;//æ˜¯å¦ä¸ºçˆ¶èŠ‚ç‚¹ï¼Œ1æ˜¯ï¼Œ0ä¸æ˜¯
+    private List<CollectionTypeVo> children = new ArrayList<>();//å­èŠ‚ç‚¹é›†åˆ
+    private boolean is_show=false;          //æ˜¯å¦æ˜¾ç¤º
+    private String ppath = "";          //çˆ¶èŠ‚ç‚¹path
+    private String childrenNum;         //æœ‰å¤šå°‘å­èŠ‚ç‚¹ï¼Œæ–¹ä¾¿åŠ è¡¨ç¤ºé¡ºåº
 
-    private String parentCollectiontypeId;¸¸½ÚµãID
+    public Integer getIsParent() {
+        return isParent;
+    }
+    public String getChildrenNum() {
+        return childrenNum;
+    }
+    public void setChildrenNum(String childrenNum) {
+        this.childrenNum = childrenNum;
+    }
+    public String getPpath() {
+        return ppath;
+    }
+    public void setPpath(String ppath) {
+        this.ppath = ppath;
+    }
+    public void setIsParent(Integer isParent) {
+        this.isParent = isParent;
+    }
+    public List<CollectionTypeVo> getChildren() {
+        return children;
+    }
+    public void setChildren(List<CollectionTypeVo> children) {
+        this.children = children;
+    }
+    public boolean isIs_show() {
+        return is_show;
+    }
+    public void setIs_show(boolean is_show) {
+        this.is_show = is_show;
+    }
 
-    private Integer displayorder;		±íÊ¾Ë³
-
-    private String validflag;			ÓĞĞ§flag  0ÎŞĞ§   1ÓĞĞ§
-    
-	private String userId;				ÓÃ»§ID
-
-    private String collectiontypeId;	½ÚµãID
-
- * */
-	
-	public Integer getIsParent() {
-		return isParent;
-	}
-	public String getChildrenNum() {
-		return childrenNum;
-	}
-	public void setChildrenNum(String childrenNum) {
-		this.childrenNum = childrenNum;
-	}
-	public String getPpath() {
-		return ppath;
-	}
-	public void setPpath(String ppath) {
-		this.ppath = ppath;
-	}
-	public void setIsParent(Integer isParent) {
-		this.isParent = isParent;
-	}
-	public List<CollectionTypeVo> getChildren() {
-		return children;
-	}
-	public void setChildren(List<CollectionTypeVo> children) {
-		this.children = children;
-	}
-	public boolean isIs_show() {
-		return is_show;
-	}
-	public void setIs_show(boolean is_show) {
-		this.is_show = is_show;
-	}
-	
 }

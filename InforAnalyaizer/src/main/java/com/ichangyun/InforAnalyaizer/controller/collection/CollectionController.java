@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.controller.collection;
 
@@ -25,8 +25,9 @@ import com.ichangyun.InforAnalyaizer.model.collection.MyCollectionVo;
 import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.service.collection.CollectionService;
 import com.ichangyun.InforAnalyaizer.service.common.service.DBUpdateCheckService;
+
 /**
- * Controller£ºÎÒµÄÊÕ²Ø
+ * æˆ‘çš„æ”¶è—
  *
  * @author lan
  * @date 2018/11/27
@@ -34,178 +35,188 @@ import com.ichangyun.InforAnalyaizer.service.common.service.DBUpdateCheckService
 @Controller
 @RequestMapping("collection")
 public class CollectionController {
-	@Autowired
-	private CollectionService collectionService;
+    @Autowired
+    private CollectionService collectionService;
 
-	@Autowired
-	private DBUpdateCheckService dbUpdateCheckService;
+    @Autowired
+    private DBUpdateCheckService dbUpdateCheckService;
+
     /**
-     * toCollection£ºÌø×ªµ½ÎÒµÄÊÕ²ØÒ³Ãæ
+     * toCollectionï¼šè·³è½¬åˆ°æˆ‘çš„æ”¶è—é¡µé¢
      *
      * @return String
      */
-	@RequestMapping("toCollection")
-	public String toCollection() {
-		return "frontpage/collection";
-	}
+    @RequestMapping("toCollection")
+    public String toCollection() {
+        return "frontpage/collection";
+    }
     /**
-     * getOpts£ºÈ¡µÃËÑË÷Ñ¡Ïî¡ª¡ªÈ«ÎÄ¡¢Ä£ºı
+     * getOptsï¼šå–å¾—æœç´¢é€‰é¡¹â€”â€”å…¨æ–‡ã€æ¨¡ç³Š
      *
      * @return List
      */
-	@RequestMapping("getOpts")
-	@ResponseBody
-	public List<SearchOptBean> getOpts(){
-		return this.collectionService.getOpts();
-	}
+    @RequestMapping("getOpts")
+    @ResponseBody
+    public List<SearchOptBean> getOpts(){
+        return this.collectionService.getOpts();
+    }
+
     /**
-     * queryAll£º²éÑ¯ËùÓĞÈÎÎñ
+     * queryAllï¼šæŸ¥è¯¢æ‰€æœ‰ä»»åŠ¡
      *
-     * @param MyCollectionVo ¼ìË÷Ìõ¼şVo
-     * @param BaseBean ·ÖÒ³¹¤¾ßÀà
-     * @param SearchOptBean ËÑË÷Ñ¡Ïî
-     * @param HttpSession »ñÈ¡µ±Ç°userµÄsession
+     * @param MyCollectionVo æ£€ç´¢æ¡ä»¶Vo
+     * @param BaseBean åˆ†é¡µå·¥å…·ç±»
+     * @param SearchOptBean æœç´¢é€‰é¡¹
+     * @param HttpSession è·å–å½“å‰userçš„session
      * @return map
      */
-	@RequestMapping("queryAll")
-	@ResponseBody
-	public Map<String, Object>  queryAll(MyCollectionVo vo, BaseBean baseBean,SearchOptBean sob,HttpSession session){
-		User u = (User)session.getAttribute(CommBean.SESSION_NAME);
-			List<MyCollectionVo> vos = this.collectionService.queryAll(vo,baseBean,u,sob);
-			int count = this.collectionService.queryCount(vo,u,sob);
-			Map<String, Object> map = new HashMap<>();
-			map.put("vos", vos);
-			map.put("rowCount", count);
-			return map;
-	}
+    @RequestMapping("queryAll")
+    @ResponseBody
+    public Map<String, Object>  queryAll(MyCollectionVo vo, BaseBean baseBean,SearchOptBean sob,HttpSession session){
+        User u = (User)session.getAttribute(CommBean.SESSION_NAME);
+        List<MyCollectionVo> vos = this.collectionService.queryAll(vo,baseBean,u,sob);
+        int count = this.collectionService.queryCount(vo,u,sob);
+        Map<String, Object> map = new HashMap<>();
+        map.put("vos", vos);
+        map.put("rowCount", count);
+        return map;
+    }
+
     /**
-     * delete£ºÅúÁ¿É¾³ıÊÕ²Ø¼ĞÄÚµÄÎÄÕÂ
+     * deleteï¼šæ‰¹é‡åˆ é™¤æ”¶è—å¤¹å†…çš„æ–‡ç« 
      *
-     * @param String[] checkedId »ñÈ¡ÒªÉ¾³ıµÄÎÄÕÂid
+     * @param String[] checkedId è·å–è¦åˆ é™¤çš„æ–‡ç« id
      * @return map
      */
-	@RequestMapping("delete")
-	@ResponseBody
-	public Map<String, Object> delete(String[] checkedId){
-		String msg = this.collectionService.delete(checkedId);
-		Map<String, Object> map = new HashMap<>();
-		map.put("msg", msg);
-		return map;
-	}
+    @RequestMapping("delete")
+    @ResponseBody
+    public Map<String, Object> delete(String[] checkedId){
+        String msg = this.collectionService.delete(checkedId);
+        Map<String, Object> map = new HashMap<>();
+        map.put("msg", msg);
+        return map;
+    }
+
     /**
-     * deleteOne£ºÉ¾³ıÊÕ²Ø¼ĞÄÚµÄÎÄÕÂ
+     * deleteOneï¼šåˆ é™¤æ”¶è—å¤¹å†…çš„æ–‡ç« 
      *
-     * @param String id »ñÈ¡ÒªÉ¾³ıµÄÎÄÕÂid
+     * @param String id è·å–è¦åˆ é™¤çš„æ–‡ç« id
      * @return map
      */
-	@RequestMapping("deleteOne")
-	@ResponseBody
-	public Map<String, Object> deleteOne(String id){
-		String[] ids = {id};
-		String msg = this.collectionService.delete(ids);
-		Map<String, Object> map = new HashMap<>();
-		map.put("msg", msg);
-		return map;
-	}
+    @RequestMapping("deleteOne")
+    @ResponseBody
+    public Map<String, Object> deleteOne(String id){
+        String[] ids = {id};
+        String msg = this.collectionService.delete(ids);
+        Map<String, Object> map = new HashMap<>();
+        map.put("msg", msg);
+        return map;
+    }
+
     /**
-     * getTypes£º»ñÈ¡×ó²àÊÕ²Ø¼ĞÁĞ±í
+     * getTypesï¼šè·å–å·¦ä¾§æ”¶è—å¤¹åˆ—è¡¨
      *
-     * @param HttpSession µ±Ç°user
+     * @param HttpSession å½“å‰user
      * @return map
      */
-	@RequestMapping("getTypes")
-	@ResponseBody
-	public List<CollectionTypeVo> getTypes(HttpSession session){
-		User u = (User)session.getAttribute(CommBean.SESSION_NAME);
-		List<CollectionTypeVo> types = this.collectionService.getTypes(u);
-		return types;
-	}
+    @RequestMapping("getTypes")
+    @ResponseBody
+    public List<CollectionTypeVo> getTypes(HttpSession session){
+        User u = (User)session.getAttribute(CommBean.SESSION_NAME);
+        List<CollectionTypeVo> types = this.collectionService.getTypes(u);
+        return types;
+    }
+
     /**
-     * getTypes£ºÌí¼ÓÊÕ²Ø¼Ğ
+     * getTypesï¼šæ·»åŠ æ”¶è—å¤¹
      *
-     * @param HttpSession µ±Ç°user
-     * @param CollectionTypeVo Ìí¼ÓÊÕ²Ø¼ĞµÄĞÅÏ¢
+     * @param HttpSession å½“å‰user
+     * @param CollectionTypeVo æ·»åŠ æ”¶è—å¤¹çš„ä¿¡æ¯
      * @return map
      */
-	@RequestMapping("addType")
-	@ResponseBody
-	public Map<String, Object> addType(HttpSession session,CollectionTypeVo vo){
-		User u = (User)session.getAttribute(CommBean.SESSION_NAME);
-		vo.setUserId(u.getUser_ID());
-		String msg = this.collectionService.addType(vo);
-		Map<String, Object> map = new HashMap<>();
-		map.put("msg", msg);
-		return map;
-	}
+    @RequestMapping("addType")
+    @ResponseBody
+    public Map<String, Object> addType(HttpSession session,CollectionTypeVo vo){
+        User u = (User)session.getAttribute(CommBean.SESSION_NAME);
+        vo.setUserId(u.getUser_ID());
+        String msg = this.collectionService.addType(vo);
+        Map<String, Object> map = new HashMap<>();
+        map.put("msg", msg);
+        return map;
+    }
+
     /**
-     * updateType£º¸üĞÂÊÕ²Ø¼Ğ
+     * updateTypeï¼šæ›´æ–°æ”¶è—å¤¹
      *
-     * @param HttpSession µ±Ç°user
-     * @param CollectionTypeVo ¸üĞÂÊÕ²Ø¼ĞµÄĞÅÏ¢
+     * @param HttpSession å½“å‰user
+     * @param CollectionTypeVo æ›´æ–°æ”¶è—å¤¹çš„ä¿¡æ¯
      * @return map
      */
-	@RequestMapping("updateType")
-	@ResponseBody
-	public Map<String, Object> updateType(HttpSession session,CollectionTypeVo vo){
-		User u = (User)session.getAttribute(CommBean.SESSION_NAME);
-		vo.setUserId(u.getUser_ID());
-		List<String> id = new ArrayList<>();
-		id.add(vo.getCollectiontypeId());
-		Map<String, Object>map = new HashMap<>();
-		if (!dbUpdateCheckService.DBUpdateCheck("7", id,vo.getUpdatedatetime())) {
-			map.put("msg", "checkFalse");
-			return map;
-		}
-		String msg = this.collectionService.updateType(vo);
-		map.put("msg", msg);
-		return map;
-	}
+    @RequestMapping("updateType")
+    @ResponseBody
+    public Map<String, Object> updateType(HttpSession session,CollectionTypeVo vo){
+        User u = (User)session.getAttribute(CommBean.SESSION_NAME);
+        vo.setUserId(u.getUser_ID());
+        List<String> id = new ArrayList<>();
+        id.add(vo.getCollectiontypeId());
+        Map<String, Object>map = new HashMap<>();
+        if (!dbUpdateCheckService.DBUpdateCheck("7", id,vo.getUpdatedatetime(),session)) {
+            map.put("msg", "checkFalse");
+            return map;
+        }
+        String msg = this.collectionService.updateType(vo);
+        map.put("msg", msg);
+        return map;
+    }
+
     /**
-     * deleteType£ºÉ¾³ıÊÕ²Ø¼Ğ
+     * deleteTypeï¼šåˆ é™¤æ”¶è—å¤¹
      *
-     * @param HttpSession µ±Ç°user
-     * @param CollectionTypeVo É¾³ıÊÕ²Ø¼ĞµÄĞÅÏ¢
+     * @param HttpSession å½“å‰user
+     * @param CollectionTypeVo åˆ é™¤æ”¶è—å¤¹çš„ä¿¡æ¯
      * @return map
      */
-	@RequestMapping("deleteType")
-	@ResponseBody
-	public Map<String, Object> deleteType(HttpSession session,CollectionTypeVo vo){
-		User u = (User)session.getAttribute(CommBean.SESSION_NAME);
-		vo.setUserId(u.getUser_ID());
-		String msg= this.collectionService.deleteType(vo);
-		Map<String, Object> map = new HashMap<>();
-		map.put("msg", msg);
-		return map;
-	}
+    @RequestMapping("deleteType")
+    @ResponseBody
+    public Map<String, Object> deleteType(HttpSession session,CollectionTypeVo vo){
+        User u = (User)session.getAttribute(CommBean.SESSION_NAME);
+        vo.setUserId(u.getUser_ID());
+        String msg= this.collectionService.deleteType(vo);
+        Map<String, Object> map = new HashMap<>();
+        map.put("msg", msg);
+        return map;
+    }
+
     /**
-     * move£ºÒÆ¶¯ÎÄÕÂ
+     * moveï¼šç§»åŠ¨æ–‡ç« 
      *
-     * @param String[] checkedId ÒªÒÆ¶¯µÄÎÄÕÂid
-     * @param String collectiontypeId Ä¿±êÊÕ²Ø¼Ğid
+     * @param String[] checkedId è¦ç§»åŠ¨çš„æ–‡ç« id
+     * @param String collectiontypeId ç›®æ ‡æ”¶è—å¤¹id
      * @return map
      */
-	@RequestMapping("move")
-	@ResponseBody
-	public Map<String, Object> move(String[] checkedId,String collectiontypeId){
-		String msg = this.collectionService.move(checkedId,collectiontypeId);
-		Map<String, Object> map = new HashMap<>();
-		map.put("msg", msg);
-		return map;
-	}
+    @RequestMapping("move")
+    @ResponseBody
+    public Map<String, Object> move(String[] checkedId,String collectiontypeId){
+        String msg = this.collectionService.move(checkedId,collectiontypeId);
+        Map<String, Object> map = new HashMap<>();
+        map.put("msg", msg);
+        return map;
+    }
+
     /**
-     * moveType£ºÒÆ¶¯½Úµã
+     * moveTypeï¼šç§»åŠ¨èŠ‚ç‚¹
      *
-     * @param String collectiontypeId ÒªÒÆ¶¯µÄÎÄÕÂid
-     * @param String targetId Ä¿±êÊÕ²Ø¼Ğid£¬Èç¹ûÊÇÅÅĞòÔò_top
+     * @param String collectiontypeId è¦ç§»åŠ¨çš„æ–‡ç« id
+     * @param String targetId ç›®æ ‡æ”¶è—å¤¹idï¼Œå¦‚æœæ˜¯æ’åºåˆ™_top
      * @return map
      */
-	@RequestMapping("moveType")
-	@ResponseBody
-	public Map<String, Object> moveType(String collectiontypeId,String targetId){
-		String msg = "ok";
-		Map<String, Object> map = new HashMap<>();
-		msg = this.collectionService.moveType(collectiontypeId, targetId);
-		map.put("msg", msg);
-		return map;
-	}
+    @RequestMapping("moveType")
+    @ResponseBody
+    public Map<String, Object> moveType(String collectiontypeId,String targetId){
+        String msg = "ok";
+        Map<String, Object> map = new HashMap<>();
+        msg = this.collectionService.moveType(collectiontypeId, targetId);
+        map.put("msg", msg);
+        return map;
+    }
 }

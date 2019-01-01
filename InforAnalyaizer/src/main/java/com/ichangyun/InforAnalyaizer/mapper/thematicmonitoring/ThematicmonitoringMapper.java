@@ -1,245 +1,245 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.mapper.thematicmonitoring;
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
+
 import com.ichangyun.InforAnalyaizer.model.front.HotWordBean;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.CollectionBean;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ThematicmonitoringBean;
 
 /**
- * ×¨Ìâ¼à²âMapper
+ * ä¸“é¢˜ç›‘æµ‹Mapper
  * @author renhao
  * 2018-11-13 10:24
  */
 public interface ThematicmonitoringMapper {
 
-	/**
-	 * »ñµÃËùÓĞ·½°¸
-	 * @param userid 
-	 * @return
-	 */
-	public List<ThematicmonitoringBean> getAllFA(@Param("userid")String userid);
+    /**
+     * è·å¾—æ‰€æœ‰æ–¹æ¡ˆ
+     * @param userid
+     * @return
+     */
+    public List<ThematicmonitoringBean> getAllFA(@Param("userid")String userid);
 
-	/**
-	 * ÅĞ¶Ï·½°¸Ãû³ÆÊÇ·ñÒÑ´æÔÚ
-	 * @param planinfo_name
-	 * @param userid 
-	 * @return
-	 */
-	public int exist( @Param("param") String planinfo_name, @Param("userid")String userid);
+    /**
+     * åˆ¤æ–­æ–¹æ¡ˆåç§°æ˜¯å¦å·²å­˜åœ¨
+     * @param planinfo_name
+     * @param userid
+     * @return
+     */
+    public int exist( @Param("param") String planinfo_name, @Param("userid")String userid);
 
-	/**
-	 * ±£´æ·½°¸
-	 * @param tb
-	 */
-	public void SaveNewfa(ThematicmonitoringBean tb);
+    /**
+     * ä¿å­˜æ–¹æ¡ˆ
+     * @param tb
+     */
+    public void SaveNewfa(ThematicmonitoringBean tb);
 
-	/**
-	 * ±£´æ·½°¸ÏêÏ¸ĞÅÏ¢
-	 * @param list
-	 */
-	public void SaveNewfaDetail(List<ThematicmonitoringBean> list);
+    /**
+     * ä¿å­˜æ–¹æ¡ˆè¯¦ç»†ä¿¡æ¯
+     * @param list
+     */
+    public void SaveNewfaDetail(List<ThematicmonitoringBean> list);
 
-	/**
-	 * É¾³ı·½°¸
-	 * @param planid
-	 */
-	public void delfa(@Param("param") String planid);
+    /**
+     * åˆ é™¤æ–¹æ¡ˆ
+     * @param planid
+     */
+    public void delfa(@Param("param") String planid);
 
-	/**
-	 * É¾³ı·½°¸ÏêÏ¸ĞÅÏ¢
-	 * @param planid
-	 */
-	public void delfadetail(@Param("param") String planid);
+    /**
+     * åˆ é™¤æ–¹æ¡ˆè¯¦ç»†ä¿¡æ¯
+     * @param planid
+     */
+    public void delfadetail(@Param("param") String planid);
 
-	/**
-	 * »ñµÃ·½°¸ÏêÏ¸ĞÅÏ¢
-	 * @param planid  ·½°¸id
-	 * @return
-	 */
-	public List<ThematicmonitoringBean> getDetail(@Param("param")String planid);
+    /**
+     * è·å¾—æ–¹æ¡ˆè¯¦ç»†ä¿¡æ¯
+     * @param planid  æ–¹æ¡ˆid
+     * @return
+     */
+    public List<ThematicmonitoringBean> getDetail(@Param("param")String planid);
 
-	/**
-	 * ÅĞ¶Ï³ıplan_idÍâ·½°¸Ãû³ÆÊÇ·ñ´æÔÚ
-	 * @param plan_id
-	 * @param planinfo_name
-	 * @param string 
-	 * @return
-	 */
-	public int existwithID(@Param("p1")String plan_id, @Param("p2")String planinfo_name,@Param("userid")String userid);
+    /**
+     * åˆ¤æ–­é™¤plan_idå¤–æ–¹æ¡ˆåç§°æ˜¯å¦å­˜åœ¨
+     * @param plan_id
+     * @param planinfo_name
+     * @param string
+     * @return
+     */
+    public int existwithID(@Param("p1")String plan_id, @Param("p2")String planinfo_name,@Param("userid")String userid);
 
-	/**
-	 * »ñµÃÎÄÕÂ×ÜÊı(²»ºÏ²¢ÏàËÆÎÄÕÂ)
-	 * @param ab ²éÑ¯²ÎÊı
-	 * @return
-	 */
-	public int getArticleRowCount(ArticleInfoBean ab);
+    /**
+     * è·å¾—æ–‡ç« æ€»æ•°(ä¸åˆå¹¶ç›¸ä¼¼æ–‡ç« )
+     * @param ab æŸ¥è¯¢å‚æ•°
+     * @return
+     */
+    public int getArticleRowCount(ArticleInfoBean ab);
 
-	/**
-	 * »ñµÃÎÄÕÂĞÅÏ¢ÁĞ±í(²»ºÏ²¢ÏàËÆÎÄÕÂ)
-	 * @param ab ²éÑ¯²ÎÊı
-	 * @return
-	 */
-	public List<ArticleInfoBean> getArticle(ArticleInfoBean ab);
+    /**
+     * è·å¾—æ–‡ç« ä¿¡æ¯åˆ—è¡¨(ä¸åˆå¹¶ç›¸ä¼¼æ–‡ç« )
+     * @param ab æŸ¥è¯¢å‚æ•°
+     * @return
+     */
+    public List<ArticleInfoBean> getArticle(ArticleInfoBean ab);
 
-	/**
-	 * Ô¤¾¯ÎÄÕÂ
-	 * @param list
-	 * @param userid
-	 */
-	public void toyj(@Param("list")List<String> list,@Param("userid")String userid);
+    /**
+     * é¢„è­¦æ–‡ç« 
+     * @param list
+     * @param userid
+     */
+    public void toyj(@Param("list")List<String> list,@Param("userid")String userid);
 
-	/**
-	 * É¾³ıÎÄÕÂ
-	 * @param list ÒªÉ¾³ıµÄÎÄÕÂid¼¯ºÏ
-	 */
-	public void delarticle(@Param("list")List<String> list,@Param("userid")String userid,@Param("deletemode")String deletemode);
+    /**
+     * åˆ é™¤æ–‡ç« 
+     * @param list è¦åˆ é™¤çš„æ–‡ç« idé›†åˆ
+     */
+    public void delarticle(@Param("list")List<String> list,@Param("userid")String userid,@Param("deletemode")String deletemode);
 
-	/**
-	 * »ñµÃÏàËÆÎÄÕÂ
-	 * @param ab
-	 * @return
-	 */
-	public List<ArticleInfoBean> getSimContent(ArticleInfoBean ab);
+    /**
+     * è·å¾—ç›¸ä¼¼æ–‡ç« 
+     * @param ab
+     * @return
+     */
+    public List<ArticleInfoBean> getSimContent(ArticleInfoBean ab);
 
-	/**
-	 * »ñµÃÎÒµÄÊÕ²Ø·ÖÀà
-	 * @param user_ID
-	 * @return
-	 */
-	public List<CollectionBean> getCollectionType(@Param("param")String user_ID);
+    /**
+     * è·å¾—æˆ‘çš„æ”¶è—åˆ†ç±»
+     * @param user_ID
+     * @return
+     */
+    public List<CollectionBean> getCollectionType(@Param("param")String user_ID);
 
-	/**
-	 * »ñµÃÏÂÒ»¸öÊÕ²Ø·ÖÀàÅÅÎ»Ë³Ğò
-	 * @param cb
-	 * @return
-	 */
-	public int getNextDisplayorder(CollectionBean cb);
+    /**
+     * è·å¾—ä¸‹ä¸€ä¸ªæ”¶è—åˆ†ç±»æ’ä½é¡ºåº
+     * @param cb
+     * @return
+     */
+    public int getNextDisplayorder(CollectionBean cb);
 
-	/**
-	 * Ìí¼ÓÎÄÕÂµ½ÎÒµÄÊÕ²Ø
-	 * @param cb
-	 */
-	public void addnewconllect(CollectionBean cb);
+    /**
+     * æ·»åŠ æ–‡ç« åˆ°æˆ‘çš„æ”¶è—
+     * @param cb
+     */
+    public void addnewconllect(CollectionBean cb);
 
-	/**
-	 * »ñµÃÎÒµÄÊÕ²ØÖĞÎÄÕÂÊıÁ¿
-	 * @param cb
-	 * @return
-	 */
-	public int getConllectCount(CollectionBean cb);
+    /**
+     * è·å¾—æˆ‘çš„æ”¶è—ä¸­æ–‡ç« æ•°é‡
+     * @param cb
+     * @return
+     */
+    public int getConllectCount(CollectionBean cb);
 
-	/**
-	 * »ñµÃÄÚÈİ·ÖÎöÒ³ÃæËùĞèĞÅÏ¢
-	 * @param ab
-	 * @return
-	 */
-	public List<ArticleInfoBean> getContentList(ArticleInfoBean ab);
+    /**
+     * è·å¾—å†…å®¹åˆ†æé¡µé¢æ‰€éœ€ä¿¡æ¯
+     * @param ab
+     * @return
+     */
+    public List<ArticleInfoBean> getContentList(ArticleInfoBean ab);
 
-	/**
-	 * »ñµÃ×îĞÂÏûÏ¢ÌõÄ¿Êı
-	 * @param ab
-	 * @return
-	 */
-	public int getlastestNews(ArticleInfoBean ab);
+    /**
+     * è·å¾—æœ€æ–°æ¶ˆæ¯æ¡ç›®æ•°
+     * @param ab
+     * @return
+     */
+    public int getlastestNews(ArticleInfoBean ab);
 
-	/**
-	 * »ñµÃ×î½üÒ»´Î²éÑ¯ÎÄÕÂµÄ×îĞÂÎÄÕÂ·¢²¼Ê±¼ä
-	 * @param ab
-	 * @return
-	 */
-	public String getSearchLaestRelsetime(ArticleInfoBean ab);
+    /**
+     * è·å¾—æœ€è¿‘ä¸€æ¬¡æŸ¥è¯¢æ–‡ç« çš„æœ€æ–°æ–‡ç« å‘å¸ƒæ—¶é—´
+     * @param ab
+     * @return
+     */
+    public String getSearchLaestRelsetime(ArticleInfoBean ab);
 
-	/**
-	 * ²éÑ¯ÎÄÕÂ×ÜÊı(ºÏ²¢ÏàËÆÎÄÕÂ)
-	 * @param ab
-	 * @return
-	 */
-	public int getArticleRowCountWithHB(ArticleInfoBean ab);
+    /**
+     * æŸ¥è¯¢æ–‡ç« æ€»æ•°(åˆå¹¶ç›¸ä¼¼æ–‡ç« )
+     * @param ab
+     * @return
+     */
+    public int getArticleRowCountWithHB(ArticleInfoBean ab);
 
-	/**
-	 * ²éÑ¯ÎÄÕÂ(ºÏ²¢ÏàËÆÎÄÕÂ)
-	 * @param ab
-	 * @return
-	 */
-	public List<ArticleInfoBean> getArticleWithHB(ArticleInfoBean ab);
+    /**
+     * æŸ¥è¯¢æ–‡ç« (åˆå¹¶ç›¸ä¼¼æ–‡ç« )
+     * @param ab
+     * @return
+     */
+    public List<ArticleInfoBean> getArticleWithHB(ArticleInfoBean ab);
 
-	/**
-	 * »ñµÃ×¨Ìâ¼à²âÒ³ÃæÈÈ´ÊÔÆĞÅÏ¢
-	 * @return
-	 */
-	public List<HotWordBean> getHotWord();
+    /**
+     * è·å¾—ä¸“é¢˜ç›‘æµ‹é¡µé¢çƒ­è¯äº‘ä¿¡æ¯
+     * @param ab 
+     * @return
+     */
+    public List<HotWordBean> getHotWord(ArticleInfoBean ab);
 
-	/**
-	 * ¸ù¾İ·½°¸IDºÍÓÃ»§ID»ñµÃ·½°¸ÏêÏ¸ĞÅÏ¢
-	 * @param pl_id
-	 * @param userid
-	 * @return
-	 */
-	public List<ThematicmonitoringBean> getFAByIdAndUser(@Param("pl_id")String pl_id, @Param("userid")String userid);
+    /**
+     * æ ¹æ®æ–¹æ¡ˆIDå’Œç”¨æˆ·IDè·å¾—æ–¹æ¡ˆè¯¦ç»†ä¿¡æ¯
+     * @param pl_id
+     * @param userid
+     * @return
+     */
+    public List<ThematicmonitoringBean> getFAByIdAndUser(@Param("pl_id")String pl_id, @Param("userid")String userid);
 
-	/**
-	 * »ñµÃ·ûºÏ×¨Ìâ¼à²â¹æÔòµÄÎÄÕÂ×ÜÊı
-	 * @param sql
-	 * @return
-	 */
-	public int getArticleRowCountWithPlanInfo(@Param("sql")String sql);
+    /**
+     * è·å¾—ç¬¦åˆä¸“é¢˜ç›‘æµ‹è§„åˆ™çš„æ–‡ç« æ€»æ•°
+     * @param sql
+     * @return
+     */
+    public int getArticleRowCountWithPlanInfo(@Param("sql")String sql);
 
-	/**
-	 * »ñµÃ·ûºÏ×¨Ìâ¼à²â¹æÔòµÄÎÄÕÂ¼¯ºÏ
-	 * @param sql
-	 * @param l_pre
-	 * @param rowSize
-	 * @param sql_m1
-	 * @param sql_m2
-	 * @param sql_m3
-	 * @return
-	 */
-	public List<ThematicmonitoringBean> getArticleWithPlanInfo(@Param("sql")String sql, @Param("l_pre")int l_pre, @Param("rowSize")int rowSize, @Param("sql_m1")String sql_m1, @Param("sql_m2")String sql_m2, @Param("sql_m3")String sql_m3);
+    /**
+     * è·å¾—ç¬¦åˆä¸“é¢˜ç›‘æµ‹è§„åˆ™çš„æ–‡ç« é›†åˆ
+     * @param sql
+     * @param l_pre
+     * @param rowSize
+     * @param sql_m1
+     * @param sql_m2
+     * @param sql_m3
+     * @return
+     */
+    public List<ThematicmonitoringBean> getArticleWithPlanInfo(@Param("sql")String sql, @Param("l_pre")int l_pre, @Param("rowSize")int rowSize, @Param("sql_m1")String sql_m1, @Param("sql_m2")String sql_m2, @Param("sql_m3")String sql_m3);
 
-	/**
-	 * Ìí¼Ó·ûºÏ·ûºÏ×¨Ìâ¼à²â·½°¸µÄÎÄÕÂµ½¼à²â±í
-	 * @param list
-	 */
-	public void insertArtileWithPlanInfoBatch(List<ThematicmonitoringBean> list);
+    /**
+     * æ·»åŠ ç¬¦åˆç¬¦åˆä¸“é¢˜ç›‘æµ‹æ–¹æ¡ˆçš„æ–‡ç« åˆ°ç›‘æµ‹è¡¨
+     * @param list
+     */
+    public void insertArtileWithPlanInfoBatch(List<ThematicmonitoringBean> list);
 
-	/**
-	 * ¸ù¾İ·½°¸IDÉ¾³ıÎÄÕÂ¼à²â±íÖĞµÄÏà¹ØÎÄÕÂ
-	 * @param pl_id
-	 */
-	public void delArticleWithPlanInfo(@Param("pl_id")String pl_id);
+    /**
+     * æ ¹æ®æ–¹æ¡ˆIDåˆ é™¤æ–‡ç« ç›‘æµ‹è¡¨ä¸­çš„ç›¸å…³æ–‡ç« 
+     * @param pl_id
+     */
+    public void delArticleWithPlanInfo(@Param("pl_id")String pl_id);
 
+    /**
+     * æ›´æ–°æ–¹æ¡ˆ
+     * @param plan_id
+     * @param planinfo_name
+     * @param fromDate
+     * @param toDate
+     * @param num  ç»„åˆæ•°
+     */
+    public void updatefa(@Param("plan_id")String plan_id, @Param("planinfo_name")String planinfo_name, @Param("fromDate")String fromDate, @Param("toDate")String toDate, @Param("num")int num,@Param("userid")String userid);
 
-	//public int getPlanInfoWordUseCount(@Param("sql")String sql,@Param("Article_ID")String Article_ID);
+    public List<ArticleInfoBean> getMTFBData(ArticleInfoBean ab);
 
-	/**
-	 * ¸üĞÂ·½°¸
-	 * @param plan_id
-	 * @param planinfo_name
-	 * @param fromDate
-	 * @param toDate
-	 * @param num  ×éºÏÊı
-	 */
-	public void updatefa(@Param("plan_id")String plan_id, @Param("planinfo_name")String planinfo_name, @Param("fromDate")String fromDate, @Param("toDate")String toDate, @Param("num")int num,@Param("userid")String userid);
+    public List<ArticleInfoBean> getFZQSByHour(ArticleInfoBean ab);
 
-	public List<ArticleInfoBean> getMTFBData(ArticleInfoBean ab);
+    public List<ArticleInfoBean> getFZQSByDay(ArticleInfoBean ab);
 
-	public List<ArticleInfoBean> getFZQSByHour(ArticleInfoBean ab);
+    public List<ArticleInfoBean> getCBTHData(ArticleInfoBean ab);
 
-	public List<ArticleInfoBean> getFZQSByDay(ArticleInfoBean ab);
+    public List<ArticleInfoBean> getFZQSByHourDS(ArticleInfoBean ab);
 
-	public List<ArticleInfoBean> getCBTHData(ArticleInfoBean ab);
+    public void delAllArticleWithPlanInfo();
 
-	public List<ArticleInfoBean> getFZQSByHourDS(ArticleInfoBean ab);
-
-	public void delAllArticleWithPlanInfo();
-
-	public List<ThematicmonitoringBean> getAllFa();
+    public List<ThematicmonitoringBean> getAllFa();
 
 }

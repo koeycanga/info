@@ -1,30 +1,31 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµ
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»
  */
 package com.ichangyun.InforAnalyaizer.service.userInfo.impl;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.ichangyun.InforAnalyaizer.mapper.userInfoMapper.UserMapper;
 import com.ichangyun.InforAnalyaizer.model.CommBean;
 import com.ichangyun.InforAnalyaizer.model.userInfo.User;
-import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean;
 import com.ichangyun.InforAnalyaizer.service.userInfo.UserService;
 import com.ichangyun.InforAnalyaizer.utils.PBKDF2;
 
 /**
- * UserServiceµÄÊµÌå
+ * UserServiceçš„å®ä½“
  * @author renhao
  * @date 2018/11/09
  */
@@ -35,18 +36,18 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     /**
-     * User´æÔÚĞÔCheck
-     * @param username ÓÃ»§Ãû
-     * @param passwd ÃÜÂë
-     * @return user ÓÃ»§Çé±¨
+     * Userå­˜åœ¨æ€§Check
+     * @param username ç”¨æˆ·å
+     * @param passwd å¯†ç 
+     * @return user ç”¨æˆ·æƒ…æŠ¥
      */
     @Override
     public User isUserExist(String username, String passwd) {
-    	
-    	Map<String, String> param = new HashMap<String, String>();
+
+        Map<String, String> param = new HashMap<String, String>();
         param.put("username", username);
         try {
-            // ¸ù¾İpasswordºÍsaltÉú³ÉÃÜÎÄ
+            // æ ¹æ®passwordå’Œsaltç”Ÿæˆå¯†æ–‡
             String md_passwd = PBKDF2.getPBKDF2(passwd, DatatypeConverter.printHexBinary((username).getBytes()));
             param.put("passwd", md_passwd);
         } catch (NoSuchAlgorithmException e) {
@@ -55,29 +56,29 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
 
-        // User´æÔÚĞÔCheck
+        // Userå­˜åœ¨æ€§Check
         User user = userMapper.isUserExist(param);
         return user;
     }
 
-	/**
+    /**
      * Add Cookie
      * @param response
-     * @param user ÓÃ»§Ãû
-     * @param passwd ÃÜÂë
+     * @param user ç”¨æˆ·å
+     * @param passwd å¯†ç 
      */
     @Override
     public void addCookie(HttpServletResponse response, User user, String passwd) {
-        // ´´½¨ĞÂcookie
+        // åˆ›å»ºæ–°cookie
         Cookie cookie = new Cookie(CommBean.COOKIE_NAME,user.getUser_ID());
-        cookie.setMaxAge(CommBean.COOKIE_TIME);// ÉèÖÃ´æÔÚÊ±¼ä
-        cookie.setPath("/");//ÉèÖÃ×÷ÓÃÓò
-        response.addCookie(cookie);//½«cookieÌí¼Óµ½responseµÄcookieÊı×éÖĞ·µ»Ø¸ø¿Í»§¶Ë
+        cookie.setMaxAge(CommBean.COOKIE_TIME);// è®¾ç½®å­˜åœ¨æ—¶é—´
+        cookie.setPath("/");//è®¾ç½®ä½œç”¨åŸŸ
+        response.addCookie(cookie);//å°†cookieæ·»åŠ åˆ°responseçš„cookieæ•°ç»„ä¸­è¿”å›ç»™å®¢æˆ·ç«¯
 
-        Cookie cookie2 = new Cookie(CommBean.COOKIE_PWD,passwd);//´´½¨ĞÂcookie
-        cookie2.setMaxAge(CommBean.COOKIE_TIME);// ÉèÖÃ´æÔÚÊ±¼ä
-        cookie2.setPath("/");//ÉèÖÃ×÷ÓÃÓò
-        response.addCookie(cookie2);//½«cookieÌí¼Óµ½responseµÄcookieÊı×éÖĞ·µ»Ø¸ø¿Í»§¶Ë
+        Cookie cookie2 = new Cookie(CommBean.COOKIE_PWD,passwd);//åˆ›å»ºæ–°cookie
+        cookie2.setMaxAge(CommBean.COOKIE_TIME);// è®¾ç½®å­˜åœ¨æ—¶é—´
+        cookie2.setPath("/");//è®¾ç½®ä½œç”¨åŸŸ
+        response.addCookie(cookie2);//å°†cookieæ·»åŠ åˆ°responseçš„cookieæ•°ç»„ä¸­è¿”å›ç»™å®¢æˆ·ç«¯
     }
 
     /**
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
         Cookie[] cookies = request.getCookies();
         if (cookies!=null) {
             for(Cookie cookie : cookies){
-                //Èç¹ûÕÒµ½Í¬Ãûcookie£¬¾Í½«valueÉèÖÃÎªnull£¬½«´æ»îÊ±¼äÉèÖÃÎª0£¬ÔÙÌæ»»µôÔ­cookie£¬ÕâÑù¾ÍÏàµ±ÓÚÉ¾³ıÁË¡£
+                //å¦‚æœæ‰¾åˆ°åŒåcookieï¼Œå°±å°†valueè®¾ç½®ä¸ºnullï¼Œå°†å­˜æ´»æ—¶é—´è®¾ç½®ä¸º0ï¼Œå†æ›¿æ¢æ‰åŸcookieï¼Œè¿™æ ·å°±ç›¸å½“äºåˆ é™¤äº†ã€‚
                 if(cookie.getName().equals(CommBean.COOKIE_NAME)||cookie.getName().equals(CommBean.COOKIE_PWD)){
                     cookie.setValue(null);
                     cookie.setMaxAge(0);

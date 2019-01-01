@@ -1,378 +1,402 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.controller.thematicmonitoring;
 
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.CollectionBean;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.service.thematicmonitoring.ThematicmonitoringService;
 import com.ichangyun.InforAnalyaizer.utils.DateUtils;
 
 /**
- * ×¨Ìâ¼à²âController
- * @author renhao 
+ * ä¸“é¢˜ç›‘æµ‹Controller
+ * @author renhao
  * 2018-11-12 14:52
  */
-
 @RestController
 @RequestMapping("/thematicmonitoring")
 public class ThematicmonitoringController {
 
-	@Autowired
-	private ThematicmonitoringService thematicmonitoringService;
-	
-	
-	/**
-	 * ½øÈëµ½×¨Ìâ¼à²â-ĞÅÏ¢»ã×ÜÒ³Ãæ
-	 * @return
-	 */
-	@RequestMapping("/informationaggregation")
-	@ResponseBody
-	public Object index() {
-		return new ModelAndView("frontpage/thematicmonitoring/informationaggregation");
-	}
-	
-	
-	/**
-	 * ½øÈëµ½×¨Ìâ¼à²â-ÄÚÈİ·ÖÎöÒ³Ãæ
-	 * @return
-	 */
-	@RequestMapping("/contentanalysis")
-	public Object contentanalysis() {
-		
-	    return new 	ModelAndView("frontpage/thematicmonitoring/contentanalysis");
-	}
-	
-	/**
-	 * ½øÈëµ½×¨Ìâ¼à²â-´«²¥·ÖÎöÒ³Ãæ
-	 * @return
-	 */
-	@RequestMapping("/propagationanalysis")
-	public Object propagationanalysis() {
-		
-		 return new ModelAndView("frontpage/thematicmonitoring/propagationanalysis");
-	}
-	
-	
-	
-	/**
-	 * »ñµÃËùÓĞµÄ·½°¸
-	 * @return
-	 */
-	@RequestMapping("/getallfa")
-	public Object getAllFA(HttpSession session) {
-		
-		String json = thematicmonitoringService.getAllFA(session);
-		
-		return json;
-	}
-	
-	/**
-	 * ±£´æĞÂµÄ·½°¸
-	 * @param planinfo_name  //·½°¸Ãû³Æ
-	 * @param jcc_json       //·½°¸¼à²â´ÊJSON×ÖÃæÁ¿
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping("/savenewfa")
-	public Object SaveNewfa(@RequestBody Map map,HttpSession session) {
-		
-		String res = "ok";
-		
-		String planinfo_name  = (String) map.get("planinfo_name");
-		String jcc_json  = (String) map.get("jcc_json");
-		String planinfo_removeWord  = (String) map.get("planinfo_removeWord");
-		planinfo_removeWord = planinfo_removeWord.replace("£¬", ",");
-		
-		String fromDate = (String) map.get("fromDate");
-		String toDate = (String) map.get("toDate");
-		
-		if(thematicmonitoringService.exist(planinfo_name,session)) {
-			res = "exist";
-		}else {
-			if(!thematicmonitoringService.SaveNewfa(planinfo_name,jcc_json,planinfo_removeWord,session,fromDate,toDate)) {
-				res = "nok";
-			}
-		}
-		return res;
-		
-	}
-	
-	/**
-	 * Ô¤¾¯ÎÄÕÂ
-	 * @param map
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping("/toyj")
-	public Object toyj(@RequestBody Map map,HttpSession session) {
-		String res = "ok";
-		
-		String json = (String) map.get("json");
-		
-		if(!thematicmonitoringService.toyj(json,session)) {
-			res = "nok"; 
-		}
-		
-		return res;
-	}
-	
-	
-	/**
-	 * É¾³ıÎÄÕÂ
-	 * @param map
-	 * @return  ok:É¾³ı³É¹¦   nok  É¾³ıÊ§°Ü
-	 */
-	@RequestMapping("/delarticle")
-	public Object delarticle(@RequestBody Map map,HttpSession session) {
-		String res = "ok";
-		String json = (String) map.get("json");
-		String deletemode = (String) map.get("deletemode");
-		User user = (User) session.getAttribute(CommBean.SESSION_NAME);
-		String userid = user.getUser_ID();
-		if(!thematicmonitoringService.delarticle(json,userid,deletemode)) {
-			res = "nok"; 
-		}
-		return res;
-	}
-	
-	
-	/**
-	 * »ñµÃÏàËÆÎÄÕÂĞÅÏ¢µÄJSON×ÖÃæÁ¿
-	 * @param ab  ²ÎÊı
-	 * @return
-	 */
-	@RequestMapping("/getSimContent")
-	public Object getSimContent(ArticleInfoBean ab,HttpSession session) {
-		
-		String[] montime = DateUtils.dealMontime(ab.getMontime());
-		
-		ab.setMontime_start(montime[0]);
-		ab.setMontime_end(montime[1]);
-
-		User user = (User) session.getAttribute(CommBean.SESSION_NAME);
-		String userid = user.getUser_ID();
-		ab.setUserid(userid);
-		
-	    String json = thematicmonitoringService.getSimContent(ab);
-	    
-	    return json;
-	}
-	
-	/**
-	 * ĞŞ¸Ä·½°¸
-	 * @param map  ÒªĞŞ¸ÄµÄ·½°¸µÄ²ÎÊı¼¯ºÏ
-	 * @param session
-	 * @return  ok ³É¹¦  exist ·½°¸Ãû³ÆÒÑ´æÔÚ   nok Òì³£
-	 */
-	@RequestMapping("/updatefa")
-	public Object updatefa(@RequestBody Map map,HttpSession session) {
-		String res = "ok";
-		
-		String plan_id  = (String) map.get("plan_id");
-		String planinfo_name  = (String) map.get("planinfo_name");
-		String jcc_json  = (String) map.get("jcc_json");
-		String planinfo_removeWord  = (String) map.get("planinfo_removeWord");
-		planinfo_removeWord = planinfo_removeWord.replace("£¬", ",");
-		
-		String fromDate = (String) map.get("fromDate");
-		String toDate  = (String) map.get("toDate");
-		
-		if(thematicmonitoringService.existwithID(plan_id,planinfo_name,session)) {
-			 res = "exist";
-		}else {
-			if(!thematicmonitoringService.updatefa(plan_id,planinfo_name,jcc_json,planinfo_removeWord,session,fromDate,toDate)) {
-				res = "nok";
-			}
-		}
-		return res;
-	}
-	
-	/**
-	 * É¾³ı·½°¸
-	 * @param planid ÒªÉ¾³ıµÄ·½°¸ID 
-	 * @return ok É¾³ı³É¹¦  nok  É¾³ıÊ§°Ü
-	 */
-	@RequestMapping("/delfa")
-	public Object delfa(String planid) {
-		String res = "ok";
-		
-		if(!thematicmonitoringService.delfa(planid)) {
-			res = "nok";
-		}
-		
-		return res;
-	}
-	
-	/**
-	 * »ñµÃ·½°¸ÏêÏ¸ĞÅÏ¢
-	 * @param planid ·½°¸id
-	 * @return
-	 */
-	@RequestMapping("/getDetail")
-	public Object getDetail(String planid) {
-		
-		String json = thematicmonitoringService.getDetail(planid);
-		
-		return json;
-	}
-	
-	
-	/**
-	 * ´¦ÀíĞÅÏ¢»ã×ÜÒ³ÃæµÄ²éÑ¯ÇëÇó
-	 * @param ab
-	 * @return
-	 */
-	@RequestMapping("/search")
-	public Object search(ArticleInfoBean ab,HttpSession session) {
-		
-		String[] montime = DateUtils.dealMontime(ab.getMontime());
-		
-		ab.setMontime_start(montime[0]);
-		ab.setMontime_end(montime[1]);
-
-		User user = (User) session.getAttribute(CommBean.SESSION_NAME);
-		String userid = user.getUser_ID();
-		ab.setUserid(userid);
-
-		String lastest_relsetime = thematicmonitoringService.getSearchLaestRelsetime(ab);
-		
-		session.setAttribute(CommBean.LAST_CONTENT_SEARCH_TIME_ZTJC,lastest_relsetime);
-		
-		int rowCount = thematicmonitoringService.getArticleRowCount(ab);
-		
-		String json_res = thematicmonitoringService.getArticleJSON(ab);
-		
-		String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
-		
-		return res;
-
-	}
-	
-	/**
-	 * »ñµÃ×îĞÂÏûÏ¢ÌõÄ¿Êı
-	 * @param ab
-	 * @return
-	 */
-	@RequestMapping("/getlastestNews")
-	public Object getlastestNews(ArticleInfoBean ab,HttpSession session) {
-		
-		String last_time = (String) session.getAttribute(CommBean.LAST_CONTENT_SEARCH_TIME_ZTJC);
-		
-		ab.setReleasetime(last_time);
-		
-		int count = thematicmonitoringService.getlastestNews(ab);
-		
-		return count;
-	}
-	
-	/**
-	 * ´¦ÀíÄÚÈİ·ÖÎöÒ³ÃæµÄ²éÑ¯ÇëÇó
-	 * @param ab
-	 * @return
-	 */
-	@RequestMapping("/searchcontent")
-	public Object searchcontent(ArticleInfoBean ab) {
-		
-		String[] montime = DateUtils.dealMontime(ab.getMontime());
-		ab.setMontime_start(montime[0]);
-		ab.setMontime_end(montime[1]);
-		
-		List<ArticleInfoBean> list = thematicmonitoringService.getContentList(ab);
-		
-		String qgsx_data = thematicmonitoringService.getQGSXJSON(list); // »ñµÃÒ³ÃæÇé¸Ğ·ÖÎö»·×´Í¼ËùĞèµÄĞÅÏ¢
-		
-		String sjml_data = thematicmonitoringService.getSJMLJSON(list); //»ñµÃÎÄÕÂÂöÂçĞòÁĞÍ¼ËùĞèµÄĞÅÏ¢
-		
-		String res = "{\"qgsx_data\":"+qgsx_data+",\"sjml_data\":"+sjml_data+"}";
-		
-		return res;
-	}
+    @Autowired
+    private ThematicmonitoringService thematicmonitoringService;
 
     /**
-     * ´¦Àí´«²¥·ÖÎöÒ³ÃæµÄ²éÑ¯ÇëÇó
+     * è¿›å…¥åˆ°ä¸“é¢˜ç›‘æµ‹-ä¿¡æ¯æ±‡æ€»é¡µé¢
+     * @return
+     */
+    @RequestMapping("/informationaggregation")
+    @ResponseBody
+    public Object index() {
+        return new ModelAndView("frontpage/thematicmonitoring/informationaggregation");
+    }
+
+    /**
+     * è¿›å…¥åˆ°ä¸“é¢˜ç›‘æµ‹-å†…å®¹åˆ†æé¡µé¢
+     * @return
+     */
+    @RequestMapping("/contentanalysis")
+    public Object contentanalysis() {
+
+        return new  ModelAndView("frontpage/thematicmonitoring/contentanalysis");
+    }
+
+    /**
+     * è¿›å…¥åˆ°ä¸“é¢˜ç›‘æµ‹-ä¼ æ’­åˆ†æé¡µé¢
+     * @return
+     */
+    @RequestMapping("/propagationanalysis")
+    public Object propagationanalysis() {
+
+        return new ModelAndView("frontpage/thematicmonitoring/propagationanalysis");
+    }
+
+    /**
+     * è·å¾—æ‰€æœ‰çš„æ–¹æ¡ˆ
+     * @return
+     */
+    @RequestMapping("/getallfa")
+    public Object getAllFA(HttpSession session) {
+
+        String json = thematicmonitoringService.getAllFA(session);
+
+        return json;
+    }
+
+    /**
+     * ä¿å­˜æ–°çš„æ–¹æ¡ˆ
+     * @param planinfo_name  //æ–¹æ¡ˆåç§°
+     * @param jcc_json       //æ–¹æ¡ˆç›‘æµ‹è¯JSONå­—é¢é‡
+     * @param session
+     * @return
+     */
+    @RequestMapping("/savenewfa")
+    public Object SaveNewfa(@RequestBody Map map,HttpSession session) {
+
+        String res = "ok";
+
+        String planinfo_name  = (String) map.get("planinfo_name");
+        String jcc_json  = (String) map.get("jcc_json");
+        String planinfo_removeWord  = (String) map.get("planinfo_removeWord");
+        planinfo_removeWord = planinfo_removeWord.replace("ï¼Œ", ",");
+
+        String fromDate = (String) map.get("fromDate");
+        String toDate = (String) map.get("toDate");
+
+        if(thematicmonitoringService.exist(planinfo_name,session)) {
+            res = "exist";
+        }else {
+            if(!thematicmonitoringService.SaveNewfa(planinfo_name,jcc_json,planinfo_removeWord,session,fromDate,toDate)) {
+                res = "nok";
+            }
+        }
+        return res;
+
+    }
+
+    /**
+     * é¢„è­¦æ–‡ç« 
+     * @param map
+     * @param session
+     * @return
+     */
+    @RequestMapping("/toyj")
+    public Object toyj(@RequestBody Map map,HttpSession session) {
+        String res = "ok";
+
+        String json = (String) map.get("json");
+
+        if(!thematicmonitoringService.toyj(json,session)) {
+            res = "nok";
+        }
+
+        return res;
+    }
+
+    /**
+     * åˆ é™¤æ–‡ç« 
+     * @param map
+     * @return  ok:åˆ é™¤æˆåŠŸ   nok  åˆ é™¤å¤±è´¥
+     */
+    @RequestMapping("/delarticle")
+    public Object delarticle(@RequestBody Map map,HttpSession session) {
+        String res = "ok";
+        String json = (String) map.get("json");
+        String deletemode = (String) map.get("deletemode");
+        User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+        String userid = user.getUser_ID();
+        if(!thematicmonitoringService.delarticle(json,userid,deletemode)) {
+            res = "nok";
+        }
+        return res;
+    }
+
+    /**
+     * è·å¾—ç›¸ä¼¼æ–‡ç« ä¿¡æ¯çš„JSONå­—é¢é‡
+     * @param ab  å‚æ•°
+     * @return
+     */
+    @RequestMapping("/getSimContent")
+    public Object getSimContent(ArticleInfoBean ab,HttpSession session) {
+
+        String[] montime = DateUtils.dealMontime(ab.getMontime());
+
+        ab.setMontime_start(montime[0]);
+        ab.setMontime_end(montime[1]);
+
+        if(ab.getMontime().length()>5||ab.getMontime().equals("-")) {
+            ab.setMontime("10");
+        }
+
+        User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+        String userid = user.getUser_ID();
+        ab.setUserid(userid);
+
+        String json = thematicmonitoringService.getSimContent(ab);
+
+        return json;
+    }
+
+    /**
+     * ä¿®æ”¹æ–¹æ¡ˆ
+     * @param map  è¦ä¿®æ”¹çš„æ–¹æ¡ˆçš„å‚æ•°é›†åˆ
+     * @param session
+     * @return  ok æˆåŠŸ  exist æ–¹æ¡ˆåç§°å·²å­˜åœ¨   nok å¼‚å¸¸
+     */
+    @RequestMapping("/updatefa")
+    public Object updatefa(@RequestBody Map map,HttpSession session) {
+        String res = "ok";
+
+        String plan_id  = (String) map.get("plan_id");
+        String planinfo_name  = (String) map.get("planinfo_name");
+        String jcc_json  = (String) map.get("jcc_json");
+        String planinfo_removeWord  = (String) map.get("planinfo_removeWord");
+        planinfo_removeWord = planinfo_removeWord.replace("ï¼Œ", ",");
+
+        String fromDate = (String) map.get("fromDate");
+        String toDate  = (String) map.get("toDate");
+
+        if(thematicmonitoringService.existwithID(plan_id,planinfo_name,session)) {
+            res = "exist";
+        }else {
+            if(!thematicmonitoringService.updatefa(plan_id,planinfo_name,jcc_json,planinfo_removeWord,session,fromDate,toDate)) {
+                res = "nok";
+            }
+        }
+        return res;
+    }
+
+    /**
+     * åˆ é™¤æ–¹æ¡ˆ
+     * @param planid è¦åˆ é™¤çš„æ–¹æ¡ˆID
+     * @return ok åˆ é™¤æˆåŠŸ  nok  åˆ é™¤å¤±è´¥
+     */
+    @RequestMapping("/delfa")
+    public Object delfa(String planid) {
+        String res = "ok";
+
+        if(!thematicmonitoringService.delfa(planid)) {
+            res = "nok";
+        }
+
+        return res;
+    }
+
+    /**
+     * è·å¾—æ–¹æ¡ˆè¯¦ç»†ä¿¡æ¯
+     * @param planid æ–¹æ¡ˆid
+     * @return
+     */
+    @RequestMapping("/getDetail")
+    public Object getDetail(String planid) {
+
+        String json = thematicmonitoringService.getDetail(planid);
+
+        return json;
+    }
+
+    /**
+     * å¤„ç†ä¿¡æ¯æ±‡æ€»é¡µé¢çš„æŸ¥è¯¢è¯·æ±‚
      * @param ab
      * @return
      */
-	@RequestMapping("/searchpropaga")
-	public Object searchpropaga(ArticleInfoBean ab,HttpSession session) {
-		
-		String[] montime = DateUtils.dealMontime(ab.getMontime());
-		ab.setMontime_start(montime[0]);
-		ab.setMontime_end(montime[1]);
-		
-		String[] time_datas = DateUtils.dealMontimeTimeDatas(ab.getMontime());  //ÈÕÆÚÊı×é   Ò»ÌìÄÚ°´Á½Ğ¡Ê±¼ä¸ô·Ö¸ô   ÆäËû°´Ìì·Ö¸ô
-		
-		String fzqs_data = thematicmonitoringService.getFZQS(ab,time_datas[0],time_datas[0],session);  //·¢Õ¹Ç÷ÊÆËùĞèĞÅÏ¢Ë«ÊıĞ¡Ê±JSON×ÖÃæÁ¿
-		
-		//String fzqs_data_ds = thematicmonitoringService.getFZQS_DS(ab,time_datas[0],time_datas[0],session);  //·¢Õ¹Ç÷ÊÆËùĞèĞÅÏ¢µ¥ÊıĞ¡Ê±JSON×ÖÃæÁ¿
-		
-		String mtfb_data = thematicmonitoringService.getMTFBData(ab,session);  // Ã½Ìå·Ö²¼ËùĞèĞÅÏ¢JSON×ÖÃæÁ¿
-		
-		String cbtj_data = thematicmonitoringService.getCBTHData(ab,session);  //»ñµÃ´«²¥Í¾¾¶ËùĞèĞÅÏ¢JSON×ÖÃæÁ¿
-			
-		String res = "{\"mtfb\":"+mtfb_data+",\"time_datas\":\""+time_datas[1]+"\",\"fzqs_data\":"+fzqs_data+",\"cbtj_data\":"+cbtj_data+"}";
-		
-		return res;
-	}
-	
-	
-	
-	/**
-	 * »ñµÃÎÒµÄÊÕ²ØÖÖÀà
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping("/getCollectionType")
-	public Object getCollectionType(HttpSession session) {
-		
-		User user = (User)session.getAttribute(CommBean.SESSION_NAME);
-		
-		String json = thematicmonitoringService.getCollectionType(user.getUser_ID());
-		
-		return json;
-	}
-	
-	/**
-	 * ÊÕ²ØÎÄÕÂµ½ÎÒµÄÊÕ²Ø
-	 * @param cb
-	 * @return
-	 */
-	@RequestMapping("/conllect")
-	public Object conllect(CollectionBean cb,HttpSession session) {
-		String res = "ok";
-		User user = (User)session.getAttribute(CommBean.SESSION_NAME);
-		cb.setUser_ID(user.getUser_ID());
-		
-		if(!thematicmonitoringService.conllect(cb)) {
-			res = "nok";
-		}
-		return res;
-	}
-	
-	/**
-	 * ÈÈ´ÊÔÆ
-	 * @return
-	 */
-	@RequestMapping("/gethotwords")
-	public Object getHotWord() {
+    @RequestMapping("/search")
+    public Object search(ArticleInfoBean ab,HttpSession session) {
 
-		String json_hotword = thematicmonitoringService.getHotWord();
+        String[] montime = DateUtils.dealMontime(ab.getMontime());
 
-		return json_hotword;
-	}
-	
+        ab.setMontime_start(montime[0]);
+        ab.setMontime_end(montime[1]);
+
+        if(ab.getMontime().length()>5||ab.getMontime().equals("-")) {
+            ab.setMontime("10");
+        }
+
+        User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+        ab.setUserid(user.getUser_ID());
+        ab.setCollectionField_ID(user.getCollectionField_ID());
+        
+        String lastest_relsetime = thematicmonitoringService.getSearchLaestRelsetime(ab);
+
+        session.setAttribute(CommBean.LAST_CONTENT_SEARCH_TIME_ZTJC,lastest_relsetime);
+
+        int rowCount = thematicmonitoringService.getArticleRowCount(ab);
+
+        String json_res = thematicmonitoringService.getArticleJSON(ab);
+
+        String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
+
+        return res;
+
+    }
+
+    /**
+     * è·å¾—æœ€æ–°æ¶ˆæ¯æ¡ç›®æ•°
+     * @param ab
+     * @return
+     */
+    @RequestMapping("/getlastestNews")
+    public Object getlastestNews(ArticleInfoBean ab,HttpSession session) {
+
+        String last_time = (String) session.getAttribute(CommBean.LAST_CONTENT_SEARCH_TIME_ZTJC);
+        ab.setReleasetime(last_time);
+       
+        User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+        ab.setCollectionField_ID(user.getCollectionField_ID());
+       
+        int count = thematicmonitoringService.getlastestNews(ab);
+
+        return count;
+    }
+
+    /**
+     * å¤„ç†å†…å®¹åˆ†æé¡µé¢çš„æŸ¥è¯¢è¯·æ±‚
+     * @param ab
+     * @return
+     */
+    @RequestMapping("/searchcontent")
+    public Object searchcontent(ArticleInfoBean ab,HttpSession session) {
+
+        String[] montime = DateUtils.dealMontime(ab.getMontime());
+        ab.setMontime_start(montime[0]);
+        ab.setMontime_end(montime[1]);
+
+        if(ab.getMontime().length()>5||ab.getMontime().equals("-")) {
+            ab.setMontime("10");
+        }
+        User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+        ab.setUserid(user.getUser_ID());
+        ab.setCollectionField_ID(user.getCollectionField_ID());
+        
+        List<ArticleInfoBean> list = thematicmonitoringService.getContentList(ab);
+
+        String qgsx_data = thematicmonitoringService.getQGSXJSON(list); // è·å¾—é¡µé¢æƒ…æ„Ÿåˆ†æç¯çŠ¶å›¾æ‰€éœ€çš„ä¿¡æ¯
+
+        String sjml_data = thematicmonitoringService.getSJMLJSON(list); //è·å¾—æ–‡ç« è„‰ç»œåºåˆ—å›¾æ‰€éœ€çš„ä¿¡æ¯
+
+        String res = "{\"qgsx_data\":"+qgsx_data+",\"sjml_data\":"+sjml_data+"}";
+
+        return res;
+    }
+
+    /**
+     * å¤„ç†ä¼ æ’­åˆ†æé¡µé¢çš„æŸ¥è¯¢è¯·æ±‚
+     * @param ab
+     * @return
+     */
+    @RequestMapping("/searchpropaga")
+    public Object searchpropaga(ArticleInfoBean ab,HttpSession session) {
+
+        String[] montime = DateUtils.dealMontime(ab.getMontime());
+        ab.setMontime_start(montime[0]);
+        ab.setMontime_end(montime[1]);
+
+
+        String[] time_datas = DateUtils.dealMontimeTimeDatas(ab.getMontime());  //æ—¥æœŸæ•°ç»„   ä¸€å¤©å†…æŒ‰ä¸¤å°æ—¶é—´éš”åˆ†éš”   å…¶ä»–æŒ‰å¤©åˆ†éš”
+
+        if(ab.getMontime().length()>5||ab.getMontime().equals("-")) {
+            ab.setMontime("10");
+        }
+        
+        User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+        ab.setUserid(user.getUser_ID());
+        ab.setCollectionField_ID(user.getCollectionField_ID());
+        
+        String fzqs_data = thematicmonitoringService.getFZQS(ab,time_datas[0],time_datas[0]);  //å‘å±•è¶‹åŠ¿æ‰€éœ€ä¿¡æ¯JSONå­—é¢é‡
+
+        //String fzqs_data_ds = thematicmonitoringService.getFZQS_DS(ab,time_datas[0],time_datas[0],session);  //å‘å±•è¶‹åŠ¿æ‰€éœ€ä¿¡æ¯å•æ•°å°æ—¶JSONå­—é¢é‡
+
+        String mtfb_data = thematicmonitoringService.getMTFBData(ab);  // åª’ä½“åˆ†å¸ƒæ‰€éœ€ä¿¡æ¯JSONå­—é¢é‡
+
+        String cbtj_data = thematicmonitoringService.getCBTHData(ab);  //è·å¾—ä¼ æ’­é€”å¾„æ‰€éœ€ä¿¡æ¯JSONå­—é¢é‡
+
+        String res = "{\"mtfb\":"+mtfb_data+",\"time_datas\":\""+time_datas[1]+"\",\"fzqs_data\":"+fzqs_data+",\"cbtj_data\":"+cbtj_data+"}";
+
+        return res;
+    }
+
+    /**
+     * è·å¾—æˆ‘çš„æ”¶è—ç§ç±»
+     * @param session
+     * @return
+     */
+    @RequestMapping("/getCollectionType")
+    public Object getCollectionType(HttpSession session) {
+
+        User user = (User)session.getAttribute(CommBean.SESSION_NAME);
+
+        String json = thematicmonitoringService.getCollectionType(user.getUser_ID());
+
+        return json;
+    }
+
+    /**
+     * æ”¶è—æ–‡ç« åˆ°æˆ‘çš„æ”¶è—
+     * @param cb
+     * @return
+     */
+    @RequestMapping("/conllect")
+    public Object conllect(CollectionBean cb,HttpSession session) {
+        String res = "ok";
+        User user = (User)session.getAttribute(CommBean.SESSION_NAME);
+        cb.setUser_ID(user.getUser_ID());
+
+        if(!thematicmonitoringService.conllect(cb)) {
+            res = "nok";
+        }
+        return res;
+    }
+
+    /**
+     * çƒ­è¯äº‘
+     * @return
+     */
+    @RequestMapping("/gethotwords")
+    public Object getHotWord(HttpSession session) {
+
+    	User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+    	
+    	ArticleInfoBean ab = new ArticleInfoBean();
+    	ab.setCollectionField_ID(user.getCollectionField_ID());
+    	
+        String json_hotword = thematicmonitoringService.getHotWord(ab);
+
+        return json_hotword;
+    }
+
 }

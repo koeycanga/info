@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.mapper.numbercontrol;
 
@@ -10,25 +10,25 @@ import org.apache.ibatis.annotations.Param;
 import com.ichangyun.InforAnalyaizer.model.numbercontroll.NumberingcontrolBean;
 
 /**
- * ²É·¬±íMapper
+ * é‡‡ç•ªè¡¨Mapper
  * @author renhao
  * Date:2018-11-12
  */
 public interface NumberControlMapper {
 
-	/**
-	 * ¸ù¾İID»ñµÃ²É·¬±íĞÅÏ¢
-	 * @param nb  Òª²éÑ¯µÄ²É·¬±íID²ÎÊı
-	 * @return  Òª²éÑ¯µÄ²É·¬±íĞÅÏ¢
-	 * Date:2018-11-12
-	 */
-	public NumberingcontrolBean getInfoByID(@Param("param") NumberingcontrolBean nb);
+    /**
+     * æ ¹æ®IDè·å¾—é‡‡ç•ªè¡¨ä¿¡æ¯
+     * @param nb  è¦æŸ¥è¯¢çš„é‡‡ç•ªè¡¨IDå‚æ•°
+     * @return  è¦æŸ¥è¯¢çš„é‡‡ç•ªè¡¨ä¿¡æ¯
+     * Date:2018-11-12
+     */
+    public NumberingcontrolBean getInfoByID(@Param("param") NumberingcontrolBean nb);
 
-	/**
-	 * ĞŞ¸Ä²É·¬±í¶ÔÓ¦IDµÄµ±Ç°Öµ
-	 * @param nb ÒªĞŞ¸ÄµÄ²É·¬±íID ¼° µ±Ç°ÖµĞÅÏ¢
-	 * Date:2018-11-12
-	 */
-	public void updatePresetVal(@Param("param") NumberingcontrolBean nb);
+    /**
+     * ä¿®æ”¹é‡‡ç•ªè¡¨å¯¹åº”IDçš„å½“å‰å€¼
+     * @param nb è¦ä¿®æ”¹çš„é‡‡ç•ªè¡¨ID åŠ å½“å‰å€¼ä¿¡æ¯
+     * Date:2018-11-12
+     */
+    public void updatePresetVal(@Param("param") NumberingcontrolBean nb);
 
 }

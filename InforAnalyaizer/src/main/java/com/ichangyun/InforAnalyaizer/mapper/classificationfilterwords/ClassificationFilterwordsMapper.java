@@ -1,10 +1,9 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.mapper.classificationfilterwords;
-
 
 import java.util.List;
 import java.util.Map;
@@ -17,31 +16,34 @@ import com.ichangyun.InforAnalyaizer.model.classificationfilterwords.Classificat
 import com.ichangyun.InforAnalyaizer.model.classificationfilterwords.FilterWordsVo;
 
 public interface ClassificationFilterwordsMapper {
-    List<String> queryParents();		//²éÑ¯ËùÓĞ¸¸½Úµã
-
-	int deleteByPrimaryKey(String classificationId);		//Í¨¹ıidÉ¾³ı½ÚµãµÄ¹ıÂË´ÊĞÅÏ¢
-
-    int insertSelective(ClassificationFilterwordsWithBLOBs record);//°´Ìõ¼şÌí¼Ó½Úµã¹ıÂË´ÊĞÅÏ¢
-
-    ClassificationFilterwordsWithBLOBs selectByPrimaryKey(String classificationId);//²éÑ¯½ÚµãĞÅÏ¢¹ıÂË´ÊĞÅÏ¢
-    
-    List<FilterWordsVo> selectByFwVo(Map<String, Object> vo);//Ìõ¼ş²éÑ¯ËùÓĞ½Úµã¹ıÂË´ÊĞÅÏ¢
-
-	int queryCount(Map<String, Object> key);		//²éÑ¯½Úµã×ÜÊı
-
-	FilterWordsVo queryOne(String classificationId);	//¸ù¾İid²éÑ¯µ¥¸ö½Úµã
-
-	void updateFwVo(FilterWordsVo vo);					//±à¼­½Úµã¹ıÂË´ÊĞÅÏ¢
-
-	List<FilterWordsVo> queryChild(FilterWordsVo vo);//²éÑ¯µ±Ç°½ÚµãµÄ×Ó½Úµã
-	
-	List<FilterWordsVo> queryById(String ids);		//Í¨¹ıid²éÑ¯½Úµã
-
-	List<FilterWordsVo> queryByName(String names);			//Í¨¹ıÃû³Æ²éÑ¯½Úµã
-
-	void insertMany(@Param("list")List<FilterWordsVo> createVo, @Param("userid")String userid) throws DataAccessException;//ÅúÁ¿ĞÂÔö
-
-	void updateMany(@Param("list")List<FilterWordsVo> vos,  @Param("userid")String userid) throws DataAccessException;	//ÅúÁ¿¸üĞÂ
-
-	List<ClassificationInfoBean> getAllClassificationNames();  //»ñµÃËùÓĞµÄ·ÖÀàÌåÏµÃû³Æ
+    // æŸ¥è¯¢æ‰€æœ‰çˆ¶èŠ‚ç‚¹
+    List<String> queryParents();
+    // é€šè¿‡idåˆ é™¤èŠ‚ç‚¹çš„è¿‡æ»¤è¯ä¿¡æ¯
+    int deleteByPrimaryKey(String classificationId);
+    // æŒ‰æ¡ä»¶æ·»åŠ èŠ‚ç‚¹è¿‡æ»¤è¯ä¿¡æ¯
+    int insertSelective(ClassificationFilterwordsWithBLOBs record);
+    // æŸ¥è¯¢èŠ‚ç‚¹ä¿¡æ¯è¿‡æ»¤è¯ä¿¡æ¯
+    ClassificationFilterwordsWithBLOBs selectByPrimaryKey(String classificationId);
+    // æ¡ä»¶æŸ¥è¯¢æ‰€æœ‰èŠ‚ç‚¹è¿‡æ»¤è¯ä¿¡æ¯
+    List<FilterWordsVo> selectByFwVo(Map<String, Object> vo);
+    // æŸ¥è¯¢èŠ‚ç‚¹æ€»æ•°
+    int queryCount(Map<String, Object> key);
+    // æ ¹æ®idæŸ¥è¯¢å•ä¸ªèŠ‚ç‚¹
+    FilterWordsVo queryOne(String classificationId);
+    // ç¼–è¾‘èŠ‚ç‚¹è¿‡æ»¤è¯ä¿¡æ¯
+    void updateFwVo(FilterWordsVo vo);
+    // æŸ¥è¯¢å½“å‰èŠ‚ç‚¹çš„å­èŠ‚ç‚¹
+    List<FilterWordsVo> queryChild(FilterWordsVo vo);
+    // é€šè¿‡idæŸ¥è¯¢èŠ‚ç‚¹
+    List<FilterWordsVo> queryById(String ids);
+    // é€šè¿‡åç§°æŸ¥è¯¢èŠ‚ç‚¹
+    List<FilterWordsVo> queryByName(String names);
+    //æ‰¹é‡æ–°å¢
+    void insertMany(@Param("list")List<FilterWordsVo> createVo, @Param("userid")String userid) throws DataAccessException;
+    //æ‰¹é‡æ›´æ–°
+    void updateMany(@Param("list")List<FilterWordsVo> vos,  @Param("userid")String userid) throws DataAccessException;
+    //è·å¾—æ‰€æœ‰çš„åˆ†ç±»ä½“ç³»åç§°
+    List<ClassificationInfoBean> getAllClassificationNames();
+    //è·å¾—æŸä¸ªèŠ‚ç‚¹æ‰€æœ‰çš„å¶å­èŠ‚ç‚¹
+	List<String> getChildrenIDS(@Param("id")String id);
 }

@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 畅云 http://www.ichangyun.cn
+ * Copyright 2018 鐣呬簯 http://www.ichangyun.cn
  * <p>
- * 竞争情报分析系统
+ * 绔炰簤鎯呮姤鍒嗘瀽绯荤粺
  */
 package com.ichangyun.InforAnalyaizer.service.front.impl;
 
@@ -24,38 +24,67 @@ import com.ichangyun.InforAnalyaizer.service.front.DetailsPageService;
 @Service
 public class DetailsPageServiceImpl implements DetailsPageService {
 
-	@Autowired
-	private DetailsPageMapper detailsPageMapper;
+    @Autowired
+    private DetailsPageMapper detailsPageMapper;
+
+    @Override
+    public String getArticleByID(String article_id, String userid) {
+
+        ArticleInfoBean ab = detailsPageMapper.getArticleByID(article_id,userid);
+        if(ab!=null) {
+            JSONObject obj = (JSONObject) JSONObject.toJSON(ab);
+
+            return obj.toJSONString();
+        }else {
+            return "\"\"";
+        }
+    }
+
+    @Override
+    public String getBDArticleByID(String article_id,String userid) {
+
+        List<ArticleInfoBean> list = detailsPageMapper.getBDArticleByID(article_id,userid);
+
+        JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
+
+        return listArray.toJSONString();
+    }
+
+    @Override
+    public String getSimContent(ArticleInfoBean ab) {
+        List<ArticleInfoBean> list = detailsPageMapper.getSimContent(ab);
+
+        JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
+
+        return listArray.toJSONString();
+    }
+
+    @Override
+    public String getRelateDataByID(String article_id, String userid) {
+
+        List<ArticleInfoBean> list = detailsPageMapper.getRelateDataByID(article_id,userid);
+
+        JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
+
+        return listArray.toJSONString();
+    }
 
 	@Override
-	public String getArticleByID(String article_id, String userid) {
+	public String getClassificationPathById(String article_id) {
 		
-		ArticleInfoBean ab = detailsPageMapper.getArticleByID(article_id,userid);
-		if(ab!=null) {
-			JSONObject obj = (JSONObject) JSONObject.toJSON(ab);
+		List<String> list = detailsPageMapper.getClassificationPathById(article_id);
 		
-			return obj.toJSONString();
-		}else {
-			return "\"\"";
+		StringBuilder sb = new StringBuilder();
+		
+		for(int i=0;i<list.size();i++) {
+			if(i==0) {
+				sb.append(list.get(i));
+			}else {
+				sb.append("&nbsp;>>&nbsp;");
+				sb.append(list.get(i));
+			}
 		}
-	}
-
-	@Override
-	public String getBDArticleByID(String article_id,String userid) {
 		
-		List<ArticleInfoBean> list = detailsPageMapper.getBDArticleByID(article_id,userid);
-		
-		JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
-		
-		return listArray.toJSONString();
-	}
-
-	@Override
-	public String getSimContent(ArticleInfoBean ab) {
-		List<ArticleInfoBean> list = detailsPageMapper.getSimContent(ab);
-
-		JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
-
-		return listArray.toJSONString();
+		return sb.toString();
 	}
 }

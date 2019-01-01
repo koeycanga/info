@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.utils;
 
@@ -11,22 +11,22 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * DateUtils£ºÈÕÆÚ´¦Àí
+ * DateUtilsï¼šæ—¥æœŸå¤„ç†
  *
  * @author yunx
- * @date 2018Äê11ÔÂ9ÈÕ
+ * @date 2018å¹´11æœˆ9æ—¥
  */
 public class DateUtils {
 
-    /** Ê±¼ä¸ñÊ½(yyyy-MM-dd) */
+    /** æ—¶é—´æ ¼å¼(yyyy-MM-dd) */
     public final static String DATE_PATTERN = "yyyy/MM/dd";
 
-    /** Ê±¼ä¸ñÊ½(yyyy-MM-dd HH:mm:ss) */
+    /** æ—¶é—´æ ¼å¼(yyyy-MM-dd HH:mm:ss) */
     public final static String DATE_TIME_PATTERN = "yyyy/MM/dd HH:mm:ss";
 
     /**
-     * DateUtils£ºÏµÍ³Ê±¼äÈ¡µÃ
-     * @return ÏµÍ³Ê±¼ä¸ñÊ½(yyyy-MM-dd HH:mm:ss)
+     * DateUtilsï¼šç³»ç»Ÿæ—¶é—´å–å¾—
+     * @return ç³»ç»Ÿæ—¶é—´æ ¼å¼(yyyy-MM-dd HH:mm:ss)
      */
     public static String getCurrentDateTime() {
         Date dateTemp = new Date();
@@ -35,19 +35,19 @@ public class DateUtils {
     }
 
     /**
-     * DateUtils:ÈÕÆÚ¸ñÊ½»¯(¸ñÊ½Îª£ºyyyy-MM-dd)
-     * @param date  ÈÕÆÚ
-     * @return yyyy-MM-dd¸ñÊ½ÈÕÆÚ
+     * DateUtils:æ—¥æœŸæ ¼å¼åŒ–(æ ¼å¼ä¸ºï¼šyyyy-MM-dd)
+     * @param date  æ—¥æœŸ
+     * @return yyyy-MM-ddæ ¼å¼æ—¥æœŸ
      */
     public static String format(Date date) {
         return format(date, DATE_PATTERN);
     }
 
     /**
-     * DateUtils:Ö¸¶¨¸ñÊ½µÄÈÕÆÚ¸ñÊ½»¯
-     * @param date  ÈÕÆÚ
-     * @param pattern ¸ñÊ½£¬Èç£ºDateUtils.DATE_TIME_PATTERN
-     * @return Ö¸¶¨¸ñÊ½µÄÈÕÆÚ
+     * DateUtils:æŒ‡å®šæ ¼å¼çš„æ—¥æœŸæ ¼å¼åŒ–
+     * @param date  æ—¥æœŸ
+     * @param pattern æ ¼å¼ï¼Œå¦‚ï¼šDateUtils.DATE_TIME_PATTERN
+     * @return æŒ‡å®šæ ¼å¼çš„æ—¥æœŸ
      */
     public static String format(Date date, String pattern) {
         if(date != null){
@@ -58,317 +58,337 @@ public class DateUtils {
     }
 
     /**
-     * DateUtil:¶ÔÈÕÆÚµÄ¡¾Ãë¡¿½øĞĞ¼Ó/¼õ
+     * DateUtil:å¯¹æ—¥æœŸçš„ã€ç§’ã€‘è¿›è¡ŒåŠ /å‡
      *
-     * @param date ÈÕÆÚ
-     * @param seconds ÃëÊı£¬¸ºÊıÎª¼õ
-     * @return ¼Ó/¼õ¼¸ÃëºóµÄÈÕÆÚ
+     * @param date æ—¥æœŸ
+     * @param seconds ç§’æ•°ï¼Œè´Ÿæ•°ä¸ºå‡
+     * @return åŠ /å‡å‡ ç§’åçš„æ—¥æœŸ
      */
     public static Date addDateSeconds(Date date, int seconds) {
         Calendar cal = Calendar.getInstance();
-        cal.setTime(date);  // ÉèÖÃÆğÊ±¼ä
-        cal.add(Calendar.SECOND, seconds); // ¼Ó/¼õÃë
+        cal.setTime(date);  // è®¾ç½®èµ·æ—¶é—´
+        cal.add(Calendar.SECOND, seconds); // åŠ /å‡ç§’
         return cal.getTime();
     }
 
     /**
-     * DateUtil:¶ÔÈÕÆÚµÄ¡¾·ÖÖÓ¡¿½øĞĞ¼Ó/¼õ
+     * DateUtil:å¯¹æ—¥æœŸçš„ã€åˆ†é’Ÿã€‘è¿›è¡ŒåŠ /å‡
      *
-     * @param date ÈÕÆÚ
-     * @param minutes ·ÖÖÓÊı£¬¸ºÊıÎª¼õ
-     * @return ¼Ó/¼õ¼¸·ÖÖÓºóµÄÈÕÆÚ
+     * @param date æ—¥æœŸ
+     * @param minutes åˆ†é’Ÿæ•°ï¼Œè´Ÿæ•°ä¸ºå‡
+     * @return åŠ /å‡å‡ åˆ†é’Ÿåçš„æ—¥æœŸ
      */
     public static Date addDateMinutes(Date date, int minutes) {
         Calendar cal = Calendar.getInstance();
-        cal.setTime(date);  // ÉèÖÃÆğÊ±¼ä
-        cal.add(Calendar.MINUTE, minutes); // ¼Ó/¼õĞ¡Ê±
+        cal.setTime(date);  // è®¾ç½®èµ·æ—¶é—´
+        cal.add(Calendar.MINUTE, minutes); // åŠ /å‡å°æ—¶
         return cal.getTime();
     }
 
     /**
-     * DateUtil:¶ÔÈÕÆÚµÄ¡¾Ğ¡Ê±¡¿½øĞĞ¼Ó/¼õ
+     * DateUtil:å¯¹æ—¥æœŸçš„ã€å°æ—¶ã€‘è¿›è¡ŒåŠ /å‡
      *
-     * @param date ÈÕÆÚ
-     * @param hours Ğ¡Ê±Êı£¬¸ºÊıÎª¼õ
-     * @return ¼Ó/¼õ¼¸Ğ¡Ê±ºóµÄÈÕÆÚ
+     * @param date æ—¥æœŸ
+     * @param hours å°æ—¶æ•°ï¼Œè´Ÿæ•°ä¸ºå‡
+     * @return åŠ /å‡å‡ å°æ—¶åçš„æ—¥æœŸ
      */
     public static Date addDateHours(Date date, int hours) {
         Calendar cal = Calendar.getInstance();
-        cal.setTime(date);  // ÉèÖÃÆğÊ±¼ä
-        cal.add(Calendar.HOUR, hours); // ¼Ó/¼õĞ¡Ê±
+        cal.setTime(date);  // è®¾ç½®èµ·æ—¶é—´
+        cal.add(Calendar.HOUR, hours); // åŠ /å‡å°æ—¶
         return cal.getTime();
     }
 
     /**
-     * DateUtil:¶ÔÈÕÆÚµÄ¡¾Ìì¡¿½øĞĞ¼Ó/¼õ
+     * DateUtil:å¯¹æ—¥æœŸçš„ã€å¤©ã€‘è¿›è¡ŒåŠ /å‡
      *
-     * @param date ÈÕÆÚ
-     * @param days ÌìÊı£¬¸ºÊıÎª¼õ
-     * @return ¼Ó/¼õ¼¸ÌìºóµÄÈÕÆÚ
+     * @param date æ—¥æœŸ
+     * @param days å¤©æ•°ï¼Œè´Ÿæ•°ä¸ºå‡
+     * @return åŠ /å‡å‡ å¤©åçš„æ—¥æœŸ
      */
     public static Date addDateDays(Date date, int days) {
         Calendar cal = Calendar.getInstance();
-        cal.setTime(date);  // ÉèÖÃÆğÊ±¼ä
-        cal.add(Calendar.DATE, days); // Ìì
+        cal.setTime(date);  // è®¾ç½®èµ·æ—¶é—´
+        cal.add(Calendar.DATE, days); // å¤©
         return cal.getTime();
     }
 
     /**
-     * DateUtil:¶ÔÈÕÆÚµÄ¡¾ÖÜ¡¿½øĞĞ¼Ó/¼õ
+     * DateUtil:å¯¹æ—¥æœŸçš„ã€å‘¨ã€‘è¿›è¡ŒåŠ /å‡
      *
-     * @param date ÈÕÆÚ
-     * @param weeks ÖÜÊı£¬¸ºÊıÎª¼õ
-     * @return ¼Ó/¼õ¼¸ÖÜºóµÄÈÕÆÚ
+     * @param date æ—¥æœŸ
+     * @param weeks å‘¨æ•°ï¼Œè´Ÿæ•°ä¸ºå‡
+     * @return åŠ /å‡å‡ å‘¨åçš„æ—¥æœŸ
      */
     public static Date addDateWeeks(Date date, int weeks) {
         Calendar cal = Calendar.getInstance();
-        cal.setTime(date);  // ÉèÖÃÆğÊ±¼ä
-        cal.add(Calendar.WEDNESDAY, weeks); // ¼Ó/¼õÖÜ
+        cal.setTime(date);  // è®¾ç½®èµ·æ—¶é—´
+        cal.add(Calendar.WEDNESDAY, weeks); // åŠ /å‡å‘¨
         return cal.getTime();
     }
 
     /**
-     * DateUtil:¶ÔÈÕÆÚµÄ¡¾ÔÂ¡¿½øĞĞ¼Ó/¼õ
+     * DateUtil:å¯¹æ—¥æœŸçš„ã€æœˆã€‘è¿›è¡ŒåŠ /å‡
      *
-     * @param date ÈÕÆÚ
-     * @param months ÔÂÊı£¬¸ºÊıÎª¼õ
-     * @return ¼Ó/¼õ¼¸ÔÂºóµÄÈÕÆÚ
+     * @param date æ—¥æœŸ
+     * @param months æœˆæ•°ï¼Œè´Ÿæ•°ä¸ºå‡
+     * @return åŠ /å‡å‡ æœˆåçš„æ—¥æœŸ
      */
     public static Date addDateMonths(Date date, int months) {
         Calendar cal = Calendar.getInstance();
-        cal.setTime(date);  // ÉèÖÃÆğÊ±¼ä
-        cal.add(Calendar.MONTH, months); // ¼Ó/¼õÔÂ
+        cal.setTime(date);  // è®¾ç½®èµ·æ—¶é—´
+        cal.add(Calendar.MONTH, months); // åŠ /å‡æœˆ
         return cal.getTime();
     }
 
     /**
-     * DateUtil:¶ÔÈÕÆÚµÄ¡¾Äê¡¿½øĞĞ¼Ó/¼õ
+     * DateUtil:å¯¹æ—¥æœŸçš„ã€å¹´ã€‘è¿›è¡ŒåŠ /å‡
      *
-     * @param date ÈÕÆÚ
-     * @param years ÄêÊı£¬¸ºÊıÎª¼õ
-     * @return ¼Ó/¼õ¼¸ÄêºóµÄÈÕÆÚ
+     * @param date æ—¥æœŸ
+     * @param years å¹´æ•°ï¼Œè´Ÿæ•°ä¸ºå‡
+     * @return åŠ /å‡å‡ å¹´åçš„æ—¥æœŸ
      */
     public static Date addDateYears(Date date, int years) {
         Calendar cal = Calendar.getInstance();
-        cal.setTime(date);// ÉèÖÃÆğÊ±¼ä
-        cal.add(Calendar.YEAR, years); // ¼Ó/¼õÄê
+        cal.setTime(date);// è®¾ç½®èµ·æ—¶é—´
+        cal.add(Calendar.YEAR, years); // åŠ /å‡å¹´
         return cal.getTime();
     }
-    
-    /**
-	 * ¸ñÊ½»¯ÇëÇóÊ±¼ä
-	 * @param montime
-	 * @return ¸ñÊ½»¯Ö®ºóµÄÊ±¼ä
-	 */
-	public static String[] dealMontime(String montime) {
-		
-		String[] str = new String[2];
-		
-		if(montime.equals("0")) {  //½ñÌì
-			String today = format(new Date(),DATE_PATTERN);
-			str[0] = today+" 00:00:00";
-			str[1] = today+" 23:59:59";
-		}else if(montime.equals("-1")) {  //24Ğ¡Ê±ÄÚ
-			Date cur_date = new Date();
-			Date pre_date = addDateHours(cur_date,-24);
-			str[0] = format(pre_date,DATE_TIME_PATTERN);
-			str[1] = format(cur_date,DATE_TIME_PATTERN);
-		}else if(montime.equals("-2")||montime.equals("-3")||montime.equals("-7")||montime.equals("-10")) {  //2 3 7 10 ÌìÄÚ
-			Date cur_date = new Date();
-			Date pre_date = addDateDays(cur_date, Integer.parseInt(montime));
-			str[0] = format(pre_date,DATE_PATTERN+" 00:00:00");
-			str[1] = format(cur_date,DATE_TIME_PATTERN);
-		}else{ //×Ô¶¨Òå
-			String[] ss  = montime.split("-");
-			if(ss.length==6) {
-				str[1] = ss[3]+"/"+ss[4]+"/"+ss[5]+" 23:59:59";
-				str[0] = ss[0]+"/"+ss[1]+"/"+ss[2]+" 00:00:00";
-			}else {
-				String today = format(new Date(),DATE_PATTERN);
-				str[0] = today+" 00:00:00";
-				str[1] = today+" 23:59:59";
-			}
-		}
-		return str;
-	}
 
-	
-	/**
-	 * ¸ù¾İmontimeÀàĞÍ»ñµÃÊ±¼ä¶Î¼¯ºÏ
-	 * 1ÌìÄÚ Ã¿Á½Ğ¡Ê±Îª·Ö¸ô   µÃµ½½á¹ûÈç  00:00,02:00,04:00......
-	 * ³¬¹ı1ÌìµÄÒÔÌìÎªµ¥Î»·Ö¸ô    µÃµ½½á¹ûÈç  2018/12/17,2018/12/18......    
-	 * @param montime
-	 * @return
-	 */
-	public static String[] dealMontimeTimeDatas(String montime) {
-		String[] sss = new String[2];
-		StringBuilder res = new StringBuilder("");
-		if(montime.equals("0")) {  //½ñÌì
-			sss[0] = "hour";
-			String Hour = format(new Date(),"HH");
-			int flag = Integer.parseInt(Hour);
-			if(flag%2!=0) {
-				flag++;
-				Hour = dealHour(flag);
-			}
-			for(int i=0;i<=flag;i+=2) {
-				if(i==0) {
-					res.append(""+dealHour(i)+":00");
-				}else {
-					res.append(","+dealHour(i)+":00");
-				}
-			}
-			
-		}else if(montime.equals("-1")) {  //24Ğ¡Ê±ÄÚ
-			sss[0] = "hour";
-			Date date = new Date();
-			Date lastDate = addDateHours(date,-24);
-			int start = Integer.parseInt(format(lastDate,"HH"));
-			if(start%2!=0) {
-				start++;
-			}
-			int end = Integer.parseInt(format(date,"HH"))+24;
-			if(end%2!=0) {
-				end++;
-			}
-			for(int i=start;i<=end;i+=2) {
-				if(i==start) {
-					res.append(dealHour24(i,date,lastDate));
-				}else {
-					res.append(","+dealHour24(i,date,lastDate));
-				}
-			}
-			
-		}else if(montime.equals("-2")||montime.equals("-3")||montime.equals("-7")||montime.equals("-10")) {  //2 3 7 10 ÌìÄÚ
-			sss[0] = "day";
-			Date date = new Date();
-			
-			for(int i=Integer.parseInt(montime);i<=0;i++) {
-				Date pre_date = addDateDays(date, i);
-				if(i==Integer.parseInt(montime)) {
-					res.append(format(pre_date,DATE_PATTERN));
-				}else {
-					res.append(","+format(pre_date,DATE_PATTERN));
-				}
-			}
-			
-		}else{ //×Ô¶¨Òå
-			
-			String[] ss  = montime.split("-");
-			String[] str = new String[2];
-			if(ss.length==6) {
-				str[1] = ss[3]+"/"+ss[4]+"/"+ss[5]+" 23:59:59";
-				str[0] = ss[0]+"/"+ss[1]+"/"+ss[2]+" 00:00:00";
-			}else {
-				String today = format(new Date(),DATE_PATTERN);
-				str[0] = today+" 00:00:00";
-				str[1] = today+" 23:59:59";
-			}
-				
-			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			 
-			 try {
-				Date startDate = sdf.parse(str[0]);
-				Date endDate = sdf.parse(str[1]);
-				
-				int cz = differentDaysByMillisecond(startDate,endDate);
-				
-				if(cz==0) {  //½ñÌì
-					sss[0] = "hour";
-					String Hour = format(new Date(),"HH");
-					int flag = Integer.parseInt(Hour);
-					if(flag%2!=0) {
-						flag++;
-						Hour = dealHour(flag);
-					}
-					for(int i=0;i<=flag;i+=2) {
-						if(i==0) {
-							res.append(""+dealHour(i)+":00");
-						}else {
-							res.append(","+dealHour(i)+":00");
-						}
-					}
-				}else if(cz==1) { //1ÌìÄÚ
-					sss[0] = "hour";
-					SimpleDateFormat sdff = new SimpleDateFormat("yyyy/MM/dd");
-					Date date = new Date();
-					Date lastDate = sdff.parse(format(addDateHours(date,-24),DATE_PATTERN)+" 00:00:01");
-					int start = Integer.parseInt(format(lastDate,"HH"));
-					int end = Integer.parseInt(format(date,"HH"))+24;
-					
-					for(int i=start;i<=end;i+=2) {
-						if(i==start) {
-							res.append(dealHour24(i,date,lastDate));
-						}else {
-							res.append(","+dealHour24(i,date,lastDate));
-						}
-					}
-				}else {
-					sss[0] = "day";
-					for(int i=-cz;i<=0;i++) {
-						Date pre_date = addDateDays(endDate, i);
-						if(i==-cz) {
-							res.append(format(pre_date,DATE_PATTERN));
-						}else {
-							res.append(","+format(pre_date,DATE_PATTERN));
-						}
-					}
-				}
-				
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			
-			
-		}
-		
-		sss[1] = res.toString();
-		return sss;//res.toString();
-	}
-	
-	/**
-     * date2±Èdate1¶àµÄÌìÊı
-     * @param date1    
+    /**
+     * æ ¼å¼åŒ–è¯·æ±‚æ—¶é—´
+     * @param montime
+     * @return æ ¼å¼åŒ–ä¹‹åçš„æ—¶é—´
+     */
+    public static String[] dealMontime(String montime) {
+
+        String[] str = new String[2];
+        Date now_date = new Date();
+        if(montime.equals("0")) {  //ä»Šå¤©
+            String today = format(new Date(),DATE_PATTERN);
+            str[0] = today;
+            str[1] = today;
+        }else if(montime.equals("-1")) {  //24å°æ—¶å†…
+            //Date cur_date = new Date();
+            Date pre_date = addDateHours(now_date,-24);
+            str[0] = format(pre_date,DATE_TIME_PATTERN);
+            str[1] = format(now_date,DATE_TIME_PATTERN);
+        }else if(montime.equals("-2")) {  //2 å¤©å†…
+            //  Date cur_date = addDateDays(now_date,-1);
+            Date pre_date = addDateDays(now_date, Integer.parseInt(montime));
+            str[0] = format(pre_date,DATE_PATTERN);
+            str[1] = format(now_date,DATE_PATTERN);
+        }else if(montime.equals("-3")) {  // 3 å¤©å†…
+            //  Date cur_date = addDateDays(now_date,-2);
+            Date pre_date = addDateDays(now_date, Integer.parseInt(montime));
+            str[0] = format(pre_date,DATE_PATTERN);
+            str[1] = format(now_date,DATE_PATTERN);
+        }else if(montime.equals("-7")) {  //7 å¤©å†…
+            //  Date cur_date = addDateDays(now_date,-3);
+            Date pre_date = addDateDays(now_date, Integer.parseInt(montime));
+            str[0] = format(pre_date,DATE_PATTERN);
+            str[1] = format(now_date,DATE_PATTERN);
+        }else if(montime.equals("-10")) {  //10 å¤©å†…
+            //  Date cur_date = addDateDays(now_date,-7);
+            Date pre_date = addDateDays(now_date, Integer.parseInt(montime));
+            str[0] = format(pre_date,DATE_PATTERN);
+            str[1] = format(now_date,DATE_PATTERN);
+        }else{ //è‡ªå®šä¹‰
+            String[] ss  = montime.split("-");
+            if(ss.length==3&&montime.endsWith("-")) {
+            	str[0] = ss[0]+"/"+ss[1]+"/"+ss[2];
+            	str[1] = ""; 
+            }else if(ss.length==3&&montime.startsWith("-")) {
+            	str[1] = ss[0]+"/"+ss[1]+"/"+ss[2];
+            	str[0] = ""; 
+            }else if(ss.length==6) {
+                str[1] = ss[3]+"/"+ss[4]+"/"+ss[5];
+                str[0] = ss[0]+"/"+ss[1]+"/"+ss[2];
+            }else {
+                str[0] = "";
+                str[1] = "";
+            }
+        }
+        return str;
+    }
+
+
+    /**
+     * æ ¹æ®montimeç±»å‹è·å¾—æ—¶é—´æ®µé›†åˆ
+     * 1å¤©å†… æ¯ä¸¤å°æ—¶ä¸ºåˆ†éš”   å¾—åˆ°ç»“æœå¦‚  00:00,02:00,04:00......
+     * è¶…è¿‡1å¤©çš„ä»¥å¤©ä¸ºå•ä½åˆ†éš”    å¾—åˆ°ç»“æœå¦‚  2018/12/17,2018/12/18......
+     * @param montime
+     * @return
+     */
+    public static String[] dealMontimeTimeDatas(String montime) {
+        String[] sss = new String[2];
+        StringBuilder res = new StringBuilder("");
+        if(montime.equals("0")) {  //ä»Šå¤©
+            sss[0] = "hour";
+            String Hour = format(new Date(),"HH");
+            int flag = Integer.parseInt(Hour);
+            if(flag%2!=0) {
+                flag++;
+                Hour = dealHour(flag);
+            }
+            for(int i=0;i<=flag;i+=2) {
+                if(i==0) {
+                    res.append(""+dealHour(i)+":00");
+                }else {
+                    res.append(","+dealHour(i)+":00");
+                }
+            }
+
+        }else if(montime.equals("-1")) {  //24å°æ—¶å†…
+            sss[0] = "hour";
+            Date date = new Date();
+            Date lastDate = addDateHours(date,-24);
+            int start = Integer.parseInt(format(lastDate,"HH"));
+            if(start%2!=0) {
+                start++;
+            }
+            int end = Integer.parseInt(format(date,"HH"))+24;
+            if(end%2!=0) {
+                end++;
+            }
+            for(int i=start;i<=end;i+=2) {
+                if(i==start) {
+                    res.append(dealHour24(i,date,lastDate));
+                }else {
+                    res.append(","+dealHour24(i,date,lastDate));
+                }
+            }
+
+        }else if(montime.equals("-2")||montime.equals("-3")||montime.equals("-7")||montime.equals("-10")) {  //2 3 7 10 å¤©å†…
+            sss[0] = "day";
+            Date date = new Date();
+
+            for(int i=Integer.parseInt(montime);i<=0;i++) {
+                Date pre_date = addDateDays(date, i);
+                if(i==Integer.parseInt(montime)) {
+                    res.append(format(pre_date,DATE_PATTERN));
+                }else {
+                    res.append(","+format(pre_date,DATE_PATTERN));
+                }
+            }
+
+        }else{ //è‡ªå®šä¹‰
+
+            String[] ss  = montime.split("-");
+            String[] str = new String[2];
+            if(ss.length==6) {
+                str[1] = ss[3]+"/"+ss[4]+"/"+ss[5]+" 23:59:59";
+                str[0] = ss[0]+"/"+ss[1]+"/"+ss[2]+" 00:00:00";
+            }else {
+                String today = format(new Date(),DATE_PATTERN);
+                str[0] = today+" 00:00:00";
+                str[1] = today+" 23:59:59";
+            }
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+            try {
+                Date startDate = sdf.parse(str[0]);
+                Date endDate = sdf.parse(str[1]);
+
+                int cz = differentDaysByMillisecond(startDate,endDate);
+
+                if(cz==0) {  //ä»Šå¤©
+                    sss[0] = "hour";
+                    String Hour = format(new Date(),"HH");
+                    int flag = Integer.parseInt(Hour);
+                    if(flag%2!=0) {
+                        flag++;
+                        Hour = dealHour(flag);
+                    }
+                    for(int i=0;i<=flag;i+=2) {
+                        if(i==0) {
+                            res.append(""+dealHour(i)+":00");
+                        }else {
+                            res.append(","+dealHour(i)+":00");
+                        }
+                    }
+                }else if(cz==1) { //1å¤©å†…
+                    sss[0] = "hour";
+                    SimpleDateFormat sdff = new SimpleDateFormat("yyyy/MM/dd");
+                    Date date = new Date();
+                    Date lastDate = sdff.parse(format(addDateHours(date,-24),DATE_PATTERN)+" 00:00:01");
+                    int start = Integer.parseInt(format(lastDate,"HH"));
+                    int end = Integer.parseInt(format(date,"HH"))+24;
+
+                    for(int i=start;i<=end;i+=2) {
+                        if(i==start) {
+                            res.append(dealHour24(i,date,lastDate));
+                        }else {
+                            res.append(","+dealHour24(i,date,lastDate));
+                        }
+                    }
+                }else {
+                    sss[0] = "day";
+                    for(int i=-cz;i<=0;i++) {
+                        Date pre_date = addDateDays(endDate, i);
+                        if(i==-cz) {
+                            res.append(format(pre_date,DATE_PATTERN));
+                        }else {
+                            res.append(","+format(pre_date,DATE_PATTERN));
+                        }
+                    }
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+        sss[1] = res.toString();
+        return sss;//res.toString();
+    }
+
+    /**
+     * date2æ¯”date1å¤šçš„å¤©æ•°
+     * @param date1
      * @param date2
-     * @return    
+     * @return
      */
     public static int differentDays(Date date1,Date date2)
     {
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(date1);
-        
+
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(date2);
-       int day1= cal1.get(Calendar.DAY_OF_YEAR);
+        int day1= cal1.get(Calendar.DAY_OF_YEAR);
         int day2 = cal2.get(Calendar.DAY_OF_YEAR);
-        
+
         int year1 = cal1.get(Calendar.YEAR);
         int year2 = cal2.get(Calendar.YEAR);
-        if(year1 != year2)   //Í¬Ò»Äê
+        if(year1 != year2)   //åŒä¸€å¹´
         {
             int timeDistance = 0 ;
             for(int i = year1 ; i < year2 ; i ++)
             {
-                if(i%4==0 && i%100!=0 || i%400==0)    //ÈòÄê            
+                if(i%4==0 && i%100!=0 || i%400==0)    //é—°å¹´
                 {
                     timeDistance += 366;
                 }
-                else    //²»ÊÇÈòÄê
+                else    //ä¸æ˜¯é—°å¹´
                 {
                     timeDistance += 365;
                 }
             }
-            
+
             return timeDistance + (day2-day1) ;
         }
-        else    //²»Í¬Äê
+        else    //ä¸åŒå¹´
         {
             return day2-day1;
         }
     }
 
-	/**
-     * Í¨¹ıÊ±¼äÃëºÁÃëÊıÅĞ¶ÏÁ½¸öÊ±¼äµÄ¼ä¸ô
+    /**
+     * é€šè¿‡æ—¶é—´ç§’æ¯«ç§’æ•°åˆ¤æ–­ä¸¤ä¸ªæ—¶é—´çš„é—´éš”
      * @param date1
      * @param date2
      * @return
@@ -378,21 +398,21 @@ public class DateUtils {
         int days = (int) ((date2.getTime() - date1.getTime()) / (1000*3600*24));
         return days;
     }
-	
-	private static String dealHour24(int i, Date date, Date lastDate) {
-		if(i<24) {  //×òÌì
-			return format(lastDate,DATE_PATTERN)+" "+dealHour(i)+":00";
-		}else {  //½ñÌì
-			return format(date,DATE_PATTERN)+" "+dealHour(i-24)+":00";
-		}
-	}
 
-	private static String dealHour(int i) {
-	    if(i<10) {
-	    	return "0"+i;
-	    }else {
-	    	return ""+i;
-	    }
-	}
-    
+    private static String dealHour24(int i, Date date, Date lastDate) {
+        if(i<24) {  //æ˜¨å¤©
+            return format(lastDate,DATE_PATTERN)+" "+dealHour(i)+":00";
+        }else {  //ä»Šå¤©
+            return format(date,DATE_PATTERN)+" "+dealHour(i-24)+":00";
+        }
+    }
+
+    private static String dealHour(int i) {
+        if(i<10) {
+            return "0"+i;
+        }else {
+            return ""+i;
+        }
+    }
+
 }

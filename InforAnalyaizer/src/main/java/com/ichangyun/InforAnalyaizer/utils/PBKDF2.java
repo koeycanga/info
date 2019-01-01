@@ -1,11 +1,9 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ * ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.utils;
-
-
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -17,73 +15,67 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 /**
- * PBKDF2 ¼ÓÃÜ¹¤¾ßÀà
+ * PBKDF2 åŠ å¯†å·¥å…·ç±»
  * @author renhao
  * Date:2018-11-12
  */
 public class PBKDF2 {
-	public static final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA1";  
-	  
-	//ÑÎµÄ³¤¶È  
-    public static final int SALT_SIZE = 16;  
-  
-     //Éú³ÉÃÜÎÄµÄ³¤¶È 
-    public static final int HASH_SIZE = 32;  
-  
-     // µü´ú´ÎÊı 
-    public static final int PBKDF2_ITERATIONS = 1000;  
-  
-    /** 
-     * ¶ÔÊäÈëµÄÃÜÂë½øĞĞÑéÖ¤ 
-     *  
-     */  
-    public static boolean verify(String password, String salt, String key)  
-            throws NoSuchAlgorithmException, InvalidKeySpecException {  
-        // ÓÃÏàÍ¬µÄÑÎÖµ¶ÔÓÃ»§ÊäÈëµÄÃÜÂë½øĞĞ¼ÓÃÜ  
-        String result = getPBKDF2(password, salt);  
-        // °Ñ¼ÓÃÜºóµÄÃÜÎÄºÍÔ­ÃÜÎÄ½øĞĞ±È½Ï£¬ÏàÍ¬ÔòÑéÖ¤³É¹¦£¬·ñÔòÊ§°Ü  
-        return result.equals(key);  
-    }  
-  
-    /**
-     * ¸ù¾İpasswordºÍsaltÉú³ÉÃÜÎÄ
-     * 
-     */
-    public static String getPBKDF2(String password, String salt) throws NoSuchAlgorithmException,  
-            InvalidKeySpecException {  
-    	//½«16½øÖÆ×Ö·û´®ĞÎÊ½µÄsalt×ª»»³ÉbyteÊı×é
-    	byte[] bytes = DatatypeConverter.parseHexBinary(salt);
-        KeySpec spec = new PBEKeySpec(password.toCharArray(), bytes, PBKDF2_ITERATIONS, HASH_SIZE * 4);  
-        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(PBKDF2_ALGORITHM);  
-        byte[] hash = secretKeyFactory.generateSecret(spec).getEncoded();
-		//½«byteÊı×é×ª»»Îª16½øÖÆµÄ×Ö·û´®
-        return DatatypeConverter.printHexBinary(hash);  
-    }  
-    
-  
-    /** 
-     * Éú³ÉËæ»úÑÎÖµ
-     *  
-     */  
-    public static String getSalt() throws NoSuchAlgorithmException {  
-        SecureRandom random = SecureRandom.getInstance("SHA1PRNG");  
-        byte[] bytes = new byte[SALT_SIZE / 2];  
-        random.nextBytes(bytes);  
-        //½«byteÊı×é×ª»»Îª16½øÖÆµÄ×Ö·û´®
-        String salt = DatatypeConverter.printHexBinary(bytes);
-         
-        return salt;  
-    }  
-    
-    
-    public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException {
-    	
-    	
-    	String passwd  = getPBKDF2("admin",DatatypeConverter.printHexBinary("admin".getBytes()));
-    	
-    	System.out.println(passwd);
-    	
+    public static final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA1";
 
+    //ç›çš„é•¿åº¦
+    public static final int SALT_SIZE = 16;
+
+    //ç”Ÿæˆå¯†æ–‡çš„é•¿åº¦
+    public static final int HASH_SIZE = 32;
+
+    // è¿­ä»£æ¬¡æ•°
+    public static final int PBKDF2_ITERATIONS = 1000;
+
+    /**
+     * å¯¹è¾“å…¥çš„å¯†ç è¿›è¡ŒéªŒè¯
+     *
+     */
+    public static boolean verify(String password, String salt, String key)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
+        // ç”¨ç›¸åŒçš„ç›å€¼å¯¹ç”¨æˆ·è¾“å…¥çš„å¯†ç è¿›è¡ŒåŠ å¯†
+        String result = getPBKDF2(password, salt);
+        // æŠŠåŠ å¯†åçš„å¯†æ–‡å’ŒåŸå¯†æ–‡è¿›è¡Œæ¯”è¾ƒï¼Œç›¸åŒåˆ™éªŒè¯æˆåŠŸï¼Œå¦åˆ™å¤±è´¥
+        return result.equals(key);
+    }
+
+    /**
+     * æ ¹æ®passwordå’Œsaltç”Ÿæˆå¯†æ–‡
+     *
+     */
+    public static String getPBKDF2(String password, String salt) throws NoSuchAlgorithmException,
+    InvalidKeySpecException {
+        //å°†16è¿›åˆ¶å­—ç¬¦ä¸²å½¢å¼çš„saltè½¬æ¢æˆbyteæ•°ç»„
+        byte[] bytes = DatatypeConverter.parseHexBinary(salt);
+        KeySpec spec = new PBEKeySpec(password.toCharArray(), bytes, PBKDF2_ITERATIONS, HASH_SIZE * 4);
+        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(PBKDF2_ALGORITHM);
+        byte[] hash = secretKeyFactory.generateSecret(spec).getEncoded();
+        //å°†byteæ•°ç»„è½¬æ¢ä¸º16è¿›åˆ¶çš„å­—ç¬¦ä¸²
+        return DatatypeConverter.printHexBinary(hash);
+    }
+
+
+    /**
+     * ç”Ÿæˆéšæœºç›å€¼
+     *
+     */
+    public static String getSalt() throws NoSuchAlgorithmException {
+        SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+        byte[] bytes = new byte[SALT_SIZE / 2];
+        random.nextBytes(bytes);
+        //å°†byteæ•°ç»„è½¬æ¢ä¸º16è¿›åˆ¶çš„å­—ç¬¦ä¸²
+        String salt = DatatypeConverter.printHexBinary(bytes);
+
+        return salt;
+    }
+
+    public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        String passwd  = getPBKDF2("admin",DatatypeConverter.printHexBinary("admin".getBytes()));
+        System.out.println(passwd);
     }
 
 }

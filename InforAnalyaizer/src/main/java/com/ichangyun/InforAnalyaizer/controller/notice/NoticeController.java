@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.controller.notice;
 
@@ -19,15 +19,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ichangyun.InforAnalyaizer.model.BaseBean;
 import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.notice.NoticeType;
 import com.ichangyun.InforAnalyaizer.model.notice.NoticeVo;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.service.common.service.DBUpdateCheckService;
 import com.ichangyun.InforAnalyaizer.service.notice.NoticeService;
-import com.ichangyun.InforAnalyaizer.service.numberingcontrol.NumberingcontrolService;
-import com.ichangyun.InforAnalyaizer.utils.DateUtils;
 /**
- * Controller£º¼ò±¨ÈÎÎñ
+ * Controllerï¼šç®€æŠ¥ä»»åŠ¡
  *
  * @author lan
  * @date 2018/11/19
@@ -35,101 +33,102 @@ import com.ichangyun.InforAnalyaizer.utils.DateUtils;
 @Controller
 @RequestMapping("notice")
 public class NoticeController {
-	@Autowired
-	private NoticeService noticeService;
+    @Autowired
+    private NoticeService noticeService;
 
-	@Autowired
-	private DBUpdateCheckService dbUpdateCheckService;
-	@RequestMapping("toNoticeList")
-	public String toNoticeList() {
-		return "frontpage/noticeList";
-	}
+    @Autowired
+    private DBUpdateCheckService dbUpdateCheckService;
+    @RequestMapping("toNoticeList")
+    public String toNoticeList() {
+        return "frontpage/noticeList";
+    }
     /**
-     * queryAll£º²éÑ¯ËùÓĞÈÎÎñ
+     * queryAllï¼šæŸ¥è¯¢æ‰€æœ‰ä»»åŠ¡
      *
-     * @param BaseBean ·ÖÒ³¹¤¾ßÀà
+     * @param BaseBean åˆ†é¡µå·¥å…·ç±»
      * @return map
      */
-	@RequestMapping("queryAll")
-	@ResponseBody
-	public Map<String, Object>queryAll(BaseBean bb){
-		Map<String, Object> list = this.noticeService.queryAll(bb.getPageNow(),bb.getRowSize());
-	       return list;
-	}
+    @RequestMapping("queryAll")
+    @ResponseBody
+    public Map<String, Object>queryAll(BaseBean bb,HttpSession session){
+    	User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+        Map<String, Object> list = this.noticeService.queryAll(bb.getPageNow(),bb.getRowSize(),u);
+        return list;
+    }
     /**
-     * getTypes£º²éÑ¯ËùÓĞÈÎÎñÀàĞÍ
+     * getTypesï¼šæŸ¥è¯¢æ‰€æœ‰ä»»åŠ¡ç±»å‹
      *
      * @return list
      */
-	@RequestMapping("getTypes")
-	@ResponseBody
-	public List<NoticeType>getTypes(){
-		List<NoticeType> list = this.noticeService.getNoticeType();
-	       return list;
-	}
+    @RequestMapping("getTypes")
+    @ResponseBody
+    public List<NoticeType>getTypes(){
+        List<NoticeType> list = this.noticeService.getNoticeType();
+        return list;
+    }
     /**
-     * addNotice£ºÌí¼Ó¼ò±¨ÈÎÎñ
+     * addNoticeï¼šæ·»åŠ ç®€æŠ¥ä»»åŠ¡
      *
-     *@param NoticeVo¼ò±¨ÈÎÎñÊÓÍ¼Àà
+     *@param NoticeVoç®€æŠ¥ä»»åŠ¡è§†å›¾ç±»
      *@param HttpSession session
      * @return map
      */
-	@RequestMapping("addNotice")
-	@ResponseBody
-	public Map<String, Object>addNotice(NoticeVo vo,HttpSession session){
-		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
-		
-		String msg= this.noticeService.addNotice(vo,u);
-		Map<String, Object>map = new HashMap<>();
-		map.put("msg", msg);
-		return map;
-	}
-	/**
-     * queryOne£º¸ù¾İid²éÑ¯¼ò±¨ÈÎÎñ
+    @RequestMapping("addNotice")
+    @ResponseBody
+    public Map<String, Object>addNotice(NoticeVo vo,HttpSession session){
+        User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+
+        String msg= this.noticeService.addNotice(vo,u);
+        Map<String, Object>map = new HashMap<>();
+        map.put("msg", msg);
+        return map;
+    }
+    /**
+     * queryOneï¼šæ ¹æ®idæŸ¥è¯¢ç®€æŠ¥ä»»åŠ¡
      *
-     *@param String noticeid	¼ò±¨id
-     *@return NoticeVo			¼ò±¨ÈÎÎñÊÓÍ¼Àà
+     *@param String noticeid    ç®€æŠ¥id
+     *@return NoticeVo          ç®€æŠ¥ä»»åŠ¡è§†å›¾ç±»
      */
-	@RequestMapping("queryOne")
-	@ResponseBody
-	public NoticeVo addNotice(String noticeid){
-		NoticeVo vo = this.noticeService.queryOne(noticeid);
-		return vo;
-	}
-	/**
-     * updateNotice£º¸üĞÂ¼ò±¨ÈÎÎñ
+    @RequestMapping("queryOne")
+    @ResponseBody
+    public NoticeVo addNotice(String noticeid){
+        NoticeVo vo = this.noticeService.queryOne(noticeid);
+        return vo;
+    }
+    /**
+     * updateNoticeï¼šæ›´æ–°ç®€æŠ¥ä»»åŠ¡
      *
-     *@param NoticeVo¼ò±¨ÈÎÎñÊÓÍ¼Àà
+     *@param NoticeVoç®€æŠ¥ä»»åŠ¡è§†å›¾ç±»
      *@param HttpSession session
      *@return map
      */
-	@RequestMapping("updateNotice")
-	@ResponseBody
-	public Map<String, Object>updateNotice(NoticeVo vo,HttpSession session){
-		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
-		List<String> id = new ArrayList<>();
-		id.add(vo.getNoticeid());
-		Map<String, Object>map = new HashMap<>();
-		if (!dbUpdateCheckService.DBUpdateCheck("6", id,vo.getUpdatedatetime())) {
-			map.put("msg", "checkFalse");
-			return map;
-		}
-		String msg= this.noticeService.updateNotice(vo,u);
-		map.put("msg", msg);
-		return map;
-	}
-	/**
-     * deleteNotice£ºÉ¾³ı¼ò±¨ÈÎÎñ
+    @RequestMapping("updateNotice")
+    @ResponseBody
+    public Map<String, Object>updateNotice(NoticeVo vo,HttpSession session){
+        User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+        List<String> id = new ArrayList<>();
+        id.add(vo.getNoticeid());
+        Map<String, Object>map = new HashMap<>();
+        if (!dbUpdateCheckService.DBUpdateCheck("6", id,vo.getUpdatedatetime(),session)) {
+            map.put("msg", "checkFalse");
+            return map;
+        }
+        String msg= this.noticeService.updateNotice(vo,u);
+        map.put("msg", msg);
+        return map;
+    }
+    /**
+     * deleteNoticeï¼šåˆ é™¤ç®€æŠ¥ä»»åŠ¡
      *
-     *@param String[] checkedId  ¼ò±¨id
+     *@param String[] checkedId  ç®€æŠ¥id
      *@return map
      */
-	@RequestMapping("deleteNotice")
-	@ResponseBody
-	public Map<String, Object>deleteNotice(String[] checkedId){
-		String msg = this.noticeService.deleteNotice(checkedId);	
-		Map<String, Object>map = new HashMap<>();
-		map.put("msg", msg);
-		return map;
-	}
+    @RequestMapping("deleteNotice")
+    @ResponseBody
+    public Map<String, Object>deleteNotice(String[] checkedId){
+        String msg = this.noticeService.deleteNotice(checkedId);
+        Map<String, Object>map = new HashMap<>();
+        map.put("msg", msg);
+        return map;
+    }
 }

@@ -6,6 +6,7 @@
 <fmt:message key="front_menu" var="front_menu" bundle="${sysInfo}" />
 <fmt:message key="W0003" var="W0003" bundle="${sysInfo}" />
 <fmt:message key="E0004" var="E0004" bundle="${sysInfo}" />
+<fmt:message key="E0054" var="E0054" bundle="${sysInfo}" />
 <fmt:message key="E0014" var="E0014" bundle="${sysInfo}" />
 <fmt:message key="E0025" var="E0025" bundle="${sysInfo}" />
 <fmt:message key="I0011" var="I0011" bundle="${sysInfo}" />  
@@ -27,6 +28,7 @@
 <fmt:message key="I0023" var="I0023" bundle="${sysInfo}" />
 <fmt:message key="I0024" var="I0024" bundle="${sysInfo}" />
 <fmt:message key="W0008" var="W0008" bundle="${sysInfo}" />
+<fmt:message key="E0075" var="E0075" bundle="${sysInfo}" />
 <!doctype html>
 <html>
 <head>
@@ -73,7 +75,7 @@
 		
 		<div v-for="(data,index) in datas" class="cy_CIASFE_contpaste" style="border-top: 0px;">
 			<div class="cy_CIASFE_contpastetit">
-			    <input type="checkbox">
+			    <!-- <input type="checkbox">  -->
 				<label>
 				<a v-bind:href="'../detailspage/toDetailsPage?from=comprehensivemonitoring&article_id='+data.article_ID" target="_blank" style="text-decoration: none; color: rgb(0, 0, 0);"><b>{{data.articleTitle}}</b></a>
 				</label>
@@ -93,7 +95,7 @@
 			<div class="cy_CIASFE_contpastfoot">
 			    <div class="cy_CIASFE_footbox01">&nbsp;</div>
 			    <div class="cy_CIASFE_footbox02" >
-			        <a target="_blank" v-bind:href="data.articleURL">{{data.releasetime}} {{data.websiteName}}</a>
+			        <a target="_blank" v-bind:href="data.website">{{data.websiteName}}</a><b>.</b>{{data.releasetime}}
 			        
 			       <!--  <span class="cy_CIASFE_simart" v-on:mouseover="simcontent(index)">
 			                              相似文章：{{data.sim_cnt}}条
@@ -141,6 +143,7 @@ var flag = "${flag}";   //0：热词     1：即将发生
 var Info = {
 		  W0003:'${W0003}',
 		  E0004:'${E0004}',
+		  E0054:'${E0054}',
 		  E0014:'${E0014}',
 		  E0025:'${E0025}',
 		  I0011:'${I0011}',
@@ -159,6 +162,7 @@ var Info = {
 		  I0019:'${I0019}',
 		  I0023:'${I0023}',
 		  I0024:'${I0024}',
+		  E0075:'${E0075}',
 		  W0008:'${W0008}'
 	};
 
@@ -255,6 +259,9 @@ var Info = {
 			    			});
 			        }); 
 			},
+			from_child_search:function(){
+				this.search(this.$refs.pagecomponent.pageBean);
+            },
 			share:function(index){
 				 var id = "sharedv"+index;
 				 var clipboard = new Clipboard('#'+id);
@@ -314,7 +321,8 @@ var Info = {
 					this.checkedArr = [];
 	    			 layer.msg(Info.I0011, {
 		        		  icon: 16
-		        		  ,shade: 0.01
+		        		  ,shade: 0.01,
+		        		  time:false
 		        		});
 		    		axios.get('../front/searchbyhotword',{
 		    			params: {
@@ -342,6 +350,7 @@ var Info = {
 		    				layer.closeAll();
 		    			})
 		    			.catch(function (error) {
+		    				layer.closeAll();
 		    			    console.log(error);
 		    			});
 				}

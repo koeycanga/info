@@ -25,6 +25,9 @@
 <fmt:message key="E0042" var="E0042" bundle="${sysInfo}" />
 <fmt:message key="I0026" var="I0026" bundle="${sysInfo}" />
 <fmt:message key="W0001" var="W0001" bundle="${sysInfo}" />
+<fmt:message key="E0071" var="E0071" bundle="${sysInfo}" />
+<fmt:message key="E0072" var="E0072" bundle="${sysInfo}" />
+<fmt:message key="E0075" var="E0075" bundle="${sysInfo}" />
 <fmt:message key="MaxSearchCnt" var="MaxSearchCnt" bundle="${sysInfo}" />
 <html xmlns:v-on="http://www.w3.org/1999/xhtml"
 	xmlns:v-bind="http://www.w3.org/1999/xhtml">
@@ -142,64 +145,76 @@ input[disabled]{color:#fff;opacity:1}
 			</div>
 			<div class="cy_CMICBMS_addtb">
 				<div class="cy_CMICBMS_addtb_userrole">
-					<span>*</span>用户角色：<select class="cy_CMICBMS_addtb_roleselect" v-model="userInfoVo.urole"
+					<span>*</span>用户角色：<select class="cy_CMICBMS_addtb_roleselect" v-model="userInfoVo.urole" style="width:372px;"
 						v-if="userInfoVo.usuperuserflag==0">
 						<option value="0" selected="selected">输入用户角色</option>
 						<option :value="role.userRole_ID" v-for="role in roles">{{role.userRoleName}}</option>
-					</select> <i v-if="userInfoVo.usuperuserflag==0" class="mark1"></i><span v-if="userInfoVo.usuperuserflag==1">该用户为超级管理员</span>
+					</select> <i v-if="userInfoVo.usuperuserflag==0" class="mark1"></i>
+					<span v-if="userInfoVo.usuperuserflag==1">该用户为超级管理员</span>
 				</div>
-				<div class="cy_CMICBMS_addtb_username">
-					<span>*</span>用户名：&nbsp;&nbsp; <input type="text" placeholder="输入用户名"
+				<div class="cy_CMICBMS_addtb_username" v-bind:style="userInfoVo.usuperuserflag==1?'':'margin-top:10px;'">
+					<span>*</span>用户名：&nbsp;&nbsp; <input autocomplete="off" type="text" placeholder="输入用户名"
 						class="cy_CMICBMS_addinput" v-model="userInfoVo.uid"
 						 @focus="uid_f" @blur="uid_b"
-						maxlength="10" >
+						maxlength="10" style="width:373px;">
 					<div class="cy_CMICBMS_errortip" v-if="userInfoVo.uid==''"
 						v-show="uidshow">输入用户名！</div>
 				<div v-if="is_disabled" class="cy_CMICBMS_addtb_shelter"></div>
 				</div>
-				<div class = "cy_CMICBMS_addtb_userother">
-				<div>
-					<span>*</span>设置密码：<input type="password" placeholder="设置密码"
+				
+				<div class = "cy_CMICBMS_addtb_userother" v-bind:style="userInfoVo.usuperuserflag==1?'':'margin-top:10px;'">
+				
+				<!-- 密码验证提示 -->
+				<div class = "cy_CMICBMS_addtb_pwdCheck" v-if="upwdshow2">
+					<div style="color:red; border: 2px black soli;" v-if="!pwdCheck" >{{Info.E0075}}</div>
+				</div>
+				<div class = "cy_CMICBMS_addtb_pwdCheck2" v-if="upwdshow3">
+					<img src="${ctx}/image/pwdCheck2.png" v-if="!pwdCheck">
+					<img src="${ctx}/image/pwdCheck1.png" v-if="pwdCheck">
+				</div>
+				<!-- ======== -->
+				<div style="margin-top:10px;">
+					<span>*</span>设置密码：<input autocomplete="off" type="password" placeholder="设置密码"
 						class="cy_CMICBMS_addinput" v-model="userInfoVo.upwd"
-						@focus="upwd_f" @blur="upwd_b" maxlength="32">
+						@focus="upwd_f" @blur="upwd_b" maxlength="32" style="width:373px;">
 					<div class="cy_CMICBMS_errortip" v-if="userInfoVo.upwd==''"
 						v-show="upwdshow">输入设置密码！</div>
 				</div>
-				<div>
-					<span>*</span>确认密码：<input type="password" placeholder="确认密码"
+				<div style="margin-top:10px;">
+					<span>*</span>确认密码：<input autocomplete="off" type="password" placeholder="确认密码"
 						class="cy_CMICBMS_addinput" v-model="checkPwd" @focus="checkPwd_f"
-						@blur="checkPwd_b" maxlength="32">
+						@blur="checkPwd_b" maxlength="32" style="width:373px;">
 					<div class="cy_CMICBMS_errortip" v-if="checkPwd==''"
 						v-show="checkPwdshow">确认密码！</div>
 				</div>
-				<div>
-					<span>*</span>姓名：&nbsp; &nbsp;&nbsp;  <input type="text" placeholder="输入姓名"
+				<div style="margin-top:10px;">
+					<span>*</span>姓名：&nbsp; &nbsp;&nbsp;  <input autocomplete="off" type="text" placeholder="输入姓名"
 						class="cy_CMICBMS_addinput" v-model="userInfoVo.uname"
 						@focus="uname_f" @blur="uname_b" maxlength="20">
 					<div class="cy_CMICBMS_errortip" v-if="userInfoVo.uname==''"
 						v-show="unameshow">输入姓名！</div>
 				</div>
-				<div>
-					所属部门：<input type="text" placeholder="所属部门"
+				<div style="margin-top:10px;">
+					所属部门：<input type="text" placeholder="所属部门" autocomplete="off"
 						class="cy_CMICBMS_addinput" v-model="userInfoVo.udep"
 						maxlength="20">
 				</div>
-				<div>
-					手机号码：<input type="text" placeholder="输入手机号"
-						class="cy_CMICBMS_addinput" v-model="userInfoVo.utel">
+				<div style="margin-top:10px;">
+					手机号码：<input type="text" placeholder="输入手机号" autocomplete="off"
+						class="cy_CMICBMS_addinput" v-model="userInfoVo.utel" maxlength="11">
 				</div>
-				<div>
-					邮箱地址：<input type="text" placeholder="输入邮箱地址"
+				<div style="margin-top:10px;">
+					邮箱地址：<input type="text" placeholder="输入邮箱地址" autocomplete="off"
 						class="cy_CMICBMS_addinput" v-model="userInfoVo.uemail"
 						maxlength="50">
 				</div>
-				<div id="cy_CMICBMS_addtb_userStatus">
+				<div id="cy_CMICBMS_addtb_userStatus" >
 					状态：<input type="radio" name="RadioGroup1" value="1"
 						id="RadioGroup1_0" v-model="userInfoVo.ustatus">启用 <input
 						type="radio" name="RadioGroup1" value="0" id="RadioGroup1_1"
 						v-model="userInfoVo.ustatus">停用
 				</div>
-				<div class="cy_CMICBMS_addtb_submit" style="margin: 40px 20px 0 0;">
+				<div class="cy_CMICBMS_addtb_submit" style="margin: 20px 10px 0 15px;">
 					<input type="button" value="确定" class="cy_CMICBMS_schbtn"
 						v-on:click="submit">
 				</div>
@@ -233,11 +248,16 @@ input[disabled]{color:#fff;opacity:1}
         E0042:'${E0042}',
         I0026:'${I0026}',
         W0001:'${W0001}',
+        E0071:'${E0071}',
+        E0072:'${E0072}',
+        E0075:'${E0075}',
+
         MaxSearchCnt:'${MaxSearchCnt}',
 		I0011:'${I0011}'
     };
-    var phoneReg = /^1[3-578]\d{9}$/;				//电话验证
+    var phoneReg =/^1[3,4,5,6,7,8,9]\d{9}$/;				//电话验证
     var mailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;//邮箱验证
+    var pwdReg=/(?![0-9A-Z]+$)(?![0-9a-z]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,32}$/;		//密码验证
     var vm = new Vue({				//列表vue
         el: '#userInfo',
         data: {
@@ -345,7 +365,7 @@ input[disabled]{color:#fff;opacity:1}
                                         _this.btn_search()
                                         _this.checkedId=[];
                                     }else if("current"==res){
-                                    	layer.msg("当前用户不能被删除!");
+                                    	layer.msg(Info.E0071);
                                     } else {
                                         // 超级管理员不能被删除
                                         layer.msg(Info.E0032 + " 超级管理员:" +res+"不能被删除");
@@ -371,7 +391,8 @@ input[disabled]{color:#fff;opacity:1}
                 return function (pageBean) {
                     var l_index = layer.msg(Info.I0011, {
                         icon: 16
-                        ,shade: 0.01
+                        ,shade: 0.01,
+                        time:false
                     });
                     var _this = this;
                     var url = "../user/queryAll";
@@ -404,6 +425,7 @@ input[disabled]{color:#fff;opacity:1}
                         })
                         .catch(function (error) {
                             console.log(error);
+                            layer.close(l_index);	//关闭动画
                         });
 
                 }
@@ -414,6 +436,7 @@ input[disabled]{color:#fff;opacity:1}
     {
         document.getElementById("cy_hidebg").style.display="none";
         document.getElementById("cy_CMICBMS_add").style.display="none";
+        vm2.upwdshow3 = false;
         vm2.reset_all();
     }
 
@@ -428,7 +451,10 @@ input[disabled]{color:#fff;opacity:1}
             is_disabled:false,	//用户名文本框是否可用
             url:"",			
             uidshow:false,		//四个必填项的气泡控制
-            upwdshow:false,		
+            upwdshow:false,	
+            upwdshow2:false,
+            upwdshow3:false,
+            pwdCheck:false,
             checkPwdshow:false,
             unameshow:false		
         },
@@ -445,9 +471,12 @@ input[disabled]{color:#fff;opacity:1}
             },
             upwd_f:function () {
                 this.upwdshow = false;
+                this.upwdshow2 = true;
+                this.upwdshow3 = true;
             },
             upwd_b:function () {
                 this.upwdshow = true;
+                this.upwdshow2 = false;
             },
             checkPwd_f:function () {
                 this.checkPwdshow = false;
@@ -462,10 +491,10 @@ input[disabled]{color:#fff;opacity:1}
                 this.unameshow = true;
             },
             reset_all:function(){		//关闭弹出层后，将属性重置
-            	this.uidshow=false		
-            	this.upwdshow=false
-            	this.checkPwdshow=false
-            	this.unameshow=false	
+            	this.uidshow=false;		
+            	this.upwdshow=false;
+            	this.checkPwdshow=false;
+            	this.unameshow=false;	
             },
             submit:
                 function () {  // 新增&编辑时的提交处理
@@ -483,6 +512,9 @@ input[disabled]{color:#fff;opacity:1}
                         return false;
                     }else if(!phoneReg.test(user.utel)&&user.utel!=''){
                         layer.msg(Info.E0037);   // 手机格式输入不对时，E0037=输入正确手机号码格式
+                        return false;
+                    }else if(!pwdReg.test(user.upwd)&&user.upwd!=''){
+                           // 密码格式输入不对时
                         return false;
                     }else if(user.upwd==""&&this.title=="添加用户"){
                         layer.msg(Info.E0026); 
@@ -520,6 +552,8 @@ input[disabled]{color:#fff;opacity:1}
                         }else if(_this.title=="修改用户"&&response.data.msg=="checkFalse"){
                         	// 排他性MSG
                             layer.msg(Info.W0004);
+                        }else if("statusFalse"==response.data.msg){
+                        	layer.msg(Info.E0072);
                         }else if(_this.title=="修改用户"&&response.data.msg=="ok"){
                         	// 修改成功MSG
                             window.hide();
@@ -554,6 +588,15 @@ input[disabled]{color:#fff;opacity:1}
                             console.log(error);
                         });
                 }
+        },
+        watch:{	
+        	"userInfoVo.upwd":function(){
+        		if(pwdReg.test(this.userInfoVo.upwd)){
+        			this.pwdCheck = true;
+        		}else{
+        			this.pwdCheck = false;
+        		}
+        	}
         }
 
     })

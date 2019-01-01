@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ≥©‘∆ http://www.ichangyun.cn
+ * Copyright 2018 ÁïÖ‰∫ë http://www.ichangyun.cn
  * <p>
- * æ∫’˘«È±®∑÷ŒˆœµÕ≥
+ * Á´û‰∫âÊÉÖÊä•ÂàÜÊûêÁ≥ªÁªü
  */
 package com.ichangyun.InforAnalyaizer.service.comprehensivemonitoring.impl;
 
@@ -18,8 +18,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ichangyun.InforAnalyaizer.mapper.comprehensivemonitoring.ComprehensivemonitoringMapper;
 import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.service.comprehensivemonitoring.ComprehensivemonitoringService;
 import com.ichangyun.InforAnalyaizer.utils.DateUtils;
 
@@ -31,116 +31,116 @@ import com.ichangyun.InforAnalyaizer.utils.DateUtils;
 @Service
 public class ComprehensivemonitoringServiceImpl implements ComprehensivemonitoringService {
 
-	@Autowired
-	private ComprehensivemonitoringMapper comprehensivemonitoringMapper;
+    @Autowired
+    private ComprehensivemonitoringMapper comprehensivemonitoringMapper;
 
-	@Override
-	public int getArticleRowCount(ArticleInfoBean ab) {
-		
-		if(ab.getSimart().equals("0")) {  //∫œ≤¢œ‡À∆Œƒ’¬
-			return comprehensivemonitoringMapper.getArticleRowWithHBCount(ab);
-		}
-		
-		if(ab.getSimart().equals("1")) {  //≤ª∫œ≤¢œ‡À∆Œƒ’¬
-			return comprehensivemonitoringMapper.getArticleRowCount(ab);
-		}
-		
-		return 0;
-	}
+    @Override
+    public int getArticleRowCount(ArticleInfoBean ab) {
 
-	@Override
-	public String getArticleJSON(ArticleInfoBean ab) {
-		ab.setL_pre((ab.getPageNow()-1)*ab.getRowSize());
-		
-		List<ArticleInfoBean> list = null;
-		
-		if(ab.getSimart().equals("0")) {  //∫œ≤¢œ‡À∆Œƒ’¬
-			list = comprehensivemonitoringMapper.getArticleWithHB(ab);
-		}
-			
-		if(ab.getSimart().equals("1")) {  //≤ª∫œ≤¢œ‡À∆Œƒ’¬
-			list = comprehensivemonitoringMapper.getArticle(ab);
-		}
-		
-		JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
+        if(ab.getSimart().equals("0")) {  //ÂêàÂπ∂Áõ∏‰ººÊñáÁ´†
+            return comprehensivemonitoringMapper.getArticleRowWithHBCount(ab);
+        }
 
-	    return listArray.toJSONString();
-	}
+        if(ab.getSimart().equals("1")) {  //‰∏çÂêàÂπ∂Áõ∏‰ººÊñáÁ´†
+            return comprehensivemonitoringMapper.getArticleRowCount(ab);
+        }
 
-	@Override
-	public boolean delarticle(String json, String userid, String deletemode) {
+        return 0;
+    }
 
-		try {
-			List<String> list = new ArrayList<String>();
-			JSONArray ja = JSONArray.parseArray(json);
-			
-			for(int i=0;i<ja.size();i++) {
-				JSONObject obj = (JSONObject) ja.get(i);
-				list.add(obj.getString("id"));
-			}
-			
-			if(list.size()>0) {
-				comprehensivemonitoringMapper.delarticle(list,userid,deletemode);
-			}
-		}catch(Exception e) {
-			return false;
-		}
-		return true;
+    @Override
+    public String getArticleJSON(ArticleInfoBean ab) {
+        ab.setL_pre((ab.getPageNow()-1)*ab.getRowSize());
 
-	}
+        List<ArticleInfoBean> list = null;
 
-	@Override
-	public boolean toyj(String json, HttpSession session) {
-	
-		try {
-			User user = (User) session.getAttribute(CommBean.SESSION_NAME);
-			String userid = user.getUser_ID();
-			List<String> list = new ArrayList<String>();
-			JSONArray ja = JSONArray.parseArray(json);
-			
-			for(int i=0;i<ja.size();i++) {
-				JSONObject obj = (JSONObject) ja.get(i);
-				list.add(obj.getString("id"));
-			}
-			
-			if(list.size()>0) {
-				comprehensivemonitoringMapper.toyj(list,userid);
-			}
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		
-		return true;
+        if(ab.getSimart().equals("0")) {  //ÂêàÂπ∂Áõ∏‰ººÊñáÁ´†
+            list = comprehensivemonitoringMapper.getArticleWithHB(ab);
+        }
 
-	}
+        if(ab.getSimart().equals("1")) {  //‰∏çÂêàÂπ∂Áõ∏‰ººÊñáÁ´†
+            list = comprehensivemonitoringMapper.getArticle(ab);
+        }
 
-	@Override
-	public String getSearchLaestRelsetime(ArticleInfoBean ab) {
-		String time = comprehensivemonitoringMapper.getSearchLaestRelsetime(ab);
-		
-		if(time==null||time.equals("")) {
-			time = DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN);
-		}
-		
-		return time;
-	}
+        JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
 
-	@Override
-	public int getlastestNews(ArticleInfoBean ab) {
-		return comprehensivemonitoringMapper.getlastestNews(ab);
-	}
+        return listArray.toJSONString();
+    }
 
-	@Override
-	public String getSimContent(ArticleInfoBean ab) {
-		
-		ab.setRowSize(CommBean.SIM_MAX_NUM);
-		
-	    List<ArticleInfoBean> list = comprehensivemonitoringMapper.getSimContent(ab);
-		
-		JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
+    @Override
+    public boolean delarticle(String json, String userid, String deletemode) {
 
-	    return listArray.toJSONString();
-	}
+        try {
+            List<String> list = new ArrayList<String>();
+            JSONArray ja = JSONArray.parseArray(json);
+
+            for(int i=0;i<ja.size();i++) {
+                JSONObject obj = (JSONObject) ja.get(i);
+                list.add(obj.getString("id"));
+            }
+
+            if(list.size()>0) {
+                comprehensivemonitoringMapper.delarticle(list,userid,deletemode);
+            }
+        }catch(Exception e) {
+            return false;
+        }
+        return true;
+
+    }
+
+    @Override
+    public boolean toyj(String json, HttpSession session) {
+
+        try {
+            User user = (User) session.getAttribute(CommBean.SESSION_NAME);
+            String userid = user.getUser_ID();
+            List<String> list = new ArrayList<String>();
+            JSONArray ja = JSONArray.parseArray(json);
+
+            for(int i=0;i<ja.size();i++) {
+                JSONObject obj = (JSONObject) ja.get(i);
+                list.add(obj.getString("id"));
+            }
+
+            if(list.size()>0) {
+                comprehensivemonitoringMapper.toyj(list,userid);
+            }
+
+        }catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+
+    }
+
+    @Override
+    public String getSearchLaestRelsetime(ArticleInfoBean ab) {
+        String time = comprehensivemonitoringMapper.getSearchLaestRelsetime(ab);
+
+        if(time==null||time.equals("")) {
+            time = DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN);
+        }
+
+        return time;
+    }
+
+    @Override
+    public int getlastestNews(ArticleInfoBean ab) {
+        return comprehensivemonitoringMapper.getlastestNews(ab);
+    }
+
+    @Override
+    public String getSimContent(ArticleInfoBean ab) {
+
+        ab.setRowSize(CommBean.SIM_MAX_NUM);
+
+        List<ArticleInfoBean> list = comprehensivemonitoringMapper.getSimContent(ab);
+
+        JSONArray listArray=(JSONArray) JSONArray.toJSON(list);
+
+        return listArray.toJSONString();
+    }
 }

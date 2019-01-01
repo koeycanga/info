@@ -1,16 +1,17 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.service.userInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 
 /**
- * UserService ÒµÎñ²ã½Ó¿Ú
+ * UserService ä¸šåŠ¡å±‚æ¥å£
  * @author renhao
  * @date 2018/11/09
  */

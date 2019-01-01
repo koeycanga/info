@@ -15,6 +15,9 @@
 				m1.UserRole_ID,
 				m1.UpdateDateTime,
 				m1.SuperUserFlag,
+				m1.Status,
+				m1.Customer_ID,
+				m1.CollectionField_ID,
 				m2.UserRoleName,
 				m2.Authority
 			FROM
@@ -23,7 +26,6 @@
 			WHERE
 				m1.User_ID =#{param.username}
 			AND m1.PASSWORD =#{param.passwd}
-			and m1.Status='1'
     </select>
     
     <select id="getName" parameterType="java.util.Map" resultType="java.lang.String">

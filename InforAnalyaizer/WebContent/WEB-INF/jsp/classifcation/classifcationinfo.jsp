@@ -962,7 +962,8 @@ var app = new Vue({
 					  if(ismsg){
 			        	var l_index = layer.msg(Info.I0011, {
 			        		  icon: 16
-			        		  ,shade: 0.01
+			        		  ,shade: 0.01,
+			        		  time:false
 			        		});
 					  }
 			        	var _this = this;

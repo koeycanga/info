@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ * ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.service.collection.impl;
 
@@ -26,398 +26,423 @@ import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.service.collection.CollectionService;
 import com.ichangyun.InforAnalyaizer.service.numberingcontrol.NumberingcontrolService;
 import com.ichangyun.InforAnalyaizer.utils.Obj2Map;
+
 /**
- * Service£ºÎÒµÄÊÕ²Ø
+ * Serviceï¼šæˆ‘çš„æ”¶è—
  *
  * @author lan
  * @date 2018/11/27
  */
 @Service
 public class CollectionServiceImpl implements CollectionService {
-	
-	@Autowired
-	private NumberingcontrolService numberService;
-	
-	@Autowired
-	private MyCollectionMapper collectionMapper;
-	@Autowired
-	private CollectionTypeMapper typeMapper;
+
+    @Autowired
+    private NumberingcontrolService numberService;
+    @Autowired
+    private MyCollectionMapper collectionMapper;
+    @Autowired
+    private CollectionTypeMapper typeMapper;
+
     /**
-     * getOpts£º·µ»Ø¼ìË÷Ñ¡Ïî
+     * getOptsï¼šè¿”å›æ£€ç´¢é€‰é¡¹
      *
      * @return list
      */
-	@Override
-	public List<SearchOptBean> getOpts() {
-		return this.collectionMapper.getOpts();
-	}
+    @Override
+    public List<SearchOptBean> getOpts() {
+        return this.collectionMapper.getOpts();
+    }
+
     /**
-     * queryAll£º·µ»Ø²éÑ¯ÊÕ²ØÎÄÕÂ
+     * queryAllï¼šè¿”å›æŸ¥è¯¢æ”¶è—æ–‡ç« 
      *
-     * @param MyCollectionVo	Ìõ¼ş
-     * @param BaseBean	·ÖÒ³Àà
-     * @param User		µ±Ç°ÓÃ»§
+     * @param MyCollectionVo æ¡ä»¶
+     * @param BaseBean  åˆ†é¡µç±»
+     * @param User      å½“å‰ç”¨æˆ·
      * @return list
      */
-	@Override
-	public List<MyCollectionVo> queryAll(MyCollectionVo vo, BaseBean bb, User u,SearchOptBean sob) {
-		vo.setUserId(u.getUser_ID());
-		Map<String, Object> key = new HashMap<>();
-		key = Obj2Map.object2Map(vo);
-		int l_pre = (bb.getPageNow() - 1) * bb.getRowSize();
-		// ²éÑ¯Ìõ¼şµÄmap²ÎÊı
-		key.put("l_pre", l_pre);
-		key.put("rowSize", bb.getRowSize());
-		List<MyCollectionVo> list = new ArrayList<>();
-		if(sob.getId()==1) {
-			list = this.collectionMapper.queryAllO1(key);
-		}else if(sob.getId()==2) {
-			list = this.collectionMapper.queryAllO2(key);
-		}else if(sob.getId()==2) {
-			list = this.collectionMapper.queryAllO3(key);
-		}else if(sob.getId()==2) {
-			list = this.collectionMapper.queryAllO4(key);
-		}
-		return list;
-	}
+    @Override
+    public List<MyCollectionVo> queryAll(MyCollectionVo vo, BaseBean bb, User u, SearchOptBean sob) {
+        vo.setUserId(u.getUser_ID());
+        Map<String, Object> key = new HashMap<>();
+        key = Obj2Map.object2Map(vo);
+        int l_pre = (bb.getPageNow() - 1) * bb.getRowSize();
+        // æŸ¥è¯¢æ¡ä»¶çš„mapå‚æ•°
+        key.put("l_pre", l_pre);
+        key.put("rowSize", bb.getRowSize());
+        List<MyCollectionVo> list = new ArrayList<>();
+        if(sob.getId().equals("M001") ) {
+            list = this.collectionMapper.queryAllO1(key);
+        }else if(sob.getId().equals("M002") ) {
+            list = this.collectionMapper.queryAllO2(key);
+        }else if(sob.getId().equals("M003") ) {
+            list = this.collectionMapper.queryAllO3(key);
+        }else if(sob.getId().equals("M004") ) {
+            list = this.collectionMapper.queryAllO4(key);
+        }
+        return list;
+    }
+
     /**
-     * queryCount£º·µ»Ø²éÑ¯ÊÕ²ØÎÄÕÂµÄÊıÁ¿
+     * queryCountï¼šè¿”å›æŸ¥è¯¢æ”¶è—æ–‡ç« çš„æ•°é‡
      *
-     * @param MyCollectionVo	Ìõ¼ş
-     * @param User		µ±Ç°ÓÃ»§
+     * @param MyCollectionVo    æ¡ä»¶
+     * @param User      å½“å‰ç”¨æˆ·
      * @return int
      */
-	@Override
-	public int queryCount(MyCollectionVo vo, User u,SearchOptBean sob) {
-		vo.setUserId(u.getUser_ID());
-		Map<String, Object> key = new HashMap<>();
-		key = Obj2Map.object2Map(vo);
-		int count = 0;
-		if(sob.getId()==1) {
-			count = this.collectionMapper.queryCountO1(key);
-		}else if(sob.getId()==2) {
-			count = this.collectionMapper.queryCountO2(key);
-		}else if(sob.getId()==2) {
-			count = this.collectionMapper.queryCountO3(key);
-		}else if(sob.getId()==2) {
-			count = this.collectionMapper.queryCountO4(key);
-		}
-		return count;
-	}
+    @Override
+    public int queryCount(MyCollectionVo vo, User u, SearchOptBean sob) {
+        vo.setUserId(u.getUser_ID());
+        Map<String, Object> key = new HashMap<>();
+        key = Obj2Map.object2Map(vo);
+        int count = 0;
+        if(sob.getId().equals("M001")) {
+            count = this.collectionMapper.queryCountO1(key);
+        }else if(sob.getId().equals("M002")) {
+            count = this.collectionMapper.queryCountO2(key);
+        }else if(sob.getId().equals("M003")) {
+            count = this.collectionMapper.queryCountO3(key);
+        }else if(sob.getId().equals("M004")) {
+            count = this.collectionMapper.queryCountO4(key);
+        }
+        return count;
+    }
     /**
-     * delete£ºÉ¾³ıÊÕ²ØÎÄÕÂ
+     * deleteï¼šåˆ é™¤æ”¶è—æ–‡ç« 
      *
-     * @param String[] checkedId	ĞÅÏ¢id
+     * @param String[] checkedId    ä¿¡æ¯id
      * @return String
      */
-	@Override
-	public String delete(String[] checkedId) {
-		MyCollectionVo vo1 = new MyCollectionVo();
-		vo1.setKey(checkedId[0]);							//»ñÈ¡µ±Ç°ÎÄ¼ş¼ĞĞÅÏ¢
-		String userid = vo1.getUserId();					//ÊÕ²ØÓÃ»§ĞÅÏ¢
-		String collectionTypeId = vo1.getCollectiontypeId();//ÊÕ²Ø½ÚµãĞÅÏ¢
-		
-		String artIds;										//ÊÕ²ØÎÄÕÂid
-		List<String> aIds = new ArrayList<>();
-		Map<String, String> key = new HashMap<>();
-		for (String id : checkedId) {
-			MyCollectionVo vo = new MyCollectionVo();
-			vo.setKey(id);
-			aIds.add(vo.getArticleId());
-		}
-		
-		
-		StringBuilder aid = new StringBuilder();	//½«ËùÓĞÑ¡ÖĞµÄÎÄÕÂµÄid×ö³É×Ö·û´®
-		aid.append("'");
-		for (int i = 0; i < aIds.size(); i++) {
-			if (i < aIds.size() - 1) {
-				aid.append(aIds.get(i) + "','");
-			} else {
-				aid.append(aIds.get(i) + "'");
-			}
-		}
-		artIds = aid.toString();
-		key.put("userid", userid);
-		key.put("collectiontypeid", collectionTypeId);
-		key.put("articleId", artIds);
-		try {
-			this.collectionMapper.delete(key);
-		} catch (DataAccessException e) {
-			return "exist";
-		}
-		return "ok";
-	}
+    @Override
+    public String delete(String[] checkedId) {
+        MyCollectionVo vo1 = new MyCollectionVo();
+        vo1.setKey(checkedId[0]);                           //è·å–å½“å‰æ–‡ä»¶å¤¹ä¿¡æ¯
+        String userid = vo1.getUserId();                    //æ”¶è—ç”¨æˆ·ä¿¡æ¯
+        String collectionTypeId = vo1.getCollectiontypeId();//æ”¶è—èŠ‚ç‚¹ä¿¡æ¯
+
+        String artIds;                                      //æ”¶è—æ–‡ç« id
+        List<String> aIds = new ArrayList<>();
+        Map<String, String> key = new HashMap<>();
+        for (String id : checkedId) {
+            MyCollectionVo vo = new MyCollectionVo();
+            vo.setKey(id);
+            aIds.add(vo.getArticleId());
+        }
+
+        StringBuilder aid = new StringBuilder();    //å°†æ‰€æœ‰é€‰ä¸­çš„æ–‡ç« çš„idåšæˆå­—ç¬¦ä¸²
+        aid.append("'");
+        for (int i = 0; i < aIds.size(); i++) {
+            if (i < aIds.size() - 1) {
+                aid.append(aIds.get(i) + "','");
+            } else {
+                aid.append(aIds.get(i) + "'");
+            }
+        }
+        artIds = aid.toString();
+        key.put("userid", userid);
+        key.put("collectiontypeid", collectionTypeId);
+        key.put("articleId", artIds);
+        try {
+            this.collectionMapper.delete(key);
+        } catch (DataAccessException e) {
+            return "exist";
+        }
+        return "ok";
+    }
+
     /**
-     * getTypes£º»ñÈ¡µ±Ç°ÓÃ»§µÄÊÕ²Ø¼ĞĞÅÏ¢
+     * getTypesï¼šè·å–å½“å‰ç”¨æˆ·çš„æ”¶è—å¤¹ä¿¡æ¯
      *
-     * @param User u	µ±Ç°ÓÃ»§
+     * @param User u    å½“å‰ç”¨æˆ·
      * @return list
      */
-	@Override
-	public List<CollectionTypeVo> getTypes(User u) {
-		List<CollectionTypeVo>list = this.typeMapper.queryAllType(u.getUser_ID());
-		 List<CollectionTypeVo> neat = this.neat(list,"C000000000");
-		 return this.setIsParent(neat);
-	}
-    /**
-     * addType£ºÌí¼ÓÊÕ²Ø¼Ğ
-     *
-     * @param  CollectionTypeVo	ÊÕ²Ø¼ĞĞÅÏ¢
-     * @return String
-     */
-	@Override
-	public String addType(CollectionTypeVo vo) {
-		
-		String msg = "ok";
-		String cID;
-		try {
-			cID = this.numberService.getNextCFID("NC00000002");
-			vo.setCollectiontypeId(cID);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}//ÎªÊÕ²ØÃüÃû
-		
-		vo.setCollectionpath(vo.getPpath()+vo.getCollectiontypeId());
-		vo.setCollectionstratum(vo.getCollectionpath().length()/10);
-		if(vo.getCollectionstratum()>4) {
-			return "overstep";
-		}
-		vo.setValidflag("1");
-		vo.setDisplayorder(this.typeMapper.queryCount(vo.getParentCollectiontypeId()));
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		vo.setUpdatedatetime(df.format(new Date()));
-		try {
-			this.typeMapper.insertSelective(vo);
-		} catch (Exception e) {
-			e.printStackTrace();
-			msg = "fault";
-		}
-		return msg;
-	}
-    /**
-     * updateType£º¸üĞÂÊÕ²Ø¼Ğ
-     *
-     * @param  CollectionTypeVo	ÊÕ²Ø¼ĞĞÅÏ¢
-     * @return String
-     */
-	@Override
-	public String updateType(CollectionTypeVo vo) {
-		String msg = "ok";
-		try {
-			this.typeMapper.updateByPrimaryKeySelective(vo);
-		} catch (Exception e) {
-			e.printStackTrace();
-			msg = "fault";
-		}
-		return msg;
-	}
+    @Override
+    public List<CollectionTypeVo> getTypes(User u) {
+        List<CollectionTypeVo>list = this.typeMapper.queryAllType(u.getUser_ID());
+        List<CollectionTypeVo> neat = this.neat(list,"C000000000");
+        return this.setIsParent(neat);
+    }
 
     /**
-     * move£ºÒÆ¶¯ÎÄÕÂ
+     * addTypeï¼šæ·»åŠ æ”¶è—å¤¹
      *
-     * @param  String[] checkedId
-     * @param  collectiontypeId	ÊÕ²Ø¼Ğid
+     * @param  vo æ”¶è—å¤¹ä¿¡æ¯
      * @return String
      */
-	@Override
-	public String move(String[] checkedId, String collectiontypeId) {
-		MyCollectionVo vo1 = new MyCollectionVo();
-		vo1.setKey(checkedId[0]);							//»ñÈ¡µ±Ç°ÎÄ¼ş¼ĞĞÅÏ¢
-		String userid = vo1.getUserId();					//ÊÕ²ØÓÃ»§ĞÅÏ¢
-		String collectionTypeId = vo1.getCollectiontypeId();//ÊÕ²Ø½ÚµãĞÅÏ¢
-		String artIds;										//ÊÕ²ØÎÄÕÂid
-		List<String> aIds = new ArrayList<>();
-		Map<String, String> key = new HashMap<>();
-		for (String id : checkedId) {
-			MyCollectionVo vo = new MyCollectionVo();
-			vo.setKey(id);
-			aIds.add(vo.getArticleId());
+    @Override
+    public String addType(CollectionTypeVo vo) {
+
+        String msg = "ok";
+        String cID;
+        try {
+            cID = this.numberService.getNextCFID("NC00000002");
+            vo.setCollectiontypeId(cID);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }//ä¸ºæ”¶è—å‘½å
+        if (vo.getPpath().equals("")) {
+        	vo.setCollectionpath(vo.getCollectiontypeId());
+        	vo.setCollectionstratum(vo.getCollectionpath().length()/10);
+		}else {
+			vo.setCollectionpath(vo.getPpath() + "/" + vo.getCollectiontypeId());
+			vo.setCollectionstratum(vo.getCollectionpath().split("/").length);
 		}
-		StringBuilder aid = new StringBuilder();	//½«ËùÓĞÑ¡ÖĞµÄÎÄÕÂµÄid×ö³É×Ö·û´®
-		aid.append("'");
-		for (int i = 0; i < aIds.size(); i++) {
-			if (i < aIds.size() - 1) {
-				aid.append(aIds.get(i) + "','");
-			} else {
-				aid.append(aIds.get(i) + "'");
-			}
-		}
-		artIds = aid.toString();
-		key.put("userid", userid);
-		key.put("collectiontypeid", collectionTypeId);
-		key.put("articleId", artIds);
-		key.put("updateTypeId", collectiontypeId);
-		try {
-			this.collectionMapper.updateType(key);
-		} catch (Exception e) {
-			return "exist";
-		}
-		return "ok";
-	}
-	
+        if(vo.getCollectionstratum() > 4) {
+            return "overstep";
+        }
+        vo.setValidflag("1");
+        vo.setDisplayorder(this.typeMapper.queryCount(vo.getParentCollectiontypeId()));
+        vo.setCreateuser(vo.getUserId());
+        vo.setUpdateuser(vo.getUserId());
+        try {
+            this.typeMapper.insertSelective(vo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg = "fault";
+        }
+        return msg;
+    }
 
     /**
-     * deleteType£ºÉ¾³ı½Úµã
+     * updateTypeï¼šæ›´æ–°æ”¶è—å¤¹
      *
-     * @param CollectionTypeVo vo	½ÚµãĞÅÏ¢
+     * @param vo æ”¶è—å¤¹ä¿¡æ¯
      * @return String
      */
-	@Override
-	public String deleteType(CollectionTypeVo vo) {
-		try {
-			this.typeMapper.deleteByPrimaryKey(vo);
-			this.typeMapper.beforeOrder(vo);
-			Map<String, String>key = new HashMap<>();
-			key.put("userid", vo.getUserId());
-			key.put("collectiontypeid", vo.getCollectiontypeId());
-			this.collectionMapper.delete(key);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "fault";
-		}
-		return "ok";
-	}
+    @Override
+    public String updateType(CollectionTypeVo vo) {
+        String msg = "ok";
+        vo.setUpdateuser(vo.getUserId());
+        try {
+            this.typeMapper.updateByPrimaryKeySelective(vo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg = "fault";
+        }
+        return msg;
+    }
+
     /**
-     * moveType£ºÒÆ¶¯½Úµã
+     * moveï¼šç§»åŠ¨æ–‡ç« 
      *
-     * @param String collectiontypeId	ÒªÒÆ¶¯µÄ½Úµãid
-     * @param String targetId		Ä¿±êid£¨Èç¹ûÊÇÅÅĞò£¬ÔòÊÇid_top£©
+     * @param checkedId
+     * @param collectiontypeId æ”¶è—å¤¹id
      * @return String
      */
-	
-	@Override
-	public String moveType(String collectiontypeId, String targetId) {
-		String msg = "ok";
-		String[]ids = targetId.split("_");
-		CollectionTypeVo vo = this.typeMapper.queryOne(collectiontypeId);//µ±Ç°½Úµã
-		CollectionTypeVo pvo = this.typeMapper.queryOne(ids[0]);		//Ä¿±ê½Úµã
-		//µ±Ä¿±ê½ÚµãÎªµ±Ç°½ÚµãµÄ×Ó½ÚµãÊ±
-		String cpath = vo.getCollectionpath();
-		String tpath = pvo.getCollectionpath();
-		if(tpath.indexOf(cpath)!=-1) {
-			return "fault";
-		}
-		if(ids.length>1&&ids[1].equals("bottom")) {		//ÒÆµ½Ä¿±ê½ÚµãÏÂ·½
-			if(vo.getParentCollectiontypeId().equals(pvo.getParentCollectiontypeId())) {//Í¬ÎÄ¼ş¼ĞÒÆ¶¯µ½×îºóÒ»Î»
-				int oldDisplayOrder = vo.getDisplayorder();			//Ô­Ê¼±íÊ¾Ë³Ğò¡ª¡ªÔÚÍ¬ÎÄ¼ş¼ĞÏÂÒÆ¶¯Ê¹ÓÃ
-				vo.setDisplayorder(pvo.getDisplayorder());
-				Map<String, Object> map = Obj2Map.object2Map(vo);
-				map.put("oldDisplayOrder", oldDisplayOrder);
-				this.typeMapper.changeOrder2(map);
-				try {
-					this.typeMapper.updateByPrimaryKeySelective(vo);
-				} catch (Exception e) {
-					msg = "fault";
-					e.printStackTrace();
-				}
-			}else {		//²»Í¬ÎÄ¼ş¼ĞÏÂ¡¢Ïàµ±ÓÚÖ±½ÓÒÆ¶¯µ½Ä¿±ê¸¸ÎÄ¼ş¼ĞÀïÃæ
-				this.typeMapper.beforeOrder(vo);//ĞŞ¸Ä×ÔÉíÊÕ²Ø¼ĞµÄË³Ğò£¬×Ô´Ë½ÚµãºóµÄ½Úµã¶¼¼õ1
-				vo.setParentCollectiontypeId(pvo.getParentCollectiontypeId());
-				vo.setCollectionpath(pvo.getCollectionpath().substring(0, pvo.getCollectionpath().length()-10)+vo.getCollectiontypeId());
-				vo.setCollectionstratum(vo.getCollectionpath().length()/10);
-				vo.setDisplayorder(pvo.getDisplayorder()+1);
-				try {
-					//´ËÊ±Ó¦¸ÃĞŞ¸ÄÄ¿±êÊÕ²Ø¼ĞµÄË³Ğò£¬µ«Ä¬ÈÏÌí¼Ó½áÎ²ËùÒÔ²»×öĞŞ¸Ä	
-					
-					this.typeMapper.updateByPrimaryKeySelective(vo);
-				} catch (Exception e) {
-					msg = "fault";
-					e.printStackTrace();
-				}
-			}
-			return msg;
-		}
-		
-		if(ids.length==1&&!ids[0].equals(collectiontypeId)) {		//ÒÆ¶¯µ½Ä¿±êÎÄ¼ş¼ĞÄÚ	
-			if(pvo.getCollectionstratum()==4) {
-				return "overstep";
-			}
-			this.typeMapper.beforeOrder(vo);//ĞŞ¸Ä×ÔÉíÊÕ²Ø¼ĞµÄË³Ğò£¬×Ô´Ë½ÚµãºóµÄ½Úµã¶¼¼õ1
-			vo.setParentCollectiontypeId(pvo.getCollectiontypeId());
-			vo.setCollectionpath(pvo.getCollectionpath()+vo.getCollectiontypeId());
-			vo.setCollectionstratum(vo.getCollectionpath().length()/10);
-			vo.setDisplayorder(Integer.parseInt(pvo.getChildrenNum()));
-			try {
-				//´ËÊ±Ó¦¸ÃĞŞ¸ÄÄ¿±êÊÕ²Ø¼ĞµÄË³Ğò£¬µ«Ä¬ÈÏÌí¼Ó½áÎ²ËùÒÔ²»×öĞŞ¸Ä	
-				
-				this.typeMapper.updateByPrimaryKeySelective(vo);
-			} catch (Exception e) {
-				msg = "fault";
-				e.printStackTrace();
-			}
-		}else if(ids.length==2&&!ids[0].equals(collectiontypeId)) {//ÒÆ¶¯µ½Ä¿±êÇ°Ãæ
+    @Override
+    public String move(String[] checkedId, String collectiontypeId) {
+        MyCollectionVo vo1 = new MyCollectionVo();
+        vo1.setKey(checkedId[0]);                           //è·å–å½“å‰æ–‡ä»¶å¤¹ä¿¡æ¯
+        String userid = vo1.getUserId();                    //æ”¶è—ç”¨æˆ·ä¿¡æ¯
+        String collectionTypeId = vo1.getCollectiontypeId();//æ”¶è—èŠ‚ç‚¹ä¿¡æ¯
+        String artIds;                                      //æ”¶è—æ–‡ç« id
+        List<String> aIds = new ArrayList<>();
+        Map<String, String> key = new HashMap<>();
+        for (String id : checkedId) {
+            MyCollectionVo vo = new MyCollectionVo();
+            vo.setKey(id);
+            aIds.add(vo.getArticleId());
+        }
+        StringBuilder aid = new StringBuilder();    //å°†æ‰€æœ‰é€‰ä¸­çš„æ–‡ç« çš„idåšæˆå­—ç¬¦ä¸²
+        aid.append("'");
+        for (int i = 0; i < aIds.size(); i++) {
+            if (i < aIds.size() - 1) {
+                aid.append(aIds.get(i) + "','");
+            } else {
+                aid.append(aIds.get(i) + "'");
+            }
+        }
+        artIds = aid.toString();
+        key.put("userid", userid);
+        key.put("collectiontypeid", collectionTypeId);
+        key.put("articleId", artIds);
+        key.put("updateTypeId", collectiontypeId);
 
-			int oldDisplayOrder = vo.getDisplayorder();			//Ô­Ê¼±íÊ¾Ë³Ğò¡ª¡ªÔÚÍ¬ÎÄ¼ş¼ĞÏÂÒÆ¶¯Ê¹ÓÃ
-			int targetDisplayOrder = pvo.getDisplayorder();		//Ä¿±ê±íÊ¾Ë³Ğò¡ª¡ªÔÚÍ¬ÎÄ¼ş¼ĞÏÂÒÆ¶¯Ê¹ÓÃ
-			if (!vo.getParentCollectiontypeId().equals(pvo.getParentCollectiontypeId())) {		//´ËÊ±²»ÔÚÍ¬Ò»¸öÎÄ¼ş¼ĞÏÂÅÅĞò
-				this.typeMapper.afterOrder(pvo);			//Ä¿±ê¸¸½Úµã½Úµãºó±íÊ¾Ë³Ğò¼ÓÒ»
-				this.typeMapper.beforeOrder(vo);			//µ±Ç°¸¸½Úµã½Úµãºó±íÊ¾Ë³Ğò-1
-				voLoad(vo, pvo);
-				try {
-					this.typeMapper.updateByPrimaryKeySelective(vo);
-				} catch (Exception e) {
-					msg = "fault";
-					e.printStackTrace();
-				}
-			}else{		//ÔÚÍ¬Ò»¸öÎÄ¼ş¼ĞÏÂ
-				if (oldDisplayOrder>targetDisplayOrder) {		//ÍùÉÏÅÅĞò
-					voLoad(vo, pvo);
-					
-					Map<String, Object> map = Obj2Map.object2Map(vo);
-					map.put("oldDisplayOrder", oldDisplayOrder);
-					this.typeMapper.changeOrder1(map);
-					try {
-						this.typeMapper.updateByPrimaryKeySelective(vo);
-					} catch (Exception e) {
-						msg = "fault";
-						e.printStackTrace();
-					}
-				}else {				//ÍùÏÂÅÅĞò
-					voLoad(vo, pvo);
-					vo.setDisplayorder(pvo.getDisplayorder()-1);
-					Map<String, Object> map = Obj2Map.object2Map(vo);
-					map.put("oldDisplayOrder", oldDisplayOrder);
-					this.typeMapper.changeOrder2(map);
-					try {
-						this.typeMapper.updateByPrimaryKeySelective(vo);
-					} catch (Exception e) {
-						msg = "fault";
-						e.printStackTrace();
-					}
-				}
-			}
+        try {
+            this.collectionMapper.updateType(key);
+        } catch (Exception e) {
+            return "exist";
+        }
+        return "ok";
+    }
 
-			
-		}
-		return msg;
-	}
-	//×°ÌîvoĞÅÏ¢£¬ÓÃÓÚmoveType()
-	private void voLoad(CollectionTypeVo vo,CollectionTypeVo pvo) {	
-		vo.setParentCollectiontypeId(pvo.getParentCollectiontypeId());
-		vo.setCollectionpath(pvo.getCollectionpath().substring(0, pvo.getCollectionpath().length()-10)+vo.getCollectiontypeId());
-		vo.setDisplayorder(pvo.getDisplayorder());
-		vo.setCollectionstratum(vo.getCollectionpath().length()/10);
-	}
-	//½«°üº¬È«²¿¶ÔÏóµÄ¼¯ºÏÕûÀíÎªÃ¿¸ö¶ÔÏó´øÓĞ×Ó½ÚµãµÄ¼¯ºÏ
-	private List<CollectionTypeVo> neat(List<CollectionTypeVo> list,String pid){
-		List<CollectionTypeVo> res = new ArrayList<>();
-			for (CollectionTypeVo vo : list) {
-				if(vo.getParentCollectiontypeId().equals(pid)) {
-					vo.setChildren(neat(list, vo.getCollectiontypeId()));
-					res.add(vo);
-				}
-			}
-		
-		return res;
-	}
-	//½«¸¸½Úµã±íÊ¶Ìí¼ÓÉÏÈ¥
-	private List<CollectionTypeVo> setIsParent(List<CollectionTypeVo> list){
-		for (CollectionTypeVo vo : list) {
-			if(vo.getChildren().size()>0) {
-				vo.setIsParent(1);
-				vo.setChildren(this.setIsParent(vo.getChildren()));
-			}
-		}
-		return list;
-	}
+    /**
+     * deleteTypeï¼šåˆ é™¤èŠ‚ç‚¹
+     *
+     * @param vo   èŠ‚ç‚¹ä¿¡æ¯
+     * @return String
+     */
+    @Override
+    public String deleteType(CollectionTypeVo vo) {
+        try {
+            this.typeMapper.deleteByPrimaryKey(vo);
+            this.typeMapper.beforeOrder(vo);
+            Map<String, String>key = new HashMap<>();
+            key.put("userid", vo.getUserId());
+            key.put("collectiontypeid", vo.getCollectiontypeId());
+            this.collectionMapper.delete(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "fault";
+        }
+        return "ok";
+    }
+
+    /**
+     * moveTypeï¼šç§»åŠ¨èŠ‚ç‚¹
+     *
+     * @param collectiontypeId   è¦ç§»åŠ¨çš„èŠ‚ç‚¹id
+     * @param targetId       ç›®æ ‡idï¼ˆå¦‚æœæ˜¯æ’åºï¼Œåˆ™æ˜¯id_topï¼‰
+     * @return String
+     */
+    @Override
+    public String moveType(String collectiontypeId, String targetId) {
+        String msg = "ok";
+        String[]ids = targetId.split("_");
+        CollectionTypeVo vo = this.typeMapper.queryOne(collectiontypeId);//å½“å‰èŠ‚ç‚¹
+        CollectionTypeVo pvo = this.typeMapper.queryOne(ids[0]);        //ç›®æ ‡èŠ‚ç‚¹
+        //å½“ç›®æ ‡èŠ‚ç‚¹ä¸ºå½“å‰èŠ‚ç‚¹çš„å­èŠ‚ç‚¹æ—¶
+        String cpath = vo.getCollectionpath();
+        String tpath = pvo.getCollectionpath();
+        if (tpath.indexOf(cpath) != -1) {
+            return "fault";
+        }
+        if (ids.length > 1 && ids[1].equals("bottom")) {     //ç§»åˆ°ç›®æ ‡èŠ‚ç‚¹ä¸‹æ–¹
+            if (vo.getParentCollectiontypeId().equals(pvo.getParentCollectiontypeId())) {//åŒæ–‡ä»¶å¤¹ç§»åŠ¨åˆ°æœ€åä¸€ä½
+                int oldDisplayOrder = vo.getDisplayorder();         //åŸå§‹è¡¨ç¤ºé¡ºåºâ€”â€”åœ¨åŒæ–‡ä»¶å¤¹ä¸‹ç§»åŠ¨ä½¿ç”¨
+                vo.setDisplayorder(pvo.getDisplayorder());
+                Map<String, Object> map = Obj2Map.object2Map(vo);
+                map.put("oldDisplayOrder", oldDisplayOrder);
+                this.typeMapper.changeOrder2(map);
+                try {
+                    this.typeMapper.updateByPrimaryKeySelective(vo);
+                } catch (Exception e) {
+                    msg = "fault";
+                    e.printStackTrace();
+                }
+            } else {     //ä¸åŒæ–‡ä»¶å¤¹ä¸‹ã€ç›¸å½“äºç›´æ¥ç§»åŠ¨åˆ°ç›®æ ‡çˆ¶æ–‡ä»¶å¤¹é‡Œé¢
+                this.typeMapper.beforeOrder(vo);//ä¿®æ”¹è‡ªèº«æ”¶è—å¤¹çš„é¡ºåºï¼Œè‡ªæ­¤èŠ‚ç‚¹åçš„èŠ‚ç‚¹éƒ½å‡1
+                vo.setParentCollectiontypeId(pvo.getParentCollectiontypeId());
+                vo.setCollectionpath(pvo.getCollectionpath().substring(0,
+                        pvo.getCollectionpath().length() - 10) + "/" + vo.getCollectiontypeId());
+                vo.setCollectionstratum(vo.getCollectionpath().split("/").length);
+                vo.setDisplayorder(pvo.getDisplayorder()+1);
+                try {
+                    //æ­¤æ—¶åº”è¯¥ä¿®æ”¹ç›®æ ‡æ”¶è—å¤¹çš„é¡ºåºï¼Œä½†é»˜è®¤æ·»åŠ ç»“å°¾æ‰€ä»¥ä¸åšä¿®æ”¹
+                    this.typeMapper.updateByPrimaryKeySelective(vo);
+                } catch (Exception e) {
+                    msg = "fault";
+                    e.printStackTrace();
+                }
+            }
+            return msg;
+        }
+
+        if (ids.length == 1 && !ids[0].equals(collectiontypeId)) {       //ç§»åŠ¨åˆ°ç›®æ ‡æ–‡ä»¶å¤¹å†…
+            if(pvo.getCollectionstratum() == 4) {
+                return "overstep";
+            }
+            this.typeMapper.beforeOrder(vo);//ä¿®æ”¹è‡ªèº«æ”¶è—å¤¹çš„é¡ºåºï¼Œè‡ªæ­¤èŠ‚ç‚¹åçš„èŠ‚ç‚¹éƒ½å‡1
+            vo.setParentCollectiontypeId(pvo.getCollectiontypeId());
+            vo.setCollectionpath(pvo.getCollectionpath() + "/" + vo.getCollectiontypeId());
+            vo.setCollectionstratum(vo.getCollectionpath().split("/").length);
+            vo.setDisplayorder(Integer.parseInt(pvo.getChildrenNum()));
+            try {
+                //æ­¤æ—¶åº”è¯¥ä¿®æ”¹ç›®æ ‡æ”¶è—å¤¹çš„é¡ºåºï¼Œä½†é»˜è®¤æ·»åŠ ç»“å°¾æ‰€ä»¥ä¸åšä¿®æ”¹
+
+                this.typeMapper.updateByPrimaryKeySelective(vo);
+            } catch (Exception e) {
+                msg = "fault";
+                e.printStackTrace();
+            }
+        } else if (ids.length == 2 && !ids[0].equals(collectiontypeId)) {//ç§»åŠ¨åˆ°ç›®æ ‡å‰é¢
+
+            int oldDisplayOrder = vo.getDisplayorder();         //åŸå§‹è¡¨ç¤ºé¡ºåºâ€”â€”åœ¨åŒæ–‡ä»¶å¤¹ä¸‹ç§»åŠ¨ä½¿ç”¨
+            int targetDisplayOrder = pvo.getDisplayorder();     //ç›®æ ‡è¡¨ç¤ºé¡ºåºâ€”â€”åœ¨åŒæ–‡ä»¶å¤¹ä¸‹ç§»åŠ¨ä½¿ç”¨
+            if (!vo.getParentCollectiontypeId().equals(pvo.getParentCollectiontypeId())) {      //æ­¤æ—¶ä¸åœ¨åŒä¸€ä¸ªæ–‡ä»¶å¤¹ä¸‹æ’åº
+                this.typeMapper.afterOrder(pvo);            //ç›®æ ‡çˆ¶èŠ‚ç‚¹èŠ‚ç‚¹åè¡¨ç¤ºé¡ºåºåŠ ä¸€
+                this.typeMapper.beforeOrder(vo);            //å½“å‰çˆ¶èŠ‚ç‚¹èŠ‚ç‚¹åè¡¨ç¤ºé¡ºåº-1
+                voLoad(vo, pvo);
+                try {
+                    this.typeMapper.updateByPrimaryKeySelective(vo);
+                } catch (Exception e) {
+                    msg = "fault";
+                    e.printStackTrace();
+                }
+            }else{      //åœ¨åŒä¸€ä¸ªæ–‡ä»¶å¤¹ä¸‹
+                if (oldDisplayOrder > targetDisplayOrder) {       //å¾€ä¸Šæ’åº
+                    voLoad(vo, pvo);
+
+                    Map<String, Object> map = Obj2Map.object2Map(vo);
+                    map.put("oldDisplayOrder", oldDisplayOrder);
+                    this.typeMapper.changeOrder1(map);
+                    try {
+                        this.typeMapper.updateByPrimaryKeySelective(vo);
+                    } catch (Exception e) {
+                        msg = "fault";
+                        e.printStackTrace();
+                    }
+                }else {             //å¾€ä¸‹æ’åº
+                    voLoad(vo, pvo);
+                    vo.setDisplayorder(pvo.getDisplayorder()-1);
+                    Map<String, Object> map = Obj2Map.object2Map(vo);
+                    map.put("oldDisplayOrder", oldDisplayOrder);
+                    this.typeMapper.changeOrder2(map);
+                    try {
+                        this.typeMapper.updateByPrimaryKeySelective(vo);
+                    } catch (Exception e) {
+                        msg = "fault";
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return msg;
+    }
+
+    /**
+     * è£…å¡«voä¿¡æ¯ï¼Œç”¨äºmoveType()
+     * @param vo
+     * @param pvo
+     */
+    private void voLoad(CollectionTypeVo vo, CollectionTypeVo pvo) {
+        vo.setParentCollectiontypeId(pvo.getParentCollectiontypeId());
+        vo.setCollectionpath(pvo.getCollectionpath().substring(0,
+                pvo.getCollectionpath().length() - 10) + vo.getCollectiontypeId());
+        vo.setDisplayorder(pvo.getDisplayorder());
+        vo.setCollectionstratum(vo.getCollectionpath().length() / 10);
+    }
+
+    /**
+     * å°†åŒ…å«å…¨éƒ¨å¯¹è±¡çš„é›†åˆæ•´ç†ä¸ºæ¯ä¸ªå¯¹è±¡å¸¦æœ‰å­èŠ‚ç‚¹çš„é›†åˆ
+     * @param list
+     * @param pid
+     * @return
+     */
+    private List<CollectionTypeVo> neat(List<CollectionTypeVo> list, String pid){
+        List<CollectionTypeVo> res = new ArrayList<>();
+        for (CollectionTypeVo vo : list) {
+            if(vo.getParentCollectiontypeId().equals(pid)) {
+                vo.setChildren(neat(list, vo.getCollectiontypeId()));
+                res.add(vo);
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * å°†çˆ¶èŠ‚ç‚¹è¡¨è¯†æ·»åŠ ä¸Šå»
+     * @param list
+     * @return
+     */
+    private List<CollectionTypeVo> setIsParent(List<CollectionTypeVo> list){
+        for (CollectionTypeVo vo : list) {
+            if(vo.getChildren().size() > 0) {
+                vo.setIsParent(1);
+                vo.setChildren(this.setIsParent(vo.getChildren()));
+            }
+        }
+        return list;
+    }
 }

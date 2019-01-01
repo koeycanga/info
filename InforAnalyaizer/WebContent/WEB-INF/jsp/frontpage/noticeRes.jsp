@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
+<!DOCTYPE html>
 <%@ taglib prefix="ss" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:setBundle basename="resources" var="sysInfo" />
@@ -10,20 +11,27 @@
 <fmt:message key="I0012" var="I0012" bundle="${sysInfo}" />
 <fmt:message key="I0013" var="I0013" bundle="${sysInfo}" />
 <fmt:message key="I0002" var="I0002" bundle="${sysInfo}" />
+<fmt:message key="I0024" var="I0024" bundle="${sysInfo}" />
+<fmt:message key="E0075" var="E0075" bundle="${sysInfo}" />
+<fmt:message key="UseManualFileName" var="UseManualFileName" bundle="${sysInfo}" />
+<fmt:message key="DownloadFileTemplatePath" var="DownloadFileTemplatePath" bundle="${sysInfo}" />
 
-<!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <title>竞争情报分析系统</title>
 <link rel="stylesheet" type="text/css"
 	href="${ctx}/css/cy_CIAS_style.css">
-
+<style>
+[v-cloak] {
+	display: none;
+}
+</style>
 </head>
 
 <body style="background-color: #f2f3f8;">
 	<div class="cy_hidebg" id="cy_hidebg"></div>
-	<div id="notice">
+	<div id="notice" v-cloak>
 		<!--头部-->
 		<div class="cy_CIASFE_top">
 			<div class="cy_CIASFE_logo">
@@ -66,6 +74,9 @@
 											<input type="button" value="下载"
 											v-on:click="btn_downloadRes(vo.executeid)"></td>
 									</tr>
+									<tr>
+										<td v-if="vos.length==0" colspan="4">{{info}}</td>
+									</tr>
 								</tbody>
 							</table>
 							<pager ref="pagecomponent"></pager>
@@ -75,12 +86,9 @@
 			</div>
 
 		</div>
+		<ic_sycc_template></ic_sycc_template>
 	</div>
-	<div class="cy_CIASFE_footer02">
-		<a href="">使用手册</a>&nbsp;&nbsp;&nbsp;&nbsp;联系我们（电话：1648726161
-		邮箱：sales@ichangyun.com） Copyright&copy;2018-2021
-		&nbsp;&nbsp;&nbsp;&nbsp;湖北畅云时讯软件技术有限公司版权所有
-	</div>
+	
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="${ctx}/js/vue.min.js"></script>
 	<script src="${ctx}/js/vue-resource.min.js"></script>
@@ -91,13 +99,16 @@
 var Info = {
 		E0019:'${E0019}',
 		E0004:'${E0004}',
+        I0024: '${I0024}',
 		E0014:'${E0014}',
 		I0012:'${I0012}',
         I0002:'${I0002}',
-		I0013:'${I0013}'
-		
+        E0075:'${E0075}',
+		I0013:'${I0013}',
+	    syccurl:'${ctx }/${DownloadFileTemplatePath}/${UseManualFileName}'
 };
 
+Vue.component('ic_sycc_template', ic_sycc_template);  
 
 var menu_datas = JSON.parse('${front_menu}') //菜单数据来源于 classes/resources.properties
 var menu_url_data  = 'noticeRes';
@@ -109,7 +120,8 @@ Vue.component('ic_user_info',ic_user_info);  // ic_user_info 引自 js/ic_compon
     var vm = new Vue({
         el: '#notice',
         data: {
-            vos: []
+            vos: [],
+            info: Info.I0024
         },
         mounted: function () {
         	
@@ -148,9 +160,9 @@ Vue.component('ic_user_info',ic_user_info);  // ic_user_info 引自 js/ic_compon
                             var rowCount = response.data.rowCount + "";
                             _this.$refs.pagecomponent.dealAfterSearch(rowCount); //rowCount为总条目数  在ajax请求返回函数需调用该方法
                             _this.vos = response.data.vos;
-                            if(rowCount=='0'){
+/*                             if(rowCount=='0'){
       	    					 layer.msg(Info.I0002);
-      	    				  	}
+      	    				  	} */
                         })
                         .catch(function (error) {
                             console.log(error);

@@ -1,14 +1,22 @@
 /**
- * Copyright 2018 畅云 http://www.ichangyun.cn
+ * Copyright 2018 鐣呬簯 http://www.ichangyun.cn
  * <p>
- *  竞争情报系统
+ * 绔炰簤鎯呮姤绯荤粺
  */
 package com.ichangyun.InforAnalyaizer.service.numberingcontrol;
 /**
- * @author 作者名 <br/>
- * 2018-11-13 11:12
+ * 閲囩暘ControlService
+ * @author ichangyun
+ * @date 2018-11-13 11:12
  */
 public interface NumberingcontrolService {
 
-	public String getNextCFID(String cpid) throws Exception;
+    /**
+     * 鍙栧緱鎺＄暘ID
+     *
+     * @param cpid 绠＄悊鍖哄垎ID
+     * @return
+     * @throws Exception
+     */
+    public String getNextCFID(String cpid) throws Exception;
 }

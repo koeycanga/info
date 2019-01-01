@@ -1,12 +1,12 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model;
 
 /**
- * ´æ·ÅÍ¨ÓÃÊı¾İµÄÊµÌåÀà
+ * å­˜æ”¾é€šç”¨æ•°æ®çš„å®ä½“ç±»
  * @author renhao
  * Date:2018-11-9
  */
@@ -19,29 +19,29 @@ public class CommBean {
     public static final int COOKIE_TIME = 3600*24;
 
     public static final String SESSION_NAME = "ichangyun_user";
+    // ç»¼åˆç›‘æµ‹ä¸Šæ¬¡æœç´¢çš„æ—¶é—´
+    public static final String LAST_CONTENT_SEARCH_TIME_ZHJC = "last_content_search_time_zhjc";
+    // ä¸“é¢˜ç›‘æµ‹ä¸Šæ¬¡æœç´¢çš„æ—¶é—´
+    public static final String LAST_CONTENT_SEARCH_TIME_ZTJC = "last_content_search_time_ztjc";
+    // é¢„è­¦ä¸­å¿ƒä¸Šæ¬¡æœç´¢çš„æ—¶é—´
+    public static final String LAST_CONTENT_SEARCH_TIME_YJZX = "last_content_search_time_yjzx";
+    //æ‰¹é‡å¤„ç†æ•°æ®æ—¶ä¸€æ¬¡å¤„ç†çš„æ•°é‡
+    public static final int DB_BATCH_NUM = 10000;
+    //é¢„è­¦ä¸­å¿ƒé‡Œå…³äºäººå·¥é¢„è­¦çš„åè¯
+    public static final String YJFS_NAME = "äººå·¥é¢„è­¦" ;
+    //å¯¼å…¥å¯¼å‡ºæ–‡ä»¶åç¼€xls
+    public static final String UPLOAD_FILE_EXTENSION_XLS = "xls";
+    //å¯¼å…¥å¯¼å‡ºæ–‡ä»¶åç¼€xlsx
+    public static final String UPLOAD_FILE_EXTENSION_XLSX = "xlsx";
+    // æœ€å¤§æ–‡ä»¶å¯¼å…¥é•¿åº¦
+    public static final int UPLOAD_FILE_MAXLENGTH = 1000;
+    // è¿‡æ»¤è¯ä¿¡æ¯æœ€å¤§é•¿åº¦
+    public static final int FILTER_WORD_MAXLENGTH = 600;
 
-    public static final String LAST_CONTENT_SEARCH_TIME_ZHJC = "last_content_search_time_zhjc";  //×ÛºÏ¼à²âÉÏ´ÎËÑË÷µÄÊ±¼ä
+    public static final int FILE_MAX_SIZE = 1024*1024;   //å¯¼å…¥æ–‡ä»¶çš„æœ€å¤§size
 
-    public static final String LAST_CONTENT_SEARCH_TIME_ZTJC = "last_content_search_time_ztjc";  //×¨Ìâ¼à²âÉÏ´ÎËÑË÷µÄÊ±¼ä
+    public static final String  FILE_MAX_SIZE_MSG = "1M"; //å¯¼å…¥æ–‡ä»¶çš„æœ€å¤§sizeçš„æ–‡æœ¬ä¿¡æ¯
 
-    public static final String LAST_CONTENT_SEARCH_TIME_YJZX = "last_content_search_time_yjzx";  //Ô¤¾¯ÖĞĞÄÉÏ´ÎËÑË÷µÄÊ±¼ä
+    public static final int SIM_MAX_NUM = 20;   //å–ç›¸ä¼¼æ–‡ç« æ—¶çš„æœ€å¤§æ•°ç›®
 
-    public static final int DB_BATCH_NUM = 10000; //ÅúÁ¿´¦ÀíÊı¾İÊ±Ò»´Î´¦ÀíµÄÊıÁ¿
-
-    public static final String YJFS_NAME = "ÈË¹¤Ô¤¾¯" ;  //Ô¤¾¯ÖĞĞÄÀï¹ØÓÚÈË¹¤Ô¤¾¯µÄÃû´Ê
-
-    public static final String UPLOAD_FILE_EXTENSION_XLS = "xls";//µ¼Èëµ¼³öÎÄ¼şºó×ºxls
-
-    public static final String UPLOAD_FILE_EXTENSION_XLSX = "xlsx";//µ¼Èëµ¼³öÎÄ¼şºó×ºxlsx
-
-    public static final int UPLOAD_FILE_MAXLENGTH = 1000;	// ×î´óÎÄ¼şµ¼Èë³¤¶È
-
-    public static final int FILTER_WORD_MAXLENGTH = 600;    // ¹ıÂË´ÊĞÅÏ¢×î´ó³¤¶È
-
-    public static final int FILE_MAX_SIZE = 1024*1024;   //µ¼ÈëÎÄ¼şµÄ×î´ósize
-    
-    public static final String 	FILE_MAX_SIZE_MSG = "1M"; //µ¼ÈëÎÄ¼şµÄ×î´ósizeµÄÎÄ±¾ĞÅÏ¢
-    
-    public static final int SIM_MAX_NUM = 20;   //È¡ÏàËÆÎÄÕÂÊ±µÄ×î´óÊıÄ¿
-    
 }

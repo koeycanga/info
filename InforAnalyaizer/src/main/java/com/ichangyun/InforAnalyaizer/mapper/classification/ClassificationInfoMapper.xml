@@ -12,6 +12,8 @@
           <if test="cb.ClassificationName!= null and cb.ClassificationName!=''">
 			    and Classification_ID in (select left(ClassificationPath,10) from m_classificationinfo where ClassificationName like CONCAT('%',#{cb.ClassificationName},'%'))<!-- like CONCAT('%',#{cb.ClassificationName},'%') -->
 		  </if>
+		  and CollectionField_ID=#{cb.CollectionField_ID} and Customer_ID=#{cb.Customer_ID}
+		  and ValidFlag='1'
     </select>
     
     <select id="getClassifcInfo" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean"  resultType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
@@ -25,6 +27,8 @@
 			 <if test="cb.ClassificationName!= null and cb.ClassificationName!=''">
 			     and Classification_ID in (select left(ClassificationPath,10) from m_classificationinfo where ClassificationName like CONCAT('%',#{cb.ClassificationName},'%')) <!-- like CONCAT('%',#{cb.ClassificationName},'%') -->
 			  </if>
+			   and CollectionField_ID=#{cb.CollectionField_ID} and Customer_ID=#{cb.Customer_ID}
+		      and ValidFlag='1'
 			  order by a.DisplayOrder desc
 			  limit #{cb.l_pre},#{cb.rowSize}
     </select>
@@ -39,10 +43,15 @@
   
   <select id="exist" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean"  resultType="java.lang.Integer">
        select count(1) from m_classificationinfo where ClassificationName=#{cb.ClassificationName}
+          and CollectionField_ID=#{cb.CollectionField_ID} and Customer_ID=#{cb.Customer_ID}
+		     
   </select>
   
   <select id="existExceptID" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean"  resultType="java.lang.Integer">
-       select count(1) from m_classificationinfo where ClassificationName=#{cb.ClassificationName} and Classification_ID!=#{cb.Classification_ID} 
+       select count(1) from m_classificationinfo 
+       where ClassificationName=#{cb.ClassificationName} and Classification_ID!=#{cb.Classification_ID} 
+          and CollectionField_ID=#{cb.CollectionField_ID} and Customer_ID=#{cb.Customer_ID}
+		     
   </select>
   
    <select id="getDisplayOrder" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean"  resultType="java.lang.Integer">
@@ -65,8 +74,15 @@
   </select>
   
   <insert id="addNew" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
-    insert into m_classificationinfo(Classification_ID,ClassificationName,Parent_Classification_ID,DisplayOrder,Description ,CreateUser,CreateDateTime,UpdateUser,UpdateDateTime,ClassificationPath,ValidFlag)
-      values(#{cb.Classification_ID},#{cb.ClassificationName},#{cb.Parent_Classification_ID},#{cb.DisplayOrder},#{cb.Description} ,#{cb.CreateUser},NOW(),#{cb.CreateUser},NOW(),#{cb.ClassificationPath},'1')
+    insert into m_classificationinfo(Classification_ID,ClassificationName,Parent_Classification_ID,DisplayOrder,Description ,CreateUser,CreateDateTime,UpdateUser,UpdateDateTime,ClassificationPath,ValidFlag,ClassificationStratum,Customer_ID,CollectionField_ID)
+      values(#{cb.Classification_ID},#{cb.ClassificationName},#{cb.Parent_Classification_ID},#{cb.DisplayOrder},#{cb.Description} ,#{cb.CreateUser},NOW(),#{cb.CreateUser},NOW(),#{cb.ClassificationPath},'1',
+                  
+                 (select case when count(dd.ClassificationStratum)=0 then 0 else dd.ClassificationStratum+1 end from
+						(
+						select ClassificationStratum from m_classificationinfo where Classification_ID=#{cb.Parent_Classification_ID}
+						) dd)
+						,#{cb.Customer_ID},#{cb.CollectionField_ID}
+              )
   </insert>
   
   <update id="updateData" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
@@ -100,6 +116,14 @@
 			a.Parent_Classification_ID,
 			a.ClassificationName,
 			a.DisplayOrder,
+			case when DATE_FORMAT(b.Releasetime, '%Y/%m/%d')=#{yesterday} then
+				count(b.ClassificationPath) 
+			else 0
+			end yesterday_cnt,
+			case when DATE_FORMAT(b.Releasetime, '%Y/%m/%d')=#{today} then
+				count(b.ClassificationPath) 
+			else 0
+			end today_cnt,
 		  DATE_FORMAT(b.Releasetime,'%Y/%m/%d') Releasetime,
 		  count(b.ClassificationPath) cnt,
 		  (select count(1) from m_classificationinfo c where a.Classification_ID=c.Parent_Classification_ID) children_lg
@@ -107,8 +131,9 @@
 			m_classificationinfo a
 		LEFT JOIN a_articlebasicinfo b on locate(a.Classification_ID,b.ClassificationPath)>0
 		and  DATE_FORMAT(b.Releasetime,'%Y/%m/%d')>=#{yesterday} and DATE_FORMAT(b.Releasetime,'%Y/%m/%d')<![CDATA[<=]]>#{today} 
+		and a.CollectionField_ID=#{cb.CollectionField_ID} and a.Customer_ID=#{cb.Customer_ID}
 		group by a.Classification_ID ,DATE_FORMAT(b.Releasetime,'%Y/%m/%d')
-		ORDER BY a.DisplayOrder DESC
+		ORDER BY a.DisplayOrder asc
      
   </select>
   
@@ -116,4 +141,10 @@
       select DATE_FORMAT(UpdateDateTime,'%Y/%m/%d %H:%i:%s') UpdateDateTime from m_classificationinfo where Classification_ID=#{Classification_ID}
   </select>
   
+  <update id="UpdateDisPlayOrderById" parameterType="com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean">
+      update m_classificationinfo set DisplayOrder=DisplayOrder-1 where 
+			DisplayOrder>(select DisplayOrder from m_classificationinfo where Classification_ID=#{Classification_ID})
+			and Parent_Classification_ID = (select Parent_Classification_ID from m_classificationinfo where Classification_ID=#{Classification_ID})
+  </update>
+   
 </mapper>

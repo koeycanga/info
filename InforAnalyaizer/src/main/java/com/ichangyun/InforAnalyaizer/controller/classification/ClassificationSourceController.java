@@ -1,26 +1,29 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.controller.classification;
 
 import java.util.Map;
+
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.ichangyun.InforAnalyaizer.model.CommBean;
-import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean;
+import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.model.webinfo.WebInfoBean;
 import com.ichangyun.InforAnalyaizer.service.classification.ClassificationSourceService;
 
 /**
- * ĞÅÏ¢Ô´°ó¶¨¶ÔÓ¦¿ØÖÆÆ÷
+ * ä¿¡æ¯æºç»‘å®šå¯¹åº”æ§åˆ¶å™¨
  * @author renhao
  * Date:2018-11-12
  */
@@ -29,136 +32,143 @@ import com.ichangyun.InforAnalyaizer.service.classification.ClassificationSource
 @RequestMapping("/qbgh/classificationSource")
 public class ClassificationSourceController {
 
-    //ĞÅÏ¢Ô´°ó¶¨service	
-	@Autowired
-	private ClassificationSourceService classificationSourceService;
-	
-	/**
-	 * ½øÈëĞÅÏ¢Ô´°ó¶¨Ò³Ãæ
-	 * @return
-	 * Date:2018-11-12
-	 */
-	@RequestMapping("/index")
-	@ResponseBody
-	public Object index() {
-		return new ModelAndView("classifcation/classificationInfoSource");
-	}
-	
-	/**
-	 * ²éÑ¯ĞÅÏ¢Ô´°ó¶¨ĞÅÏ¢
-	 * @param cb ²éÑ¯²ÎÊı
-	 * @return Òª²éÑ¯µÄĞÅÏ¢Ô´°ó¶¨ĞÅÏ¢
-	 * Date:2018-11-12
-	 */
-	@RequestMapping("/search")
-	public Object search(ClassificationInfoBean cb) {
-	
-		int rowCount = classificationSourceService.getClassifcInfoCount(cb);
-		
-		String json_res = classificationSourceService.getClassifcInfo(cb);
-		
-		String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
+    //ä¿¡æ¯æºç»‘å®šservice
+    @Autowired
+    private ClassificationSourceService classificationSourceService;
 
-	    return res;
-	}
-	
-	/**
-	 * »ñµÃ·ÖÀà ÌåÏµµÄ×Ó½Úµã
-	 * @param cb ²éÑ¯²ÎÊı
-	 * @return  ·ÖÀà ÌåÏµµÄ×Ó½ÚµãµÄJSON×ÖÃæÁ¿
-	 * Date:2018-11-12
-	 */
-	@RequestMapping("/getchild")
-	public Object getchild(ClassificationInfoBean cb) {
-		
-		String json_res = classificationSourceService.getchild(cb);
-		
-	    return json_res;
-	}
-	
-	/**
-	 * ²éÑ¯ÍøÕ¾ĞÅÏ¢
-	 * @param wb ²éÑ¯²ÎÊı
-	 * @return  Òª²éÑ¯µÄÍøÕ¾ĞÅÏ¢µÄJSON×ÖÃæÁ¿
-	 * Date:2018-11-12
-	 */
-	@RequestMapping("/searchweb")
-	public Object searchweb(WebInfoBean wb) {
-		
-		int rowCount = classificationSourceService.getWebInfoCount(wb);
-		
-		String json_res = classificationSourceService.getWebInfo(wb);
-		
-		String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
-		
-		return res ; 
-	}
-	
-	/**
-	 * ²éÑ¯ÒÑ°ó¶¨µÄÍøÕ¾ĞÅÏ¢
-	 * @param wb  ²éÑ¯²ÎÊı
-	 * @return  Òª²éÑ¯µÄÍøÕ¾ĞÅÏ¢µÄJSON×ÖÃæÁ¿
-	 * Date:2018-11-12
-	 */
-	@RequestMapping("/searchalweb")
-	public Object searchalweb(WebInfoBean wb) {
-		
-		int rowCount = classificationSourceService.getAlWebInfoCount(wb);
-		
-		String json_res = classificationSourceService.getAlWebInfo(wb);
-		
-		String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
-		
-		return res;
-	}
-	
-	/**
-	 * ½«ÍøÕ¾ĞÅÏ¢°ó¶¨µ½ĞÅÏ¢Ô´ÉÏ
-	 * @param map  Òª°ó¶¨µÄÍøÕ¾ĞÅÏ¢¼°ĞÅÏ¢Ô´²ÎÊı
-	 * @param session
-	 * Date:2018-11-12
-	 */
-	@RequestMapping("/joingright")
-	public void joingright(@RequestBody Map map,HttpSession session) {
-	
-		String Classification_ID = (String) map.get("Classification_ID");
-		
-		String json = (String) map.get("json");
-		
-		String creater = ((User)session.getAttribute(CommBean.SESSION_NAME)).getUser_ID() ;
-		
-		classificationSourceService.addNewSource(Classification_ID,json,creater);
-		
-	}
-	
-	/**
-	 * É¾³ıĞÅÏ¢Ô´ÒÑ°ó¶¨µÄÍøÕ¾ĞÅÏ¢
-	 * @param map ÒªÉ¾³ıµÄÍøÕ¾ĞÅÏ¢¼°ĞÅÏ¢Ô´²ÎÊı
-	 * Date:2018-11-12
-	 */
-	@RequestMapping("/joingleft")
-	public void joingleft(@RequestBody Map map) {
-		String Classification_ID = (String) map.get("Classification_ID");
-		
-		String json = (String) map.get("json");
-		
-		classificationSourceService.delteSource(Classification_ID,json);
-	}
-	
-	
-	/**
-	 * ĞŞ¸ÄĞÅÏ¢Ô´ĞÅÏ¢
-	 * @param Classification_ID
-	 * @param session
-	 * Date:2018-11-12
-	 */
-	@RequestMapping("/updatesource")
-	public void updatesource(String Classification_ID,HttpSession session) {
-		
-		String updater = ((User)session.getAttribute(CommBean.SESSION_NAME)).getUser_ID() ;
-		
-		classificationSourceService.updatesource(Classification_ID,updater);
-		
-	}
-	
+    /**
+     * è¿›å…¥ä¿¡æ¯æºç»‘å®šé¡µé¢
+     * @return
+     * Date:2018-11-12
+     */
+    @RequestMapping("/index")
+    @ResponseBody
+    public Object index() {
+        return new ModelAndView("classifcation/classificationInfoSource");
+    }
+
+    /**
+     * æŸ¥è¯¢ä¿¡æ¯æºç»‘å®šä¿¡æ¯
+     * @param cb æŸ¥è¯¢å‚æ•°
+     * @return è¦æŸ¥è¯¢çš„ä¿¡æ¯æºç»‘å®šä¿¡æ¯
+     * Date:2018-11-12
+     */
+    @RequestMapping("/search")
+    public Object search(ClassificationInfoBean cb,HttpSession session) {
+
+    	User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+    	cb.setCustomer_ID(u.getCustomer_ID());
+    	cb.setCollectionField_ID(u.getCollectionField_ID());
+    	
+        int rowCount = classificationSourceService.getClassifcInfoCount(cb);
+
+        String json_res = classificationSourceService.getClassifcInfo(cb);
+
+        String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
+
+        return res;
+    }
+
+    /**
+     * è·å¾—åˆ†ç±» ä½“ç³»çš„å­èŠ‚ç‚¹
+     * @param cb æŸ¥è¯¢å‚æ•°
+     * @return  åˆ†ç±» ä½“ç³»çš„å­èŠ‚ç‚¹çš„JSONå­—é¢é‡
+     * Date:2018-11-12
+     */
+    @RequestMapping("/getchild")
+    public Object getchild(ClassificationInfoBean cb) {
+
+        String json_res = classificationSourceService.getchild(cb);
+
+        return json_res;
+    }
+
+    /**
+     * æŸ¥è¯¢ç½‘ç«™ä¿¡æ¯
+     * @param wb æŸ¥è¯¢å‚æ•°
+     * @return  è¦æŸ¥è¯¢çš„ç½‘ç«™ä¿¡æ¯çš„JSONå­—é¢é‡
+     * Date:2018-11-12
+     */
+    @RequestMapping("/searchweb")
+    public Object searchweb(WebInfoBean wb,HttpSession session) {
+
+    	User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+
+    	wb.setCollectionField_ID(u.getCollectionField_ID());
+    	
+        int rowCount = classificationSourceService.getWebInfoCount(wb);
+
+        String json_res = classificationSourceService.getWebInfo(wb);
+
+        String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
+
+        return res ;
+    }
+
+    /**
+     * æŸ¥è¯¢å·²ç»‘å®šçš„ç½‘ç«™ä¿¡æ¯
+     * @param wb  æŸ¥è¯¢å‚æ•°
+     * @return  è¦æŸ¥è¯¢çš„ç½‘ç«™ä¿¡æ¯çš„JSONå­—é¢é‡
+     * Date:2018-11-12
+     */
+    @RequestMapping("/searchalweb")
+    public Object searchalweb(WebInfoBean wb) {
+
+        int rowCount = classificationSourceService.getAlWebInfoCount(wb);
+
+        String json_res = classificationSourceService.getAlWebInfo(wb);
+
+        String res = "{\"rowCount\":\""+rowCount+"\",\"resdata\":"+json_res+"}";
+
+        return res;
+    }
+
+    /**
+     * å°†ç½‘ç«™ä¿¡æ¯ç»‘å®šåˆ°ä¿¡æ¯æºä¸Š
+     * @param map  è¦ç»‘å®šçš„ç½‘ç«™ä¿¡æ¯åŠä¿¡æ¯æºå‚æ•°
+     * @param session
+     * Date:2018-11-12
+     */
+    @RequestMapping("/joingright")
+    public void joingright(@RequestBody Map map,HttpSession session) {
+
+        String Classification_ID = (String) map.get("Classification_ID");
+
+        String json = (String) map.get("json");
+
+        String creater = ((User)session.getAttribute(CommBean.SESSION_NAME)).getUser_ID() ;
+
+        classificationSourceService.addNewSource(Classification_ID,json,creater);
+
+    }
+
+    /**
+     * åˆ é™¤ä¿¡æ¯æºå·²ç»‘å®šçš„ç½‘ç«™ä¿¡æ¯
+     * @param map è¦åˆ é™¤çš„ç½‘ç«™ä¿¡æ¯åŠä¿¡æ¯æºå‚æ•°
+     * Date:2018-11-12
+     */
+    @RequestMapping("/joingleft")
+    public void joingleft(@RequestBody Map map) {
+        String Classification_ID = (String) map.get("Classification_ID");
+
+        String json = (String) map.get("json");
+
+        classificationSourceService.delteSource(Classification_ID,json);
+    }
+
+    /**
+     * ä¿®æ”¹ä¿¡æ¯æºä¿¡æ¯
+     * @param Classification_ID
+     * @param session
+     * Date:2018-11-12
+     */
+    @RequestMapping("/updatesource")
+    public void updatesource(String Classification_ID,HttpSession session) {
+
+        String updater = ((User)session.getAttribute(CommBean.SESSION_NAME)).getUser_ID() ;
+
+        classificationSourceService.updatesource(Classification_ID,updater);
+
+    }
+
 }

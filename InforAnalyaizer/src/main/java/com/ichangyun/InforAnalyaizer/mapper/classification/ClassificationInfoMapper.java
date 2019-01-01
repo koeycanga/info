@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.mapper.classification;
 
@@ -12,129 +12,130 @@ import org.apache.ibatis.annotations.Param;
 import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean;
 
 /**
- * ·ÖÀàÌåÏµĞÅÏ¢Mapper
+ * åˆ†ç±»ä½“ç³»ä¿¡æ¯Mapper
  * @author renhao
  * Date:2018-11-12
  */
 public interface ClassificationInfoMapper {
 
-	/**
-	 * »ñµÃÒª²éÑ¯µÄ·ÖÀàÌåÏµ×ÜÊıÄ¿
-	 * @param cb  ²éÑ¯²ÎÊı
-	 * @return  Òª²éÑ¯µÄ·ÖÀàÌåÏµ×ÜÊıÄ¿
-	 * Date:2018-11-12
-	 */
-	public int getClassifcInfoCount(@Param("cb") ClassificationInfoBean cb);
+    /**
+     * è·å¾—è¦æŸ¥è¯¢çš„åˆ†ç±»ä½“ç³»æ€»æ•°ç›®
+     * @param cb  æŸ¥è¯¢å‚æ•°
+     * @return  è¦æŸ¥è¯¢çš„åˆ†ç±»ä½“ç³»æ€»æ•°ç›®
+     * Date:2018-11-12
+     */
+    public int getClassifcInfoCount(@Param("cb") ClassificationInfoBean cb);
 
-	/**
-	 * »ñµÃÒª²éÑ¯µÄ·ÖÀàÌåÏµĞÅÏ¢ÁĞ±í
-	 * @param cb  ²éÑ¯²ÎÊı
-	 * @return  Òª²éÑ¯µÄ·ÖÀàÌåÏµĞÅÏ¢ÁĞ±í
-	 * Date:2018-11-12
-	 */
-	public List<ClassificationInfoBean> getClassifcInfo(@Param("cb") ClassificationInfoBean cb);
+    /**
+     * è·å¾—è¦æŸ¥è¯¢çš„åˆ†ç±»ä½“ç³»ä¿¡æ¯åˆ—è¡¨
+     * @param cb  æŸ¥è¯¢å‚æ•°
+     * @return  è¦æŸ¥è¯¢çš„åˆ†ç±»ä½“ç³»ä¿¡æ¯åˆ—è¡¨
+     * Date:2018-11-12
+     */
+    public List<ClassificationInfoBean> getClassifcInfo(@Param("cb") ClassificationInfoBean cb);
 
-	/**
-	 * »ñµÃ·ÖÀàÌåÏµµÄÅÅÎ»Ë³Ğò
-	 * @param cb  ²éÑ¯²ÎÊı
-	 * @return ·ÖÀàÌåÏµµÄÅÅÎ»Ë³Ğò
-	 * Date:2018-11-12
-	 */
-	public int getDisplayOrder(@Param("cb") ClassificationInfoBean cb);
+    /**
+     * è·å¾—åˆ†ç±»ä½“ç³»çš„æ’ä½é¡ºåº
+     * @param cb  æŸ¥è¯¢å‚æ•°
+     * @return åˆ†ç±»ä½“ç³»çš„æ’ä½é¡ºåº
+     * Date:2018-11-12
+     */
+    public int getDisplayOrder(@Param("cb") ClassificationInfoBean cb);
 
-	/**
-	 * ĞÂÔö·ÖÀàÌåÏµĞÅÏ¢
-	 * @param cb  ĞÂÔöµÄ·ÖÀàÌåÏµĞÅÏ¢²ÎÊı
-	 * @return  
-	 * Date:2018-11-12
-	 */
-	public int addNew(@Param("cb") ClassificationInfoBean cb);
+    /**
+     * æ–°å¢åˆ†ç±»ä½“ç³»ä¿¡æ¯
+     * @param cb  æ–°å¢çš„åˆ†ç±»ä½“ç³»ä¿¡æ¯å‚æ•°
+     * @return
+     * Date:2018-11-12
+     */
+    public int addNew(@Param("cb") ClassificationInfoBean cb);
 
-	/**
-	 * ÅĞ¶Ï·ÖÀàÌåÏµÃû³ÆÊÇ·ñÒÑ´æÔÚ
-	 * @param cb  ·ÖÀàÌåÏµÃû³Æ²ÎÊı
-	 * @return
-	 * Date:2018-11-12
-	 */
-	public int exist(@Param("cb") ClassificationInfoBean cb);
+    /**
+     * åˆ¤æ–­åˆ†ç±»ä½“ç³»åç§°æ˜¯å¦å·²å­˜åœ¨
+     * @param cb  åˆ†ç±»ä½“ç³»åç§°å‚æ•°
+     * @return
+     * Date:2018-11-12
+     */
+    public int exist(@Param("cb") ClassificationInfoBean cb);
 
-	/**
-	 * ĞŞ¸Ä·ÖÀàÌåÏµĞÅÏ¢
-	 * @param cb  ÒªĞŞ¸ÄµÄ·ÖÀàÌåÏµ²ÎÊı
-	 * @return
-	 * Date:2018-11-12
-	 */
-	public int updateData(@Param("cb") ClassificationInfoBean cb);
+    /**
+     * ä¿®æ”¹åˆ†ç±»ä½“ç³»ä¿¡æ¯
+     * @param cb  è¦ä¿®æ”¹çš„åˆ†ç±»ä½“ç³»å‚æ•°
+     * @return
+     * Date:2018-11-12
+     */
+    public int updateData(@Param("cb") ClassificationInfoBean cb);
 
-	/**
-	 * ÅĞ¶Ï³ıÄ³IDÒÔÍâµÄ·ÖÀàÌåÏµÃû³ÆÊÇ·ñÒÑ´æÔÚ
-	 * @param cb  ·ÖÀàÌåÏµÃû³ÆºÍID²ÎÊı
-	 * @return
-	 * Date:2018-11-12
-	 */
-	public int existExceptID(@Param("cb") ClassificationInfoBean cb);
+    /**
+     * åˆ¤æ–­é™¤æŸIDä»¥å¤–çš„åˆ†ç±»ä½“ç³»åç§°æ˜¯å¦å·²å­˜åœ¨
+     * @param cb  åˆ†ç±»ä½“ç³»åç§°å’ŒIDå‚æ•°
+     * @return
+     * Date:2018-11-12
+     */
+    public int existExceptID(@Param("cb") ClassificationInfoBean cb);
 
-	/**
-	 * »ñµÃÄ³½Úµã·ÖÀàÌåÏµµÄ×Ó½ÚµãĞÅÏ¢ÁĞ±í¼¯ºÏ
-	 * @param cb Ä³½ÚµãµÄ·ÖÀàÌåÏµ²ÎÊı
-	 * @return  Ä³½Úµã·ÖÀàÌåÏµµÄ×Ó½ÚµãĞÅÏ¢ÁĞ±í¼¯ºÏ
-	 * Date:2018-11-12
-	 */
-	public List<ClassificationInfoBean> getChildren(@Param("cb")ClassificationInfoBean cb);
+    /**
+     * è·å¾—æŸèŠ‚ç‚¹åˆ†ç±»ä½“ç³»çš„å­èŠ‚ç‚¹ä¿¡æ¯åˆ—è¡¨é›†åˆ
+     * @param cb æŸèŠ‚ç‚¹çš„åˆ†ç±»ä½“ç³»å‚æ•°
+     * @return  æŸèŠ‚ç‚¹åˆ†ç±»ä½“ç³»çš„å­èŠ‚ç‚¹ä¿¡æ¯åˆ—è¡¨é›†åˆ
+     * Date:2018-11-12
+     */
+    public List<ClassificationInfoBean> getChildren(@Param("cb")ClassificationInfoBean cb);
 
-	/**
-	 * É¾³ı·ÖÀàÌåÏµĞÅÏ¢
-	 * @param cb  ÒªÉ¾³ıµÄ·ÖÀàÌåÏµID²ÎÊı
-	 */
-	public void delData(@Param("cb") ClassificationInfoBean cb);
+    /**
+     * åˆ é™¤åˆ†ç±»ä½“ç³»ä¿¡æ¯
+     * @param cb  è¦åˆ é™¤çš„åˆ†ç±»ä½“ç³»IDå‚æ•°
+     */
+    public void delData(@Param("cb") ClassificationInfoBean cb);
 
-	/**
-	 * ĞŞ¸Ä·ÖÀàÌåÏµµÄÅÅÎ»Ë³Ğò
-	 * @param cb   ÒªĞŞ¸ÄÅÅÎ»Ë³ĞòµÄ·ÖÀàÌåÏµ²ÎÊı
-	 * Date:2018-11-12
-	 */
-	public void updateOrder(@Param("cb") ClassificationInfoBean cb);
+    /**
+     * ä¿®æ”¹åˆ†ç±»ä½“ç³»çš„æ’ä½é¡ºåº
+     * @param cb   è¦ä¿®æ”¹æ’ä½é¡ºåºçš„åˆ†ç±»ä½“ç³»å‚æ•°
+     * Date:2018-11-12
+     */
+    public void updateOrder(@Param("cb") ClassificationInfoBean cb);
 
-	/**
-	 * ¸ù¾İID»ñµÃ·ÖÀàÌåÏµµÄ×Ó½ÚµãÁĞ±í¼¯ºÏ
-	 * @param cb   ·ÖÀàÌåÏµID²ÎÊı
-	 * @return ·ÖÀàÌåÏµµÄ×Ó½ÚµãÁĞ±í¼¯ºÏ
-	 * Date:2018-11-12
-	 */
-	public List<ClassificationInfoBean> getChildernByID(@Param("cb") ClassificationInfoBean cb);
+    /**
+     * æ ¹æ®IDè·å¾—åˆ†ç±»ä½“ç³»çš„å­èŠ‚ç‚¹åˆ—è¡¨é›†åˆ
+     * @param cb   åˆ†ç±»ä½“ç³»IDå‚æ•°
+     * @return åˆ†ç±»ä½“ç³»çš„å­èŠ‚ç‚¹åˆ—è¡¨é›†åˆ
+     * Date:2018-11-12
+     */
+    public List<ClassificationInfoBean> getChildernByID(@Param("cb") ClassificationInfoBean cb);
 
-	/**
-	 * ¸ù¾İID»ñµÃ·ÖÀàÌåÏµĞÅÏ¢
-	 * @param cb ·ÖÀàÌåÏµID²ÎÊı
-	 * @return ·ÖÀàÌåÏµĞÅÏ¢
-	 * Date:2018-11-12
-	 */
-	public ClassificationInfoBean getInfoByID(@Param("cb") ClassificationInfoBean cb);
+    /**
+     * æ ¹æ®IDè·å¾—åˆ†ç±»ä½“ç³»ä¿¡æ¯
+     * @param cb åˆ†ç±»ä½“ç³»IDå‚æ•°
+     * @return åˆ†ç±»ä½“ç³»ä¿¡æ¯
+     * Date:2018-11-12
+     */
+    public ClassificationInfoBean getInfoByID(@Param("cb") ClassificationInfoBean cb);
 
-	/**
-	 * »ñµÃËùÓĞ´¦ÔÚ¸ù½ÚµãµÄ·ÖÀàÌåÏµ
-	 * @param today 
-	 * @param yesterday 
-	 * @return
-	 */
-	public List<ClassificationInfoBean> getAllClassification(@Param("yesterday")String yesterday, @Param("today")String today);
+    /**
+     * è·å¾—æ‰€æœ‰å¤„åœ¨æ ¹èŠ‚ç‚¹çš„åˆ†ç±»ä½“ç³»
+     * @param today
+     * @param yesterday
+     * @return
+     */
+    public List<ClassificationInfoBean> getAllClassification(@Param("cb")ClassificationInfoBean cb,@Param("yesterday")String yesterday, @Param("today")String today);
 
-	/**
-	 * Ê¹ÓÃmysqlµÄfunctionÉ¾³ıÊı¾İ
-	 * @param cb
-	 */
-	public void delDataByFunction(@Param("cb")ClassificationInfoBean cb);
+    /**
+     * ä½¿ç”¨mysqlçš„functionåˆ é™¤æ•°æ®
+     * @param cb
+     */
+    public void delDataByFunction(@Param("cb")ClassificationInfoBean cb);
 
-	
-	/**
-	 * »ñµÃ·ÖÀàÌåÏµµÄ¸üĞÂÊ±¼ä
-	 * @param cb
-	 * @return
-	 */
-	public String getUpdateTime(ClassificationInfoBean cb);
+    /**
+     * è·å¾—åˆ†ç±»ä½“ç³»çš„æ›´æ–°æ—¶é—´
+     * @param cb
+     * @return
+     */
+    public String getUpdateTime(ClassificationInfoBean cb);
 
-	//public int getClassifcInfoCountWithName(ClassificationInfoBean cb);
-
-	//public List<ClassificationInfoBean> getClassifcInfoWithName(ClassificationInfoBean cb);
+    /**
+     * åˆ é™¤æŸä¸ªåˆ†ç±»ä½“ç³»å,å°†å…¶ä¹‹åçš„displayorderå…¨éƒ¨å‡ä¸€
+     * @param cb
+     */
+    public void UpdateDisPlayOrderById(ClassificationInfoBean cb);
 
 }

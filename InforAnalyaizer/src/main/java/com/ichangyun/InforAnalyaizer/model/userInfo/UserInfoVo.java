@@ -1,36 +1,33 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model.userInfo;
 
-import java.util.Date;
-
-import com.alibaba.fastjson.annotation.JSONField;
 import com.ichangyun.InforAnalyaizer.utils.DateUtils;
 
 /**
- * UserInfoVo£ºÕËºÅÏêÏ¸»­ÃæµÄÏîÄ¿¶¨Òå
+ * UserInfoVoï¼šè´¦å·è¯¦ç»†ç”»é¢çš„é¡¹ç›®å®šä¹‰
  *
  * @author ichangyun
  * @date 2018/11/09
  */
 public class UserInfoVo {
-    private int unum;           // ÓÃ»§No
-    private String uid;         // ÓÃ»§Ãû
-    private String urole;       // ÓÃ»§½ÇÉ«
-    private String uname;       // ÓÃ»§ĞÕÃû
-    private String udep;        // ËùÊô²¿ÃÅ
-    private String utel;        // µç»°
-    private String uemail;      // ÓÊÏä
-    private String ustatus;     // ×´Ì¬
-    private String upwd;        // ÃÜÂë
-    private String urolename;   // ½ÇÉ«Ãû
-    private String usuperuserflag; // ³¬¼¶¹ÜÀíÔ±Çø·Ö£¨0£º·Ç³¬¼¶¹ÜÀíÔ±£¬1£º³¬¼¶¹ÜÀíÔ±£©
+    private int unum;           // ç”¨æˆ·No
+    private String uid;         // ç”¨æˆ·å
+    private String urole;       // ç”¨æˆ·è§’è‰²
+    private String uname;       // ç”¨æˆ·å§“å
+    private String udep;        // æ‰€å±éƒ¨é—¨
+    private String utel;        // ç”µè¯
+    private String uemail;      // é‚®ç®±
+    private String ustatus;     // çŠ¶æ€
+    private String upwd;        // å¯†ç 
+    private String urolename;   // è§’è‰²å
+    private String usuperuserflag; // è¶…çº§ç®¡ç†å‘˜åŒºåˆ†ï¼ˆ0ï¼šéè¶…çº§ç®¡ç†å‘˜ï¼Œ1ï¼šè¶…çº§ç®¡ç†å‘˜ï¼‰
 
-    private String uupdatedatetime;   // ¸üĞÂÈÕÊ±
-    
+    private String uupdatedatetime;   // æ›´æ–°æ—¥æ—¶
+
     public String getUupdatedatetime() {
         return uupdatedatetime;
     }
@@ -107,17 +104,17 @@ public class UserInfoVo {
     }
 
     /**
-     * UserInfoVo£º´´½¨UserInfoVo
-     * @param unum ÓÃ»§No
-     * @param uid ÓÃ»§Ãû
-     * @param urole ÓÃ»§½ÇÉ«ID
-     * @param uname ÓÃ»§½ÇÉ«Ãû
-     * @param udep ËùÊô²¿ÃÅ
-     * @param utel µç»°
-     * @param uemail ÓÊÏä
-     * @param ustatus ×´Ì¬
-     * @param pwd ÃÜÂë
-     * @param superuserflag ³¬¼¶¹ÜÀíÔ±Çø·Ö
+     * UserInfoVoï¼šåˆ›å»ºUserInfoVo
+     * @param unum ç”¨æˆ·No
+     * @param uid ç”¨æˆ·å
+     * @param urole ç”¨æˆ·è§’è‰²ID
+     * @param uname ç”¨æˆ·è§’è‰²å
+     * @param udep æ‰€å±éƒ¨é—¨
+     * @param utel ç”µè¯
+     * @param uemail é‚®ç®±
+     * @param ustatus çŠ¶æ€
+     * @param pwd å¯†ç 
+     * @param superuserflag è¶…çº§ç®¡ç†å‘˜åŒºåˆ†
      */
     public UserInfoVo(int unum, String uid, String urole, String uname,
             String udep, String utel, String uemail, String ustatus,
@@ -139,9 +136,9 @@ public class UserInfoVo {
     }
 
     /**
-     * loading:½«ÊµÌåÀàuserinfoÊôĞÔ×°Ìîµ½ÊÓÍ¼ÀàÖĞ
+     * loading:å°†å®ä½“ç±»userinfoå±æ€§è£…å¡«åˆ°è§†å›¾ç±»ä¸­
      *
-     * @param info ÓÃ»§Çé±¨
+     * @param info ç”¨æˆ·æƒ…æŠ¥
      */
     public void loading(UserInfo info) {
         this.unum = info.getUserno();

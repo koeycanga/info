@@ -80,9 +80,9 @@
 			<if test="createuser != null">
 				CreateUser,
 			</if>
-			<if test="createdatetime != null">
-				CreateDateTime,
-			</if>
+			
+				
+			
 			<if test="updateuser != null">
 				UpdateUser,
 			</if>
@@ -110,6 +110,8 @@
 			<if test="textexcludephrases != null">
 				TextExcludePhrases,
 			</if>
+			CreateDateTime,
+			UpdateDateTime
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="classificationId != null">
@@ -120,9 +122,6 @@
 			</if>
 			<if test="createuser != null">
 				#{createuser,jdbcType=VARCHAR},
-			</if>
-			<if test="createdatetime != null">
-				#{createdatetime,jdbcType=TIMESTAMP},
 			</if>
 			<if test="updateuser != null">
 				#{updateuser,jdbcType=VARCHAR},
@@ -151,6 +150,7 @@
 			<if test="textexcludephrases != null">
 				#{textexcludephrases,jdbcType=LONGVARCHAR},
 			</if>
+			now(),now()
 		</trim>
 	</insert>
 	
@@ -256,6 +256,7 @@
 				TextExcludePhrases =
 				#{textexcludephrases,jdbcType=LONGVARCHAR},
 			</if>
+			UpdateDateTime=now()
 		</set>
 		where Classification_ID = #{classificationId,jdbcType=CHAR}
 	</update>
@@ -322,7 +323,7 @@
 			b.Classification_ID in (${value})
 
 		</where>
-		order by displayOrder DESC
+		order by b.ClassificationPath desc,displayOrder DESC
 	</select>
 		<select id="queryByName" parameterType="String"
 		resultType="com.ichangyun.InforAnalyaizer.model.classificationfilterwords.FilterWordsVo">
@@ -481,6 +482,11 @@
 	   select ClassificationName,
 			(select count(1) from  m_classificationinfo where Parent_Classification_ID=a.Classification_ID) children_lg
 			 from m_classificationinfo a
+	</select>
+	
+	<select id="getChildrenIDS" parameterType="String" resultType="String">
+	     select Classification_ID from m_classificationinfo a where LOCATE(Classification_ID,getChildList_classificationinfo(#{id})) >0
+				HAVING (select count(1) from m_classificationinfo where Parent_Classification_ID=a.Classification_ID)=0
 	</select>
 	
 </mapper>

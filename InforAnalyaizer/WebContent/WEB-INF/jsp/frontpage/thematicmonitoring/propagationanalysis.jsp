@@ -25,6 +25,10 @@
 <fmt:message key="E0019" var="E0019" bundle="${sysInfo}" />   
 <fmt:message key="E0052" var="E0052" bundle="${sysInfo}" />
 <fmt:message key="I0029" var="I0029" bundle="${sysInfo}" />  
+<fmt:message key="E0074" var="E0074" bundle="${sysInfo}" /> 
+<fmt:message key="E0075" var="E0075" bundle="${sysInfo}" /> 
+<fmt:message key="UseManualFileName" var="UseManualFileName" bundle="${sysInfo}" />
+<fmt:message key="DownloadFileTemplatePath" var="DownloadFileTemplatePath" bundle="${sysInfo}" />
 <!doctype html>
 <html>
 <head>
@@ -83,7 +87,7 @@
 					</td>
 					<td>
 					   <input type="radio" name="montime" value="10" v-model="montime" id="montime_6" style="display: none;"><label for="montime_6">自定义</label>
-					   <input type="date" id="fromdate" class="cy_CIASFE_timetb">—<input type="date" id="todate" class="cy_CIASFE_timetb"><input type="button" v-on:click="btn_search()" class="cy_CMICBMS_schbtn" value="确认">
+					   <input type="date" id="fromdate" class="cy_CIASFE_timetb">—<input type="date" id="todate" class="cy_CIASFE_timetb"><input type="button" v-on:click="btn_search(true)" class="cy_CMICBMS_schbtn" value="确认">
 				   </td>
 				   </tr>
 			   </table>
@@ -141,7 +145,7 @@
 </div>	
 
 	
-<div class="cy_CIASFE_footer02"><a href="">使用手册</a>&nbsp;&nbsp;&nbsp;&nbsp;联系我们（电话：1648726161  邮箱：sales@ichangyun.com）    Copyright&copy;2018-2021 &nbsp;&nbsp;&nbsp;&nbsp;湖北畅云时讯软件技术有限公司版权所有</div>
+<ic_sycc_template></ic_sycc_template>
 </div>
 </body>
 
@@ -182,8 +186,13 @@ var Info = {
 		  I0019:'${I0019}',
 		  E0019:'${E0019}',
 		  E0052:'${E0052}',
-		  I0029:'${I0029}'
+		  I0029:'${I0029}',
+		  E0074:'${E0074}',
+		  E0075:'${E0075}',
+		  syccurl:'${ctx }/${DownloadFileTemplatePath}/${UseManualFileName}'
 	};
+
+Vue.component('ic_sycc_template', ic_sycc_template);  
 
 var menu_datas = JSON.parse('${front_menu}');  //菜单数据来源于 classes/resources.properties
 
@@ -259,6 +268,7 @@ option_FZQS = {
 		legend: {
 			data:[]
 		},
+		color:['#7ccd4c','#fa7f53','#fa7f53','#fa7f53','#fa7f53','#fa7f53'],
 		grid: {
 			left: '3%',
 			right: '4%',
@@ -267,7 +277,7 @@ option_FZQS = {
 		},
 		toolbox: {
 			feature: {
-				saveAsImage: {}
+				saveAsImage: {show:false}
 			}
 		},
 		xAxis: {
@@ -331,8 +341,8 @@ var app = new Vue({
    					_this.createMTFB();
    					option_MTFB.legend.data = ins ;
    					myChart_MTFB.setOption(option_MTFB, true);
-   					
-   					_this.createFZQS();
+   					 
+   					_this.createFZQS();   //发展趋势
    					option_FZQS.legend.data = ins ;
    					myChart_FZQS.setOption(option_FZQS, true);
    					
@@ -353,15 +363,28 @@ var app = new Vue({
 			 this.isHaveSearch = true;
     		 this.btn_search();
 		 },
-		btn_search:function(){         //检索按钮相关
+		btn_search:function(flag=false){         //检索按钮相关
+			 if(flag){
+				  if(this.montime!='10'){
+         			layer.msg(Info.E0074);
+         			return;
+         		  }
+			  }
 			var amontime = this.montime;
 			if(this.montime=='10'){
+				var fromDate = $("#fromdate").val();
+            	var toDate = $("#todate").val();
+            	if(fromDate!=''&&toDate!=''&&IC_compareDate(fromDate,toDate)){  //IC_compareDate引自js/comm.js
+            		layer.msg(Info.E0052);
+   				    return;
+            	}
 				amontime = $("#fromdate").val()+"-"+$("#todate").val();
         	}
 			var _this = this;
         	layer.msg(Info.I0011, {
         		  icon: 16
-        		  ,shade: 0.01
+        		  ,shade: 0.01,
+        		  time:false
         		});
     		axios.get('../thematicmonitoring/searchpropaga',{
     			params: {
@@ -385,13 +408,17 @@ var app = new Vue({
     			})
     			.catch(function (error) {
     			    console.log(error);
+    			    layer.closeAll();
     			});
 		},
 		dealSearchForChart:function(data){   //查询图表所需的data
-			
+			if(data==null){
+				return;
+			}
 			option_MTFB.series[0].data = data.mtfb;      //处理媒体分布的data
+			var colorarr = this.getColorByName(data.mtfb);
+			option_MTFB.color = colorarr;
 			myChart_MTFB.setOption(option_MTFB, true);
-			
 			/*********************以下是处理发展趋势***************************************************************/
 			var arr = [];  //存放折线图横轴所需数据的数组
 			var tss  = data.time_datas.split(",");
@@ -412,7 +439,7 @@ var app = new Vue({
 					var fadata = {
 							name:data.fzqs_data[i].masterValue,
 							type:'line',
-							stack: '总量',
+							//stack: '总量',
 							data:tdata
 						}
 					xw_fzqs_series.push(fadata);
@@ -440,6 +467,8 @@ var app = new Vue({
 					}
 				}
 			}
+			var color_arr = this.getColorByName(xw_fzqs_series);
+			option_FZQS.color = color_arr;
 			option_FZQS.series = xw_fzqs_series;
 			myChart_FZQS.setOption(option_FZQS, true);
 			/**********************以上是处理发展趋势**********************************************************************************/
@@ -449,6 +478,33 @@ var app = new Vue({
 			option_CBTJ.series[0].data = [data.cbtj_data];//data.cbtj_data;
 			myChart_CBTJ.setOption(option_CBTJ, true);
 			
+		},
+		getColorByName:function(xw_fzqs_series){
+			var color_arr = [];
+			if(this.isHaveName("新闻",xw_fzqs_series)){
+				color_arr.push('#fdce5c');
+			}
+			if(this.isHaveName("微博",xw_fzqs_series)){
+				color_arr.push('#fa7f53');
+			}
+			if(this.isHaveName("微信",xw_fzqs_series)){
+				color_arr.push('#7ccd4c');
+			}
+			if(this.isHaveName("论坛",xw_fzqs_series)){
+				color_arr.push('#33c5d2');
+			}
+			if(this.isHaveName("博客",xw_fzqs_series)){
+				color_arr.push('#a38cf8');
+			}
+			return color_arr;
+		},
+		isHaveName:function(name,xw_fzqs_series){
+			for(var i=0;i<xw_fzqs_series.length;i++){
+				if(xw_fzqs_series[i].name==name){
+					return true;
+				}
+			}
+			return false;
 		},
 		createMTFB:function(){   //创建媒体分布饼图
 			var dom = document.getElementById("cy_CIASFE_meddis");
@@ -470,6 +526,7 @@ var app = new Vue({
 					bottom: 20,
 					data: []  
 				},
+				color:['#7ccd4c','#fa7f53','#fa7f53','#fa7f53','#fa7f53','#fa7f53'],
 				series : [
 					{
 						name: '媒体',

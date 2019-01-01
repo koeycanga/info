@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.service.thematicmonitoring;
 
@@ -13,206 +13,207 @@ import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.CollectionBean;
 
 /**
- * ×¨Ìâ¼à²âService
+ * ä¸“é¢˜ç›‘æµ‹Service
  * @author renhao
  * 2018-11-13 10:22
  */
 public interface ThematicmonitoringService {
 
-	/**
-	 * »ñµÃËùÓĞµÄ·½°¸
-	 * @param session 
-	 * @return
-	 */
-	public String getAllFA(HttpSession session);
+    /**
+     * è·å¾—æ‰€æœ‰çš„æ–¹æ¡ˆ
+     * @param session
+     * @return
+     */
+    public String getAllFA(HttpSession session);
 
-	/**
-	 * ±£´æĞÂµÄ·½°¸
-	 * @param planinfo_name  //·½°¸Ãû³Æ
-	 * @param jcc_json       //·½°¸¼à²â´ÊJSON×ÖÃæÁ¿
-	 * @param session
-	 * @param toDate 
-	 * @param fromDate 
-	 * @return true ³É¹¦   false Ê§°Ü
-	 */
-	public boolean SaveNewfa(String planinfo_name, String jcc_json,String planinfo_removeWord, HttpSession session, String fromDate, String toDate);
+    /**
+     * ä¿å­˜æ–°çš„æ–¹æ¡ˆ
+     * @param planinfo_name  //æ–¹æ¡ˆåç§°
+     * @param jcc_json       //æ–¹æ¡ˆç›‘æµ‹è¯JSONå­—é¢é‡
+     * @param session
+     * @param toDate
+     * @param fromDate
+     * @return true æˆåŠŸ   false å¤±è´¥
+     */
+    public boolean SaveNewfa(String planinfo_name, String jcc_json,String planinfo_removeWord, HttpSession session, String fromDate, String toDate);
 
-	/**
-	 * ÅĞ¶Ï·½°¸Ãû³ÆÊÇ·ñÒÑ´æÔÚ
-	 * @param planinfo_name ·½°¸Ãû³Æ
-	 * @param session 
-	 * @return true ÒÑ´æÔÚ  false ²»´æÔÚ
-	 */
-	public boolean exist(String planinfo_name, HttpSession session);
+    /**
+     * åˆ¤æ–­æ–¹æ¡ˆåç§°æ˜¯å¦å·²å­˜åœ¨
+     * @param planinfo_name æ–¹æ¡ˆåç§°
+     * @param session
+     * @return true å·²å­˜åœ¨  false ä¸å­˜åœ¨
+     */
+    public boolean exist(String planinfo_name, HttpSession session);
 
-	/**
-	 * É¾³ı·½°¸
-	 * @param planid ÒªÉ¾³ıµÄ·½°¸ID
-	 * @return true ³É¹¦   false Ê§°Ü
-	 */
-	public boolean delfa(String planid);
+    /**
+     * åˆ é™¤æ–¹æ¡ˆ
+     * @param planid è¦åˆ é™¤çš„æ–¹æ¡ˆID
+     * @return true æˆåŠŸ   false å¤±è´¥
+     */
+    public boolean delfa(String planid);
 
-	/**
-	 * »ñµÃ·½°¸ÏêÏ¸ĞÅÏ¢
-	 * @param planid  ·½°¸ID
-	 * @return  ·½°¸ÏêÏ¸ĞÅÏ¢µÄJSON×ÖÃæÁ¿
-	 */
-	public String getDetail(String planid);
+    /**
+     * è·å¾—æ–¹æ¡ˆè¯¦ç»†ä¿¡æ¯
+     * @param planid  æ–¹æ¡ˆID
+     * @return  æ–¹æ¡ˆè¯¦ç»†ä¿¡æ¯çš„JSONå­—é¢é‡
+     */
+    public String getDetail(String planid);
 
-	/**
-	 * ÅĞ¶Ï³ıplan_idÍâ ·½°¸Ãû³ÆÊÇ·ñÒÑ´æÔÚ
-	 * @param plan_id   ·½°¸ID
-	 * @param planinfo_name  ·½°¸Ãû³Æ
-	 * @param session 
-	 * @return true ÒÑ´æÔÚ  false ²»´æÔÚ
-	 */
-	public boolean existwithID(String plan_id, String planinfo_name, HttpSession session);
+    /**
+     * åˆ¤æ–­é™¤plan_idå¤– æ–¹æ¡ˆåç§°æ˜¯å¦å·²å­˜åœ¨
+     * @param plan_id   æ–¹æ¡ˆID
+     * @param planinfo_name  æ–¹æ¡ˆåç§°
+     * @param session
+     * @return true å·²å­˜åœ¨  false ä¸å­˜åœ¨
+     */
+    public boolean existwithID(String plan_id, String planinfo_name, HttpSession session);
 
-	/**
-	 * ĞŞ¸Ä·½°¸
-	 * @param plan_id ·½°¸ID
-	 * @param planinfo_name ·½°¸Ãû³Æ
-	 * @param jcc_json  ·½°¸¼à²â´Êjson×ÖÃæÁ¿
-	 * @param planinfo_removeWord  ·½°¸ÅÅ³ı´Ê
-	 * @param session
-	 * @param toDate 
-	 * @param fromDate 
-	 * @return  true ³É¹¦   false Ê§°Ü
-	 */
-	public boolean updatefa(String plan_id, String planinfo_name, String jcc_json, String planinfo_removeWord,HttpSession session, String fromDate, String toDate);
+    /**
+     * ä¿®æ”¹æ–¹æ¡ˆ
+     * @param plan_id æ–¹æ¡ˆID
+     * @param planinfo_name æ–¹æ¡ˆåç§°
+     * @param jcc_json  æ–¹æ¡ˆç›‘æµ‹è¯jsonå­—é¢é‡
+     * @param planinfo_removeWord  æ–¹æ¡ˆæ’é™¤è¯
+     * @param session
+     * @param toDate
+     * @param fromDate
+     * @return  true æˆåŠŸ   false å¤±è´¥
+     */
+    public boolean updatefa(String plan_id, String planinfo_name, String jcc_json, String planinfo_removeWord,HttpSession session, String fromDate, String toDate);
 
-	/**
-	 * »ñµÃÒª²éÑ¯µÄÎÄÕÂ×ÜÊı
-	 * @param ab ²éÑ¯²ÎÊı
-	 * @return
-	 */
-	public int getArticleRowCount(ArticleInfoBean ab);
+    /**
+     * è·å¾—è¦æŸ¥è¯¢çš„æ–‡ç« æ€»æ•°
+     * @param ab æŸ¥è¯¢å‚æ•°
+     * @return
+     */
+    public int getArticleRowCount(ArticleInfoBean ab);
 
-	/**
-	 * »ñµÃÒª²éÑ¯µÄÎÄÕÂĞÅÏ¢JSON×ÖÃæÁ¿
-	 * @param ab
-	 * @return
-	 */
-	public String getArticleJSON(ArticleInfoBean ab);
+    /**
+     * è·å¾—è¦æŸ¥è¯¢çš„æ–‡ç« ä¿¡æ¯JSONå­—é¢é‡
+     * @param ab
+     * @return
+     */
+    public String getArticleJSON(ArticleInfoBean ab);
 
-	/**
-	 * Ô¤¾¯ÎÄÕÂ
-	 * @param json    ²ÎÊı
-	 * @param session
-	 * @return
-	 */
-	public boolean toyj(String json,HttpSession session);
+    /**
+     * é¢„è­¦æ–‡ç« 
+     * @param json    å‚æ•°
+     * @param session
+     * @return
+     */
+    public boolean toyj(String json,HttpSession session);
 
-	/**
-	 * É¾³ıÎÄÕÂ
-	 * @param json ²ÎÊı
-	 * @return
-	 */
-	public boolean delarticle(String json,String userid ,String deletemode);
+    /**
+     * åˆ é™¤æ–‡ç« 
+     * @param json å‚æ•°
+     * @return
+     */
+    public boolean delarticle(String json,String userid ,String deletemode);
 
-	/**
-	 * »ñµÃÏàËÆÎÄÕÂĞÅÏ¢µÄjson×ÖÃæÁ¿
-	 * @param ab
-	 * @return
-	 */
-	public String getSimContent(ArticleInfoBean ab);
+    /**
+     * è·å¾—ç›¸ä¼¼æ–‡ç« ä¿¡æ¯çš„jsonå­—é¢é‡
+     * @param ab
+     * @return
+     */
+    public String getSimContent(ArticleInfoBean ab);
 
-	/**
-	 * »ñµÃÊÕ²Ø·ÖÀàĞÅÏ¢µÄjson×ÖÃæÁ¿
-	 * @param user_ID
-	 * @return
-	 */
-	public String getCollectionType(String user_ID);
+    /**
+     * è·å¾—æ”¶è—åˆ†ç±»ä¿¡æ¯çš„jsonå­—é¢é‡
+     * @param user_ID
+     * @return
+     */
+    public String getCollectionType(String user_ID);
 
-	/**
-	 * Ìí¼ÓÎÄÕÂµ½ÎÒµÄÊÕ²Ø
-	 * @param cb
-	 * @return
-	 */
-	public boolean conllect(CollectionBean cb);
+    /**
+     * æ·»åŠ æ–‡ç« åˆ°æˆ‘çš„æ”¶è—
+     * @param cb
+     * @return
+     */
+    public boolean conllect(CollectionBean cb);
 
-	/**
-	 * »ñµÃÇé¸ĞÊôĞÔ»·×´Í¼ËùĞèĞÅÏ¢µÄjson×ÖÃæÁ¿
-	 * @param list
-	 * @return
-	 */
-	public String getQGSXJSON(List<ArticleInfoBean> list);
+    /**
+     * è·å¾—æƒ…æ„Ÿå±æ€§ç¯çŠ¶å›¾æ‰€éœ€ä¿¡æ¯çš„jsonå­—é¢é‡
+     * @param list
+     * @return
+     */
+    public String getQGSXJSON(List<ArticleInfoBean> list);
 
-	/**
-	 * »ñµÃĞÂÏûÏ¢ÌõÄ¿Êı
-	 * @param ab
-	 * @return
-	 */
-	public int getlastestNews(ArticleInfoBean ab);
+    /**
+     * è·å¾—æ–°æ¶ˆæ¯æ¡ç›®æ•°
+     * @param ab
+     * @return
+     */
+    public int getlastestNews(ArticleInfoBean ab);
 
-	/**
-	 * »ñµÃÉÏ´Î²éÑ¯µÄÎÄÕÂµÄ×îĞÂÊ±¼ä
-	 * @param ab
-	 * @return
-	 */
-	public String getSearchLaestRelsetime(ArticleInfoBean ab);
+    /**
+     * è·å¾—ä¸Šæ¬¡æŸ¥è¯¢çš„æ–‡ç« çš„æœ€æ–°æ—¶é—´
+     * @param ab
+     * @return
+     */
+    public String getSearchLaestRelsetime(ArticleInfoBean ab);
 
-	/**
-	 * »ñµÃ×¨Ìâ¼à²âÒ³ÃæÈÈ´ÊÔÆÏà¹ØĞÅÏ¢
-	 * @return
-	 */
-	public String getHotWord();
+    /**
+     * è·å¾—ä¸“é¢˜ç›‘æµ‹é¡µé¢çƒ­è¯äº‘ç›¸å…³ä¿¡æ¯
+     * @param ab 
+     * @return
+     */
+    public String getHotWord(ArticleInfoBean ab);
 
-	/**
-	 * »ñµÃÎÄÕÂĞÅÏ¢¼¯ºÏ
-	 * @param ab
-	 * @return
-	 */
-	public List<ArticleInfoBean> getContentList(ArticleInfoBean ab);
+    /**
+     * è·å¾—æ–‡ç« ä¿¡æ¯é›†åˆ
+     * @param ab
+     * @return
+     */
+    public List<ArticleInfoBean> getContentList(ArticleInfoBean ab);
 
-	/**
-	 * »ñµÃÊÂ¼şÂöÂçÏà¹ØĞÅÏ¢
-	 * @param list
-	 * @return
-	 */
-	public String getSJMLJSON(List<ArticleInfoBean> list);
+    /**
+     * è·å¾—äº‹ä»¶è„‰ç»œç›¸å…³ä¿¡æ¯
+     * @param list
+     * @return
+     */
+    public String getSJMLJSON(List<ArticleInfoBean> list);
 
-	/**
-	 * »ñµÃÃ½Ìå·Ö²¼JSON×ÖÃæÁ¿
-	 * @param ab
-	 * @param session 
-	 * @return
-	 */
-	public String getMTFBData(ArticleInfoBean ab, HttpSession session);
+    /**
+     * è·å¾—åª’ä½“åˆ†å¸ƒJSONå­—é¢é‡
+     * @param ab
+     * @param session
+     * @return
+     */
+    public String getMTFBData(ArticleInfoBean ab);
 
-	/**
-	 * »ñµÃ·¢Õ¹Ç÷ÊÆJSON×ÖÃæÁ¿(Ë«ÊıÊ±¼ä¶Î   Èç 00:00  02:00)
-	 * @param ab
-	 * @param flag 
-	 * @param time_datas 
-	 * @param session 
-	 * @return
-	 */
-	public String getFZQS(ArticleInfoBean ab, String flag, String time_datas, HttpSession session);
-
-
-	/**
-	 * »ñµÃ·¢Õ¹Ç÷ÊÆJSON×ÖÃæÁ¿(µ¥ÊıÊ±¼ä¶Î   Èç 23:00  01:00)
-	 * @param ab
-	 * @param string
-	 * @param string2
-	 * @param session
-	 * @return
-	 */
-	public String getFZQS_DS(ArticleInfoBean ab, String string, String string2, HttpSession session);
-	
-	/**
-	 * »ñµÃ´«²¥Í¾¾¶JSON×ÖÃæÁ¿
-	 * @param ab
-	 * @param session 
-	 * @return
-	 */
-	public String getCBTHData(ArticleInfoBean ab, HttpSession session);
+    /**
+     * è·å¾—å‘å±•è¶‹åŠ¿JSONå­—é¢é‡(åŒæ•°æ—¶é—´æ®µ   å¦‚ 00:00  02:00)
+     * @param ab
+     * @param flag
+     * @param time_datas
+     * @param session
+     * @return
+     */
+    public String getFZQS(ArticleInfoBean ab, String flag, String time_datas);
 
 
-	/**
-	 * ¸ù¾İ×¨Ìâ¼à²â·½°¸Ë¢ĞÂÊı¾İ¿â×¨Ìâ¼à²â¶ÔÓ¦ÎÄÕÂ±í
-	 */
-	public void FlashThematicmonitoringDB();
+    /**
+     * è·å¾—å‘å±•è¶‹åŠ¿JSONå­—é¢é‡(å•æ•°æ—¶é—´æ®µ   å¦‚ 23:00  01:00)
+     * @param ab
+     * @param string
+     * @param string2
+     * @param session
+     * @return
+     */
+    public String getFZQS_DS(ArticleInfoBean ab, String string, String string2, HttpSession session);
+
+    /**
+     * è·å¾—ä¼ æ’­é€”å¾„JSONå­—é¢é‡
+     * @param ab
+     * @param session
+     * @return
+     */
+    public String getCBTHData(ArticleInfoBean ab);
+
+
+    /**
+     * æ ¹æ®ä¸“é¢˜ç›‘æµ‹æ–¹æ¡ˆåˆ·æ–°æ•°æ®åº“ä¸“é¢˜ç›‘æµ‹å¯¹åº”æ–‡ç« è¡¨
+     */
+    public void FlashThematicmonitoringDB();
 
 }

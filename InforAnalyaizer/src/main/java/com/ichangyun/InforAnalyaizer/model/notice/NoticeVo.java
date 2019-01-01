@@ -1,71 +1,71 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model.notice;
 
 public class NoticeVo extends Notice{
-	private String typename;//¼ò±¨ÈÎÎñÃû
-	private String plan;//¼ò±¨Ö´ĞĞ¼Æ»®
-	private String generationtime;//Éú³ÉÊ±¼ä
-	//¸ù¾İ¼ò±¨ÀàĞÍÅĞ¶ÏÉú³ÉÊ±¼ä¡ª¡ªÃ¿X,XXµãXX·ÖÉú³É
-	public String getGenerationtime() {
-		if(this.getNoticetype().equals("1")) {
-			String p = "Ã¿Ìì"+this.getMonitortimeend()+"Éú³É";//ÈÕ±¨
-			return p;
-		}else if(this.getNoticetype().equals("2")) {//ÖÜ±¨
-			int d = Integer.parseInt(this.getMonitordateend());
-			String p = "Ã¿ÖÜ"+NoticeVo.getWeek(d)+this.getMonitortimeend()+"Éú³É";
-			return p;
-		}else if(this.getNoticetype().equals("3")) {//ÔÂ±¨
-			int d = Integer.parseInt(this.getMonitordateend());
-			String p = "Ã¿ÔÂ"+NoticeVo.getMonth(d)+this.getMonitortimeend()+"Éú³É";
-			return p;
-		}
-		return "";
-	}
+    private String typename;//ç®€æŠ¥ä»»åŠ¡å
+    //private String plan;//ç®€æŠ¥æ‰§è¡Œè®¡åˆ’
+    //private String generationtime;//ç”Ÿæˆæ—¶é—´
+    //æ ¹æ®ç®€æŠ¥ç±»å‹åˆ¤æ–­ç”Ÿæˆæ—¶é—´â€”â€”æ¯X,XXç‚¹XXåˆ†ç”Ÿæˆ
+    public String getGenerationtime() {
+        if(this.getNoticetype().equals("1")) {
+            String p = "æ¯å¤©"+this.getMonitortimeend()+"ç”Ÿæˆ";//æ—¥æŠ¥
+            return p;
+        }else if(this.getNoticetype().equals("2")) {//å‘¨æŠ¥
+            int d = Integer.parseInt(this.getMonitordateend());
+            String p = "æ¯å‘¨"+NoticeVo.getWeek(d)+this.getMonitortimeend()+"ç”Ÿæˆ";
+            return p;
+        }else if(this.getNoticetype().equals("3")) {//æœˆæŠ¥
+            int d = Integer.parseInt(this.getMonitordateend());
+            String p = "æ¯æœˆ"+NoticeVo.getMonth(d)+this.getMonitortimeend()+"ç”Ÿæˆ";
+            return p;
+        }
+        return "";
+    }
 
-	//¸ù¾İ¼ò±¨ÀàĞÍ×é³É·¢ËÍ¼Æ»®¡ª¡ªÃ¿X,XXµãXX·Ö·¢ËÍ
-	public String getPlan() {
-		if(this.getNoticetype().equals("1")) {
-			String p = "Ã¿Ìì"+this.getSendtime()+"·¢ËÍ";//ÈÕ±¨
-			return p;
-		}else if(this.getNoticetype().equals("2")) {//ÖÜ±¨
-			int d = Integer.parseInt(this.getSenddate());
-			String p = "Ã¿ÖÜ"+NoticeVo.getWeek(d)+this.getSendtime()+"·¢ËÍ";
-			return p;
-		}else if(this.getNoticetype().equals("3")) {//ÔÂ±¨
-			int d = Integer.parseInt(this.getSenddate());
-			String p = "Ã¿ÔÂ"+NoticeVo.getMonth(d)+this.getSendtime()+"·¢ËÍ";
-			return p;
-		}
-		return "";
-	}
+    //æ ¹æ®ç®€æŠ¥ç±»å‹ç»„æˆå‘é€è®¡åˆ’â€”â€”æ¯X,XXç‚¹XXåˆ†å‘é€
+    public String getPlan() {
+        if(this.getNoticetype().equals("1")) {
+            String p = "æ¯å¤©"+this.getSendtime()+"å‘é€";//æ—¥æŠ¥
+            return p;
+        }else if(this.getNoticetype().equals("2")) {//å‘¨æŠ¥
+            int d = Integer.parseInt(this.getSenddate());
+            String p = "æ¯å‘¨"+NoticeVo.getWeek(d)+this.getSendtime()+"å‘é€";
+            return p;
+        }else if(this.getNoticetype().equals("3")) {//æœˆæŠ¥
+            int d = Integer.parseInt(this.getSenddate());
+            String p = "æ¯æœˆ"+NoticeVo.getMonth(d)+this.getSendtime()+"å‘é€";
+            return p;
+        }
+        return "";
+    }
 
-	public String getTypename() {
-		return typename;
-	}
+    public String getTypename() {
+        return typename;
+    }
 
-	public void setTypename(String typename) {
-		this.typename = typename;
-	}
+    public void setTypename(String typename) {
+        this.typename = typename;
+    }
 
-	public NoticeVo(String typename) {
-		super();
-		this.typename = typename;
-	}
+    public NoticeVo(String typename) {
+        super();
+        this.typename = typename;
+    }
 
-	public NoticeVo() {
-		super();
-	}
-	static String getWeek(int d) {
-		return "ÖÜ"+"Ò»¶şÈıËÄÎåÁùÈÕ".charAt(d-1);
-	}
-	static String getMonth(int d) {
-		String[] month = {"Ò»","¶ş","Èı","ËÄ","Îå","Áù","Æß","°Ë","¾Å","Ê®",
-				"Ê®Ò»","Ê®¶ş","Ê®Èı","Ê®ËÄ","Ê®Îå","Ê®Áù","Ê®Æß","Ê®°Ë","Ê®¾Å","¶şÊ®",
-				"¶şÊ®Ò»","¶şÊ®¶ş","¶şÊ®Èı","¶şÊ®ËÄ","¶şÊ®Îå","¶şÊ®Áù","¶şÊ®Æß","¶şÊ®°Ë","¶şÊ®¾Å","ÈıÊ®","ÈıÊ®Ò»"};
-		return month[d-1]+"ºÅ";
-	}
+    public NoticeVo() {
+        super();
+    }
+    static String getWeek(int d) {
+        return "å‘¨"+"ä¸€äºŒä¸‰å››äº”å…­æ—¥".charAt(d-1);
+    }
+    static String getMonth(int d) {
+        String[] month = {"ä¸€","äºŒ","ä¸‰","å››","äº”","å…­","ä¸ƒ","å…«","ä¹","å",
+                "åä¸€","åäºŒ","åä¸‰","åå››","åäº”","åå…­","åä¸ƒ","åå…«","åä¹","äºŒå",
+                "äºŒåä¸€","äºŒåäºŒ","äºŒåä¸‰","äºŒåå››","äºŒåäº”","äºŒåå…­","äºŒåä¸ƒ","äºŒåå…«","äºŒåä¹","ä¸‰å","ä¸‰åä¸€"};
+        return month[d-1]+"å·";
+    }
 }

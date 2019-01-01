@@ -33,7 +33,7 @@
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
 		delete from
 		m_noticeexecuteresult
-		where NoticeID = #{noticeid,jdbcType=VARCHAR}
+		where NoticeID in (${value})
 	</delete>
 	<insert id="insert"
 		parameterType="com.ichangyun.InforAnalyaizer.model.notice.NoticeExecuteResult">

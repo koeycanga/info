@@ -1,40 +1,39 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model;
 
 /**
- * ÊµÌåÀà»ùÀà
+ * å®ä½“ç±»åŸºç±»
  * @author renhao
  * Date:2018-11-9
  */
 public class BaseBean {
-    
-	protected int l_pre;    //·ÖÒ³²éÑ¯Ê± limit×ó±ßµÄ²ÎÊı
-	protected int pageNow;  //µ±Ç°¶àÉÙÒ³
-	protected int rowSize;  //Ã¿Ò³ÏÔÊ¾ÌõÄ¿Êı
-	
-	public int getPageNow() {
-		return pageNow;
-	}
-	public void setPageNow(int pageNow) {
-		this.pageNow = pageNow;
-	}
-	
-	public int getL_pre() {
-		return l_pre;
-	}
-	public void setL_pre(int l_pre) {
-		this.l_pre = l_pre;
-	}
-	public int getRowSize() {
-		return rowSize;
-	}
-	public void setRowSize(int rowSize) {
-		this.rowSize = rowSize;
-	}
-	
-	
+
+    protected int l_pre;    //åˆ†é¡µæŸ¥è¯¢æ—¶ limitå·¦è¾¹çš„å‚æ•°
+    protected int pageNow;  //å½“å‰å¤šå°‘é¡µ
+    protected int rowSize;  //æ¯é¡µæ˜¾ç¤ºæ¡ç›®æ•°
+
+    public int getPageNow() {
+        return pageNow;
+    }
+    public void setPageNow(int pageNow) {
+        this.pageNow = pageNow;
+    }
+
+    public int getL_pre() {
+        return l_pre;
+    }
+    public void setL_pre(int l_pre) {
+        this.l_pre = l_pre;
+    }
+    public int getRowSize() {
+        return rowSize;
+    }
+    public void setRowSize(int rowSize) {
+        this.rowSize = rowSize;
+    }
+
 }

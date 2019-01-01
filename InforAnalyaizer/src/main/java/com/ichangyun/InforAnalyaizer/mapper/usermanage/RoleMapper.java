@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.mapper.usermanage;
 
@@ -13,7 +13,7 @@ import org.apache.ibatis.annotations.Param;
 import com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean;
 
 /**
- * RoleMapper£º½ÇÉ«¹ÜÀímapper
+ * RoleMapperï¼šè§’è‰²ç®¡ç†mapper
  *
  * @author renhao
  * @Date:2018-11-9
@@ -21,14 +21,15 @@ import com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean;
 public interface RoleMapper {
 
     /**
-     * »ñµÃ½ÇÉ«×ÜÊıÄ¿
+     * è·å¾—è§’è‰²æ€»æ•°ç›®
+     * @param rb 
      * @return
      * Date:2018-11-9
      */
-    public int getRoleCount();
+    public int getRoleCount(RoleManageBean rb);
 
     /**
-     * ¸ù¾İÌõ¼ş²éÑ¯½ÇÉ«ĞÅÏ¢
+     * æ ¹æ®æ¡ä»¶æŸ¥è¯¢è§’è‰²ä¿¡æ¯
      * @param map
      * @return
      * Date:2018-11-9
@@ -36,15 +37,18 @@ public interface RoleMapper {
     public List<RoleManageBean> getRole(@Param("param")Map map);
 
     /**
-     * ¸ù¾İ½ÇÉ«ID»ñµÃ½ÇÉ«ÊıÄ¿
+     * æ ¹æ®è§’è‰²IDè·å¾—è§’è‰²æ•°ç›®
      * @param map
      * @return
      * Date:2018-11-9
      */
     public int getRoleCountByID(@Param("param")Map map);
 
+    
+    public int getRoleCountByIDWithOutSelf(RoleManageBean rb);
+    
     /**
-     * ĞÂÔö½ÇÉ«
+     * æ–°å¢è§’è‰²
      * @param map
      * @return
      * @Date:2018-11-9
@@ -52,7 +56,7 @@ public interface RoleMapper {
     public int AddNewRole(@Param("param")Map map);
 
     /**
-     * ¸üĞÂ½ÇÉ«ĞÅÏ¢
+     * æ›´æ–°è§’è‰²ä¿¡æ¯
      * @param ub
      * @return
      * @Date:2018-11-9
@@ -60,25 +64,27 @@ public interface RoleMapper {
     public int updateRole(RoleManageBean ub);
 
     /**
-     * É¾³ı½ÇÉ«ĞÅÏ¢
-     * @param list  ÒªÉ¾³ıµÄ½ÇÉ«IDÁĞ±í
+     * åˆ é™¤è§’è‰²ä¿¡æ¯
+     * @param list  è¦åˆ é™¤çš„è§’è‰²IDåˆ—è¡¨
      * @return
      * Date:2018-11-9
      */
     public int delRole(List<RoleManageBean> list);
 
     /**
-     * ²éÑ¯ËùÓĞ½ÇÉ«
-     * @return ËùÓĞ½ÇÉ«ĞÅÏ¢
+     * æŸ¥è¯¢æ‰€æœ‰è§’è‰²
+     * @return æ‰€æœ‰è§’è‰²ä¿¡æ¯
      * Date:2018-11-9
      */
-    public List<RoleManageBean> queryAllRole();
+    public List<RoleManageBean> queryAllRole(RoleManageBean rb);
 
     /**
-     * ¸ù¾İID²éÑ¯½ÇÉ«ĞÅÏ¢
-     * @param urole Òª²éÑ¯µÄ½ÇÉ«ID
-     * @return ²éÑ¯µ½µÄ½ÇÉ«ĞÅÏ¢
+     * æ ¹æ®IDæŸ¥è¯¢è§’è‰²ä¿¡æ¯
+     * @param urole è¦æŸ¥è¯¢çš„è§’è‰²ID
+     * @return æŸ¥è¯¢åˆ°çš„è§’è‰²ä¿¡æ¯
      */
-    public RoleManageBean queryById(String urole);
+    public RoleManageBean queryById(RoleManageBean rb);
+
+	
 
 }

@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.mapper.comprehensivemonitoring;
 
@@ -12,84 +12,72 @@ import org.apache.ibatis.annotations.Param;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
 
 /**
- * ×ÛºÏ¼à²â¶ÔÓ¦mapper
+ * ç»¼åˆç›‘æµ‹å¯¹åº”mapper
  * @author renhao
  * 2018-11-19 10:18
  */
 public interface ComprehensivemonitoringMapper {
 
-	/**
-	 * ²éÑ¯×ÛºÏ¼à²âÎÄÕÂ×ÜÊıÁ¿(²»ºÏ²¢ÏàËÆÎÄÕÂ)
-	 * @param ab
-	 * @return
-	 */
-	public int getArticleRowCount(ArticleInfoBean ab);
-
-	
-	
-	/**
-	 * ²éÑ¯×ÛºÏ¼à²âÒ³ÃæËùĞèÎÄÕÂÊı¾İ(²»ºÏ²¢ÏàËÆÎÄÕÂ)
-	 * @param ab
-	 * @return
-	 */
-	public List<ArticleInfoBean> getArticle(ArticleInfoBean ab);
-
-
-
-	/**
-	 * É¾³ıÎÄÕÂ
-	 * @param list
-	 */
-	public void delarticle(@Param("list")List<String> list,@Param("userid")String userid,@Param("deletemode")String deletemode);
-
-
-
-	/**
-	 * Ô¤¾¯ÎÄÕÂ
-	 * @param list
-	 * @param userid
-	 */
-	public void toyj(@Param("list")List<String> list, @Param("userid")String userid);
-
+    /**
+     * æŸ¥è¯¢ç»¼åˆç›‘æµ‹æ–‡ç« æ€»æ•°é‡(ä¸åˆå¹¶ç›¸ä¼¼æ–‡ç« )
+     * @param ab
+     * @return
+     */
+    public int getArticleRowCount(ArticleInfoBean ab);
 
     /**
-     * »ñµÃÉÏ´Î²éÑ¯ÎÄÕÂÊ±×îĞÂµÄÎÄÕÂ·¢²¼Ê±¼ä
+     * æŸ¥è¯¢ç»¼åˆç›‘æµ‹é¡µé¢æ‰€éœ€æ–‡ç« æ•°æ®(ä¸åˆå¹¶ç›¸ä¼¼æ–‡ç« )
      * @param ab
      * @return
      */
-	public String getSearchLaestRelsetime(ArticleInfoBean ab);
-
-
-
-	/**
-	 * »ñµÃ×îĞÂÏûÏ¢ÌõÄ¿Êı
-	 * @param ab
-	 * @return
-	 */
-	public int getlastestNews(ArticleInfoBean ab);
-
+    public List<ArticleInfoBean> getArticle(ArticleInfoBean ab);
 
     /**
-     * »ñµÃÏàËÆÎÄÕÂ 
-     * @param ab
-     * @return
+     * åˆ é™¤æ–‡ç« 
+     * @param list
      */
-	public List<ArticleInfoBean> getSimContent(ArticleInfoBean ab);
-
+    public void delarticle(@Param("list")List<String> list,@Param("userid")String userid,@Param("deletemode")String deletemode);
 
     /**
-     * ²éÑ¯×ÛºÏ¼à²âÎÄÕÂ×ÜÊıÁ¿(ºÏ²¢ÏàËÆÎÄÕÂ)
+     * é¢„è­¦æ–‡ç« 
+     * @param list
+     * @param userid
+     */
+    public void toyj(@Param("list")List<String> list, @Param("userid")String userid);
+
+    /**
+     * è·å¾—ä¸Šæ¬¡æŸ¥è¯¢æ–‡ç« æ—¶æœ€æ–°çš„æ–‡ç« å‘å¸ƒæ—¶é—´
      * @param ab
      * @return
      */
-	public int getArticleRowWithHBCount(ArticleInfoBean ab);
+    public String getSearchLaestRelsetime(ArticleInfoBean ab);
 
-
-	/**
-     * ²éÑ¯×ÛºÏ¼à²âÎÄÕÂ(ºÏ²¢ÏàËÆÎÄÕÂ)
+    /**
+     * è·å¾—æœ€æ–°æ¶ˆæ¯æ¡ç›®æ•°
      * @param ab
      * @return
      */
-	public List<ArticleInfoBean> getArticleWithHB(ArticleInfoBean ab);
+    public int getlastestNews(ArticleInfoBean ab);
+
+    /**
+     * è·å¾—ç›¸ä¼¼æ–‡ç« 
+     * @param ab
+     * @return
+     */
+    public List<ArticleInfoBean> getSimContent(ArticleInfoBean ab);
+
+    /**
+     * æŸ¥è¯¢ç»¼åˆç›‘æµ‹æ–‡ç« æ€»æ•°é‡(åˆå¹¶ç›¸ä¼¼æ–‡ç« )
+     * @param ab
+     * @return
+     */
+    public int getArticleRowWithHBCount(ArticleInfoBean ab);
+
+    /**
+     * æŸ¥è¯¢ç»¼åˆç›‘æµ‹æ–‡ç« (åˆå¹¶ç›¸ä¼¼æ–‡ç« )
+     * @param ab
+     * @return
+     */
+    public List<ArticleInfoBean> getArticleWithHB(ArticleInfoBean ab);
 
 }

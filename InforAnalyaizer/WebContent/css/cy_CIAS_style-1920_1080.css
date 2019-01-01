@@ -140,8 +140,8 @@ body{
 	
 }
 .cy_CMICBMS_body{
-	width: 87%;
-	height: 93%;
+	width: 1625px;
+	height: 90%;
 	margin-top:75px;
 	margin-left:253px;
 	position: absolute;
@@ -1074,7 +1074,7 @@ input{
 	margin-left: 10px;
 }
 .cy_CIASFE_coming{
-	margin: 42px 0 0 57px;
+	margin: 35px 0 0 52px;
 }
 .cy_CIASFE_hotword{
 	margin: 60px 0 0 80px;
@@ -1137,10 +1137,10 @@ input{
 }
 .cy_CIASFE_2ndmenutab , .cy_CIASFE_2ndmenutabchk{
 	text-align: center;
-	padding:10px 0;
+	padding:10px;
 	border:1px solid #e0e0e0;
 	border-right: 0px;
-	width: 118px;
+	width: auto;
 	cursor: pointer;
 }
 .cy_CIASFE_2ndmenutabchk{
@@ -1816,7 +1816,7 @@ input{
 }
 #cy_CMICBMS_newfd{
 	position:absolute;
-	width:540px;
+	width:450px;
 	height:220px;
 	top:22%;
 	left:33%;
@@ -2045,11 +2045,13 @@ input{
 	margin-top: 20px;
 }
 .cy_CIASFE_conbox05 , .cy_CIASFE_conbox06{
-	font-weight: 700;
+ 	font-weight: 700; 
 	background-color: white;
 	text-decoration: none;
 	padding-bottom: 15px;
+
 }
+
 .cy_CIASFE_conbox05 , .cy_CIASFE_conbox06:hover{
 	border-bottom: 4px solid #3598dc;
 	color: #3598dc;
@@ -2658,10 +2660,10 @@ input{
 	margin-left: 22px;
 	list-style: none;
 }
-/* .cy_CIASFE_colletreefold:hover{
+/*  .cy_CIASFE_colletreefold:hover{
 	background-color: #2ea1f8;
 	color: white;
-} */
+}  */
 /*
 .cy_CIASFE_colletreefold ul{
 	padding-left: 10px;
@@ -2826,15 +2828,19 @@ input{
 	width: 100%;
 	height: 5%;
 }
+.cy_CIASFE_collectionTypeName div:hover{
+	background-color: #2ea1f8;
+	color: white;
+}
 /*12.15 弹出层样式修改 */
 .cy_CMICBMS_addtb_shelter{		/* 遮挡层（当文本框不可编辑时） */
 	position: absolute;
 	opacity:0.2;
 	background-color: #939193;
 	top:2%;
-	left:15.5%;
-	width: 80.5%;
-	height:92.5%
+	left:16.0%;
+	width: 79.5%;
+	height:94.5%
 
 }
 .cy_CMICBMS_addtb_username{
@@ -2846,6 +2852,7 @@ input{
 	position: absolute;
 	top:26%;
 	left:6%;
+
 }
 .cy_CMICBMS_addtb_userrole{
 	position: absolute;
@@ -2881,4 +2888,69 @@ input{
 	position: absolute;
 	top:74%;
 	left:80%;
+}
+#cy_CMICBMS_newfd1{/* 我的收藏移动文章弹出层 */
+	position:absolute;
+	width:400px;
+	top:22%;
+	left:33%;
+	background-color:white;
+	border-radius: 5px;
+	z-index:21;
+	box-shadow: 0px 0px 10px 5px #a2a2a2;
+	display: none;
+}
+#cy_CMICBMS_addtb_submit_collection{
+	position:relative;
+	bottom:8%;
+	left:-7%;
+}
+#cy_CMICBMS_newfd1 .cy_CMICBMS_newfdbd1{
+	position:relative;
+	top:7%;
+	left:5%;
+}
+.cy_CMICBMS_newfdip1{
+	width: 14%;
+	font-size: 14px;
+}
+.cy_CMICBMS_newbtinput_collection{
+	width:300px;
+	height: 28px;
+	border:1px #e0e0e0 solid;
+	border-radius: 3px;
+	padding-left: 10px;
+	outline: none;
+}
+.cy_CMICBMS_collectTreeBorder{
+	border: 1px solid #c0c0c0;
+	width: 80%;
+	
+}
+.cy_CMICBMS_addtb_pwdCheck{	/* 用户管理中的密码提示层 */
+	position: absolute;
+	background-color: white; 
+	width:79%;
+	top: 17%;
+	left: 16.5%;
+	box-shadow: 0 0 3px 0px black; 
+	/* border:  1px solid #c0c0c0; */
+}
+.cy_CMICBMS_addtb_pwdCheck2{
+	position: absolute;
+	top: 6%;
+	left: 96.5%;
+}
+.cy_CMICBMS_addtb_pwdCheck3{	/* 个人信息中的密码提示层 */
+	position: absolute;
+	background-color: white; 
+	width:76%;
+	top: 43%;
+	left: 18%;
+	box-shadow: 0 0 3px 0px black; 
+}
+.cy_CMICBMS_addtb_pwdCheck4{
+	position: absolute;
+	top: 37.5%;
+	left: 94.5%;
 }

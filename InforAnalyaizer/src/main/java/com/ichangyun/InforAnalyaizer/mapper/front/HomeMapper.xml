@@ -4,7 +4,9 @@
 	
 	<select id="getHotWord" resultType="com.ichangyun.InforAnalyaizer.model.front.HotWordBean">
 	  
-	      select * from a_hotwordsbasicinfo ORDER BY UpdateDateTime desc LIMIT 0,20
+	      select * from a_hotwordsbasicinfo where ValidFlag='1'  
+	      and CollectionField_ID=#{collectionField_ID}
+	      ORDER BY UpdateDateTime desc LIMIT 0,20
 	
 	</select>
 	
@@ -13,6 +15,7 @@
 	      
 	      select count(1) from a_articlebasicinfo a,A_HotWordsBasicInfo b,A_ArticleHotWordsInfo c
 			where a.Article_ID=c.Article_ID and b.HotWord_ID=c.HotWord_ID and b.HotWord_ID=#{HotWord}
+			and a.CollectionField_ID=#{CollectionField_ID}
 			and not exists (select 1 from a_userdeletearticleinfo d where d.Article_ID=a.Article_ID and d.User_ID=#{CreateUser})
 	</select>
 	
@@ -20,17 +23,19 @@
 	<select id="getArticleCountByJJFSWord" parameterType="com.ichangyun.InforAnalyaizer.model.front.HotWordBean" resultType="java.lang.Integer">
 	     select count(1) from a_articlebasicinfo a,A_ForthcomingBasicInfo b,A_ArticleForthcomingInfo c
 						where a.Article_ID=c.Article_ID and b.Keyword_ID =c.Keyword_ID and b.Keyword_ID=#{HotWord}
+						and a.CollectionField_ID=#{CollectionField_ID}
 						and not exists (select 1 from a_userdeletearticleinfo d where d.Article_ID=a.Article_ID and d.User_ID=#{CreateUser})
 	</select>
 	
 	<select id="getArticleByJJFSWord" parameterType="com.ichangyun.InforAnalyaizer.model.front.HotWordBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
 	      select a.*,
-            (select m.WebsiteName from m_websiteinfo m where m.Website_ID = a.Website_ID) WebsiteName,
+             m.WebsiteName,
+             m.Website ,
             (select count(1) from a_articlebasicinfo b where a.SimilarArticlesNo=b.SimilarArticlesNo and a.Article_ID!=b.Article_ID) sim_cnt,
             (select count(1) from m_mycollection c where c.Article_ID=a.Article_ID ) collcnt,
             (select count(1) from a_userearlywarningarticleinfo d where  d.Article_ID=a.Article_ID and  d.User_ID=#{CreateUser}) yj_cnt
-            from a_articlebasicinfo a,A_ForthcomingBasicInfo b,A_ArticleForthcomingInfo c
-             where a.Article_ID=c.Article_ID and b.Keyword_ID =c.Keyword_ID and b.Keyword_ID=#{HotWord}
+            from a_articlebasicinfo a,A_ForthcomingBasicInfo b,A_ArticleForthcomingInfo c,m_websiteinfo m
+             where a.Article_ID=c.Article_ID and b.Keyword_ID =c.Keyword_ID and b.Keyword_ID=#{HotWord}  and a.Website_ID=m.Website_ID
              and not exists (select 1 from a_userdeletearticleinfo d where d.Article_ID=a.Article_ID and d.User_ID=#{CreateUser})
             ORDER BY UpdateDateTime desc
           limit #{l_pre},#{rowSize}
@@ -38,12 +43,13 @@
 	
 	<select id="getArticleByHotWord" parameterType="com.ichangyun.InforAnalyaizer.model.front.HotWordBean" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
 	      select a.*,
-            (select m.WebsiteName from m_websiteinfo m where m.Website_ID = a.Website_ID) WebsiteName,
+             m.WebsiteName,
+             m.Website ,
             (select count(1) from a_articlebasicinfo b where a.SimilarArticlesNo=b.SimilarArticlesNo and a.Article_ID!=b.Article_ID) sim_cnt,
             (select count(1) from m_mycollection c where c.Article_ID=a.Article_ID ) collcnt,
             (select count(1) from a_userearlywarningarticleinfo d where  d.Article_ID=a.Article_ID and  d.User_ID=#{CreateUser}) yj_cnt
-            from a_articlebasicinfo a,A_HotWordsBasicInfo b,A_ArticleHotWordsInfo c
-             where a.Article_ID=c.Article_ID and b.HotWord_ID=c.HotWord_ID and b.HotWord_ID=#{HotWord}
+            from a_articlebasicinfo a,A_HotWordsBasicInfo b,A_ArticleHotWordsInfo c,m_websiteinfo m
+             where a.Article_ID=c.Article_ID and b.HotWord_ID=c.HotWord_ID and b.HotWord_ID=#{HotWord}  and a.Website_ID=m.Website_ID
              and not exists (select 1 from a_userdeletearticleinfo d where d.Article_ID=a.Article_ID and d.User_ID=#{CreateUser})
             ORDER BY UpdateDateTime desc
           limit #{l_pre},#{rowSize}
@@ -56,18 +62,22 @@
 	</select>
 	
 	<select id="getTopTenDatas"  parameterType="java.lang.String" resultType="com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean">
-	       select * from (select a.Article_ID,a.ArticleTitle,'1' as flag from a_articlebasicinfo a
-				     where not exists 
+	       select * from (select a.Article_ID,a.ArticleTitle,'1' as flag from a_articlebasicinfo a 
+				     where 
+				      a.collectionField_ID=#{collectionField_ID}
+				     and not exists 
 				     (select 1 from a_userdeletearticleinfo b where b.Article_ID=a.Article_ID and b.User_ID=#{userid})
 				      ORDER BY a.Releasetime desc limit 0,10) aa
 			union ALL
 			 select * from (select distinct a.Article_ID,a.ArticleTitle,'2' as flag from a_articlebasicinfo a,a_userearlywarningarticleinfo b
 				     where a.Article_ID = b.Article_ID and b.User_ID=#{userid}
+				     and a.collectionField_ID=#{collectionField_ID}
 				     and not exists 
 				     (select 1 from a_userdeletearticleinfo c where c.Article_ID=a.Article_ID and b.User_ID=#{userid})
 						ORDER BY a.Releasetime desc limit 0,10) bb
 			union ALL
 			 select * from (select a.Article_ID,a.ArticleTitle,'3' as flag from a_articlebasicinfo a where a.EmotionDivision='2' 
+			        and a.collectionField_ID=#{collectionField_ID}
 				    and not exists 
 				     (select 1 from a_userdeletearticleinfo b where b.Article_ID=a.Article_ID and b.User_ID=#{userid})
 				    ORDER BY a.Releasetime desc limit 0,10) cc
@@ -77,33 +87,36 @@
 	<select id="getJCMsg" resultType="java.util.Map">
 	   SELECT
 
-	    (SELECT count(1) from a_articlebasicinfo where DATE_FORMAT(Releasetime,'%Y/%m/%d')=#{today}) t_total,
+	    (SELECT count(1) from a_articlebasicinfo where DATE_FORMAT(Releasetime,'%Y/%m/%d')=#{today} and collectionField_ID=#{collectionField_ID}) t_total,
 	
 	    (select count(1) from a_articlebasicinfo a,a_articleplaninfo b,m_planinfo c where DATE_FORMAT(a.Releasetime,'%Y/%m/%d')=#{today}
-	                  and a.Article_ID=b.Article_ID and b.Plan_ID=c.Plan_ID and c.User_ID=#{userid}
+	             and a.collectionField_ID=#{collectionField_ID}  and a.Article_ID=b.Article_ID and b.Plan_ID=c.Plan_ID and c.User_ID=#{userid}
 	     ) t_ztjc,
 	
-	     (SELECT count(1) from a_articlebasicinfo where DATE_FORMAT(Releasetime,'%Y/%m/%d')=#{today} and EmotionDivision='2' ) t_fmxx,
+	     (SELECT count(1) from a_articlebasicinfo where DATE_FORMAT(Releasetime,'%Y/%m/%d')=#{today} and EmotionDivision='2' and collectionField_ID=#{collectionField_ID}) t_fmxx,
 	
-	     (select count(1) from A_UserEarlyWarningArticleInfo a ,a_articlebasicinfo b where a.Article_ID = b.Article_ID and a.User_ID=#{userid} 
+	     (select count(1) from A_UserEarlyWarningArticleInfo a ,a_articlebasicinfo b where b.collectionField_ID=#{collectionField_ID} and a.Article_ID = b.Article_ID and a.User_ID=#{userid} 
 		
 		and DATE_FORMAT(b.Releasetime,'%Y/%m/%d')=#{today}) t_yjxx,
 	
-	  (SELECT count(1) from a_articlebasicinfo where DATE_FORMAT(Releasetime,'%Y/%m/%d')=#{yesterday}) y_total,
+	  (SELECT count(1) from a_articlebasicinfo where DATE_FORMAT(Releasetime,'%Y/%m/%d')=#{yesterday} and collectionField_ID=#{collectionField_ID}) y_total,
 	
 	    (select count(1) from a_articlebasicinfo a,a_articleplaninfo b,m_planinfo c where DATE_FORMAT(a.Releasetime,'%Y/%m/%d')=#{yesterday}
-	                  and a.Article_ID=b.Article_ID and b.Plan_ID=c.Plan_ID and c.User_ID=#{userid}
+	                  and a.Article_ID=b.Article_ID and b.Plan_ID=c.Plan_ID and c.User_ID=#{userid} and a.collectionField_ID=#{collectionField_ID}
 	     ) y_ztjc,
 	
-	     (SELECT count(1) from a_articlebasicinfo where DATE_FORMAT(Releasetime,'%Y/%m/%d')=#{yesterday} and EmotionDivision='2' ) y_fmxx,
+	     (SELECT count(1) from a_articlebasicinfo where DATE_FORMAT(Releasetime,'%Y/%m/%d')=#{yesterday} and EmotionDivision='2' and collectionField_ID=#{collectionField_ID}) y_fmxx,
 	
-	     (select count(1) from A_UserEarlyWarningArticleInfo a ,a_articlebasicinfo b where a.Article_ID = b.Article_ID and a.User_ID=#{userid} 
+	     (select count(1) from A_UserEarlyWarningArticleInfo a ,a_articlebasicinfo b where a.Article_ID = b.Article_ID and a.User_ID=#{userid} and b.collectionField_ID=#{collectionField_ID} 
 		
 		and DATE_FORMAT(b.Releasetime,'%Y/%m/%d')=#{yesterday}) y_yjxx
 	</select>
 	
 	<select id="getJJFSWord" resultType="com.ichangyun.InforAnalyaizer.model.front.HotWordBean">
-	     select Keyword_ID,Keyword_ID as HotWord_ID,HotWord from A_ForthcomingBasicInfo where ValidFlag='1' ORDER BY UpdateDateTime desc limit 0,10
+	     select Keyword_ID,Keyword_ID as HotWord_ID,HotWord from A_ForthcomingBasicInfo 
+	        where ValidFlag='1' 
+	        and collectionField_ID=#{collectionField_ID}
+	        ORDER BY UpdateDateTime desc limit 0,10
 	</select>
 	
 </mapper>

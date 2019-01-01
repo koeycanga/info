@@ -1,35 +1,35 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model.userInfo;
 
 /**
- * UserManageBean£ºÓÃ»§½ÇÉ«Çé±¨
+ * UserManageBeanï¼šç”¨æˆ·è§’è‰²æƒ…æŠ¥
  *
  * @author ichangyun
  * @date 2018/11/09
  */
 public class UserManageBean {
 
-    // ÓÃ»§½ÇÉ«ID
+    // ç”¨æˆ·è§’è‰²ID
     private String UserRole_ID;
-    // ½ÇÉ«Ãû
+    // è§’è‰²å
     private String UserRoleName;
-    // È¨ÏŞ
+    // æƒé™
     private String Authority;
-    // ½ÇÉ«ÃèÊö
+    // è§’è‰²æè¿°
     private String Description;
-    // ×´Ì¬£¨0£ºÔİÎ´Ê¹ÓÃ  1£ºÊ¹ÓÃÖĞ£©
+    // çŠ¶æ€ï¼ˆ0ï¼šæš‚æœªä½¿ç”¨  1ï¼šä½¿ç”¨ä¸­ï¼‰
     private String Status;
-    // ×÷³ÉÕß
+    // ä½œæˆè€…
     private String CreateUser;
-    // ×÷³ÉÈÕÊ±
+    // ä½œæˆæ—¥æ—¶
     private String CreateDateTime;
-    // ¸üĞÂ×Å
+    // æ›´æ–°ç€
     private String UpdateUser;
-    // ¸üĞÂÈÕÊ±
+    // æ›´æ–°æ—¥æ—¶
     private String UpdateDateTime;
 
     public String getUserRole_ID() {

@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 
 package com.ichangyun.InforAnalyaizer.controller.usermanage;
@@ -25,7 +25,7 @@ import com.ichangyun.InforAnalyaizer.service.usermanage.RoleService;
 import com.ichangyun.InforAnalyaizer.utils.PBKDF2;
 
 /**
- * Ç°Ì¨Ò³ÃæÓÃ»§ÇëÇóµÄController
+ * å‰å°é¡µé¢ç”¨æˆ·è¯·æ±‚çš„Controller
  * @author renhao
  * 2018-11-12 18:13
  */
@@ -34,55 +34,55 @@ import com.ichangyun.InforAnalyaizer.utils.PBKDF2;
 @RequestMapping("/userfront")
 public class UserFrontController {
 
-	@Autowired
+    @Autowired
     private UserInfoService userInfoService;
-	
-	@Autowired
-	private RoleService roleService;
-	
-	@RequestMapping("/updateUser")	
-	public Object updateUser(UserInfoVo vo,String oripwd,String changePwd,HttpSession session) throws NoSuchAlgorithmException, InvalidKeySpecException {
-		String res = "ok"; 
-		
-		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
-		
-		UserInfoVo s_vo = this.userInfoService.queryUserByNum(vo.getUnum());
-		 
-		String passwd  = PBKDF2.getPBKDF2(oripwd,DatatypeConverter.printHexBinary((s_vo.getUid()/*+vo.getUname()*/).getBytes()));
-		
-		if(!passwd.equals(s_vo.getUpwd())) {
-			res = "pwd not right";
-		}else {
-			try {
-	            this.userInfoService.updateUser2_byold(vo,u,changePwd);
-	        } catch (Exception e) {
-	        	res = "fault";
-	        }
-		}
-		 
-		 return res;
-	}
-	
-	/**
-	 * thisUser£º·µ»Øµ±Ç°µÇÂ¼ÖĞµÄÓÃ»§ĞÅÏ¢
-	 *
-	 * @param session
-	 * @return UserInfoVo
-	 */
-	@RequestMapping("/thisUser")
-	public UserInfoVo thisUser(HttpSession session) {
-		
-		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
-		// ¸ù¾İÓÃ»§id²éÑ¯ÓÃ»§ĞÅÏ¢
-		UserInfoVo vo = userInfoService.queryById(u.getUser_ID());
-		// ¸ù¾İÓÃ»§µÄ½ÇÉ«ID²éÑ¯½ÇÉ«ĞÅÏ¢
-		RoleManageBean role = roleService.queryById(vo.getUrole());
-		// ÉèÖÃ½ÇÉ«Ãû³Æ
-		if(role!=null) {
-			vo.setUrolename(role.getUserRoleName());
-		}else if(vo.getUsuperuserflag().equals("1")){
-			vo.setUrolename("³¬¼¶¹ÜÀíÔ±");
-		}
-		return vo;
-	}
+
+    @Autowired
+    private RoleService roleService;
+
+    @RequestMapping("/updateUser")
+    public Object updateUser(UserInfoVo vo,String oripwd,String changePwd,HttpSession session) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        String res = "ok";
+
+        User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+
+        UserInfoVo s_vo = this.userInfoService.queryUserByNum(vo.getUnum());
+
+        String passwd  = PBKDF2.getPBKDF2(oripwd,DatatypeConverter.printHexBinary((s_vo.getUid()/*+vo.getUname()*/).getBytes()));
+
+        if(!passwd.equals(s_vo.getUpwd())) {
+            res = "pwd not right";
+        }else {
+            try {
+                this.userInfoService.updateUser2_byold(vo,u,changePwd);
+            } catch (Exception e) {
+                res = "fault";
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * thisUserï¼šè¿”å›å½“å‰ç™»å½•ä¸­çš„ç”¨æˆ·ä¿¡æ¯
+     *
+     * @param session
+     * @return UserInfoVo
+     */
+    @RequestMapping("/thisUser")
+    public UserInfoVo thisUser(HttpSession session) {
+
+        User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+        // æ ¹æ®ç”¨æˆ·idæŸ¥è¯¢ç”¨æˆ·ä¿¡æ¯
+        UserInfoVo vo = userInfoService.queryById(u.getUser_ID());
+        // æ ¹æ®ç”¨æˆ·çš„è§’è‰²IDæŸ¥è¯¢è§’è‰²ä¿¡æ¯
+        RoleManageBean role = roleService.queryById(vo.getUrole(),session);
+        // è®¾ç½®è§’è‰²åç§°
+        if(role!=null) {
+            vo.setUrolename(role.getUserRoleName());
+        }else if(vo.getUsuperuserflag().equals("1")){
+            vo.setUrolename("è¶…çº§ç®¡ç†å‘˜");
+        }
+        return vo;
+    }
 }

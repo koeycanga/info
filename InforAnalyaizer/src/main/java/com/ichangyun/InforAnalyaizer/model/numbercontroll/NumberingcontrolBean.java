@@ -1,73 +1,71 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ * ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model.numbercontroll;
 
-
 /**
- *   ²É·¬±íÊµÌåÀà
- *   ¶ÔÓ¦Êı¾İ±ím_numberingcontrolµÄÊµÌåÀà
- *   @author renhao
- *   Date:2018-11-9
+ * é‡‡ç•ªè¡¨çš„å®ä½“ç±»
+ * å¯¹åº”æ•°æ®è¡¨ï¼šm_numberingcontrol
+ * @author renhao
+ * @Date:2018-11-9
  */
 public class NumberingcontrolBean {
 
-	/**
-	 * ²É·¬ID
-	 */
-	private String ControlID;
-	
-	/**
-	 * ²É·¬Ãû³Æ
-	 */
-	private String ControlName;
-	
-	/**
-	 * ²É·¬Î»Ê××ÖÄ¸
-	 */
-	private String FirstCharacter;
-	
-	/**
-	 * ²É·¬×ÜÎ»Êı
-	 */
-	private int NumberOfDigits;
-	
-	/**
-	 * ²É·¬µ±Ç°ÊıÖµ
-	 */
-	private int PresentValue;
-	
-	public String getControlID() {
-		return ControlID;
-	}
-	public void setControlID(String controlID) {
-		ControlID = controlID;
-	}
-	public String getControlName() {
-		return ControlName;
-	}
-	public void setControlName(String controlName) {
-		ControlName = controlName;
-	}
-	public String getFirstCharacter() {
-		return FirstCharacter;
-	}
-	public void setFirstCharacter(String firstCharacter) {
-		FirstCharacter = firstCharacter;
-	}
-	public int getNumberOfDigits() {
-		return NumberOfDigits;
-	}
-	public void setNumberOfDigits(int numberOfDigits) {
-		NumberOfDigits = numberOfDigits;
-	}
-	public int getPresentValue() {
-		return PresentValue;
-	}
-	public void setPresentValue(int presentValue) {
-		PresentValue = presentValue;
-	}
-	
+    /**
+     * é‡‡ç•ªID
+     */
+    private String ControlID;
+
+    /**
+     * é‡‡ç•ªåç§°
+     */
+    private String ControlName;
+
+    /**
+     * é‡‡ç•ªä½é¦–å­—æ¯
+     */
+    private String FirstCharacter;
+
+    /**
+     * é‡‡ç•ªæ€»ä½æ•°
+     */
+    private int NumberOfDigits;
+
+    /**
+     * é‡‡ç•ªå½“å‰æ•°å€¼
+     */
+    private int PresentValue;
+
+    public String getControlID() {
+        return ControlID;
+    }
+    public void setControlID(String controlID) {
+        ControlID = controlID;
+    }
+    public String getControlName() {
+        return ControlName;
+    }
+    public void setControlName(String controlName) {
+        ControlName = controlName;
+    }
+    public String getFirstCharacter() {
+        return FirstCharacter;
+    }
+    public void setFirstCharacter(String firstCharacter) {
+        FirstCharacter = firstCharacter;
+    }
+    public int getNumberOfDigits() {
+        return NumberOfDigits;
+    }
+    public void setNumberOfDigits(int numberOfDigits) {
+        NumberOfDigits = numberOfDigits;
+    }
+    public int getPresentValue() {
+        return PresentValue;
+    }
+    public void setPresentValue(int presentValue) {
+        PresentValue = presentValue;
+    }
 }

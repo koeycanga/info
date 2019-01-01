@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 畅云 http://www.ichangyun.cn
+ * Copyright 2018 鐣呬簯 http://www.ichangyun.cn
  * <p>
- *  竞争情报系统
+ *  绔炰簤鎯呮姤绯荤粺
  */
 package com.ichangyun.InforAnalyaizer.model.notice;
 
@@ -78,21 +78,20 @@ public class NoticeExecuteResult {
         this.updatedatetime = updatedatetime;
     }
 
-	public NoticeExecuteResult(String noticeid, String executeresult, String executeid, String createuser,
-			Date createdatetime, String updateuser, Date updatedatetime) {
-		super();
-		this.noticeid = noticeid;
-		this.executeresult = executeresult;
-		this.executeid = executeid;
-		this.createuser = createuser;
-		this.createdatetime = createdatetime;
-		this.updateuser = updateuser;
-		this.updatedatetime = updatedatetime;
-	}
+    public NoticeExecuteResult(String noticeid, String executeresult, String executeid, String createuser,
+            Date createdatetime, String updateuser, Date updatedatetime) {
+        super();
+        this.noticeid = noticeid;
+        this.executeresult = executeresult;
+        this.executeid = executeid;
+        this.createuser = createuser;
+        this.createdatetime = createdatetime;
+        this.updateuser = updateuser;
+        this.updatedatetime = updatedatetime;
+    }
 
-	public NoticeExecuteResult() {
-		super();
-	}
-	
-    
+    public NoticeExecuteResult() {
+        super();
+    }
+
 }

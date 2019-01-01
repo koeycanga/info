@@ -1,3 +1,8 @@
+/**
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
+ * <p>
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
+ */
 package com.ichangyun.InforAnalyaizer.controller.classification;
 
 import java.io.File;
@@ -30,11 +35,10 @@ import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 import com.ichangyun.InforAnalyaizer.service.classificationfilterwords.FilterWordsService;
 import com.ichangyun.InforAnalyaizer.service.common.service.DBUpdateCheckService;
 import com.ichangyun.InforAnalyaizer.utils.filwterwordsUtils.InputUtil;
-import com.ichangyun.InforAnalyaizer.utils.filwterwordsUtils.OutputUtil;
 
 /**
  *
- * ¹ıÂË´Ê¹ÜÀícontroller²ã½Ó¿ÚÀà
+ * è¿‡æ»¤è¯ç®¡ç†controllerå±‚æ¥å£ç±»
  */
 @Controller
 @RequestMapping("/qbgh/filterWords")
@@ -50,46 +54,46 @@ public class FilterWordsController {
     }
 
     /**
-     * ²éÑ¯ËùÓĞ½Úµã¹ıÂË´ÊĞÅÏ¢£¬¿É´øÌõ¼ş
+     * æŸ¥è¯¢æ‰€æœ‰èŠ‚ç‚¹è¿‡æ»¤è¯ä¿¡æ¯ï¼Œå¯å¸¦æ¡ä»¶
      *
      * @param FilterWordsVo vo, BaseBean bb
      * @return Map<String, Object>
      */
     @ResponseBody
-    @RequestMapping("/queryAll") // ²éÑ¯ËùÓĞ½Úµã¹ıÂË´ÊĞÅÏ¢£¬¿É´øÌõ¼ş
+    @RequestMapping("/queryAll") // æŸ¥è¯¢æ‰€æœ‰èŠ‚ç‚¹è¿‡æ»¤è¯ä¿¡æ¯ï¼Œå¯å¸¦æ¡ä»¶
     public Map<String, Object> queryAll(FilterWordsVo vo, BaseBean bb) {
         Map<String, Object> list = this.fwService.queryAllFilterWords(vo, bb.getPageNow(), bb.getRowSize());
         return list;
     }
 
     /**
-     * ¸ù¾İid²éÑ¯½Úµã¹ıÂË´ÊĞÅÏ¢
+     * æ ¹æ®idæŸ¥è¯¢èŠ‚ç‚¹è¿‡æ»¤è¯ä¿¡æ¯
      *
      * @param String classificationId
      * @return FilterWordsVo
      */
     @ResponseBody
-    @RequestMapping("/queryOne") // ¸ù¾İid²éÑ¯½Úµã¹ıÂË´ÊĞÅÏ¢
+    @RequestMapping("/queryOne") // æ ¹æ®idæŸ¥è¯¢èŠ‚ç‚¹è¿‡æ»¤è¯ä¿¡æ¯
     public FilterWordsVo queryOne(String classificationId) {
         FilterWordsVo vo = this.fwService.queryOne(classificationId);
         return vo;
     }
 
     /**
-     * ¸ù¾İid²éÑ¯½Úµã¹ıÂË´ÊĞÅÏ¢
+     * æ ¹æ®idæŸ¥è¯¢èŠ‚ç‚¹è¿‡æ»¤è¯ä¿¡æ¯
      *
      * @param FilterWordsVo vo
      * @return Map<String, String>
      */
     @ResponseBody
-    @RequestMapping("/updateFwVo") // ¸üĞÂ½Úµã¹ıÂË´ÊĞÅÏ¢
+    @RequestMapping("/updateFwVo") // æ›´æ–°èŠ‚ç‚¹è¿‡æ»¤è¯ä¿¡æ¯
     public Object updateFwVo(FilterWordsVo vo, HttpSession session) {
         User u = (User) session.getAttribute(CommBean.SESSION_NAME);
         Map<String, String> map = new HashMap<>();
         List<String> ids = new ArrayList<>();
         ids.add(vo.getClassificationId());
         if (vo.getUpdatedatetime() != null) {
-            if (!dbUpdateCheckService.DBUpdateCheck("4", ids, vo.getUpdatedatetime())) {
+            if (!dbUpdateCheckService.DBUpdateCheck("4", ids, vo.getUpdatedatetime(),session)) {
                 map.put("msg", "checkFalse");
                 return map;
             }
@@ -100,43 +104,79 @@ public class FilterWordsController {
     }
 
     /**
-     * ²éÑ¯µ±Ç°½ÚµãµÄËùÓĞ×Ó½Úµã
+     * æŸ¥è¯¢å½“å‰èŠ‚ç‚¹çš„æ‰€æœ‰å­èŠ‚ç‚¹
      *
      * @param FilterWordsVo vo
      * @return List<FilterWordsVo>
      */
     @ResponseBody
-    @RequestMapping("/queryChild") // ²éÑ¯µ±Ç°½ÚµãµÄËùÓĞ×Ó½Úµã
+    @RequestMapping("/queryChild") // æŸ¥è¯¢å½“å‰èŠ‚ç‚¹çš„æ‰€æœ‰å­èŠ‚ç‚¹
     public List<FilterWordsVo> queryChild(FilterWordsVo vo) {
         List<FilterWordsVo> children = this.fwService.queryChild(vo);
         return children;
     }
 
     /**
-     * µ¼³ö
+     * å¯¼å‡º
      *
-     * @param                     String[] ids
+     * @param  String[] ids  è¦å¯¼å‡ºçš„åˆ†ç±»ä½“ç³»idé›†åˆ
      * @param HttpServletResponse response
      * @throws IOException
-     * @return null
      */
     @RequestMapping("/output")
-    public void output(String[] ids, HttpServletResponse response,HttpServletRequest request) throws IOException {
-        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");//ÉèÖÃÈÕÆÚ¸ñÊ½
-        String thisTime = df.format(new Date());// new Date()Îª»ñÈ¡µ±Ç°ÏµÍ³Ê±¼ä
-        String realPath=request.getServletContext().getRealPath("/templates");
-        HSSFWorkbook wb = this.fwService.output(ids,realPath);
-
-        OutputStream output = response.getOutputStream();
-        response.reset();
-        response.setHeader("Content-disposition", "attachment; filename=" + OutputUtil.toUtf8String("·ÖÀà¹ıÂË´Ê-"+thisTime+".xls"));
-        response.setContentType("application/msexcel");
-        wb.write(output);
-        output.close();
+    public String output(String[] ids, HttpServletResponse response,HttpServletRequest request) throws IOException {
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");//è®¾ç½®æ—¥æœŸæ ¼å¼
+        String thisTime = df.format(new Date());// new Date()ä¸ºè·å–å½“å‰ç³»ç»Ÿæ—¶é—´
+        String realPath=request.getServletContext().getRealPath("/templates");   //excelæ¨¡æ¿æ–‡ä»¶å­˜æ”¾ç›®å½•
+        Object[] obj = this.fwService.output(ids,realPath);     //ç”ŸæˆHSSFWorkbookæ–‡ä»¶
+        HSSFWorkbook wb = (HSSFWorkbook) obj[0];
+        String msg = (String) obj[1];
+        if(msg.equals("")) {
+	        OutputStream output = response.getOutputStream();
+	        response.reset();
+	        response.setHeader("Content-disposition", "attachment; filename=" +
+	                toUtf8String("åˆ†ç±»è¿‡æ»¤è¯-"+thisTime+".xls"));
+	        response.setContentType("application/msexcel");
+	        wb.write(output);
+	        output.close();
+        }else {
+        	request.setAttribute("dc_msg", msg);
+        }
+        return "classifcation/filterWords";
     }
 
     /**
-     * µ¼Èë
+     * æ–‡å­—æ ¼å¼è½¬æ¢
+     * @param s
+     * @return
+     */
+    private String toUtf8String(String s) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c >= 0 && c <= 255) {
+                sb.append(c);
+            } else {
+                byte[] b;
+                try {
+                    b = Character.toString(c).getBytes("utf-8");
+                } catch (Exception ex) {
+                    System.out.println(ex);
+                    b = new byte[0];
+                }
+                for (int j = 0; j < b.length; j++) {
+                    int k = b[j];
+                    if (k < 0)
+                        k += 256;
+                    sb.append("%" + Integer.toHexString(k).toUpperCase());
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * å¯¼å…¥
      *
      * @param FilterWordsVo vo
      * @return List<FilterWordsVo>
@@ -151,10 +191,10 @@ public class FilterWordsController {
         List<FilterWordsVo> vos = new ArrayList<>();
         Map<String, Object> map = new HashMap<>();
         String msg = "ok";
-        //ÉÏ´«ÎÄ¼ş£¬ÎÄ¼şÃûÎªÔ­ÎÄ¼şÃû+µ±Ç°ÓÃ»§id
+        //ä¸Šä¼ æ–‡ä»¶ï¼Œæ–‡ä»¶åä¸ºåŸæ–‡ä»¶å+å½“å‰ç”¨æˆ·id
         String filePath = user.getUser_ID() + "-" + file.getOriginalFilename();
 
-        // ÎÄ¼şÀàĞÍCheck
+        // æ–‡ä»¶ç±»å‹Check
         if (!filePath.endsWith(CommBean.UPLOAD_FILE_EXTENSION_XLS)&&!filePath.endsWith(CommBean.UPLOAD_FILE_EXTENSION_XLSX)) {
             msg = "fileTypeException";
             map.put("msg", msg);
@@ -170,14 +210,14 @@ public class FilterWordsController {
             }
             file.transferTo(targetFile);
             if(targetFile.length()>CommBean.FILE_MAX_SIZE) {
-            	  targetFile.delete();
-            	  msg = "maxSize"+CommBean.FILE_MAX_SIZE_MSG;
-                  map.put("msg", msg);
-                  return map;
+                targetFile.delete();
+                msg = "maxSize"+CommBean.FILE_MAX_SIZE_MSG;
+                map.put("msg", msg);
+                return map;
             }
         }
-       
-        // ×î´óÎÄ¼şµ¼Èë³¤¶ÈCheck
+
+        // æœ€å¤§æ–‡ä»¶å¯¼å…¥é•¿åº¦Check
         int rowCount = InputUtil.getRowCount(savePath);
         if(rowCount > CommBean.UPLOAD_FILE_MAXLENGTH) {
             File targetFile = new File(savePath);
@@ -187,7 +227,7 @@ public class FilterWordsController {
             return map;
         }
         try {
-            //½«ÉÏ´«µÄÎÄ¼ş×ª»»Îªlist
+            //å°†ä¸Šä¼ çš„æ–‡ä»¶è½¬æ¢ä¸ºlist
             List<ClassificationInfoBean> allClassificationNames = this.fwService.getAllClassificationNames();
             Map<String, Object>result = InputUtil.input(savePath,allClassificationNames);
             vos=(List<FilterWordsVo>) result.get("vos");

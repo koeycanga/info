@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.controller.login;
 
@@ -9,7 +9,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
+import javax.inject.Qualifier;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +28,7 @@ import com.ichangyun.InforAnalyaizer.service.userInfo.UserService;
 import com.ichangyun.InforAnalyaizer.utils.ImageUtil;
 
 /**
- * Ç°¶Ë&ºóÌ¨µÇÂ½»­ÃæController
+ * å‰ç«¯&åå°ç™»é™†ç”»é¢Controller
  *
  * @author renhao
  * @date 2018/11/09
@@ -35,21 +37,23 @@ import com.ichangyun.InforAnalyaizer.utils.ImageUtil;
 @RequestMapping("/login")
 public class LoginController {
 
-    // ÓÃ»§Çé±¨Service
-    @Autowired
+    // ç”¨æˆ·æƒ…æŠ¥Service
+   
+  //  @Resource(name="b")
+	 @Autowired
     private  UserService userService;
 
     /**
-     * CookieÈ¡µÃ
+     * Cookieå–å¾—
      *
-     * @param request LoginÇëÇó
-     * @return ·µ»ØCookies
+     * @param request Loginè¯·æ±‚
+     * @return è¿”å›Cookies
      */
     @RequestMapping("/cookies")
     public Object cookie(HttpServletRequest request) {
 
         String str = "{";
-        // ¸ù¾İÇëÇóÊı¾İ£¬ÕÒµ½cookieÊı×é
+        // æ ¹æ®è¯·æ±‚æ•°æ®ï¼Œæ‰¾åˆ°cookieæ•°ç»„
         Cookie[] cookies = request.getCookies();
         String cookie_name = "";
         String cookie_pwd = "";
@@ -69,14 +73,14 @@ public class LoginController {
     }
 
     /**
-     * Login´¦Àí
+     * Loginå¤„ç†
      *
-     * @param username        ÓÃ»§Ãû
-     * @param passwd          ÃÜÂë
-     * @param checkCode       ÑéÖ¤Âë
-     * @param isremberusrname ÊÇ·ñ¼Ç×¡ÓÃ»§Ãû
-     * @param request         ÇëÇó
-     * @param response        ·µ»Ø
+     * @param username        ç”¨æˆ·å
+     * @param passwd          å¯†ç 
+     * @param checkCode       éªŒè¯ç 
+     * @param isremberusrname æ˜¯å¦è®°ä½ç”¨æˆ·å
+     * @param request         è¯·æ±‚
+     * @param response        è¿”å›
      * @param session         Session
      * @return
      */
@@ -84,71 +88,79 @@ public class LoginController {
     public Object userLogin(String username, String passwd, String checkCode,
             String isremberusrname, HttpServletRequest request,
             HttpServletResponse response, HttpSession session) {
-    	
+
         String res = "";
-        // È¡µÃsessionÖĞµÄÑéÖ¤Âë
+        // å–å¾—sessionä¸­çš„éªŒè¯ç 
         String s_checkCode = (String) session.getAttribute("checkCode");
-        // ÑéÖ¤ÂëÕıÈ·ĞÔÅĞ¶Ï
+        // éªŒè¯ç æ­£ç¡®æ€§åˆ¤æ–­
         if(!checkCode.toUpperCase().equals(s_checkCode.toUpperCase())) {
-            // ÊäÈëµÄÑéÖ¤Âë¡ÙsessionÖĞµÄÑéÖ¤ÂëÊ±£¬Òì³£MessageÊä³ö£¬´¦ÀíÖĞ¶Ï
-            res = "checkCode_n_ok";   // ÑéÖ¤Âë²»¶Ô
+            // è¾“å…¥çš„éªŒè¯ç â‰ sessionä¸­çš„éªŒè¯ç æ—¶ï¼Œå¼‚å¸¸Messageè¾“å‡ºï¼Œå¤„ç†ä¸­æ–­
+            res = "checkCode_n_ok";   // éªŒè¯ç ä¸å¯¹
         }else {
-            // Í¨¹ıÊäÈëµÄÓÃ»§Ãû&ÃÜÂë£¬È¡µÃÓÃ»§Çé±¨
+            // é€šè¿‡è¾“å…¥çš„ç”¨æˆ·å&å¯†ç ï¼Œå–å¾—ç”¨æˆ·æƒ…æŠ¥
             User user = userService.isUserExist(username, passwd);
-            // È¡µÃÓÃ»§Çé±¨Îª¿ÕÊ±£¬Òì³£MessageÊä³ö£¬´¦ÀíÖĞ¶Ï
+            // å–å¾—ç”¨æˆ·æƒ…æŠ¥ä¸ºç©ºæ—¶ï¼Œå¼‚å¸¸Messageè¾“å‡ºï¼Œå¤„ç†ä¸­æ–­
             if(user==null) {
-                //ÓÃ»§Ãû»òÃÜÂë´íÎó TODO messageID£¿£¿
+                //ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯
                 res = "";
             }else {
                 if(user.getSuperUserFlag().equals("1")) {
-                	user.setAuthority("1111111111");
+                    user.setAuthority("1111111111");
                 }
-                // µÇÂ¼³É¹¦
-                dealSession(user,session);
-               
-                if(isremberusrname.equals("true")) {  // ¼Ç×¡ÓÃ»§
-                    userService.addCookie(response,user,passwd);
-                }else {  // ²»¼Ç×¡ÓÃ»§
-                    userService.delCookie(request,response);
+                if(user.getStatus().equals("0")) {  //è´¦å·è¢«åœç”¨
+                	res = "deactivate";
+                }else {
+	                // ç™»å½•æˆåŠŸ
+	                dealSession(user,session);
+	
+	                if(isremberusrname.equals("true")) {  // è®°ä½ç”¨æˆ·
+	                    userService.addCookie(response,user,passwd);
+	                }else {  // ä¸è®°ä½ç”¨æˆ·
+	                    userService.delCookie(request,response);
+	                }
+	                res = "success"+user.getAuthority();
                 }
-                res = "success"+user.getAuthority();
             }
         }
         return res;
     }
 
     /**
-     * SessionµÄUserInfo±£´æ
+     * Sessionçš„UserInfoä¿å­˜
      *
-     * @param user ÓÃ»§Çé±¨
+     * @param user ç”¨æˆ·æƒ…æŠ¥
      * @param session
      */
     private void dealSession(User user, HttpSession session) {
         session.setAttribute(CommBean.SESSION_NAME, user);
-        // ÓÃ»§Ãû
+        // ç”¨æˆ·å
         session.setAttribute("UserInfo.UserID",user.getUser_ID());
-        // ÃÜÂë
+        // å¯†ç 
         session.setAttribute("UserInfo.Password", user.getPassword());
-        // ĞÕÃû
+        // å§“å
         session.setAttribute("UserInfo.Name",user.getName());
-        // ËùÊô²¿ÃÅ
+        // æ‰€å±éƒ¨é—¨
         session.setAttribute("UserInfo.Department",user.getDepartment());
-        // ÁªÏµ·½Ê½
+        // è”ç³»æ–¹å¼
         session.setAttribute("UserInfo.Telephone", user.getTelephone());
-        // ÓÊÏä
+        // é‚®ç®±
         session.setAttribute("UserInfo.EMail", user.getEMail());
-        // ÓÃ»§½ÇÉ«ID
+        // ç”¨æˆ·è§’è‰²ID
         session.setAttribute("UserInfo.UserRole_ID",user.getUserRole_ID());
-        // ¸üĞÂÈÕÊ±
+        // æ›´æ–°æ—¥æ—¶
         session.setAttribute("UserInfo.UpdateDateTime",user.getUpdateDateTime());
-        // ÓÃ»§½ÇÉ«Ãû
+        // ç”¨æˆ·è§’è‰²å
         session.setAttribute("UserInfo.UserRoleName", user.getUserRoleName());
-        // È¨ÏŞ
+        // æƒé™
         session.setAttribute("UserInfo.Authority", user.getAuthority());
+        // å®¢æˆ·ID
+        session.setAttribute("UserInfo.Customer_ID", user.getCustomer_ID());
+        // é‡‡é›†é¢†åŸŸID
+        session.setAttribute("UserInfo.CollectionField", user.getCollectionField_ID());
     }
 
     /**
-     * Login³É¹¦ºó½øÈëÏµÍ³
+     * LoginæˆåŠŸåè¿›å…¥ç³»ç»Ÿ
      *
      * @param request
      * @param session
@@ -161,7 +173,7 @@ public class LoginController {
     }
 
     /**
-     * valicodeÑéÖ¤ÂëÈ¡µÃ£¬±íÊ¾ÔÚ»­ÃæÉÏ
+     * valicodeéªŒè¯ç å–å¾—ï¼Œè¡¨ç¤ºåœ¨ç”»é¢ä¸Š
      *
      * @param response
      * @param session
@@ -169,12 +181,12 @@ public class LoginController {
      */
     @RequestMapping("/valicode")
     public void valicode(HttpServletResponse response, HttpSession session) throws IOException {
-        // ÀûÓÃÍ¼Æ¬¹¤¾ßÉú³ÉÍ¼Æ¬
-        // µÚÒ»¸ö²ÎÊıÊÇÉú³ÉµÄÑéÖ¤Âë£¬µÚ¶ş¸ö²ÎÊıÊÇÉú³ÉµÄÍ¼Æ¬
+        // åˆ©ç”¨å›¾ç‰‡å·¥å…·ç”Ÿæˆå›¾ç‰‡
+        // ç¬¬ä¸€ä¸ªå‚æ•°æ˜¯ç”Ÿæˆçš„éªŒè¯ç ï¼Œç¬¬äºŒä¸ªå‚æ•°æ˜¯ç”Ÿæˆçš„å›¾ç‰‡
         Object[] objs = ImageUtil.createImage();
-        // ½«ÑéÖ¤Âë´æÈëSession
+        // å°†éªŒè¯ç å­˜å…¥Session
         session.setAttribute("checkCode",objs[0]);
-        // ½«Í¼Æ¬Êä³ö¸øä¯ÀÀÆ÷
+        // å°†å›¾ç‰‡è¾“å‡ºç»™æµè§ˆå™¨
         BufferedImage image = (BufferedImage) objs[1];
         response.setContentType("image/png");
         OutputStream os = response.getOutputStream();

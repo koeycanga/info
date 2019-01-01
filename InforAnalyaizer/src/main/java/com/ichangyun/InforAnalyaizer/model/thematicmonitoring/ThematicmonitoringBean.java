@@ -1,256 +1,262 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ * ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model.thematicmonitoring;
 
 import com.ichangyun.InforAnalyaizer.model.BaseBean;
 
 /**
- * ¼à²â·½°¸¶ÔÓ¦bean ¶ÔÓ¦Êı¾İ±ím_planinfo ºÍ   m_plandetail
+ * ç›‘æµ‹æ–¹æ¡ˆå¯¹åº”bean
+ * å¯¹åº”æ•°æ®è¡¨:m_planinfo å’Œ   m_plandetail
  * @author renhao
- * 2018-11-13 10:29
+ * @Date:2018-11-13 10:29
  */
 public class ThematicmonitoringBean extends BaseBean {
-    
-	/**
-	 * ÓÃ»§ID
-	 */
-	private String User_ID;
-	
-	/**
-	 * ·½°¸ID
-	 */
-	private String Plan_ID;
-	
-	/**
-	 * ·½°¸Ãû³Æ
-	 */
-	private String PlanName;
-	
-	/**
-	 * ×éºÏÊıÁ¿
-	 */
-	private int UnitNumber;
-	
-	/**
-	 * ´´½¨Õß
-	 */
-	private String CreateUser;
-	
-	/**
-	 * ´´½¨Ê±¼ä
-	 */
-	private String CreateDateTime;
-	
-	
-	/**
-	 * ¸üĞÂÕß
-	 */
-	private String UpdateUser;
-	
-	
-	/**
-	 * ¸üĞÂÊ±¼ä
-	 */
-	private String UpdateDateTime;
-	
-	/**
-	 * ×éºÏNO
-	 */
-	private int UnitNo;
-	
-	/**
-	 * ÅÅ³ı´Ê
-	 */
-	private String RemoveWord;
-	
-	/**
-	 * ¼à²â´Ê1
-	 */
-	private String MonitoringWord1;
-	
-	/**
-	 * ¼à²â´Ê2
-	 */
-	private String MonitoringWord2;
-	
-	/**
-	 * ¼à²â´Ê3
-	 */
-	private String MonitoringWord3;
-	
-	/**
-	 * ¼à²â´Ê4
-	 */
-	private String MonitoringWord4;
-	
-	/**
-	 * ÎÄÕÂID
-	 */
-	private String Article_ID;
-	
-	/**
-	 * ¼à²â´Ê
-	 */
-	private String MonitoringWord;
-	
-	/**
-	 * ¼à²â´Ê×éºÏÒ»¶ÔÓ¦µÄÎÄÕÂÊıÁ¿
-	 */
-	private int m_lg1;
-	
-	/**
-	 * ¼à²â´Ê×éºÏ¶ş¶ÔÓ¦µÄÎÄÕÂÊıÁ¿
-	 */
-	private int m_lg2;
-	
-	
-	/**
-	 * ¼à²â´Ê×éºÏÈı¶ÔÓ¦µÄÎÄÕÂÊıÁ¿
-	 */
-	private int m_lg3;
-	
-	
-	/**
-	 * ¼à²â·½°¸¿ªÊ¼Ê±¼ä
-	 */
-	private String PlanStartTime;
-	
-	
-	/**
-	 * ¼à²â·½°¸½áÊøÊ±¼ä
-	 */
-	private String PlanEndTime;
-	
 
-	public String getPlanStartTime() {
-		return PlanStartTime;
-	}
-	public void setPlanStartTime(String planStartTime) {
-		PlanStartTime = planStartTime;
-	}
-	public String getPlanEndTime() {
-		return PlanEndTime;
-	}
-	public void setPlanEndTime(String planEndTime) {
-		PlanEndTime = planEndTime;
-	}
-	public int getM_lg1() {
-		return m_lg1;
-	}
-	public void setM_lg1(int m_lg1) {
-		this.m_lg1 = m_lg1;
-	}
-	public int getM_lg2() {
-		return m_lg2;
-	}
-	public void setM_lg2(int m_lg2) {
-		this.m_lg2 = m_lg2;
-	}
-	public int getM_lg3() {
-		return m_lg3;
-	}
-	public void setM_lg3(int m_lg3) {
-		this.m_lg3 = m_lg3;
-	}
-	public String getMonitoringWord() {
-		return MonitoringWord;
-	}
-	public void setMonitoringWord(String monitoringWord) {
-		MonitoringWord = monitoringWord;
-	}
-	public String getArticle_ID() {
-		return Article_ID;
-	}
-	public void setArticle_ID(String article_ID) {
-		Article_ID = article_ID;
-	}
-	public String getMonitoringWord1() {
-		return MonitoringWord1;
-	}
-	public void setMonitoringWord1(String monitoringWord1) {
-		MonitoringWord1 = monitoringWord1;
-	}
-	public String getMonitoringWord2() {
-		return MonitoringWord2;
-	}
-	public void setMonitoringWord2(String monitoringWord2) {
-		MonitoringWord2 = monitoringWord2;
-	}
-	public String getMonitoringWord3() {
-		return MonitoringWord3;
-	}
-	public void setMonitoringWord3(String monitoringWord3) {
-		MonitoringWord3 = monitoringWord3;
-	}
-	public String getMonitoringWord4() {
-		return MonitoringWord4;
-	}
-	public void setMonitoringWord4(String monitoringWord4) {
-		MonitoringWord4 = monitoringWord4;
-	}
-	public String getRemoveWord() {
-		return RemoveWord;
-	}
-	public void setRemoveWord(String removeWord) {
-		RemoveWord = removeWord;
-	}
-	public int getUnitNo() {
-		return UnitNo;
-	}
-	public void setUnitNo(int unitNo) {
-		UnitNo = unitNo;
-	}
-	public String getUser_ID() {
-		return User_ID;
-	}
-	public void setUser_ID(String user_ID) {
-		User_ID = user_ID;
-	}
-	public String getPlan_ID() {
-		return Plan_ID;
-	}
-	public void setPlan_ID(String plan_ID) {
-		Plan_ID = plan_ID;
-	}
-	public String getPlanName() {
-		return PlanName;
-	}
-	public void setPlanName(String planName) {
-		PlanName = planName;
-	}
-	public int getUnitNumber() {
-		return UnitNumber;
-	}
-	public void setUnitNumber(int unitNumber) {
-		UnitNumber = unitNumber;
-	}
-	public String getCreateUser() {
-		return CreateUser;
-	}
-	public void setCreateUser(String createUser) {
-		CreateUser = createUser;
-	}
-	public String getCreateDateTime() {
-		return CreateDateTime;
-	}
-	public void setCreateDateTime(String createDateTime) {
-		CreateDateTime = createDateTime;
-	}
-	public String getUpdateUser() {
-		return UpdateUser;
-	}
-	public void setUpdateUser(String updateUser) {
-		UpdateUser = updateUser;
-	}
-	public String getUpdateDateTime() {
-		return UpdateDateTime;
-	}
-	public void setUpdateDateTime(String updateDateTime) {
-		UpdateDateTime = updateDateTime;
-	}
-	
-	
+    /**
+     * ç”¨æˆ·ID
+     */
+    private String User_ID;
+
+    /**
+     * æ–¹æ¡ˆID
+     */
+    private String Plan_ID;
+
+    /**
+     * æ–¹æ¡ˆåç§°
+     */
+    private String PlanName;
+
+    /**
+     * ç»„åˆæ•°é‡
+     */
+    private int UnitNumber;
+
+    /**
+     * é‡‡é›†é¢†åŸŸID
+     */
+    private String CollectionField_ID;
+    
+  
+	/**
+     * åˆ›å»ºè€…
+     */
+    private String CreateUser;
+
+    /**
+     * åˆ›å»ºæ—¶é—´
+     */
+    private String CreateDateTime;
+
+    /**
+     * æ›´æ–°è€…
+     */
+    private String UpdateUser;
+
+    /**
+     * æ›´æ–°æ—¶é—´
+     */
+    private String UpdateDateTime;
+
+    /**
+     * ç»„åˆNO
+     */
+    private int UnitNo;
+
+    /**
+     * æ’é™¤è¯
+     */
+    private String RemoveWord;
+
+    /**
+     * ç›‘æµ‹è¯1
+     */
+    private String MonitoringWord1;
+
+    /**
+     * ç›‘æµ‹è¯2
+     */
+    private String MonitoringWord2;
+
+    /**
+     * ç›‘æµ‹è¯3
+     */
+    private String MonitoringWord3;
+
+    /**
+     * ç›‘æµ‹è¯4
+     */
+    private String MonitoringWord4;
+
+    /**
+     * æ–‡ç« ID
+     */
+    private String Article_ID;
+
+    /**
+     * ç›‘æµ‹è¯
+     */
+    private String MonitoringWord;
+
+    /**
+     * ç›‘æµ‹è¯ç»„åˆä¸€å¯¹åº”çš„æ–‡ç« æ•°é‡
+     */
+    private int m_lg1;
+
+    /**
+     * ç›‘æµ‹è¯ç»„åˆäºŒå¯¹åº”çš„æ–‡ç« æ•°é‡
+     */
+    private int m_lg2;
+
+    /**
+     * ç›‘æµ‹è¯ç»„åˆä¸‰å¯¹åº”çš„æ–‡ç« æ•°é‡
+     */
+    private int m_lg3;
+
+    /**
+     * ç›‘æµ‹æ–¹æ¡ˆå¼€å§‹æ—¶é—´
+     */
+    private String PlanStartTime;
+
+    /**
+     * ç›‘æµ‹æ–¹æ¡ˆç»“æŸæ—¶é—´
+     */
+    private String PlanEndTime;
+
+    public String getCollectionField_ID() {
+  		return CollectionField_ID;
+  	}
+  	public void setCollectionField_ID(String collectionField_ID) {
+  		CollectionField_ID = collectionField_ID;
+  	}
+
+    public String getPlanStartTime() {
+        return PlanStartTime;
+    }
+    public void setPlanStartTime(String planStartTime) {
+        PlanStartTime = planStartTime;
+    }
+    public String getPlanEndTime() {
+        return PlanEndTime;
+    }
+    public void setPlanEndTime(String planEndTime) {
+        PlanEndTime = planEndTime;
+    }
+    public int getM_lg1() {
+        return m_lg1;
+    }
+    public void setM_lg1(int m_lg1) {
+        this.m_lg1 = m_lg1;
+    }
+    public int getM_lg2() {
+        return m_lg2;
+    }
+    public void setM_lg2(int m_lg2) {
+        this.m_lg2 = m_lg2;
+    }
+    public int getM_lg3() {
+        return m_lg3;
+    }
+    public void setM_lg3(int m_lg3) {
+        this.m_lg3 = m_lg3;
+    }
+    public String getMonitoringWord() {
+        return MonitoringWord;
+    }
+    public void setMonitoringWord(String monitoringWord) {
+        MonitoringWord = monitoringWord;
+    }
+    public String getArticle_ID() {
+        return Article_ID;
+    }
+    public void setArticle_ID(String article_ID) {
+        Article_ID = article_ID;
+    }
+    public String getMonitoringWord1() {
+        return MonitoringWord1;
+    }
+    public void setMonitoringWord1(String monitoringWord1) {
+        MonitoringWord1 = monitoringWord1;
+    }
+    public String getMonitoringWord2() {
+        return MonitoringWord2;
+    }
+    public void setMonitoringWord2(String monitoringWord2) {
+        MonitoringWord2 = monitoringWord2;
+    }
+    public String getMonitoringWord3() {
+        return MonitoringWord3;
+    }
+    public void setMonitoringWord3(String monitoringWord3) {
+        MonitoringWord3 = monitoringWord3;
+    }
+    public String getMonitoringWord4() {
+        return MonitoringWord4;
+    }
+    public void setMonitoringWord4(String monitoringWord4) {
+        MonitoringWord4 = monitoringWord4;
+    }
+    public String getRemoveWord() {
+        return RemoveWord;
+    }
+    public void setRemoveWord(String removeWord) {
+        RemoveWord = removeWord;
+    }
+    public int getUnitNo() {
+        return UnitNo;
+    }
+    public void setUnitNo(int unitNo) {
+        UnitNo = unitNo;
+    }
+    public String getUser_ID() {
+        return User_ID;
+    }
+    public void setUser_ID(String user_ID) {
+        User_ID = user_ID;
+    }
+    public String getPlan_ID() {
+        return Plan_ID;
+    }
+    public void setPlan_ID(String plan_ID) {
+        Plan_ID = plan_ID;
+    }
+    public String getPlanName() {
+        return PlanName;
+    }
+    public void setPlanName(String planName) {
+        PlanName = planName;
+    }
+    public int getUnitNumber() {
+        return UnitNumber;
+    }
+    public void setUnitNumber(int unitNumber) {
+        UnitNumber = unitNumber;
+    }
+    public String getCreateUser() {
+        return CreateUser;
+    }
+    public void setCreateUser(String createUser) {
+        CreateUser = createUser;
+    }
+    public String getCreateDateTime() {
+        return CreateDateTime;
+    }
+    public void setCreateDateTime(String createDateTime) {
+        CreateDateTime = createDateTime;
+    }
+    public String getUpdateUser() {
+        return UpdateUser;
+    }
+    public void setUpdateUser(String updateUser) {
+        UpdateUser = updateUser;
+    }
+    public String getUpdateDateTime() {
+        return UpdateDateTime;
+    }
+    public void setUpdateDateTime(String updateDateTime) {
+        UpdateDateTime = updateDateTime;
+    }
 }

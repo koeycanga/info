@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.mapper.userInfoMapper;
 
@@ -13,7 +13,7 @@ import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoKey;
 import com.ichangyun.InforAnalyaizer.model.userInfo.UserInfoVo;
 
 /**
- * UserInfoMapper:½ÇÉ«¹ÜÀíMapper
+ * UserInfoMapper:è§’è‰²ç®¡ç†Mapper
  *
  * @author ichangyun
  * @Date:2018-11-9
@@ -22,7 +22,7 @@ public interface UserInfoMapper {
 
 
     /**
-     * insert£ºµÇÂ½ÓÃ»§Çé±¨
+     * insertï¼šç™»é™†ç”¨æˆ·æƒ…æŠ¥
      *
      * @param record UserInfo
      * @return
@@ -30,7 +30,7 @@ public interface UserInfoMapper {
     public int insert(UserInfo record);
 
     /**
-     * insertSelective£ºµÇÂ½ÓÃ»§Çé±¨
+     * insertSelectiveï¼šç™»é™†ç”¨æˆ·æƒ…æŠ¥
      *
      * @param record UserInfo
      * @return
@@ -38,7 +38,7 @@ public interface UserInfoMapper {
     public int insertSelective(UserInfo record);
 
     /**
-     * selectByPrimaryKey£ºÍ¨¹ıÖ÷¼üÈ¡µÃÓÃ»§Çé±¨
+     * selectByPrimaryKeyï¼šé€šè¿‡ä¸»é”®å–å¾—ç”¨æˆ·æƒ…æŠ¥
      *
      * @param key UserInfoKey
      * @return
@@ -46,7 +46,7 @@ public interface UserInfoMapper {
     public UserInfo selectByPrimaryKey(UserInfoKey key);
 
     /**
-     * updateByPrimaryKeySelective£ºÍ¨¹ıÖ÷¼ü¸üĞÂÓÃ»§Çé±¨
+     * updateByPrimaryKeySelectiveï¼šé€šè¿‡ä¸»é”®æ›´æ–°ç”¨æˆ·æƒ…æŠ¥
      *
      * @param record UserInfo
      * @return
@@ -54,7 +54,7 @@ public interface UserInfoMapper {
     public int updateByPrimaryKeySelective(UserInfo record);
 
     /**
-     * updateByPrimaryKey£ºÍ¨¹ıÖ÷¼ü¸üĞÂÓÃ»§Çé±¨
+     * updateByPrimaryKeyï¼šé€šè¿‡ä¸»é”®æ›´æ–°ç”¨æˆ·æƒ…æŠ¥
      *
      * @param record UserInfo
      * @return
@@ -62,7 +62,7 @@ public interface UserInfoMapper {
     public int updateByPrimaryKey(UserInfo record);
 
     /**
-     * queryAllUser£ºÈ¡µÃ·ûºÏÌõ¼şµÄÓÃ»§Çé±¨
+     * queryAllUserï¼šå–å¾—ç¬¦åˆæ¡ä»¶çš„ç”¨æˆ·æƒ…æŠ¥
      *
      * @param key
      * @return
@@ -70,7 +70,7 @@ public interface UserInfoMapper {
     public List<UserInfoVo> queryAllUser(Map<String, Object> key);
 
     /**
-     * queryCount£ºÈ¡µÃ·ûºÏÌõ¼şµÄÓÃ»§Çé±¨µÄ¼şÊı
+     * queryCountï¼šå–å¾—ç¬¦åˆæ¡ä»¶çš„ç”¨æˆ·æƒ…æŠ¥çš„ä»¶æ•°
      *
      * @param key
      * @return
@@ -78,7 +78,7 @@ public interface UserInfoMapper {
     public int queryCount(Map<String, Object> key);
 
     /**
-     * queryCountById£ºÍ¨¹ıUser_IDÈ¡µÃÓÃ»§Çé±¨µÄ¼şÊı
+     * queryCountByIdï¼šé€šè¿‡User_IDå–å¾—ç”¨æˆ·æƒ…æŠ¥çš„ä»¶æ•°
      *
      * @param uid User_ID
      * @return
@@ -86,7 +86,7 @@ public interface UserInfoMapper {
     public int queryCountById(String uid);
 
     /**
-     * updateRoleStatus£º¸üĞÂÓÃ»§½ÇÉ«Çé±¨µÄ×´Ì¬Îª1£¨Ê¹ÓÃÖĞ£©
+     * updateRoleStatusï¼šæ›´æ–°ç”¨æˆ·è§’è‰²æƒ…æŠ¥çš„çŠ¶æ€ä¸º1ï¼ˆä½¿ç”¨ä¸­ï¼‰
      *
      * @param info
      * @return
@@ -94,16 +94,16 @@ public interface UserInfoMapper {
     void updateRoleStatus(UserInfo info);
 
     /**
-     * updateRoleStatusToZero£º¸üĞÂÓÃ»§½ÇÉ«Çé±¨µÄ×´Ì¬Îª0£¨ÔİÎ´Ê¹ÓÃ£©
+     * updateRoleStatusToZeroï¼šæ›´æ–°ç”¨æˆ·è§’è‰²æƒ…æŠ¥çš„çŠ¶æ€ä¸º0ï¼ˆæš‚æœªä½¿ç”¨ï¼‰
      *
      * @param info
      * @return
      */
     void updateRoleStatusToZero();
 
-	public void deleteUser(String string);
+    public void deleteUser(String string);
 
-	public List<UserInfoVo> queryAllUser2(Map<String, Object> key);
+    public List<UserInfoVo> queryAllUser2(Map<String, Object> key);
 
-	public int queryCount2(Map<String, Object> key);
+    public int queryCount2(Map<String, Object> key);
 }

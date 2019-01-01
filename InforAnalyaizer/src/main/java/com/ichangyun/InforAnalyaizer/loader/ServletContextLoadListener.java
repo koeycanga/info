@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 畅云 http://www.ichangyun.cn
+ * Copyright 2018 鐣呬簯 http://www.ichangyun.cn
  * <p>
- *  竞争情报系统
+ *  绔炰簤鎯呮姤绯荤粺
  */
 package com.ichangyun.InforAnalyaizer.loader;
 
@@ -12,18 +12,18 @@ import javax.servlet.annotation.WebListener;
 
 @WebListener
 public class ServletContextLoadListener implements ServletContextListener {
-	
-	@Override
-	public void contextDestroyed(ServletContextEvent contextEvent) {
 
-	}
+    @Override
+    public void contextDestroyed(ServletContextEvent contextEvent) {
 
-	@Override
-	public void contextInitialized(ServletContextEvent contextEvent) {
-		// 寰楀埌ServletContext
-		ServletContext context = contextEvent.getServletContext();
-		context.setAttribute("ctx", context.getContextPath());
-		//System.out.println("-------------------" + context.getAttribute("ctx"));
-	}
+    }
+
+    @Override
+    public void contextInitialized(ServletContextEvent contextEvent) {
+        // 寰楀埌ServletContext
+        ServletContext context = contextEvent.getServletContext();
+        context.setAttribute("ctx", context.getContextPath());
+        //System.out.println("-------------------" + context.getAttribute("ctx"));
+    }
 
 }

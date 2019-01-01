@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.controller.usermanage;
 
@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.IconifyAction;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.log4j.Logger;
@@ -30,11 +29,10 @@ import com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean;
 import com.ichangyun.InforAnalyaizer.service.common.service.DBUpdateCheckService;
 import com.ichangyun.InforAnalyaizer.service.userInfo.UserInfoService;
 import com.ichangyun.InforAnalyaizer.service.usermanage.RoleService;
-import com.ichangyun.InforAnalyaizer.utils.DateUtils;
 import com.ichangyun.InforAnalyaizer.utils.PBKDF2;
 
 /**
- * Controller£ºÕËºÅ¹ÜÀí
+ * Controllerï¼šè´¦å·ç®¡ç†
  *
  * @author ichangyun
  * @date 2018/11/09
@@ -42,201 +40,205 @@ import com.ichangyun.InforAnalyaizer.utils.PBKDF2;
 @RestController
 @RequestMapping("/yhgl/user")
 public class UserController {
-	Logger log = Logger.getLogger(UserController.class);
+    Logger log = Logger.getLogger(UserController.class);
 
-	@Autowired
-	private UserInfoService userInfoService;
+    @Autowired
+    private UserInfoService userInfoService;
 
-	@Autowired
-	private RoleService roleService;
-	
-	@Autowired
-	private DBUpdateCheckService dbUpdateCheckService;
-	
-	/**
-	 * addUser£ºĞÂÔöÓÃ»§
-	 *
-	 * @param user    ÓÃ»§Çé±¨
-	 * @param session HttpSession
-	 * @return map
-	 * @throws InvalidKeySpecException 
-	 * @throws NoSuchAlgorithmException 
-	 */
-	@RequestMapping("/addUser")
-	public Map<String, String> addUser(UserInfoVo user, HttpSession session) 
-			throws NoSuchAlgorithmException, InvalidKeySpecException {
+    @Autowired
+    private RoleService roleService;
 
-		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
-		Map<String, String> map = new HashMap<>();
-		// ×´Ì¬Ñ¡ÔñCheck
-		if (user.getUstatus() == null) {
-			map.put("msg", "E0031");
-			return map;
-		}
-		// Ìí¼ÓÓÃ»§´¦ÀíÖ´ĞĞ
-		String msg = userInfoService.addUser(user, u);
+    @Autowired
+    private DBUpdateCheckService dbUpdateCheckService;
 
-		// handle exception
-		map.put("msg", msg);
+    /**
+     * addUserï¼šæ–°å¢ç”¨æˆ·
+     *
+     * @param user    ç”¨æˆ·æƒ…æŠ¥
+     * @param session HttpSession
+     * @return map
+     * @throws InvalidKeySpecException
+     * @throws NoSuchAlgorithmException
+     */
+    @RequestMapping("/addUser")
+    public Map<String, String> addUser(UserInfoVo user, HttpSession session)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
 
-		return map;
-	}
+        User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+        Map<String, String> map = new HashMap<>();
+        // çŠ¶æ€é€‰æ‹©Check
+        if (user.getUstatus() == null) {
+            map.put("msg", "E0031");
+            return map;
+        }
+        // æ·»åŠ ç”¨æˆ·å¤„ç†æ‰§è¡Œ
+        String msg = userInfoService.addUser(user, u);
 
-	/**
-	 * getRoles£º²éÑ¯ËùÓĞ½ÇÉ«
-	 *
-	 * @return List<RoleManageBean>
-	 */
-	@RequestMapping("/getRoles")
-	public List<RoleManageBean> getRoles() {
-		return roleService.queryAllRole();
-	}
+        // handle exception
+        map.put("msg", msg);
 
-	/**
-	 * update£º±à¼­ÓÃ»§ĞÅÏ¢
-	 *
-	 * @param vo
-	 * @param session
-	 * @return Object
-	 */
-	@RequestMapping("/updateUser")
-	public Object update(UserInfoVo vo, HttpSession session) 
-			throws NoSuchAlgorithmException, InvalidKeySpecException{
-		
-		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
-		Map<String, String> map = new HashMap<>();
-		List<String> uid = new ArrayList<>();
-		uid.add(vo.getUid());
-		//ÅÅËûcheck
-		String dateTimeTemp = vo.getUupdatedatetime();
-		if (!dbUpdateCheckService.DBUpdateCheck("1", uid, dateTimeTemp)) {
-			map.put("msg", "checkFalse");
-			return map;
-		}
-		
-		String msg = userInfoService.updateUser(vo, u);
-		map.put("msg", msg);
-		return map;
-	}
+        return map;
+    }
 
-	/**
-	 * toList£ºÌø×ªÕËºÅĞÅÏ¢½çÃæ
-	 *
-	 * @return Object
-	 */
-	@RequestMapping("/toUserList")
-	public Object toList() {
+    /**
+     * getRolesï¼šæŸ¥è¯¢æ‰€æœ‰è§’è‰²
+     *
+     * @return List<RoleManageBean>
+     */
+    @RequestMapping("/getRoles")
+    public List<RoleManageBean> getRoles(HttpSession session) {
+        return roleService.queryAllRole(session);
+    }
 
-		return new ModelAndView("usermanage/userList");
-	}
+    /**
+     * updateï¼šç¼–è¾‘ç”¨æˆ·ä¿¡æ¯
+     *
+     * @param vo
+     * @param session
+     * @return Object
+     */
+    @RequestMapping("/updateUser")
+    public Object update(UserInfoVo vo, HttpSession session)
+            throws NoSuchAlgorithmException, InvalidKeySpecException{
 
-	/**
-	 * queryAll£º²éÑ¯ËùÓĞÓÃ»§ĞÅÏ¢£¬¿É´øÌõ¼ş
-	 *
-	 * @param vo
-	 * @param baseBean
-	 * @return Map<String, Object>
-	 */
-	@RequestMapping("/queryAll")
-	public Map<String, Object> queryAll(UserInfoVo vo, BaseBean baseBean,HttpSession session) {
-		// È¡µÃµ±Ç°±íÊ¾ÓÃ»§Çé±¨
-		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
-		Map<String, Object> list = userInfoService.queryAllUser(vo, 
-					baseBean.getPageNow(), baseBean.getRowSize(),u);			
-		
-		return list;
-	}
+        User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+        Map<String, String> map = new HashMap<>();
+        List<String> uid = new ArrayList<>();
+        uid.add(vo.getUid());
+        //æ’ä»–check
+        String dateTimeTemp = vo.getUupdatedatetime();
+        if (!dbUpdateCheckService.DBUpdateCheck("1", uid, dateTimeTemp,session)) {
+            map.put("msg", "checkFalse");
+            return map;
+        }
+        if(vo.getUid().equals(u.getUser_ID())&&vo.getUstatus().equals("0")) {
+        	map.put("msg", "statusFalse");
+            return map;
+        }
 
-	/**
-	 * delete£º¸ù¾İÓÃ»§idÉ¾³ıÓÃ»§ĞÅÏ¢
-	 *
-	 * @param checkedId
-	 * @return String
-	 */
-	@RequestMapping("/delete")
-	public Object delete(Integer[] checkedId,HttpSession session) {
-		// É¾³ıÑ¡ÖĞµÄÓÃ»§Çé±¨
-		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
-		for (int i : checkedId) {
-			// ³¬¼¶¹ÜÀíÔ±Çø·ÖÈ¡µÃ
-			UserInfoVo vo = userInfoService.queryUserByNum(i);
-			String strTemp = vo.getUsuperuserflag();
-			if ((!strTemp.isEmpty()) && "1".equals(strTemp)) {
-				// ³¬¼¶¹ÜÀíÔ±²»ÄÜ±»É¾³ı
-				return userInfoService.queryUserByNum(i).getUid();
-			}
-			if (vo.getUid().equals(u.getUser_ID())) {
-				return "current";
-			}
-		}
-		userInfoService.deleteUser(checkedId);
+        String msg = userInfoService.updateUser(vo, u);
+        map.put("msg", msg);
+        return map;
+    }
 
-		return "OK";
-	}
+    /**
+     * toListï¼šè·³è½¬è´¦å·ä¿¡æ¯ç•Œé¢
+     *
+     * @return Object
+     */
+    @RequestMapping("/toUserList")
+    public Object toList() {
 
-	/**
-	 * queryOne£º¸ù¾İÓÃ»§num²éÕÒÓÃ»§
-	 *
-	 * @param unum
-	 * @return UserInfoVo
-	 */
-	@RequestMapping("/queryOne")
-	public UserInfoVo queryOne(Integer unum) {
-		
-		// ¸ù¾İÓÃ»§No²éÑ¯ÓÃ»§
-		UserInfoVo vo = userInfoService.queryUserByNum(unum);
-		return vo;
-	}
+        return new ModelAndView("usermanage/userList");
+    }
 
-	/**
-	 * CheckId:¸ù¾İÓÃ»§id¼ì²é´ËÓÃ»§ÊÇ·ñ´æÔÚ
-	 *
-	 * @param uid ÓÃ»§Ãû
-	 * @return È¡µÃ¼şÊı
-	 */
-	@RequestMapping("/CheckId")
-	public int CheckId(String uid) {
-		
-		// ¸ù¾İÓÃ»§Ãû£¬È¡µÃÓÃ»§Çé±¨µÄ¼şÊı
-		int i = userInfoService.queryCountById(uid);
-		return i;
-	}
+    /**
+     * queryAllï¼šæŸ¥è¯¢æ‰€æœ‰ç”¨æˆ·ä¿¡æ¯ï¼Œå¯å¸¦æ¡ä»¶
+     *
+     * @param vo
+     * @param baseBean
+     * @return Map<String, Object>
+     */
+    @RequestMapping("/queryAll")
+    public Map<String, Object> queryAll(UserInfoVo vo, BaseBean baseBean,HttpSession session) {
+        // å–å¾—å½“å‰è¡¨ç¤ºç”¨æˆ·æƒ…æŠ¥
+        User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+        Map<String, Object> list = userInfoService.queryAllUser(vo,
+                baseBean.getPageNow(), baseBean.getRowSize(),u);
 
-	/**
-	 * thisUser£º·µ»Øµ±Ç°µÇÂ¼ÖĞµÄÓÃ»§ĞÅÏ¢
-	 *
-	 * @param session
-	 * @return UserInfoVo
-	 */
-	@RequestMapping("/thisUser")
-	public UserInfoVo thisUser(HttpSession session) {
-		
-		User u = (User) session.getAttribute(CommBean.SESSION_NAME);
-		// ¸ù¾İÓÃ»§id²éÑ¯ÓÃ»§ĞÅÏ¢
-		UserInfoVo vo = userInfoService.queryById(u.getUser_ID());
-		// ¸ù¾İÓÃ»§µÄ½ÇÉ«ID²éÑ¯½ÇÉ«ĞÅÏ¢
-		RoleManageBean role = roleService.queryById(vo.getUrole());
-		// ÉèÖÃ½ÇÉ«Ãû³Æ
-		vo.setUrolename(role.getUserRoleName());
-		return vo;
-	}
+        return list;
+    }
 
-	/**
-	 * returnPwd£º½«´«ÈëµÄÓÃ»§ÃÜÂë¼ÓÃÜ
-	 *
-	 * @param upwd ÃÜÂë
-	 * @param unum ÓÃ»§No
-	 * @return String
-	 */
-	@RequestMapping("/returnPwd")
-	public String returnPwd(String upwd, int unum) 
-			throws NoSuchAlgorithmException, InvalidKeySpecException {
-		
-		// ¸ù¾İÓÃ»§No²éÑ¯ÓÃ»§
-		UserInfoVo vo = this.userInfoService.queryUserByNum(unum);
-		// ÃÜÂë¼ÓÃÜ
-		String passwd = PBKDF2.getPBKDF2(upwd, 
-				DatatypeConverter.printHexBinary(vo.getUid().getBytes()));
-		return passwd;
-	}
+    /**
+     * deleteï¼šæ ¹æ®ç”¨æˆ·idåˆ é™¤ç”¨æˆ·ä¿¡æ¯
+     *
+     * @param checkedId
+     * @return String
+     */
+    @RequestMapping("/delete")
+    public Object delete(Integer[] checkedId,HttpSession session) {
+        // åˆ é™¤é€‰ä¸­çš„ç”¨æˆ·æƒ…æŠ¥
+        User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+        for (int i : checkedId) {
+            // è¶…çº§ç®¡ç†å‘˜åŒºåˆ†å–å¾—
+            UserInfoVo vo = userInfoService.queryUserByNum(i);
+            String strTemp = vo.getUsuperuserflag();
+            if ((!strTemp.isEmpty()) && "1".equals(strTemp)) {
+                // è¶…çº§ç®¡ç†å‘˜ä¸èƒ½è¢«åˆ é™¤
+                return userInfoService.queryUserByNum(i).getUid();
+            }
+            if (vo.getUid().equals(u.getUser_ID())) {
+                return "current";
+            }
+        }
+        userInfoService.deleteUser(checkedId);
+
+        return "OK";
+    }
+
+    /**
+     * queryOneï¼šæ ¹æ®ç”¨æˆ·numæŸ¥æ‰¾ç”¨æˆ·
+     *
+     * @param unum
+     * @return UserInfoVo
+     */
+    @RequestMapping("/queryOne")
+    public UserInfoVo queryOne(Integer unum) {
+
+        // æ ¹æ®ç”¨æˆ·NoæŸ¥è¯¢ç”¨æˆ·
+        UserInfoVo vo = userInfoService.queryUserByNum(unum);
+        return vo;
+    }
+
+    /**
+     * CheckId:æ ¹æ®ç”¨æˆ·idæ£€æŸ¥æ­¤ç”¨æˆ·æ˜¯å¦å­˜åœ¨
+     *
+     * @param uid ç”¨æˆ·å
+     * @return å–å¾—ä»¶æ•°
+     */
+    @RequestMapping("/CheckId")
+    public int CheckId(String uid) {
+
+        // æ ¹æ®ç”¨æˆ·åï¼Œå–å¾—ç”¨æˆ·æƒ…æŠ¥çš„ä»¶æ•°
+        int i = userInfoService.queryCountById(uid);
+        return i;
+    }
+
+    /**
+     * thisUserï¼šè¿”å›å½“å‰ç™»å½•ä¸­çš„ç”¨æˆ·ä¿¡æ¯
+     *
+     * @param session
+     * @return UserInfoVo
+     */
+    @RequestMapping("/thisUser")
+    public UserInfoVo thisUser(HttpSession session) {
+
+        User u = (User) session.getAttribute(CommBean.SESSION_NAME);
+        // æ ¹æ®ç”¨æˆ·idæŸ¥è¯¢ç”¨æˆ·ä¿¡æ¯
+        UserInfoVo vo = userInfoService.queryById(u.getUser_ID());
+        // æ ¹æ®ç”¨æˆ·çš„è§’è‰²IDæŸ¥è¯¢è§’è‰²ä¿¡æ¯
+        RoleManageBean role = roleService.queryById(vo.getUrole(),session);
+        // è®¾ç½®è§’è‰²åç§°
+        vo.setUrolename(role.getUserRoleName());
+        return vo;
+    }
+
+    /**
+     * returnPwdï¼šå°†ä¼ å…¥çš„ç”¨æˆ·å¯†ç åŠ å¯†
+     *
+     * @param upwd å¯†ç 
+     * @param unum ç”¨æˆ·No
+     * @return String
+     */
+    @RequestMapping("/returnPwd")
+    public String returnPwd(String upwd, int unum)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
+
+        // æ ¹æ®ç”¨æˆ·NoæŸ¥è¯¢ç”¨æˆ·
+        UserInfoVo vo = this.userInfoService.queryUserByNum(unum);
+        // å¯†ç åŠ å¯†
+        String passwd = PBKDF2.getPBKDF2(upwd,
+                DatatypeConverter.printHexBinary(vo.getUid().getBytes()));
+        return passwd;
+    }
 }

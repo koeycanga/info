@@ -1,54 +1,57 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.listenter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
- * ËæÏµÍ³Æô¶¯Ö´ĞĞµÄlistener
+ * éšç³»ç»Ÿå¯åŠ¨æ‰§è¡Œçš„listener
  * @author renhao
  *
  */
 public class StartupListener implements ServletContextListener {
-    
-	
-	// ÏµÍ³³õÊ¼»¯Ö´ĞĞ·½·¨  
-    public void contextDestroyed(ServletContextEvent e) {  
- 
-    }  
-  
-    public void contextInitialized(ServletContextEvent e) {  
 
-    	//ÏµÍ³³õÊ¼»¯¿ªÊ¼
-        
-    	WebApplicationContext wa = ContextLoader.getCurrentWebApplicationContext();
-    	ServletContext servletContext = wa.getServletContext();
-    	
-        // »ñÈ¡ÏîÄ¿¸ùÄ¿Â¼  
-        //String root_path  = e.getServletContext().getRealPath("/");  
-        //System.out.println("application path : {}"+root_path);  
-        
-        ResourceBundle resource = ResourceBundle.getBundle("authority"); // ²»´øpropertiesÀ©Õ¹ÃûµÄÎÄ¼şÃû
-        String authority = resource.getString("authority"); // ÊôĞÔÃû
-        
+    // ç³»ç»Ÿåˆå§‹åŒ–æ‰§è¡Œæ–¹æ³•
+    @Override
+    public void contextDestroyed(ServletContextEvent e) {
+
+    }
+
+    @Override
+    public void contextInitialized(ServletContextEvent e) {
+
+        //ç³»ç»Ÿåˆå§‹åŒ–å¼€å§‹
+
+        WebApplicationContext wa = ContextLoader.getCurrentWebApplicationContext();
+        ServletContext servletContext = wa.getServletContext();
+
+        // è·å–é¡¹ç›®æ ¹ç›®å½•
+        //String root_path  = e.getServletContext().getRealPath("/");
+        //System.out.println("application path : {}"+root_path);
+
+        ResourceBundle resource = ResourceBundle.getBundle("authority"); // ä¸å¸¦propertiesæ‰©å±•åçš„æ–‡ä»¶å
+        String authority = resource.getString("authority"); // å±æ€§å
+
         String[] as = authority.split(",");
-        
+
         List<String> au_list = new ArrayList<String>();
-	    for(String s:as) {
-	    	au_list.add(s);
-	    }  
+        for(String s:as) {
+            au_list.add(s);
+        }
         servletContext.setAttribute("au_list", au_list);
-        
-    }  
-      
-} 
+
+    }
+
+}

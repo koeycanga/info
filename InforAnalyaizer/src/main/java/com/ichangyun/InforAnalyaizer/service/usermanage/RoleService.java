@@ -1,84 +1,98 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.service.usermanage;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import com.ichangyun.InforAnalyaizer.model.usermanage.RoleManageBean;
 
 /**
- * ½ÇÉ«¹ÜÀíService
+ * è§’è‰²ç®¡ç†Service
  * @author renhao
  * @Date:2018-11-9
  */
 public interface RoleService {
 
     /**
-     * »ñµÃ½ÇÉ«×ÜÊı
-     * @return ½ÇÉ«×ÜÊı
+     * è·å¾—è§’è‰²æ€»æ•°
+     * @param session 
+     * @return è§’è‰²æ€»æ•°
      * Date:2018-11-9
      */
-    public int getRoleCount();
+    public int getRoleCount(HttpSession session);
 
     /**
-     * »ñµÃµ±Ç°Ò³ÃæËùĞèÏÔÊ¾µÄ½ÇÉ«Êı¾İ
-     * @param pageNow  µ±Ç°µÚ¼¸Ò³
-     * @param rowSize  Ã¿Ò³ÏÔÊ¾ÌõÄ¿Êı
-     * @return µ±Ç°Ò³ÃæËùĞèÏÔÊ¾µÄ½ÇÉ«Êı¾İ
+     * è·å¾—å½“å‰é¡µé¢æ‰€éœ€æ˜¾ç¤ºçš„è§’è‰²æ•°æ®
+     * @param pageNow  å½“å‰ç¬¬å‡ é¡µ
+     * @param rowSize  æ¯é¡µæ˜¾ç¤ºæ¡ç›®æ•°
+     * @param session 
+     * @return å½“å‰é¡µé¢æ‰€éœ€æ˜¾ç¤ºçš„è§’è‰²æ•°æ®
      * Date:2018-11-9
      */
-    public String getRole(int pageNow, int rowSize);
+    public String getRole(int pageNow, int rowSize, HttpSession session);
 
     /**
-     * ĞÂÔö½ÇÉ«
-     * @param roleName   ½ÇÉ«Ãû³Æ
-     * @param roleDes    ½ÇÉ«ÃèÊö
-     * @param createrID  ´´½¨ÕßID
-     * @param Authority  ½ÇÉ«È¨ÏŞ
-     * @return true ³É¹¦   false Ê§°Ü
+     * æ–°å¢è§’è‰²
+     * @param roleName   è§’è‰²åç§°
+     * @param roleDes    è§’è‰²æè¿°
+     * @param createrID  åˆ›å»ºè€…ID
+     * @param Authority  è§’è‰²æƒé™
+     * @param session 
+     * @return true æˆåŠŸ   false å¤±è´¥
      * Date:2018-11-9
      */
-    public boolean AddNewRole(String roleName, String roleDes, String createrID, String Authority);
+    public boolean AddNewRole(String roleName, String roleDes, String createrID, String Authority, HttpSession session);
 
     /**
-     * ÅĞ¶Ï½ÇÉ«IDÊÇ·ñÒÑ´æÔÚ
-     * @param roleID ÒªÅĞ¶ÏµÄ½ÇÉ«ID
+     * åˆ¤æ–­è§’è‰²IDæ˜¯å¦å·²å­˜åœ¨
+     * @param roleID è¦åˆ¤æ–­çš„è§’è‰²ID
+     * @param session 
      * @return
      * Date:2018-11-9
      */
-    public boolean exist(String roleID);
+    public boolean exist(String roleID, HttpSession session);
 
     /**
-     * ĞŞ¸Ä½ÇÉ«ĞÅÏ¢
-     * @param ub ÒªĞŞ¸ÄµÄ½ÇÉ«ĞÅÏ¢ÊµÌåÀà
-     * @return true ³É¹¦   false Ê§°Ü
+     * ä¿®æ”¹è§’è‰²ä¿¡æ¯
+     * @param ub è¦ä¿®æ”¹çš„è§’è‰²ä¿¡æ¯å®ä½“ç±»
+     * @return true æˆåŠŸ   false å¤±è´¥
      * Date:2018-11-9
      */
     public boolean updateRole(RoleManageBean ub);
 
     /**
-     * É¾³ı½ÇÉ«
-     * @param json ÒªÉ¾³ıµÄ½ÇÉ«ID json×ÖÃæÁ¿
-     * @return true ³É¹¦   false Ê§°Ü
+     * åˆ é™¤è§’è‰²
+     * @param json è¦åˆ é™¤çš„è§’è‰²ID jsonå­—é¢é‡
+     * @return true æˆåŠŸ   false å¤±è´¥
      * Date:2018-11-9
      */
     public boolean delRole(String json);
 
     /**
-     * »ñµÃËùÓĞ½ÇÉ«ĞÅÏ¢
-     * @return ËùÓĞ½ÇÉ«ĞÅÏ¢ÁĞ±í
+     * è·å¾—æ‰€æœ‰è§’è‰²ä¿¡æ¯
+     * @return æ‰€æœ‰è§’è‰²ä¿¡æ¯åˆ—è¡¨
      * Date:2018-11-9
      */
-    List<RoleManageBean> queryAllRole();
+    List<RoleManageBean> queryAllRole(HttpSession session);
 
     /**
-     * ¸ù¾İ½ÇÉ«ID²éÑ¯½ÇÉ«ĞÅÏ¢
-     * @param urole   Òª²éÑ¯µÄ½ÇÉ«ID
-     * @return  ²éÑ¯µ½µÄ½ÇÉ«ĞÅÏ¢
+     * æ ¹æ®è§’è‰²IDæŸ¥è¯¢è§’è‰²ä¿¡æ¯
+     * @param urole   è¦æŸ¥è¯¢çš„è§’è‰²ID
+     * @return  æŸ¥è¯¢åˆ°çš„è§’è‰²ä¿¡æ¯
      * Date:2018-11-9
      */
-    public RoleManageBean queryById(String urole);
+    public RoleManageBean queryById(String urole,HttpSession session);
+
+    /**
+     * åˆ¤æ–­è§’è‰²IDæ˜¯å¦å·²å­˜åœ¨(æ’é™¤è‡ªèº«)
+     * @param ub
+     * @param session
+     * @return
+     */
+	public boolean existWithOutSelf(RoleManageBean ub, HttpSession session);
 }

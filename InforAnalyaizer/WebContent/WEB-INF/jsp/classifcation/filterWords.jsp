@@ -2,6 +2,19 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="ss" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<%
+  
+     String dc_msg = "";
+     
+     String s_msg = (String)request.getAttribute("dc_msg");
+     
+     if(s_msg!=null&&!"".equals(s_msg)){
+    	 dc_msg = s_msg;
+     }
+
+%>
+
 <fmt:setBundle basename="resources" var="sysInfo" />
 <fmt:message key="front_menu" var="front_menu" bundle="${sysInfo}" />
 <fmt:message key="E0006" var="E0006" bundle="${sysInfo}" />
@@ -21,6 +34,9 @@
 <fmt:message key="I0028" var="I0028" bundle="${sysInfo}" />
 <fmt:message key="E0064" var="E0064" bundle="${sysInfo}" />
 <fmt:message key="W0001" var="W0001" bundle="${sysInfo}" />
+<fmt:message key="W0006" var="W0006" bundle="${sysInfo}" />
+<fmt:message key="E0076" var="E0076" bundle="${sysInfo}" />
+<fmt:message key="E0078" var="E0078" bundle="${sysInfo}" />
 <fmt:message key="MaxSearchCnt" var="MaxSearchCnt" bundle="${sysInfo}" />
 <fmt:message key="DownloadDataCount" var="DownloadDataCount" bundle="${sysInfo}" />
 <html xmlns:v-on="http://www.w3.org/1999/xhtml"
@@ -59,21 +75,30 @@
 				</form>
 				<!-- 功能按钮 -->
 				<div class="cy_CMICBMS_box08">
-				<table>
-				<tr>
-				<td>&nbsp;&nbsp;</td>
-				<td><input type="button" class="cy_CMICBMS_edbtn" value="编辑"
-					v-on:click="btn_update">&nbsp;&nbsp;</td>
-				<td>			 <input type="button"
-					class="cy_CMICBMS_impbtn" id="impbtn" value="导入"   lay-data="{url: '${ctx}/qbgh/filterWords/input', accept: 'file'}"
-					name="file" @mouseenter="show_import_in" @mouseleave="show_import_out"></td>
-				<td>&nbsp;&nbsp;<input type="button" class="cy_CMICBMS_expbtn" value="导出"
-					v-on:click="btn_output">&nbsp;&nbsp;</td>
-					<td v-if="show_import"><font color="red" size="1"><!-- 按照模板格式导入文件，最大不超过1M-->注：导入时，节点名称相同的数据将被直接覆盖刷新，系统不存在的节点名称数据将不被导入。</font></td>
-				</tr>
-				</table>
-				<div v-if="eCheck==true"><span>&nbsp;&nbsp;</span><font color="red">导入文件出现错误，原因如下：</font></div>
-				<div v-if="eCheck==true" v-for="m in eMsg"><span>&nbsp;&nbsp;</span><font color="red">{{m}}</font></div>
+					<table>
+						<tr>
+							<td>&nbsp;&nbsp;</td>
+							<td><input type="button" class="cy_CMICBMS_edbtn" value="编辑"
+								v-on:click="btn_update">&nbsp;&nbsp;</td>
+							<td><input type="button" class="cy_CMICBMS_impbtn"
+								id="impbtn" value="导入"
+								lay-data="{url: '${ctx}/qbgh/filterWords/input', accept: 'file'}"
+								name="file" @mouseenter="show_import_in"
+								@mouseleave="show_import_out"></td>
+							<td>&nbsp;&nbsp;<input type="button"
+								class="cy_CMICBMS_expbtn" value="导出" v-on:click="btn_output">&nbsp;&nbsp;
+							</td>
+							<td v-if="show_import"><font color="red" size="1">
+									<!-- 按照模板格式导入文件，最大不超过1M-->注：导入时，节点名称相同的数据将被直接覆盖刷新，系统不存在的节点名称数据将不被导入。
+							</font></td>
+						</tr>
+					</table>
+					<div v-if="eCheck==true">
+						<span>&nbsp;&nbsp;</span><font color="red">导{{in_or_out}}文件出现错误，原因如下：</font>
+					</div>
+					<div v-if="eCheck==true" v-for="m in eMsg">
+						<span>&nbsp;&nbsp;</span><font color="red">{{m}}</font>
+					</div>
 				</div>
 			</div>
 			<form action="output" ref="outputForm">
@@ -84,8 +109,7 @@
 							<tbody>
 								<tr>
 									<th scope="col" width="25px"><input type="checkbox"
-										v-model='isok' v-on:click='checkedAll' disabled="disabled" />
-									</th>
+										v-model='isok' v-on:click='checkedAll' /></th>
 									<th scope="col" width="40%">分类名称</th>
 									<th nowrap scope="col" width="10%">信息向性区分</th>
 									<th nowrap scope="col" width="30%">过滤词过滤范围</th>
@@ -125,8 +149,7 @@
 				<div class="cy_CMICBMS_addtit">{{title}}</div>
 				<div class="cy_CMICBMS_addclose" onClick="hide();">X</div>
 			</div>
-			<br>
-			<span>&nbsp;&nbsp;&nbsp;&nbsp;所属分类：{{ssfl_msg}}</span>
+			<br> <span>&nbsp;&nbsp;&nbsp;&nbsp;所属分类：{{ssfl_msg}}</span>
 			<div class="cy_CMICBMS_addtb">
 				<div id="cy_CMICBMS_status">
 					信息向性区分：<input type="radio" name="RadioGroup1" value="1"
@@ -146,48 +169,56 @@
 						<div class="layui-tab-content cy_CMICBMS_addcizu">
 							<div class="layui-tab-item layui-show">
 								<div>
-									核心词组：<br><textarea  type="text" placeholder="输入词组"
+									核心词组：<br>
+									<textarea type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
-										v-model="fwVoForUpdate.allcorephrases" maxlength="600"></textarea>
+										v-model="fwVoForUpdate.allcorephrases" maxlength="600" style="resize:none;"></textarea>
 								</div>
 								<div>
-									排除词组：<br><textarea  type="text" placeholder="输入词组"
+									排除词组：<br>
+									<textarea type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
-										v-model="fwVoForUpdate.allexcludephrases" maxlength="600"></textarea>
+										v-model="fwVoForUpdate.allexcludephrases" maxlength="600" style="resize:none;"></textarea>
 								</div>
 							</div>
 							<div class="layui-tab-item">
 								<div>
-									核心词组：<br><textarea  type="text" placeholder="输入词组"
+									核心词组：<br>
+									<textarea type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
 										v-model="fwVoForUpdate.titlecorephrases" maxlength="600"></textarea>
 								</div>
 								<div>
-									排除词组：<br><textarea  type="text" placeholder="输入词组"
+									排除词组：<br>
+									<textarea type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
 										v-model="fwVoForUpdate.titleexcludephrases" maxlength="600"></textarea>
 								</div>
 							</div>
 							<div class="layui-tab-item">
 								<div>
-									核心词组：<br><textarea  type="text" placeholder="输入词组"
+									核心词组：<br>
+									<textarea type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
 										v-model="fwVoForUpdate.summarycorephrases" maxlength="600"></textarea>
 								</div>
 								<div>
-									排除词组：<br><textarea  type="text" placeholder="输入词组"
+									排除词组：<br>
+									<textarea type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
 										v-model="fwVoForUpdate.summaryexcludephrases" maxlength="600"></textarea>
 								</div>
 							</div>
 							<div class="layui-tab-item">
 								<div>
-									核心词组：<br><textarea  type="text" placeholder="输入词组"
+									核心词组：<br>
+									<textarea type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
 										v-model="fwVoForUpdate.textcorephrases" maxlength="600"></textarea>
 								</div>
 								<div>
-									排除词组：<br><textarea  type="text" placeholder="输入词组"
+									排除词组：<br>
+									<textarea type="text" placeholder="输入词组"
 										class="cy_CMICBMS_addinput"
 										v-model="fwVoForUpdate.textexcludephrases" maxlength="600"></textarea>
 								</div>
@@ -196,7 +227,8 @@
 					</div>
 
 				</div>
-				<div style="margin: 40px 20px 0 0;" class="cy_CMICBMS_addtb_submit_fw">
+				<div style="margin: 40px 20px 0 0;"
+					class="cy_CMICBMS_addtb_submit_fw">
 					<input type="button" value="确定" class="cy_CMICBMS_schbtn"
 						v-on:click="submit">
 				</div>
@@ -216,6 +248,7 @@
 
 	<script>
 
+	
     AdaptationResolution('${ctx}'); //分辨率适配
 
     //提示信息
@@ -237,8 +270,18 @@
         DownloadDataCount: '${DownloadDataCount}',
         E0064: '${E0064}',
         I0016: '${I0016}',
+        W0006: '${W0006}',
+        E0076:'${E0076}',
+        E0078:'${E0078}',
         MaxSearchCnt:'${MaxSearchCnt}'
     };
+    
+    
+    var dc_msg = '<%=dc_msg %>';
+	
+	
+	
+    
     //右侧主体控制vm
     var vm = new Vue({
         el: '#filterWords',
@@ -253,6 +296,7 @@
             show_import:false,
             eCheck:"false",
             eMsg : [],
+            in_or_out:'入',
             ssfl_msg: ""			//所属分类
         },
 
@@ -270,7 +314,6 @@
 					this.show_import=false;
 				},
        		upload_ok:function (response, file, fileList){
-	        	console.log()
 	        	if(response.msg=="ok"){
 	        		layer.msg(Info.I0015);
 	        	}else{
@@ -283,15 +326,11 @@
             checkedAll:
                 function () {
                     if (!this.isok) { //全选中 所有CheckBox
-                        var fwVos = [];
-                        var fwVos = this.fwVos;
-                        this.checkedId = [];
-                        fwVos.forEach(function (fwVo) {     //将id装填进checkedId[]中
-                            this.checkedId.push(fwVo.classificationId);
-                        }, this);
-                    } else {   //反选清楚所有CheckBox选中
-                        this.checkedId = []
+                    	$("input[name='ids']").prop("checked",true);
+                    }else{ //反选清楚所有CheckBox选中
+                    	$("input[name='ids']").prop("checked",false);
                     }
+       
                 },
             btn_search:   //搜索按钮点击事件
                 function (is_flash=true) {
@@ -301,29 +340,45 @@
             btn_output:
                 function () {
                     var checkedId = [];
-                    checkedId = this.checkedId;
-                    if (checkedId.length ==0) {
+                    //checkedId = this.checkedId;
+                    var lg = $("input[name='ids']:checked").length;
+                    $("input[name='ids']:checked").each(function(){
+                    	checkedId.push(this.value);
+                    });
+                    if (lg ==0) {
                         layer.msg(Info.E0043);      //提示：请选择要导出的数据
                     }else{
-                    	if(checkedId.length>Info.DownloadDataCount){
-                    		var arry = [Info.DownloadDataCount];
-                    		layer.msg(IC_GETINFOBYAttrs(Info.E0064,arry)); //提示，超出最大导出长度
-                    		return false;
-                    	}
-                        this.$refs.outputForm.submit();
+                    	var b = true;
+                    	/*if(lg>Info.DownloadDataCount){
+                    		var arry = [Info.DownloadDataCount,Info.DownloadDataCount];
+                    		layer.msg(IC_GETINFOBYAttrs(Info.W0006,arry)); //提示，超出最大导出长度
+                    		checkedId.splice(checkedId.length-1,1);
+                    		b = false;
+                    	}*/
+                    	if(b){
+                    		this.$refs.outputForm.submit();
+                    	}else{
+	                    	var _this = this;
+	                        setTimeout(function(){
+	                        	_this.$refs.outputForm.submit();
+	                        },500);
+                    	}                    	
                     }
                 },
             btn_update:										//编辑
                 function () {
+            		var _this = this;
                     var checkedId = [];
                     checkedId = this.checkedId;
-                    if (checkedId.length != 1) {
+                    var lg = $("input[name='ids']:checked").length;
+                    var c_id = $("input[name='ids']:checked").val().split(":")[0];
+                    if (lg != 1) {
                         layer.msg(Info.E0006);      //提示：请选择一条数据
                     } else {
                         vm2.title = "编辑分类过滤词";
                         vm2.url = "updateFwVo";
                         this.ssfl_msg = '';
-                        var clicknode = this.getClickNode(checkedId[0], this.fwVos, 0)[1];
+                        var clicknode = this.getClickNode(c_id, this.fwVos, 0)[1];
                         var ssflarr = [];
                         ssflarr.push(clicknode);
                         this.getAllNodeFromANode(clicknode, ssflarr);
@@ -338,12 +393,18 @@
                         vm2.ssfl_msg = this.ssfl_msg;
                         axios.get("queryOne", {     //查询当前节点信息回显在弹出层中
                             params: {
-                                classificationId: checkedId[0]
+                                classificationId: checkedId[0].split(":")[0]
                             }
                         }).then(function (res) {
                             vm2.fwVoForUpdate = res.data;
                             if (vm2.fwVoForUpdate.informationtropism == null) {   //当前节点没有过滤词时，预设不区分
                                 vm2.fwVoForUpdate.informationtropism = '0';
+                            }
+                            if(checkedId[0].split(":")[1]!=0){//父节点无法编辑
+                            	layer.msg(Info.E0076);
+                            console.log(_this)
+                            	_this.checkedId=[];
+                            	return false;
                             }
                             window.show();
                         })
@@ -356,6 +417,7 @@
                 },
             opClose: function (id) {       //id：点击时传入当前节点id
                 var click_node = this.getClickNode(id, this.fwVos, 0)[1];   //获取当前节点信息的方法
+                var _this = this;
                 if (!click_node.is_show) {                      //打开
                     click_node.imgsrc = "${ctx}/image/is-tbarr02.png"   //更改三角图标
                     axios.get('queryChild', {          //查询当前节点的子节点信息
@@ -371,7 +433,14 @@
                                 click_node.children[i].is_al_show = true;           //递归插件显示状态
                             }
                             click_node.is_show = true;
-
+                            setTimeout(function(){
+                            	 if (_this.isok) { //全选中 所有CheckBox
+                                 	$("input[name='ids']").prop("checked",true);
+                                 }else{ //反选清楚所有CheckBox选中
+                                 	$("input[name='ids']").prop("checked",false);
+                                 }
+                            },50);
+                           
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -379,7 +448,13 @@
                 } else {         //关上
                     click_node.imgsrc = "${ctx}/image/is-tbarr01.png"
                     click_node.is_show = false;
-
+                    setTimeout(function(){
+                   	 if (_this.isok) { //全选中 所有CheckBox
+                        	$("input[name='ids']").prop("checked",true);
+                        }else{ //反选清楚所有CheckBox选中
+                        	$("input[name='ids']").prop("checked",false);
+                        }
+                   },50);
                 }
             },
             getClickNode: function (id, arr, depth) {      //根据id查询arr中符合id的节点信息，depth：方便赋值深度
@@ -458,7 +533,7 @@
             }
 
         },
-        watch: {
+      /*  watch: {
             "checkedId": function () {
                 if (this.checkedId.length != this.fwVos.length||this.checkedId.length==0) {
                     this.isok = false
@@ -466,13 +541,14 @@
                     this.isok = true
                 }
             }
-        },
+        },*/
         computed: {
             search: function () {
                 return function (pageBean) {
                     var l_index = layer.msg(Info.I0011, {   //加载中msg
                         icon: 16
-                        , shade: 0.01
+                        , shade: 0.01,
+		        		  time:false
                     });
                     if(this.is_flash){
                     	this.eCheck = 'false';
@@ -517,6 +593,7 @@
                         })
                         .catch(function (error) {
                             console.log(error);
+                            layer.close(l_index);	//关闭动画
                         });
 
                 }
@@ -525,6 +602,11 @@
         },
         mounted: function () {
             this.search(this.$refs.pagecomponent.pageBean);
+            if(dc_msg=='overcount'){
+            	this.in_or_out = "出";
+            	this.eCheck = true;
+        		this.eMsg.push(IC_GETINFOBYAttrs(Info.E0078,[Info.DownloadDataCount]));
+        	}
         }
     });
     //弹出层控制vm
@@ -586,15 +668,15 @@
     }
 
     //复选框列组件
-    var ic_tree_dv_checkbox = {
-        template: '<div><div v-bind:style="t_style" v-show="model.is_al_show">' +
+    var ic_tree_dv_checkbox = { 
+        template: '<div ><div v-bind:style="t_style" v-show="model.is_al_show">' +  //v-model="vm.checkedId"   :disabled="model.isParent==1"
 
-        '<input type="checkbox" :disabled="model.isParent==1" v-bind:value="model.classificationId"  v-model="vm.checkedId" class="cy_CMICBMS_checkbox" name="ids"></div>' +
-        '<div v-show="model.is_show" ><ic_tree_dv_checkbox  v-for="model in model.children"  v-bind:model="model"></ic_tree_dv_checkbox></div>&nbsp;</div>',
+        '<input type="checkbox" v-bind:value="model.classificationId+\':\'+model.isParent" v-model="vm.checkedId" class="cy_CMICBMS_checkbox" name="ids"></div>' +
+        '<div v-show="model.is_show" ><ic_tree_dv_checkbox  v-for="model in model.children"  v-bind:model="model"></ic_tree_dv_checkbox></div></div>',
         props: ['model'],
         data: function () {
             return {
-                t_style: {padding: '10px 0px !important'},
+                t_style: {padding: '13px 0px !important'},
             }
         },
     };
@@ -604,7 +686,7 @@
         template: '<div><div v-bind:style="t_style" v-bind:title="model.classificationName" class="cy_tree_node_hover" v-show="model.is_al_show">' +
         '<img v-if="model.isParent==1" v-bind:src="model.imgsrc" style="cursor:pointer" v-on:click="opClose(model.classificationId)">' +
         '{{model.classificationName}}&nbsp;</div>' +
-        '<div v-show="model.is_show" ><ic_tree_dv_name  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_name></div>&nbsp;</div>'
+        '<div v-show="model.is_show" ><ic_tree_dv_name  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_name></div></div>'
         ,
         props: ['model'],
 
@@ -625,8 +707,8 @@
     //区分列组件
     var ic_tree_dv_tropism = {
         template: '<div><div v-bind:style="t_style" v-show="model.is_al_show">' +
-        '{{model.informationtropism==1?\'区分\':\'不区分\'}}&nbsp;</div>' +
-        '<div v-show="model.is_show" ><span></span><span> </span><ic_tree_dv_tropism  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_tropism></div>&nbsp;</div>'
+        '{{model.informationtropism==1?\'区分\':(model.informationtropism==0?\'不区分\':\'\')}}&nbsp;</div>' +
+        '<div v-show="model.is_show" ><ic_tree_dv_tropism  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_tropism></div></div>'
         ,
         props: ['model'],
         data: function () {
@@ -643,7 +725,7 @@
         '{{model.titlecorephrases!=""||model.titleexcludephrases!=""?\'标题；\':\'\'}}' +
         '{{model.summarycorephrases!=""||model.summaryexcludephrases!=""?\'摘要；\':\'\'}}' +
         '{{model.textcorephrases!=""||model.textexcludephrases!=""?\'正文；\':\'\'}}&nbsp;</div>' +
-        '<div v-if="model.is_show" ><span> </span><span> </span><ic_tree_dv_all  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_all></div>&nbsp;</div>'
+        '<div v-if="model.is_show" ><ic_tree_dv_all  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_all></div></div>'
         ,
         props: ['model'],
         data: function () {
@@ -657,7 +739,7 @@
         template: '<div ><div v-bind:style="t_style" v-show="model.is_al_show">' +
 
         '{{model.updatedatetime}}&nbsp;</div>' +
-        '<div v-show="model.is_show" ><span> </span><span> </span><ic_tree_dv_time  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_time></div>&nbsp;</div>'
+        '<div v-show="model.is_show" ><ic_tree_dv_time  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_time></div></div>'
         ,
         props: ['model'],
         data: function () {
@@ -671,7 +753,7 @@
         template: '<div ><div v-bind:style="t_style" v-show="model.is_al_show">' +
 
         '{{model.updateuser}}&nbsp;</div>' +
-        '<div v-show="model.is_show" ><span> </span><span> </span><ic_tree_dv_user  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_user></div>&nbsp;</div>'
+        '<div v-show="model.is_show" ><ic_tree_dv_user  v-for="model in model.children" v-bind:model="model"></ic_tree_dv_user></div></div>'
         ,
         props: ['model'],
         data: function () {
@@ -700,6 +782,7 @@
             ,size: 1024*1024		//最大大小
             , done: function (res) {
                 //上传完毕回调
+                vm.in_or_out = "入";
                 if(res.msg=="ok"){
 	                var arry = [res.imputCount];
 	                layer.msg(IC_GETINFOBYAttrs(Info.I0028,arry));	

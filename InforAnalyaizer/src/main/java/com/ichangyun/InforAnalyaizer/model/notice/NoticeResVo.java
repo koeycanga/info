@@ -1,33 +1,31 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«žäº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model.notice;
 
 import java.util.Date;
 
 public class NoticeResVo extends NoticeExecuteResult{
-	private String title;//¼ò±¨±êÌâ
+    private String title;//ç®€æŠ¥æ ‡é¢˜
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public NoticeResVo(String noticeid, String executeresult, String executeid, String createuser, Date createdatetime,
-			String updateuser, Date updatedatetime, String title) {
-		super(noticeid, executeresult, executeid, createuser, createdatetime, updateuser, updatedatetime);
-		this.title = title;
-	}
+    public NoticeResVo(String noticeid, String executeresult, String executeid, String createuser, Date createdatetime,
+            String updateuser, Date updatedatetime, String title) {
+        super(noticeid, executeresult, executeid, createuser, createdatetime, updateuser, updatedatetime);
+        this.title = title;
+    }
 
-	public NoticeResVo() {
-		super();
-	}
+    public NoticeResVo() {
+        super();
+    }
 
-
-	
 }

@@ -12,6 +12,8 @@
 <fmt:message key="E0013" var="E0013" bundle="${sysInfo}" /> 
 <fmt:message key="E0014" var="E0014" bundle="${sysInfo}" /> 
 <fmt:message key="E0015" var="E0015" bundle="${sysInfo}" />  
+<fmt:message key="W0014" var="W0014" bundle="${sysInfo}" />
+<fmt:message key="E0073" var="E0073" bundle="${sysInfo}" />
  <%
  //ResourceBundle resource = ResourceBundle.getBundle("resources"); // 不带properties扩展名的文件名
  //String aa = resource.getString("aa"); // 属性名
@@ -35,8 +37,8 @@
 	<div  class="cy_CIAS_lgbox">
 		<div class="cy_CIAS_lgboxL"><img src="${ctx}/image/login-boxbg01.png"></div>
 		<div class="cy_CIAS_lgboxR">
-			<input type="text" class="cy_CIAS_lgusn" v-model="username" v-validate:zip="['required']" style="background-color: white" placeholder="请输入用户名">
-			<input type="password" class="cy_CIAS_lgpsw" v-model="passwd" style="background-color: white" placeholder="请输入密码">
+			<input type="text" class="cy_CIAS_lgusn" v-model="username" v-validate:zip="['required']" style="background-color: white" autocomplete="off" placeholder="请输入用户名">
+			<input type="password" class="cy_CIAS_lgpsw" v-model="passwd" style="background-color: white" autocomplete="off" placeholder="请输入密码">
 				<div class="cy_CIAS_lgfm" >
 					<input type="text"   class="cy_CIAS_lgvcp" v-model="checkCode" style="background-color: white" placeholder="请输入验证码">
 					<div class="cy_CIAS_lgvc">
@@ -50,7 +52,7 @@
 	</div>
 
 </div>
-<div class="cy_CIAS_lgfoot">Copyright &copy; 2018-2021 湖北畅云软件技术有限公司版权所有 </div>
+<div class="cy_CIAS_lgfoot">Copyright &copy; 2018-2021 湖北畅云时讯软件技术有限公司 版权所有 </div>
 </body>
 <script type="text/javascript" src="${ctx}/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="${ctx}/layer/layer.js"></script>
@@ -76,48 +78,6 @@ function enterlogin(event){
 	 }
 }
 
-    
-    function showChose(){
-		 enter_num = 1;
-		 layer.open({
-			    id:1,
-		        type: 1,
-		        title:'选择前往',
-		        skin:'layui-layer-rim',
-		        area:['320px', 'auto'],
-		        
-		        content: ' <div  class="row" style="width: 300px;height:100px;  margin-left:7px; margin-top:10px;">'
-		            +'<div class="col-sm-12">'
-		            +'<div class="input-group">'
-		            +'<input id="firstch" type="radio" name="xzqw" checked class="form-control" value="0">'
-		            +'<span class="input-group-addon"> 前台首页 </span>'
-		            +'</div>'
-		            +'</div>'
-		              +'<div class="col-sm-12" style="margin-top: 10px">'
-		              +'<div class="input-group">'
-		              +'<input id="secondch" type="radio" name="xzqw" class="form-control" value="1">'
-		              +'<span class="input-group-addon"> 后台管理 </span>'
-		              +'</div>'
-		              +'</div>'
-		              +'</div>'
-		        ,
-		        btn:['确定','取消'],
-		        btn1: function (index,layero) {
-		        	var flag = $("input[name='xzqw']:checked").val();
-		        	if(flag=='0'){
-		        		window.location.href = "${ctx}/front/index";
-		        	}
-		        	if(flag=='1'){
-		        		window.location.href = "${ctx}/login/toLogin";
-		        	}
-		    	},
-		        btn2:function (index,layero) {
-		        	 enter_num = 0;
-		        	 layer.close(index);
-		        }
-		 
-		    });
-	 }
 
      var Info = {
     		E0002:'${E0002}', 
@@ -125,7 +85,9 @@ function enterlogin(event){
     	    E0011:'${E0011}',
     	    E0013:'${E0013}',
     	    E0014:'${E0014}',
-    	    E0015:'${E0015}'
+    	    E0015:'${E0015}',
+    	    W0014:'${W0014}',
+    	    E0073:'${E0073}'
      }
    
 	 var loginapp = new Vue({
@@ -150,21 +112,24 @@ function enterlogin(event){
 				        area:['320px', 'auto'],
 				        
 				        content: ' <div  class="row" style="width: 300px;height:100px;  margin-left:7px; margin-top:10px;">'
-				            +'<div class="col-sm-12">'
-				            +'<div class="input-group">'
-				            +'<input id="firstch" type="radio" name="xzqw" checked class="form-control" value="0">'
-				            +'<span class="input-group-addon"> 前台首页 </span>'
-				            +'</div>'
-				            +'</div>'
 				              +'<div class="col-sm-12" style="margin-top: 10px">'
 				              +'<div class="input-group">'
-				              +'<input id="secondch" type="radio" name="xzqw" class="form-control" value="1">'
-				              +'<span class="input-group-addon"> 后台管理 </span>'
+				              +'<input id="secondch" type="radio" checked name="xzqw" class="form-control" value="1">'
+				              +'<span class="input-group-addon"> 后台管理系统 </span>'
 				              +'</div>'
 				              +'</div>'
+				              +'<div class="col-sm-12">'
+					            +'<div class="input-group">'
+					            +'<input id="firstch" type="radio" name="xzqw"  class="form-control" value="0">'
+					            +'<span class="input-group-addon"> 前端管理系统  </span>'
+					            +'</div>'
+					            +'</div>'
 				              +'</div>'
 				        ,
-				        btn:['确定','取消'],
+				        btn:['确定'],
+				        success:function(){
+				        	$(".layui-layer-setwin").remove();
+				        },
 				        btn1: function (index,layero) {
 				        	var flag = $("input[name='xzqw']:checked").val();
 				        	if(flag=='0'){
@@ -173,12 +138,7 @@ function enterlogin(event){
 				        	if(flag=='1'){
 				        		window.location.href = "${ctx}/login/toLogin";
 				        	}
-				    	},
-				        btn2:function (index,layero) {
-				        	 this.enter_num = 0;
-				        	 layer.close(index);
-				        }
-				 
+				    	}
 				    });
 			 },
 			 enterlogin:function(event){
@@ -232,6 +192,12 @@ function enterlogin(event){
 		    					_this.passwd = "";
 		    					_this.checkCode = "";
 		    					layer.msg(Info.E0002);
+		    				}else if(response.data=="deactivate"){  //用户被停用
+		    					_this.checkimg_src = '${ctx}/login/valicode?date='+new Date().getTime();
+		    					_this.passwd = "";
+		    					_this.checkCode = "";
+		    					layer.msg(Info.E0073);
+		    					
 		    				}else{   //用户名或密码错误
 		    					_this.username = "";
 		    					_this.checkimg_src = '${ctx}/login/valicode?date='+new Date().getTime();

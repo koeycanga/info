@@ -643,7 +643,8 @@ var app = new Vue({
 				 var json = createJSON(web_al_checkedNames);   //createJSON 引自 js/comm.js
 				 var l_index = layer.msg(Info.I0011, {
 	        		  icon: 16
-	        		  ,shade: 0.01
+	        		  ,shade: 0.01,
+	        		  time:false
 	        		});
 			    var _this = this;
 			    axios.post('../classificationSource/joingleft',
@@ -676,7 +677,8 @@ var app = new Vue({
 			    var json = createJSON(web_checkedNames);   //createJSON 引自 js/comm.js
 			    var l_index = layer.msg(Info.I0011, {
 	        		  icon: 16
-	        		  ,shade: 0.01
+	        		  ,shade: 0.01,
+	        		  time:false
 	        		});
 			    var _this = this;
 				 axios.post('../classificationSource/joingright',
@@ -735,7 +737,8 @@ var app = new Vue({
 			return function(pageBean){
 				var l_index = layer.msg(Info.I0011, {
 	        		  icon: 16
-	        		  ,shade: 0.01
+	        		  ,shade: 0.01,
+	        		  time:false
 	        		});
 				web_al_checked = false;
 				web_al_checkedNames = [];
@@ -771,7 +774,8 @@ var app = new Vue({
 			return function(pageBean){
 				 var l_index = layer.msg(Info.I0011, {
 	        		  icon: 16
-	        		  ,shade: 0.01
+	        		  ,shade: 0.01,
+	        		  time:false
 	        		});
 				 web_checked = false;
 				 web_checkedNames = [];
@@ -812,7 +816,8 @@ var app = new Vue({
 			 return function(pageBean){
 				  var l_index = layer.msg(Info.I0011, {
 	        		  icon: 16
-	        		  ,shade: 0.01
+	        		  ,shade: 0.01,
+	        		  time:false
 	        		});
 	        	
 	        	var _this = this;

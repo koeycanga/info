@@ -19,6 +19,10 @@
 <fmt:message key="E0033" var="E0033" bundle="${sysInfo}"/>
 <fmt:message key="W0008" var="W0008" bundle="${sysInfo}"/>
 <fmt:message key="W0009" var="W0009" bundle="${sysInfo}"/>
+<fmt:message key="E0054" var="E0054" bundle="${sysInfo}"/>
+<fmt:message key="E0074" var="E0074" bundle="${sysInfo}"/>
+<fmt:message key="E0075" var="E0075" bundle="${sysInfo}"/>
+<fmt:message key="E0052" var="E0052" bundle="${sysInfo}"/>
 <fmt:message key="UseManualFileName" var="UseManualFileName" bundle="${sysInfo}" />
 <fmt:message key="DownloadFileTemplatePath" var="DownloadFileTemplatePath" bundle="${sysInfo}" />
 <!doctype html>
@@ -64,9 +68,9 @@
                 <table cellspacing="0" v-if="fl_index==-1">
                     <tbody>
                     <tr>
-                        <th width="30%">名称</th>
-                        <th width="35%" align="center">今天总数</th>
-                        <th width="35%" align="center">昨天总数</th>
+                        <th width="20%">名称</th>
+                        <th width="40%" align="center" nowrap="nowrap">今天总数</th>
+                        <th width="40%" align="center" nowrap="nowrap">昨天总数</th>
                     </tr>
                     <tr>
                         <td>监测总数</td>
@@ -117,7 +121,7 @@
 							</td>
 							<td>
 							   <input type="radio" name="montime" value="10" v-model="montime" id="montime_6" style="display: none;"><label for="montime_6">自定义</label>
-							   <input type="date" id="fromdate" class="cy_CIASFE_timetb">—<input type="date" id="todate" class="cy_CIASFE_timetb"><input type="button" v-on:click="btn_search()" class="cy_CMICBMS_schbtn" value="确认">
+							   <input type="date" id="fromdate" class="cy_CIASFE_timetb">—<input type="date" id="todate" class="cy_CIASFE_timetb"><input type="button" v-on:click="btn_search(true)" class="cy_CMICBMS_schbtn" value="确认">
 						   </td>
 						   </tr>
 					   </table>
@@ -228,8 +232,8 @@
                            <div class="cy_CIASFE_footbox01">&nbsp;</div>
                            <div class="cy_CIASFE_footbox02" >
 					
-								<a v-bind:href="data.articleURL" target="_blank">{{data.releasetime}}
-			                                {{data.websiteName}}</a>
+								<a v-bind:href="data.website" target="_blank">
+			                                {{data.websiteName}}</a><b>.</b>{{data.releasetime}}
 			                                
 			                   <span class="cy_CIASFE_simart" v-on:mouseover="simcontent(index)">
 			                                                               相似文章：{{data.sim_cnt}}条
@@ -289,15 +293,12 @@
         E0033: '${E0033}',
         W0008: '${W0008}',
         W0009: '${W0009}',
+        E0054: '${E0054}',
+        E0052: '${E0052}',
+        E0074: '${E0074}',
+        E0075: '${E0075}',
         syccurl:'${ctx }/${DownloadFileTemplatePath}/${UseManualFileName}'
     };
-    
-    
-    var ic_sycc_template = {
-    		          template:'  <div class="cy_CIASFE_footer02"><a v-bind:href="Info.syccurl">使用手册</a>&nbsp;&nbsp;&nbsp;&nbsp;联系我们（电话：1648726161'+
-       					'邮箱：sales@ichangyun.com） Copyright&copy;2018-2021 &nbsp;&nbsp;&nbsp;&nbsp;湖北畅云时讯软件技术有限公司版权所有'+
-        						'</div>'
-                            };
     
       Vue.component('ic_sycc_template', ic_sycc_template);   						
 
@@ -615,8 +616,8 @@
                         });
                 });
             },
-            delarticle: function () {
-                if (this.checkedNames.length == 0) {
+            delarticle: function () {   //删除文章
+                if (this.checkedNames.length == 0) {   //如果用户没有选择要删除的文章
                     layer.msg(Info.E0019);
                 } else {
                     var _this = this;
@@ -687,7 +688,13 @@
             from_child_search:function(){
             	this.search(this.$refs.pagecomponent.pageBean);
             },
-            btn_search: function () {
+            btn_search:function(flag=false) {
+            	if(flag){
+            		if(this.montime!='10'){
+            			layer.msg(Info.E0074);
+            			return;
+            		}
+            	}
                 this.$refs.pagecomponent.pageBean.pageNow = 1;
                 this.search(this.$refs.pagecomponent.pageBean);
             },
@@ -749,13 +756,23 @@
                 axios.get('../comprehensivemonitoring/getAllClassification')
                     .then(function (response) {
 
+                    	//console.log(response.data);
+                    	
                         _this.fl_all_datas = JSON.parse(response.data);
 
                         _this.fl_datas = [];
 
+                        var map = new Map();
+                        
                         for (var i = 0; i < _this.fl_all_datas.length; i++) {
                             if (_this.fl_all_datas[i].parent_Classification_ID == '0000000000') {
-                                _this.fl_datas.push(_this.fl_all_datas[i]);
+                            	if(map.get(_this.fl_all_datas[i].classification_ID)==null){
+                                	_this.fl_datas.push(_this.fl_all_datas[i]);
+                                	map.set(_this.fl_all_datas[i].classification_ID,_this.fl_all_datas[i]);
+                            	}else{
+                            		map.get(_this.fl_all_datas[i].classification_ID).yesterday_cnt+=_this.fl_all_datas[i].yesterday_cnt;
+                            		map.get(_this.fl_all_datas[i].classification_ID).today_cnt+=_this.fl_all_datas[i].today_cnt;
+                            	}
                             }
                         }
 
@@ -811,6 +828,12 @@
                 return function (pageBean) {
                     var amontime = this.montime;
                     if (this.montime == '10') {
+                    	var fromDate = $("#fromdate").val();
+                    	var toDate = $("#todate").val();
+                    	if(fromDate!=''&&toDate!=''&&IC_compareDate(fromDate,toDate)){  //IC_compareDate引自js/comm.js
+                    		layer.msg(Info.E0052);
+           				    return;
+                    	}
                         amontime = $("#fromdate").val() + "-" + $("#todate").val();
                     }
 
@@ -818,13 +841,15 @@
 
                     layer.msg(Info.I0011, {
                         icon: 16
-                        , shade: 0.01
+                        , shade: 0.01,
+                        time:false
                     });
                     axios.get('../comprehensivemonitoring/search', {
                         params: {
                             search_key: _this.search_key.trim(),
                             Classification_ID: _this.Classification_ID,
                             montime: amontime,
+                            montime_bak:_this.montime,
                             emoana: _this.emoana,
                             simart: _this.simart,
                             sort: _this.sort,
@@ -861,6 +886,7 @@
                         })
                         .catch(function (error) {
                             console.log(error);
+                            layer.closeAll();
                         });
                 }
             }

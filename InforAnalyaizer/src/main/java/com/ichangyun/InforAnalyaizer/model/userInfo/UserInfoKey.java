@@ -1,45 +1,45 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model.userInfo;
 
 /**
- * UserInfoKey£ºÉèÖÃÓÃ»§Çé±¨Key
+ * UserInfoKeyï¼šè®¾ç½®ç”¨æˆ·æƒ…æŠ¥Key
  *
  * @author ichangyun
  * @date 2018/11/09
  */
 public class UserInfoKey {
 
-    // ÓÃ»§ID£¨ÓÃ»§Ãû£©
+    // ç”¨æˆ·IDï¼ˆç”¨æˆ·åï¼‰
     private String userId;
 
-    // ÓÃ»§No
+    // ç”¨æˆ·No
     private Integer userno;
 
-    /** È¡µÃÓÃ»§ID  */
+    /** å–å¾—ç”¨æˆ·ID  */
     public String getUserId() {
         return userId;
     }
 
-    /** ÉèÖÃÓÃ»§ID  */
+    /** è®¾ç½®ç”¨æˆ·ID  */
     public void setUserId(String userId) {
         this.userId = userId == null ? null : userId.trim();
     }
 
-    /** È¡µÃÓÃ»§No  */
+    /** å–å¾—ç”¨æˆ·No  */
     public Integer getUserno() {
         return userno;
     }
 
-    /** ÉèÖÃÓÃ»§ID  */
+    /** è®¾ç½®ç”¨æˆ·ID  */
     public void setUserno(Integer userno) {
         this.userno = userno;
     }
 
-    /** ÉèÖÃÓÃ»§Çé±¨Key£ºuserId£¬ userno */
+    /** è®¾ç½®ç”¨æˆ·æƒ…æŠ¥Keyï¼šuserIdï¼Œ userno */
     public UserInfoKey(String userId, Integer userno) {
         super();
         this.userId = userId;

@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.interceptor;
 
@@ -21,49 +21,49 @@ import com.ichangyun.InforAnalyaizer.model.CommBean;
 import com.ichangyun.InforAnalyaizer.model.userInfo.User;
 
 /**
- * ÓÃ»§ È¨ÏŞÑéÖ¤ À¹½ØÆ÷
+ * ç”¨æˆ· æƒé™éªŒè¯ æ‹¦æˆªå™¨
  * @author renhao
  * Date:2018-11-9
  */
 public class LoginInterceptor extends HandlerInterceptorAdapter {
-	@Override
+    @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
-        
-		WebApplicationContext wa = ContextLoader.getCurrentWebApplicationContext();
-    	ServletContext servletContext = wa.getServletContext();
-		
-		//»ñÈ¡ÇëÇóµÄRUi:È¥³ıhttp:localhost:8080Õâ²¿·ÖÊ£ÏÂµÄ
+
+        WebApplicationContext wa = ContextLoader.getCurrentWebApplicationContext();
+        ServletContext servletContext = wa.getServletContext();
+
+        //è·å–è¯·æ±‚çš„RUi:å»é™¤http:localhost:8080è¿™éƒ¨åˆ†å‰©ä¸‹çš„
         String uri = request.getRequestURI();
-      //  System.out.println(uri);
-        //UTL:³ıÁËlogin.jspÊÇ¿ÉÒÔ¹«¿ª·ÃÎÊµÄ£¬ÆäËûµÄURL¶¼½øĞĞÀ¹½Ø¿ØÖÆ
-       /* if (uri.indexOf("/login") >= 0) {
+        //  System.out.println(uri);
+        //UTL:é™¤äº†login.jspæ˜¯å¯ä»¥å…¬å¼€è®¿é—®çš„ï¼Œå…¶ä»–çš„URLéƒ½è¿›è¡Œæ‹¦æˆªæ§åˆ¶
+        /* if (uri.indexOf("/login") >= 0) {
             return true;
         }*/
-         String root_url = request.getServletContext().getContextPath();
-         
-        //»ñÈ¡session
+        String root_url = request.getServletContext().getContextPath();
+
+        //è·å–session
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(CommBean.SESSION_NAME);
-        //ÅĞ¶ÏsessionÖĞÊÇ·ñÓĞÓÃ»§Êı¾İ£¬Èç¹ûÓĞ£¬Ôò·µ»Øtrue£¬¼ÌĞøÏòÏÂÖ´ĞĞ
+        //åˆ¤æ–­sessionä¸­æ˜¯å¦æœ‰ç”¨æˆ·æ•°æ®ï¼Œå¦‚æœæœ‰ï¼Œåˆ™è¿”å›trueï¼Œç»§ç»­å‘ä¸‹æ‰§è¡Œ
         if (user != null) {
 
-        	String auth = user.getAuthority();
-        	
-        	List<String> au_list = (List<String>) servletContext.getAttribute("au_list");  //»ñµÃĞèÒªÑéÖ¤µÄÈ¨ÏŞÁĞ±í
-        	
-        	for(int i=0;i<au_list.size();i++) {
-        		if(uri.contains(au_list.get(i))) {
-        			if(auth.charAt(i)=='0') {
-        				response.sendRedirect(root_url+"/error/no_authority.jsp");
-            			return false;
-        			}
-        		}
-        	}
-        
+            String auth = user.getAuthority();
+
+            List<String> au_list = (List<String>) servletContext.getAttribute("au_list");  //è·å¾—éœ€è¦éªŒè¯çš„æƒé™åˆ—è¡¨
+
+            for(int i=0;i<au_list.size();i++) {
+                if(uri.contains(au_list.get(i))) {
+                    if(auth.charAt(i)=='0') {
+                        response.sendRedirect(root_url+"/error/no_authority.jsp");
+                        return false;
+                    }
+                }
+            }
+
             return true;
         }
-        //²»·ûºÏÌõ¼şµÄ¸ø³öÌáÊ¾ĞÅÏ¢£¬²¢×ª·¢µ½µÇÂ¼Ò³Ãæ
-        //request.setAttribute("msg", "Äú»¹Ã»ÓĞµÇÂ¼£¬ÇëÏÈµÇÂ¼£¡");
+        //ä¸ç¬¦åˆæ¡ä»¶çš„ç»™å‡ºæç¤ºä¿¡æ¯ï¼Œå¹¶è½¬å‘åˆ°ç™»å½•é¡µé¢
+        //request.setAttribute("msg", "æ‚¨è¿˜æ²¡æœ‰ç™»å½•ï¼Œè¯·å…ˆç™»å½•ï¼");
         //request.getRequestDispatcher("/InforAnalyaizer/login.jsp").forward(request, response);
         response.sendRedirect(root_url+"/error/session_out.jsp");
         return false;

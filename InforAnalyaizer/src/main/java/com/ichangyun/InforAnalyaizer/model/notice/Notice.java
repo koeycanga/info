@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.model.notice;
 
@@ -10,36 +10,59 @@ import java.util.Date;
 import com.alibaba.fastjson.annotation.JSONField;
 
 public class Notice {
-    private String noticeid;	//¼ò±¨id
+    private String noticeid;    //ç®€æŠ¥id
 
-    private String title;	//¼ò±¨±êÌâ
+    private String title;   //ç®€æŠ¥æ ‡é¢˜
 
-    private String noticetype;	//¼ò±¨ÀàĞÍ
+    private String noticetype;  //ç®€æŠ¥ç±»å‹
 
-    private String monitordatestart;	//¼à²â¿ªÊ¼ÈÕÆÚ
+    private String monitordatestart;    //ç›‘æµ‹å¼€å§‹æ—¥æœŸ
 
-    private String monitordateend;	//¼à²âÖÕÖ¹ÈÕÆÚ
+    private String monitordateend;  //ç›‘æµ‹ç»ˆæ­¢æ—¥æœŸ
 
-    private String monitortimestart;	//¼à²â¿ªÊ¼Ê±¼ä
+    private String monitortimestart;    //ç›‘æµ‹å¼€å§‹æ—¶é—´
 
-    private String monitortimeend;	//¼à²âÖÕÖ¹Ê±¼ä
+    private String monitortimeend;  //ç›‘æµ‹ç»ˆæ­¢æ—¶é—´
 
-    private String senddate;	//·¢ËÍÈÕÆÚ
+    private String senddate;    //å‘é€æ—¥æœŸ
 
-    private String sendtime;	//·¢ËÍÊ±¼ä
+    private String sendtime;    //å‘é€æ—¶é—´
 
-    private String email;	//ÓÊÏä
+    private String email;   //é‚®ç®±
 
-    private String validflag;	//ÊÇ·ñ¿ÉÓÃ
+    private String validflag;   //æ˜¯å¦å¯ç”¨
 
-    private String createuser;	//´´½¨ÈË
+    private String createuser;  //åˆ›å»ºäºº
     @JSONField(format="yyyy-MM-dd")
-    private Date createdatetime;	//´´½¨Ê±¼ä
+    private Date createdatetime;    //åˆ›å»ºæ—¶é—´
 
-    private String updateuser;	//¸üĞÂÕß
+    private String updateuser;  //æ›´æ–°è€…
+
+    private String updatedatetime;  //æ›´æ–°æ—¶é—´
+
+    //å®¢æˆ·ID
+    private String Customer_ID;
     
-    private String updatedatetime;	//¸üĞÂÊ±¼ä
+    //é‡‡é›†é¢†åŸŸID
+    private String CollectionField_ID;
+    
+    public String getCustomer_ID() {
+		return Customer_ID;
+	}
 
+	public void setCustomer_ID(String customer_ID) {
+		Customer_ID = customer_ID;
+	}
+
+	public String getCollectionField_ID() {
+		return CollectionField_ID;
+	}
+
+	public void setCollectionField_ID(String collectionField_ID) {
+		CollectionField_ID = collectionField_ID;
+	}
+
+    
     public String getNoticeid() {
         return noticeid;
     }

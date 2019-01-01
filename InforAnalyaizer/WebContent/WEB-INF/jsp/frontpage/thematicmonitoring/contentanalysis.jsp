@@ -25,6 +25,10 @@
 <fmt:message key="E0019" var="E0019" bundle="${sysInfo}" /> 
 <fmt:message key="E0052" var="E0052" bundle="${sysInfo}" />
 <fmt:message key="I0029" var="I0029" bundle="${sysInfo}" /> 
+<fmt:message key="E0074" var="E0074" bundle="${sysInfo}" />
+<fmt:message key="E0075" var="E0075" bundle="${sysInfo}" />
+<fmt:message key="UseManualFileName" var="UseManualFileName" bundle="${sysInfo}" />
+<fmt:message key="DownloadFileTemplatePath" var="DownloadFileTemplatePath" bundle="${sysInfo}" />
 <!doctype html>
 <html>
 <head>
@@ -83,7 +87,7 @@
 					</td>
 					<td>
 					   <input type="radio" name="montime" value="10" v-model="montime" id="montime_6" style="display: none;"><label for="montime_6">自定义</label>
-					   <input type="date" id="fromdate" class="cy_CIASFE_timetb">—<input type="date" id="todate" class="cy_CIASFE_timetb"><input type="button" v-on:click="btn_search()" class="cy_CMICBMS_schbtn" value="确认">
+					   <input type="date" id="fromdate" class="cy_CIASFE_timetb">—<input type="date" id="todate" class="cy_CIASFE_timetb"><input type="button" v-on:click="btn_search(true)" class="cy_CMICBMS_schbtn" value="确认">
 				   </td>
 				   </tr>
 			   </table>
@@ -150,7 +154,7 @@
 	</div>
 </div>	
 
-<div class="cy_CIASFE_footer02"><a href="">使用手册</a>&nbsp;&nbsp;&nbsp;&nbsp;联系我们（电话：1648726161  邮箱：sales@ichangyun.com）    Copyright&copy;2018-2021 &nbsp;&nbsp;&nbsp;&nbsp;湖北畅云时讯软件技术有限公司版权所有</div>
+<ic_sycc_template></ic_sycc_template>
 </div>
 </body>
 <script type="text/javascript" src="${ctx}/js/jquery-3.3.1.min.js"></script>
@@ -189,8 +193,13 @@ var Info = {
 		  I0019:'${I0019}',
 		  E0019:'${E0019}',
 		  E0052:'${E0052}',
-		  I0029:'${I0029}'
+		  I0029:'${I0029}',
+		  E0075:'${E0075}',
+		  E0074:'${E0074}',
+		  syccurl:'${ctx }/${DownloadFileTemplatePath}/${UseManualFileName}'
 	};
+
+Vue.component('ic_sycc_template', ic_sycc_template);  
 
 var menu_datas = JSON.parse('${front_menu}');  //菜单数据来源于 classes/resources.properties
 
@@ -251,15 +260,28 @@ var app = new Vue({
 			 this.plan_ID = plan_ID;
 			 this.btn_search();
 		},
-		btn_search:function(){               //检索按钮相关
+		btn_search:function(flag=false){               //检索按钮相关
+			if(flag){
+        		if(this.montime!='10'){
+        			layer.msg(Info.E0074);
+        			return;
+        		}
+        	}
 			var amontime = this.montime;
 			if(this.montime=='10'){
+				var fromDate = $("#fromdate").val();
+            	var toDate = $("#todate").val();
+            	if(fromDate!=''&&toDate!=''&&IC_compareDate(fromDate,toDate)){  //IC_compareDate引自js/comm.js
+            		layer.msg(Info.E0052);
+   				    return;
+            	}
 				amontime = $("#fromdate").val()+"-"+$("#todate").val();
         	}
 			var _this = this;
         	layer.msg(Info.I0011, {
         		  icon: 16
-        		  ,shade: 0.01
+        		  ,shade: 0.01,
+        		  time:false
         		});
     		axios.get('../thematicmonitoring/searchcontent',{
     			params: {
@@ -296,6 +318,7 @@ var app = new Vue({
     				layer.closeAll();
     			})
     			.catch(function (error) {
+    				layer.closeAll();
     			    console.log(error);
     			});
 		},

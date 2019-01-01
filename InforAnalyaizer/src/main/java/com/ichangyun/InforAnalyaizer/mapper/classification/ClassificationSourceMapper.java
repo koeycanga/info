@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ *  ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.mapper.classification;
 
@@ -13,96 +13,96 @@ import com.ichangyun.InforAnalyaizer.model.classification.ClassificationInfoBean
 import com.ichangyun.InforAnalyaizer.model.webinfo.WebInfoBean;
 
 /**
- * ĞÅÏ¢Ô´°ó¶¨Mapper
+ * ä¿¡æ¯æºç»‘å®šMapper
  * @author renhao
  * Date:2018-11-12
  */
 public interface ClassificationSourceMapper {
 
-	/**
-	 * »ñµÃ·ÖÀàÌåÏµ×ÜÊıÄ¿
-	 * @param cb ²éÑ¯²ÎÊı
-	 * @return ·ÖÀàÌåÏµ×ÜÊıÄ¿
-	 * Date:2018-11-12
-	 */
-	public ClassificationInfoBean getClassifcInfoCount(ClassificationInfoBean cb) ;
+    /**
+     * è·å¾—åˆ†ç±»ä½“ç³»æ€»æ•°ç›®
+     * @param cb æŸ¥è¯¢å‚æ•°
+     * @return åˆ†ç±»ä½“ç³»æ€»æ•°ç›®
+     * Date:2018-11-12
+     */
+    public ClassificationInfoBean getClassifcInfoCount(ClassificationInfoBean cb) ;
 
-	/**
-	 * »ñµÃ·ÖÀàÌåÏµĞÅÏ¢ÁĞ±í¼¯ºÏ
-	 * @param cb  ²éÑ¯²ÎÊı
-	 * @return ·ÖÀàÌåÏµĞÅÏ¢ÁĞ±í¼¯ºÏ
-	 * Date:2018-11-12
-	 */
-	public List<ClassificationInfoBean> getClassifcInfo(ClassificationInfoBean cb);
+    /**
+     * è·å¾—åˆ†ç±»ä½“ç³»ä¿¡æ¯åˆ—è¡¨é›†åˆ
+     * @param cb  æŸ¥è¯¢å‚æ•°
+     * @return åˆ†ç±»ä½“ç³»ä¿¡æ¯åˆ—è¡¨é›†åˆ
+     * Date:2018-11-12
+     */
+    public List<ClassificationInfoBean> getClassifcInfo(ClassificationInfoBean cb);
 
-	/**
-	 * »ñµÃ·ÖÀàÌåÏµ×Ó½ÚµãµÄĞÅÏ¢ÁĞ±í¼¯ºÏ
-	 * @param cb ²éÑ¯²ÎÊı
-	 * @return ·ÖÀàÌåÏµ×Ó½ÚµãµÄĞÅÏ¢ÁĞ±í¼¯ºÏ
-	 * Date:2018-11-12
-	 */
-	public List<ClassificationInfoBean> getchild(ClassificationInfoBean cb);
+    /**
+     * è·å¾—åˆ†ç±»ä½“ç³»å­èŠ‚ç‚¹çš„ä¿¡æ¯åˆ—è¡¨é›†åˆ
+     * @param cb æŸ¥è¯¢å‚æ•°
+     * @return åˆ†ç±»ä½“ç³»å­èŠ‚ç‚¹çš„ä¿¡æ¯åˆ—è¡¨é›†åˆ
+     * Date:2018-11-12
+     */
+    public List<ClassificationInfoBean> getchild(ClassificationInfoBean cb);
 
-	/**
-	 * »ñµÃÍøÕ¾ĞÅÏ¢×ÜÊıÄ¿
-	 * @param wb  ²éÑ¯²ÎÊı
-	 * @return µÃÍøÕ¾ĞÅÏ¢×ÜÊıÄ¿
-	 * Date:2018-11-12
-	 */
-	public int getWebInfoCount(WebInfoBean wb);
+    /**
+     * è·å¾—ç½‘ç«™ä¿¡æ¯æ€»æ•°ç›®
+     * @param wb  æŸ¥è¯¢å‚æ•°
+     * @return å¾—ç½‘ç«™ä¿¡æ¯æ€»æ•°ç›®
+     * Date:2018-11-12
+     */
+    public int getWebInfoCount(WebInfoBean wb);
 
-	/**
-	 * »ñµÃÍøÕ¾ĞÅÏ¢ÁĞ±í¼¯ºÏ
-	 * @param wb  ²éÑ¯²ÎÊı
-	 * @return  ÍøÕ¾ĞÅÏ¢ÁĞ±í¼¯ºÏ
-	 * Date:2018-11-12
-	 */
-	public List<WebInfoBean> getWebInfo(WebInfoBean wb);
+    /**
+     * è·å¾—ç½‘ç«™ä¿¡æ¯åˆ—è¡¨é›†åˆ
+     * @param wb  æŸ¥è¯¢å‚æ•°
+     * @return  ç½‘ç«™ä¿¡æ¯åˆ—è¡¨é›†åˆ
+     * Date:2018-11-12
+     */
+    public List<WebInfoBean> getWebInfo(WebInfoBean wb);
 
-	/**
-	 * »ñµÃÒÑ°ó¶¨µÄÍøÕ¾ĞÅÏ¢×ÜÊı
-	 * @param wb 
-	 * @return  ÒÑ°ó¶¨µÄÍøÕ¾ĞÅÏ¢×ÜÊı
-	 * Date:2018-11-12
-	 */
-	public int getAlWebInfoCount(WebInfoBean wb);
+    /**
+     * è·å¾—å·²ç»‘å®šçš„ç½‘ç«™ä¿¡æ¯æ€»æ•°
+     * @param wb
+     * @return  å·²ç»‘å®šçš„ç½‘ç«™ä¿¡æ¯æ€»æ•°
+     * Date:2018-11-12
+     */
+    public int getAlWebInfoCount(WebInfoBean wb);
 
-	/**
-	 * »ñµÃÒÑ°ó¶¨µÄÍøÕ¾ĞÅÏ¢¼¯ºÏ
-	 * @param wb ·ÖÀàÌåÏµID²ÎÊı
-	 * @return ÒÑ°ó¶¨µÄÍøÕ¾ĞÅÏ¢¼¯ºÏ
-	 * Date:2018-11-12
-	 */
-	public List<WebInfoBean> getAlWebInfo(WebInfoBean wb);
+    /**
+     * è·å¾—å·²ç»‘å®šçš„ç½‘ç«™ä¿¡æ¯é›†åˆ
+     * @param wb åˆ†ç±»ä½“ç³»IDå‚æ•°
+     * @return å·²ç»‘å®šçš„ç½‘ç«™ä¿¡æ¯é›†åˆ
+     * Date:2018-11-12
+     */
+    public List<WebInfoBean> getAlWebInfo(WebInfoBean wb);
 
-	/**
-	 * »ñµÃÍøÕ¾NO
-	 * @return ÍøÕ¾NO
-	 * Date:2018-11-12
-	 */
-	public int getWebNo();
+    /**
+     * è·å¾—ç½‘ç«™NO
+     * @return ç½‘ç«™NO
+     * Date:2018-11-12
+     */
+    public int getWebNo();
 
-	/**
-	 * Ìí¼ÓĞÂµÄĞÅÏ¢Ô´°ó¶¨ĞÅÏ¢
-	 * @param list ÒªÌí¼ÓµÄĞÅÏ¢Ô´ĞÅÏ¢
-	 * Date:2018-11-12
-	 */
-	public void addNewSource(List<WebInfoBean> list);
+    /**
+     * æ·»åŠ æ–°çš„ä¿¡æ¯æºç»‘å®šä¿¡æ¯
+     * @param list è¦æ·»åŠ çš„ä¿¡æ¯æºä¿¡æ¯
+     * Date:2018-11-12
+     */
+    public void addNewSource(List<WebInfoBean> list);
 
-	/**
-	 * É¾³ıÄ³·ÖÀàÌåÏµÏÂÒÑ°ó¶¨µÄĞÅÏ¢Ô´ĞÅÏ¢
-	 * @param classification_ID  ÒªÉ¾³ı°ó¶¨µÄ·ÖÀàÌåÏµID
-	 * @param list ÒªÉ¾³ı°ó¶¨µÄĞÅÏ¢Ô´ĞÅÏ¢
-	 * Date:2018-11-12
-	 */
-	public void delteSource(@Param("p1")String classification_ID, @Param("p2")List<Integer> list);
+    /**
+     * åˆ é™¤æŸåˆ†ç±»ä½“ç³»ä¸‹å·²ç»‘å®šçš„ä¿¡æ¯æºä¿¡æ¯
+     * @param classification_ID  è¦åˆ é™¤ç»‘å®šçš„åˆ†ç±»ä½“ç³»ID
+     * @param list è¦åˆ é™¤ç»‘å®šçš„ä¿¡æ¯æºä¿¡æ¯
+     * Date:2018-11-12
+     */
+    public void delteSource(@Param("p1")String classification_ID, @Param("p2")List<Integer> list);
 
-	/**
-	 * ĞŞ¸Ä·ÖÀàÌåÏµµÄĞÅÏ¢Ô´ĞÅÏ¢
-	 * @param Classification_ID  ÒªĞŞ¸ÄµÄ·ÖÀàÌåÏµID
-	 * @param updater  ĞŞ¸ÄÕß
-	 * Date:2018-11-12
-	 */
-	public void updatesource(@Param("p1")String Classification_ID ,@Param("p2")String updater);
+    /**
+     * ä¿®æ”¹åˆ†ç±»ä½“ç³»çš„ä¿¡æ¯æºä¿¡æ¯
+     * @param Classification_ID  è¦ä¿®æ”¹çš„åˆ†ç±»ä½“ç³»ID
+     * @param updater  ä¿®æ”¹è€…
+     * Date:2018-11-12
+     */
+    public void updatesource(@Param("p1")String Classification_ID ,@Param("p2")String updater);
 
 }

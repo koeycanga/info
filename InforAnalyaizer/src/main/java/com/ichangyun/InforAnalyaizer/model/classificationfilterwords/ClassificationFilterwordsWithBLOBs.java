@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 畅云 http://www.ichangyun.cn
+ * Copyright 2018 鐣呬簯 http://www.ichangyun.cn
  * <p>
- *  竞争情报系统
+ *  绔炰簤鎯呮姤绯荤粺
  */
 package com.ichangyun.InforAnalyaizer.model.classificationfilterwords;
 
@@ -88,27 +88,23 @@ public class ClassificationFilterwordsWithBLOBs extends ClassificationFilterword
         this.textexcludephrases = textexcludephrases == null ? null : textexcludephrases.trim();
     }
 
-	public ClassificationFilterwordsWithBLOBs(String classificationId, String informationtropism, String createuser,
-			Date createdatetime, String updateuser, String updatedatetime, String allcorephrases,
-			String allexcludephrases, String titlecorephrases, String titleexcludephrases, String summarycorephrases,
-			String summaryexcludephrases, String textcorephrases, String textexcludephrases) {
-		super(classificationId, informationtropism, createuser, createdatetime, updateuser, updatedatetime);
-		this.allcorephrases = allcorephrases;
-		this.allexcludephrases = allexcludephrases;
-		this.titlecorephrases = titlecorephrases;
-		this.titleexcludephrases = titleexcludephrases;
-		this.summarycorephrases = summarycorephrases;
-		this.summaryexcludephrases = summaryexcludephrases;
-		this.textcorephrases = textcorephrases;
-		this.textexcludephrases = textexcludephrases;
-	}
+    public ClassificationFilterwordsWithBLOBs(String classificationId, String informationtropism, String createuser,
+            Date createdatetime, String updateuser, String updatedatetime, String allcorephrases,
+            String allexcludephrases, String titlecorephrases, String titleexcludephrases, String summarycorephrases,
+            String summaryexcludephrases, String textcorephrases, String textexcludephrases) {
+        super(classificationId, informationtropism, createuser, createdatetime, updateuser, updatedatetime);
+        this.allcorephrases = allcorephrases;
+        this.allexcludephrases = allexcludephrases;
+        this.titlecorephrases = titlecorephrases;
+        this.titleexcludephrases = titleexcludephrases;
+        this.summarycorephrases = summarycorephrases;
+        this.summaryexcludephrases = summaryexcludephrases;
+        this.textcorephrases = textcorephrases;
+        this.textexcludephrases = textexcludephrases;
+    }
 
-	public ClassificationFilterwordsWithBLOBs() {
-		super();
-	}
+    public ClassificationFilterwordsWithBLOBs() {
+        super();
+    }
 
-
-
-
-    
 }

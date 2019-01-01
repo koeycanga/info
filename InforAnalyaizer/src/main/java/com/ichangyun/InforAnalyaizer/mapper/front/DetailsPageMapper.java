@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- * ¾ºÕùÇé±¨·ÖÎöÏµÍ³
+ * ç«äº‰æƒ…æŠ¥åˆ†æç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.mapper.front;
 
@@ -12,30 +12,45 @@ import org.apache.ibatis.annotations.Param;
 import com.ichangyun.InforAnalyaizer.model.thematicmonitoring.ArticleInfoBean;
 
 /**
- * ÏêÇéÒ³¶ÔÓ¦Mapper
+ * è¯¦æƒ…é¡µå¯¹åº”Mapper
  * @author renhao
  * 2018-11-19 17:05
  */
 public interface DetailsPageMapper {
 
-	/**
-	 * ¸ù¾İÎÄÕÂID»ñµÃÎÄÕÂĞÅÏ¢
-	 * @param article_id
-	 * @param userid
-	 * @return
-	 */
-	public ArticleInfoBean getArticleByID(@Param("article_id") String article_id,@Param("userid") String userid);
+    /**
+     * æ ¹æ®æ–‡ç« IDè·å¾—æ–‡ç« ä¿¡æ¯
+     * @param article_id
+     * @param userid
+     * @return
+     */
+    public ArticleInfoBean getArticleByID(@Param("article_id") String article_id,@Param("userid") String userid);
 
-	/**
-	 * ¸ù¾İÎÄÕÂID»ñµÃÎÄÕÂÔÚÃ½ÌåÉÏµÄ±¨µÀÇé¿ö
-	 * @param article_id
-	 * @return
-	 */
-	public List<ArticleInfoBean> getBDArticleByID(@Param("article_id")String article_id,@Param("userid")String userid);
+    /**
+     * æ ¹æ®æ–‡ç« IDè·å¾—æ–‡ç« åœ¨åª’ä½“ä¸Šçš„æŠ¥é“æƒ…å†µ
+     * @param article_id
+     * @return
+     */
+    public List<ArticleInfoBean> getBDArticleByID(@Param("article_id")String article_id,@Param("userid")String userid);
 
-	/**
-	 * »ñµÃÏàËÆÎÄÕÂ
-	 * @return
-	 */
-	public List<ArticleInfoBean> getSimContent(ArticleInfoBean ab);
+    /**
+     * è·å¾—ç›¸ä¼¼æ–‡ç« 
+     * @return
+     */
+    public List<ArticleInfoBean> getSimContent(ArticleInfoBean ab);
+
+    /**
+     * è·å¾—ç›¸å…³æ–‡ç« ä¿¡æ¯
+     * @param article_id
+     * @param userid
+     * @return
+     */
+    public List<ArticleInfoBean> getRelateDataByID(@Param("article_id")String article_id,@Param("userid")String userid);
+
+    /**
+     * æ ¹æ®æ–‡ç« IDè·å¾—å…¶æ‰€åœ¨çš„åˆ†ç±»ä½“ç³»åç§°è·¯å¾„
+     * @param article_id
+     * @return
+     */
+	public List<String> getClassificationPathById(@Param("article_id")String article_id);
 }

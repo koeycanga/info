@@ -43,12 +43,12 @@
       Name, Department, Telephone, 
       EMail, UserRole_ID, Status, 
       CreateUser, CreateDateTime, UpdateUser, 
-      UpdateDateTime)
+      UpdateDateTime,Customer_ID,CollectionField_ID)
     values (#{userId}, #{password}, 
       #{name}, #{department}, #{telephone}, 
       #{email}, #{userroleId}, #{status}, 
       #{createuser}, NOW(), #{updateuser}, 
-      NOW())
+      NOW(),#{customerId},#{collectionFieldId})
   </insert>
   
   <update id="updateRoleStatus" parameterType="com.ichangyun.InforAnalyaizer.model.userInfo.UserInfo">
@@ -102,15 +102,11 @@
       <if test="createuser != null" >
         CreateUser,
       </if>
-      <if test="createdatetime != null" >
-        CreateDateTime,
-      </if>
+       
       <if test="updateuser != null" >
         UpdateUser,
       </if>
-      <if test="updatedatetime != null" >
-        UpdateDateTime,
-      </if>
+         CreateDateTime,UpdateDateTime
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
@@ -143,15 +139,10 @@
       <if test="createuser != null" >
         #{createuser,jdbcType=VARCHAR},
       </if>
-      <if test="createdatetime != null" >
-        #{createdatetime,jdbcType=TIMESTAMP},
-      </if>
       <if test="updateuser != null" >
         #{updateuser,jdbcType=VARCHAR},
       </if>
-      <if test="updatedatetime != null" >
-        #{updatedatetime,jdbcType=TIMESTAMP},
-      </if>
+      now(),now()
     </trim>
   </insert>
   
@@ -182,15 +173,10 @@
       <if test="createuser != null" >
         CreateUser = #{createuser,jdbcType=VARCHAR},
       </if>
-      <if test="createdatetime != null" >
-        CreateDateTime = #{createdatetime,jdbcType=TIMESTAMP},
-      </if>
       <if test="updateuser != null" >
         UpdateUser = #{updateuser,jdbcType=VARCHAR},
       </if>
-      <if test="updatedatetime != null" >
-        UpdateDateTime = #{updatedatetime,jdbcType=TIMESTAMP},
-      </if>
+        UpdateDateTime =now()
     </set>
     where User_ID = #{userId,jdbcType=CHAR}
       and UserNo = #{userno,jdbcType=INTEGER}
@@ -208,7 +194,7 @@
       CreateUser = #{createuser},
       CreateDateTime = #{createdatetime,jdbcType=TIMESTAMP},
       UpdateUser = #{updateuser,jdbcType=VARCHAR},
-      UpdateDateTime = #{updatedatetime,jdbcType=TIMESTAMP}
+      UpdateDateTime = now()
     where User_ID = #{userId,jdbcType=CHAR}
       and UserNo = #{userno,jdbcType=INTEGER}
   </update>
@@ -219,6 +205,7 @@
     DATE_FORMAT(a.UpdateDateTime,'%Y/%m/%d %H:%i:%s') uupdatedatetime,a.SuperUserFlag usuperuserflag,b.UserRoleName urolename
     from m_userinfo a left join m_userrole b on a.UserRole_ID = b.UserRole_ID
     <where>
+    		a.CollectionField_ID=#{collectionFieldId} and a.Customer_ID=#{customerId}
 	      <if test="ustatus != null and ustatus!=2" >
 	        and a.Status = #{ustatus}
 	      </if>
@@ -232,6 +219,7 @@
   <select id="queryCount" resultType="int" parameterType="hashmap">
   select count(1) from m_userinfo
       <where>
+      CollectionField_ID=#{collectionFieldId} and Customer_ID=#{customerId}
 	      <if test="ustatus != null and ustatus!=2" >
 	        and Status = #{ustatus}
 	      </if>
@@ -246,7 +234,8 @@
     DATE_FORMAT(a.UpdateDateTime,'%Y/%m/%d %H:%i:%s') uupdatedatetime,a.SuperUserFlag usuperuserflag,b.UserRoleName urolename
     from m_userinfo a left join m_userrole b on a.UserRole_ID = b.UserRole_ID
     <where>
-    		a.SuperUserFlag = '0'
+    CollectionField_ID=#{collectionFieldId} and Customer_ID=#{customerId}
+    		and a.SuperUserFlag = '0'
 	      <if test="ustatus != null and ustatus!=2" >
 	        and a.Status = #{ustatus}
 	      </if>
@@ -261,7 +250,8 @@
   <select id="queryCount2" resultType="int" parameterType="hashmap">
   select count(1) from m_userinfo
       <where>
-      SuperUserFlag = '0'
+      CollectionField_ID=#{collectionFieldId} and Customer_ID=#{customerId}
+      and SuperUserFlag = '0'
 	      <if test="ustatus != null and ustatus!=2" >
 	        and Status = #{ustatus}
 	      </if>

@@ -1,7 +1,7 @@
 /**
- * Copyright 2018 ³©ÔÆ http://www.ichangyun.cn
+ * Copyright 2018 ç•…äº‘ http://www.ichangyun.cn
  * <p>
- *  ¾ºÕùÇé±¨ÏµÍ³
+ * ç«äº‰æƒ…æŠ¥ç³»ç»Ÿ
  */
 package com.ichangyun.InforAnalyaizer.utils;
 
@@ -9,97 +9,85 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Random;
-import javax.imageio.ImageIO;
 
 /**
- * Éú³ÉÑéÖ¤ÂëÍ¼Æ¬µÄ¹¤¾ßÀà
+ * ç”ŸæˆéªŒè¯ç å›¾ç‰‡çš„å·¥å…·ç±»
  * @author renhao
  *
  */
 public final class ImageUtil {
-    
-    // ÑéÖ¤Âë×Ö·û¼¯
-    private static final char[] chars = { 
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
-        'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 
-        'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
-    // ×Ö·ûÊıÁ¿
+
+    // éªŒè¯ç å­—ç¬¦é›†
+    private static final char[] chars = {
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+            'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
+            'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+    // å­—ç¬¦æ•°é‡
     private static final int SIZE = 4;
-    // ¸ÉÈÅÏßÊıÁ¿
+    // å¹²æ‰°çº¿æ•°é‡
     private static final int LINES = 5;
-    // ¿í¶È
+    // å®½åº¦
     private static final int WIDTH = 97;
-    // ¸ß¶È
+    // é«˜åº¦
     private static final int HEIGHT = 40;
-    // ×ÖÌå´óĞ¡
+    // å­—ä½“å¤§å°
     private static final int FONT_SIZE = 30;
 
     /**
-     * Éú³ÉËæ»úÑéÖ¤Âë¼°Í¼Æ¬
-     * Object[0]£ºÑéÖ¤Âë×Ö·û´®£»
-     * Object[1]£ºÑéÖ¤ÂëÍ¼Æ¬¡£
+     * ç”ŸæˆéšæœºéªŒè¯ç åŠå›¾ç‰‡
+     * Object[0]ï¼šéªŒè¯ç å­—ç¬¦ä¸²ï¼›
+     * Object[1]ï¼šéªŒè¯ç å›¾ç‰‡ã€‚
      */
     public static Object[] createImage() {
         StringBuffer sb = new StringBuffer();
-        // 1.´´½¨¿Õ°×Í¼Æ¬
+        // 1.åˆ›å»ºç©ºç™½å›¾ç‰‡
         BufferedImage image = new BufferedImage(
-            WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-        // 2.»ñÈ¡Í¼Æ¬»­±Ê
+                WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+        // 2.è·å–å›¾ç‰‡ç”»ç¬”
         Graphics graphic = image.getGraphics();
-        // 3.ÉèÖÃ»­±ÊÑÕÉ«
+        // 3.è®¾ç½®ç”»ç¬”é¢œè‰²
         graphic.setColor(Color.LIGHT_GRAY);
-        // 4.»æÖÆ¾ØĞÎ±³¾°
+        // 4.ç»˜åˆ¶çŸ©å½¢èƒŒæ™¯
         graphic.fillRect(0, 0, WIDTH, HEIGHT);
-        // 5.»­Ëæ»ú×Ö·û
+        // 5.ç”»éšæœºå­—ç¬¦
         Random ran = new Random();
         for (int i = 0; i <SIZE; i++) {
-            // È¡Ëæ»ú×Ö·ûË÷Òı
+            // å–éšæœºå­—ç¬¦ç´¢å¼•
             int n = ran.nextInt(chars.length);
-            // ÉèÖÃËæ»úÑÕÉ«
+            // è®¾ç½®éšæœºé¢œè‰²
             graphic.setColor(getRandomColor());
-            // ÉèÖÃ×ÖÌå´óĞ¡
+            // è®¾ç½®å­—ä½“å¤§å°
             graphic.setFont(new Font(
-                null, Font.BOLD + Font.ITALIC, FONT_SIZE));
-            // »­×Ö·û
+                    null, Font.BOLD + Font.ITALIC, FONT_SIZE));
+            // ç”»å­—ç¬¦
             graphic.drawString(
-                chars[n] + "", i * WIDTH / SIZE, HEIGHT*2/3);
-            // ¼ÇÂ¼×Ö·û
+                    chars[n] + "", i * WIDTH / SIZE, HEIGHT*2/3);
+            // è®°å½•å­—ç¬¦
             sb.append(chars[n]);
         }
-        // 6.»­¸ÉÈÅÏß
+        // 6.ç”»å¹²æ‰°çº¿
         for (int i = 0; i < LINES; i++) {
-            // ÉèÖÃËæ»úÑÕÉ«
+            // è®¾ç½®éšæœºé¢œè‰²
             graphic.setColor(getRandomColor());
-            // Ëæ»ú»­Ïß
+            // éšæœºç”»çº¿
             graphic.drawLine(ran.nextInt(WIDTH), ran.nextInt(HEIGHT),
                     ran.nextInt(WIDTH), ran.nextInt(HEIGHT));
         }
-        // 7.·µ»ØÑéÖ¤ÂëºÍÍ¼Æ¬
+        // 7.è¿”å›éªŒè¯ç å’Œå›¾ç‰‡
         return new Object[]{sb.toString(), image};
     }
 
     /**
-     * Ëæ»úÈ¡É«
+     * éšæœºå–è‰²
      */
     public static Color getRandomColor() {
         Random ran = new Random();
-        Color color = new Color(ran.nextInt(256), 
+        Color color = new Color(ran.nextInt(256),
                 ran.nextInt(256), ran.nextInt(256));
         return color;
     }
-    
-  /*  public static void main(String[] args) throws IOException {
-        Object[] objs = createImage();
-        BufferedImage image = (BufferedImage) objs[1];
-        OutputStream os = new FileOutputStream("d:/1.png");
-        ImageIO.write(image, "png", os);
-        os.close();
-    }*/
 
 }
